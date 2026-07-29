@@ -44,6 +44,7 @@ import (
 	"github.com/servekit/testkit-service/internal/jobs"
 	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/auth"
+	"github.com/servekit/testkit-service/internal/service/user"
 	"github.com/servekit/testkit-service/internal/version"
 	"github.com/servekit/testkit-service/pkg/config"
 	"github.com/servekit/testkit-service/pkg/option"
@@ -73,6 +74,11 @@ type Service struct {
 	// auth is the P1 auth domain (forward to user-service + issue JWT). Built
 	// once the user handler is resolved and the JWT manager is constructed.
 	auth *auth.Service
+
+	// userSvc is the P2 user domain (profile / identity / session / social).
+	// Named userSvc (not user) to avoid clashing with the thirdcall user
+	// handler field above. Built once the user handler + JWT manager are ready.
+	userSvc *user.Service
 
 	// startedAt is set once in New; Ping returns it for uptime.
 	startedAt int64
@@ -124,6 +130,11 @@ func New(cfg *config.Config, opts ...option.Option) (*Service, error) {
 		return nil, rollback(mgr, fmt.Errorf("init jwt: %w", err))
 	}
 	svc.auth = auth.New(jwtMgr, auth.WithUserClient(svc.user))
+
+	// Build the P2 user domain against the same embedded user handler + the
+	// shared JWT manager (social login consumes the downstream session_id and
+	// mints a testkit JWT, mirroring the auth domain's Login).
+	svc.userSvc = user.New(svc.user, jwtMgr)
 
 	// jobs.Scheduler owns the cron instance; setupJobs builds it, registers
 	// it on mgr, and wires periodic jobs (empty by default — add jobs inside
@@ -184,6 +195,10 @@ func (s *Service) UserHandler() thirdcall.UserService { return s.user }
 // Auth returns the P1 auth domain (forward to user-service + issue JWT). The
 // handler delegates the auth RPCs to it.
 func (s *Service) Auth() *auth.Service { return s.auth }
+
+// User returns the P2 user domain (profile / identity / session / social). The
+// handler delegates the self-service user RPCs to it.
+func (s *Service) User() *user.Service { return s.userSvc }
 
 // --- internal helpers ---
 

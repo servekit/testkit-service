@@ -103,6 +103,17 @@ func NewServer(cfg *config.Config, opts ...ServerOption) (*Server, error) {
 			"/testkit.v1.TestkitService/Login",
 			"/testkit.v1.TestkitService/Register",
 			"/testkit.v1.TestkitService/SendVerificationCode",
+			// Public self-service flows (P2): password reset is code-based
+			// (no caller identity), and social login starts before the caller
+			// has a session — GetOAuthURL kicks off OAuth, the three login
+			// RPCs complete it and mint the first JWT. "My" RPCs (GetProfile /
+			// ListSessions / ...) stay PROTECTED — they need the caller's
+			// user_id injected from a verified JWT.
+			"/testkit.v1.TestkitService/ResetPassword",
+			"/testkit.v1.TestkitService/GetOAuthURL",
+			"/testkit.v1.TestkitService/SocialLogin",
+			"/testkit.v1.TestkitService/MiniProgramLogin",
+			"/testkit.v1.TestkitService/MiniProgramPhoneLogin",
 			// grpcx auto-registers grpc.health.v1.Health; health probes carry
 			// no token, so the Check RPC must stay public.
 			"/grpc.health.v1.Health/Check",

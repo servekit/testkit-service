@@ -97,3 +97,101 @@ func (h *Handler) RefreshSession(ctx context.Context, req *testkitv1.RefreshSess
 	}
 	return h.svc.Auth().RefreshSession(ctx, req)
 }
+
+// --- User-domain RPCs (P2: profile / identity / session / social) ---
+//
+// Each is a thin delegate to the user domain (internal/service/user). The
+// handler holds no user logic; the only non-delegate work remains the
+// session_id read for the auth RPCs above. "My" RPCs read the caller's user_id
+// from ctx inside the domain service; target IDs (identity_id, session_id) and
+// public RPCs (ResetPassword, social) carry their own request fields.
+
+// GetProfile returns the caller's own profile (user_id injected from ctx).
+func (h *Handler) GetProfile(ctx context.Context, req *testkitv1.GetProfileRequest) (*testkitv1.User, error) {
+	return h.svc.User().GetProfile(ctx, req)
+}
+
+// UpdateProfile updates the caller's own profile (user_id injected from ctx).
+func (h *Handler) UpdateProfile(ctx context.Context, req *testkitv1.UpdateProfileRequest) (*testkitv1.User, error) {
+	return h.svc.User().UpdateProfile(ctx, req)
+}
+
+// ChangePassword verifies the caller's old password and sets a new one.
+func (h *Handler) ChangePassword(ctx context.Context, req *testkitv1.ChangePasswordRequest) (*emptypb.Empty, error) {
+	return h.svc.User().ChangePassword(ctx, req)
+}
+
+// ResetPassword is a public, code-based password reset (no caller identity).
+func (h *Handler) ResetPassword(ctx context.Context, req *testkitv1.ResetPasswordRequest) (*emptypb.Empty, error) {
+	return h.svc.User().ResetPassword(ctx, req)
+}
+
+// ListIdentities lists the caller's bound identities.
+func (h *Handler) ListIdentities(ctx context.Context, req *testkitv1.ListIdentitiesRequest) (*testkitv1.ListIdentitiesResponse, error) {
+	return h.svc.User().ListIdentities(ctx, req)
+}
+
+// BindIdentity binds an email/phone identity to the caller.
+func (h *Handler) BindIdentity(ctx context.Context, req *testkitv1.BindIdentityRequest) (*testkitv1.Identity, error) {
+	return h.svc.User().BindIdentity(ctx, req)
+}
+
+// BindOAuthIdentity binds an OAuth identity to the caller.
+func (h *Handler) BindOAuthIdentity(ctx context.Context, req *testkitv1.BindOAuthIdentityRequest) (*testkitv1.BindOAuthIdentityResponse, error) {
+	return h.svc.User().BindOAuthIdentity(ctx, req)
+}
+
+// UnbindIdentity removes a target identity from the caller.
+func (h *Handler) UnbindIdentity(ctx context.Context, req *testkitv1.UnbindIdentityRequest) (*emptypb.Empty, error) {
+	return h.svc.User().UnbindIdentity(ctx, req)
+}
+
+// ListSessions lists the caller's active sessions.
+func (h *Handler) ListSessions(ctx context.Context, req *testkitv1.ListSessionsRequest) (*testkitv1.ListSessionsResponse, error) {
+	return h.svc.User().ListSessions(ctx, req)
+}
+
+// RevokeSession revokes a target session.
+func (h *Handler) RevokeSession(ctx context.Context, req *testkitv1.RevokeSessionRequest) (*emptypb.Empty, error) {
+	return h.svc.User().RevokeSession(ctx, req)
+}
+
+// RevokeAllSessions revokes every session owned by the caller.
+func (h *Handler) RevokeAllSessions(ctx context.Context, req *testkitv1.RevokeAllSessionsRequest) (*emptypb.Empty, error) {
+	return h.svc.User().RevokeAllSessions(ctx, req)
+}
+
+// GetSession fetches a target session.
+func (h *Handler) GetSession(ctx context.Context, req *testkitv1.GetSessionRequest) (*testkitv1.GetSessionResponse, error) {
+	return h.svc.User().GetSession(ctx, req)
+}
+
+// IssueSessionCode mints a one-time code for a target session.
+func (h *Handler) IssueSessionCode(ctx context.Context, req *testkitv1.IssueSessionCodeRequest) (*testkitv1.IssueSessionCodeResponse, error) {
+	return h.svc.User().IssueSessionCode(ctx, req)
+}
+
+// ExchangeSessionCode redeems a one-time session code.
+func (h *Handler) ExchangeSessionCode(ctx context.Context, req *testkitv1.ExchangeSessionCodeRequest) (*testkitv1.ExchangeSessionCodeResponse, error) {
+	return h.svc.User().ExchangeSessionCode(ctx, req)
+}
+
+// GetOAuthURL returns the provider authorization URL (public, no JWT).
+func (h *Handler) GetOAuthURL(ctx context.Context, req *testkitv1.GetOAuthURLRequest) (*testkitv1.GetOAuthURLResponse, error) {
+	return h.svc.User().GetOAuthURL(ctx, req)
+}
+
+// SocialLogin completes an OAuth login and returns a testkit-issued JWT.
+func (h *Handler) SocialLogin(ctx context.Context, req *testkitv1.SocialLoginRequest) (*testkitv1.SocialLoginResponse, error) {
+	return h.svc.User().SocialLogin(ctx, req)
+}
+
+// MiniProgramLogin completes a WeChat mini-program code login.
+func (h *Handler) MiniProgramLogin(ctx context.Context, req *testkitv1.MiniProgramLoginRequest) (*testkitv1.SocialLoginResponse, error) {
+	return h.svc.User().MiniProgramLogin(ctx, req)
+}
+
+// MiniProgramPhoneLogin completes a WeChat mini-program phone login.
+func (h *Handler) MiniProgramPhoneLogin(ctx context.Context, req *testkitv1.MiniProgramPhoneLoginRequest) (*testkitv1.SocialLoginResponse, error) {
+	return h.svc.User().MiniProgramPhoneLogin(ctx, req)
+}
