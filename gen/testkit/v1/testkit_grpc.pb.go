@@ -20,65 +20,94 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	TestkitService_Ping_FullMethodName                  = "/testkit.v1.TestkitService/Ping"
-	TestkitService_Login_FullMethodName                 = "/testkit.v1.TestkitService/Login"
-	TestkitService_Register_FullMethodName              = "/testkit.v1.TestkitService/Register"
-	TestkitService_SendVerificationCode_FullMethodName  = "/testkit.v1.TestkitService/SendVerificationCode"
-	TestkitService_Logout_FullMethodName                = "/testkit.v1.TestkitService/Logout"
-	TestkitService_RefreshSession_FullMethodName        = "/testkit.v1.TestkitService/RefreshSession"
-	TestkitService_GetProfile_FullMethodName            = "/testkit.v1.TestkitService/GetProfile"
-	TestkitService_UpdateProfile_FullMethodName         = "/testkit.v1.TestkitService/UpdateProfile"
-	TestkitService_ChangePassword_FullMethodName        = "/testkit.v1.TestkitService/ChangePassword"
-	TestkitService_ResetPassword_FullMethodName         = "/testkit.v1.TestkitService/ResetPassword"
-	TestkitService_ListIdentities_FullMethodName        = "/testkit.v1.TestkitService/ListIdentities"
-	TestkitService_BindIdentity_FullMethodName          = "/testkit.v1.TestkitService/BindIdentity"
-	TestkitService_BindOAuthIdentity_FullMethodName     = "/testkit.v1.TestkitService/BindOAuthIdentity"
-	TestkitService_UnbindIdentity_FullMethodName        = "/testkit.v1.TestkitService/UnbindIdentity"
-	TestkitService_ListSessions_FullMethodName          = "/testkit.v1.TestkitService/ListSessions"
-	TestkitService_RevokeSession_FullMethodName         = "/testkit.v1.TestkitService/RevokeSession"
-	TestkitService_RevokeAllSessions_FullMethodName     = "/testkit.v1.TestkitService/RevokeAllSessions"
-	TestkitService_GetSession_FullMethodName            = "/testkit.v1.TestkitService/GetSession"
-	TestkitService_IssueSessionCode_FullMethodName      = "/testkit.v1.TestkitService/IssueSessionCode"
-	TestkitService_ExchangeSessionCode_FullMethodName   = "/testkit.v1.TestkitService/ExchangeSessionCode"
-	TestkitService_GetOAuthURL_FullMethodName           = "/testkit.v1.TestkitService/GetOAuthURL"
-	TestkitService_SocialLogin_FullMethodName           = "/testkit.v1.TestkitService/SocialLogin"
-	TestkitService_MiniProgramLogin_FullMethodName      = "/testkit.v1.TestkitService/MiniProgramLogin"
-	TestkitService_MiniProgramPhoneLogin_FullMethodName = "/testkit.v1.TestkitService/MiniProgramPhoneLogin"
-	TestkitService_CreateUser_FullMethodName            = "/testkit.v1.TestkitService/CreateUser"
-	TestkitService_GetUser_FullMethodName               = "/testkit.v1.TestkitService/GetUser"
-	TestkitService_ListUsers_FullMethodName             = "/testkit.v1.TestkitService/ListUsers"
-	TestkitService_ListUsersPaged_FullMethodName        = "/testkit.v1.TestkitService/ListUsersPaged"
-	TestkitService_DisableUser_FullMethodName           = "/testkit.v1.TestkitService/DisableUser"
-	TestkitService_GetLoginLogs_FullMethodName          = "/testkit.v1.TestkitService/GetLoginLogs"
-	TestkitService_CreateGroup_FullMethodName           = "/testkit.v1.TestkitService/CreateGroup"
-	TestkitService_GetGroup_FullMethodName              = "/testkit.v1.TestkitService/GetGroup"
-	TestkitService_UpdateGroup_FullMethodName           = "/testkit.v1.TestkitService/UpdateGroup"
-	TestkitService_ListGroups_FullMethodName            = "/testkit.v1.TestkitService/ListGroups"
-	TestkitService_DeleteGroup_FullMethodName           = "/testkit.v1.TestkitService/DeleteGroup"
-	TestkitService_AddGroupMember_FullMethodName        = "/testkit.v1.TestkitService/AddGroupMember"
-	TestkitService_RemoveGroupMember_FullMethodName     = "/testkit.v1.TestkitService/RemoveGroupMember"
-	TestkitService_ListGroupMembers_FullMethodName      = "/testkit.v1.TestkitService/ListGroupMembers"
-	TestkitService_AddGroupRole_FullMethodName          = "/testkit.v1.TestkitService/AddGroupRole"
-	TestkitService_RemoveGroupRole_FullMethodName       = "/testkit.v1.TestkitService/RemoveGroupRole"
-	TestkitService_ListGroupRoles_FullMethodName        = "/testkit.v1.TestkitService/ListGroupRoles"
-	TestkitService_CreateRole_FullMethodName            = "/testkit.v1.TestkitService/CreateRole"
-	TestkitService_GetRole_FullMethodName               = "/testkit.v1.TestkitService/GetRole"
-	TestkitService_UpdateRole_FullMethodName            = "/testkit.v1.TestkitService/UpdateRole"
-	TestkitService_DeleteRole_FullMethodName            = "/testkit.v1.TestkitService/DeleteRole"
-	TestkitService_ListRoles_FullMethodName             = "/testkit.v1.TestkitService/ListRoles"
-	TestkitService_AssignRole_FullMethodName            = "/testkit.v1.TestkitService/AssignRole"
-	TestkitService_RevokeRole_FullMethodName            = "/testkit.v1.TestkitService/RevokeRole"
-	TestkitService_ListUserRoles_FullMethodName         = "/testkit.v1.TestkitService/ListUserRoles"
-	TestkitService_ListPermissions_FullMethodName       = "/testkit.v1.TestkitService/ListPermissions"
-	TestkitService_CreatePermission_FullMethodName      = "/testkit.v1.TestkitService/CreatePermission"
-	TestkitService_GetPermission_FullMethodName         = "/testkit.v1.TestkitService/GetPermission"
-	TestkitService_UpdatePermission_FullMethodName      = "/testkit.v1.TestkitService/UpdatePermission"
-	TestkitService_DeletePermission_FullMethodName      = "/testkit.v1.TestkitService/DeletePermission"
-	TestkitService_CreatePermissionGroup_FullMethodName = "/testkit.v1.TestkitService/CreatePermissionGroup"
-	TestkitService_GetPermissionGroup_FullMethodName    = "/testkit.v1.TestkitService/GetPermissionGroup"
-	TestkitService_UpdatePermissionGroup_FullMethodName = "/testkit.v1.TestkitService/UpdatePermissionGroup"
-	TestkitService_DeletePermissionGroup_FullMethodName = "/testkit.v1.TestkitService/DeletePermissionGroup"
-	TestkitService_ListPermissionGroups_FullMethodName  = "/testkit.v1.TestkitService/ListPermissionGroups"
+	TestkitService_Ping_FullMethodName                      = "/testkit.v1.TestkitService/Ping"
+	TestkitService_Login_FullMethodName                     = "/testkit.v1.TestkitService/Login"
+	TestkitService_Register_FullMethodName                  = "/testkit.v1.TestkitService/Register"
+	TestkitService_SendVerificationCode_FullMethodName      = "/testkit.v1.TestkitService/SendVerificationCode"
+	TestkitService_Logout_FullMethodName                    = "/testkit.v1.TestkitService/Logout"
+	TestkitService_RefreshSession_FullMethodName            = "/testkit.v1.TestkitService/RefreshSession"
+	TestkitService_GetProfile_FullMethodName                = "/testkit.v1.TestkitService/GetProfile"
+	TestkitService_UpdateProfile_FullMethodName             = "/testkit.v1.TestkitService/UpdateProfile"
+	TestkitService_ChangePassword_FullMethodName            = "/testkit.v1.TestkitService/ChangePassword"
+	TestkitService_ResetPassword_FullMethodName             = "/testkit.v1.TestkitService/ResetPassword"
+	TestkitService_ListIdentities_FullMethodName            = "/testkit.v1.TestkitService/ListIdentities"
+	TestkitService_BindIdentity_FullMethodName              = "/testkit.v1.TestkitService/BindIdentity"
+	TestkitService_BindOAuthIdentity_FullMethodName         = "/testkit.v1.TestkitService/BindOAuthIdentity"
+	TestkitService_UnbindIdentity_FullMethodName            = "/testkit.v1.TestkitService/UnbindIdentity"
+	TestkitService_ListSessions_FullMethodName              = "/testkit.v1.TestkitService/ListSessions"
+	TestkitService_RevokeSession_FullMethodName             = "/testkit.v1.TestkitService/RevokeSession"
+	TestkitService_RevokeAllSessions_FullMethodName         = "/testkit.v1.TestkitService/RevokeAllSessions"
+	TestkitService_GetSession_FullMethodName                = "/testkit.v1.TestkitService/GetSession"
+	TestkitService_IssueSessionCode_FullMethodName          = "/testkit.v1.TestkitService/IssueSessionCode"
+	TestkitService_ExchangeSessionCode_FullMethodName       = "/testkit.v1.TestkitService/ExchangeSessionCode"
+	TestkitService_GetOAuthURL_FullMethodName               = "/testkit.v1.TestkitService/GetOAuthURL"
+	TestkitService_SocialLogin_FullMethodName               = "/testkit.v1.TestkitService/SocialLogin"
+	TestkitService_MiniProgramLogin_FullMethodName          = "/testkit.v1.TestkitService/MiniProgramLogin"
+	TestkitService_MiniProgramPhoneLogin_FullMethodName     = "/testkit.v1.TestkitService/MiniProgramPhoneLogin"
+	TestkitService_CreateUser_FullMethodName                = "/testkit.v1.TestkitService/CreateUser"
+	TestkitService_GetUser_FullMethodName                   = "/testkit.v1.TestkitService/GetUser"
+	TestkitService_ListUsers_FullMethodName                 = "/testkit.v1.TestkitService/ListUsers"
+	TestkitService_ListUsersPaged_FullMethodName            = "/testkit.v1.TestkitService/ListUsersPaged"
+	TestkitService_DisableUser_FullMethodName               = "/testkit.v1.TestkitService/DisableUser"
+	TestkitService_GetLoginLogs_FullMethodName              = "/testkit.v1.TestkitService/GetLoginLogs"
+	TestkitService_CreateGroup_FullMethodName               = "/testkit.v1.TestkitService/CreateGroup"
+	TestkitService_GetGroup_FullMethodName                  = "/testkit.v1.TestkitService/GetGroup"
+	TestkitService_UpdateGroup_FullMethodName               = "/testkit.v1.TestkitService/UpdateGroup"
+	TestkitService_ListGroups_FullMethodName                = "/testkit.v1.TestkitService/ListGroups"
+	TestkitService_DeleteGroup_FullMethodName               = "/testkit.v1.TestkitService/DeleteGroup"
+	TestkitService_AddGroupMember_FullMethodName            = "/testkit.v1.TestkitService/AddGroupMember"
+	TestkitService_RemoveGroupMember_FullMethodName         = "/testkit.v1.TestkitService/RemoveGroupMember"
+	TestkitService_ListGroupMembers_FullMethodName          = "/testkit.v1.TestkitService/ListGroupMembers"
+	TestkitService_AddGroupRole_FullMethodName              = "/testkit.v1.TestkitService/AddGroupRole"
+	TestkitService_RemoveGroupRole_FullMethodName           = "/testkit.v1.TestkitService/RemoveGroupRole"
+	TestkitService_ListGroupRoles_FullMethodName            = "/testkit.v1.TestkitService/ListGroupRoles"
+	TestkitService_CreateRole_FullMethodName                = "/testkit.v1.TestkitService/CreateRole"
+	TestkitService_GetRole_FullMethodName                   = "/testkit.v1.TestkitService/GetRole"
+	TestkitService_UpdateRole_FullMethodName                = "/testkit.v1.TestkitService/UpdateRole"
+	TestkitService_DeleteRole_FullMethodName                = "/testkit.v1.TestkitService/DeleteRole"
+	TestkitService_ListRoles_FullMethodName                 = "/testkit.v1.TestkitService/ListRoles"
+	TestkitService_AssignRole_FullMethodName                = "/testkit.v1.TestkitService/AssignRole"
+	TestkitService_RevokeRole_FullMethodName                = "/testkit.v1.TestkitService/RevokeRole"
+	TestkitService_ListUserRoles_FullMethodName             = "/testkit.v1.TestkitService/ListUserRoles"
+	TestkitService_ListPermissions_FullMethodName           = "/testkit.v1.TestkitService/ListPermissions"
+	TestkitService_CreatePermission_FullMethodName          = "/testkit.v1.TestkitService/CreatePermission"
+	TestkitService_GetPermission_FullMethodName             = "/testkit.v1.TestkitService/GetPermission"
+	TestkitService_UpdatePermission_FullMethodName          = "/testkit.v1.TestkitService/UpdatePermission"
+	TestkitService_DeletePermission_FullMethodName          = "/testkit.v1.TestkitService/DeletePermission"
+	TestkitService_CreatePermissionGroup_FullMethodName     = "/testkit.v1.TestkitService/CreatePermissionGroup"
+	TestkitService_GetPermissionGroup_FullMethodName        = "/testkit.v1.TestkitService/GetPermissionGroup"
+	TestkitService_UpdatePermissionGroup_FullMethodName     = "/testkit.v1.TestkitService/UpdatePermissionGroup"
+	TestkitService_DeletePermissionGroup_FullMethodName     = "/testkit.v1.TestkitService/DeletePermissionGroup"
+	TestkitService_ListPermissionGroups_FullMethodName      = "/testkit.v1.TestkitService/ListPermissionGroups"
+	TestkitService_GenerateUploadURL_FullMethodName         = "/testkit.v1.TestkitService/GenerateUploadURL"
+	TestkitService_GetSTSCredential_FullMethodName          = "/testkit.v1.TestkitService/GetSTSCredential"
+	TestkitService_BatchGetSTSCredential_FullMethodName     = "/testkit.v1.TestkitService/BatchGetSTSCredential"
+	TestkitService_ConfirmUpload_FullMethodName             = "/testkit.v1.TestkitService/ConfirmUpload"
+	TestkitService_CancelUpload_FullMethodName              = "/testkit.v1.TestkitService/CancelUpload"
+	TestkitService_GenerateDownloadURL_FullMethodName       = "/testkit.v1.TestkitService/GenerateDownloadURL"
+	TestkitService_GenerateProcessURL_FullMethodName        = "/testkit.v1.TestkitService/GenerateProcessURL"
+	TestkitService_GenerateCDNURL_FullMethodName            = "/testkit.v1.TestkitService/GenerateCDNURL"
+	TestkitService_ListMyFiles_FullMethodName               = "/testkit.v1.TestkitService/ListMyFiles"
+	TestkitService_ListMyFilesPaged_FullMethodName          = "/testkit.v1.TestkitService/ListMyFilesPaged"
+	TestkitService_GetMyFile_FullMethodName                 = "/testkit.v1.TestkitService/GetMyFile"
+	TestkitService_UpdateMyFile_FullMethodName              = "/testkit.v1.TestkitService/UpdateMyFile"
+	TestkitService_DeleteMyFile_FullMethodName              = "/testkit.v1.TestkitService/DeleteMyFile"
+	TestkitService_BatchDeleteMyFiles_FullMethodName        = "/testkit.v1.TestkitService/BatchDeleteMyFiles"
+	TestkitService_GetMyQuota_FullMethodName                = "/testkit.v1.TestkitService/GetMyQuota"
+	TestkitService_ListMyAuditLogs_FullMethodName           = "/testkit.v1.TestkitService/ListMyAuditLogs"
+	TestkitService_SetOwnerQuota_FullMethodName             = "/testkit.v1.TestkitService/SetOwnerQuota"
+	TestkitService_AddOwnerQuota_FullMethodName             = "/testkit.v1.TestkitService/AddOwnerQuota"
+	TestkitService_AdminListFiles_FullMethodName            = "/testkit.v1.TestkitService/AdminListFiles"
+	TestkitService_AdminGetFile_FullMethodName              = "/testkit.v1.TestkitService/AdminGetFile"
+	TestkitService_AdminDeleteFile_FullMethodName           = "/testkit.v1.TestkitService/AdminDeleteFile"
+	TestkitService_AdminGetQuota_FullMethodName             = "/testkit.v1.TestkitService/AdminGetQuota"
+	TestkitService_AdminSetQuota_FullMethodName             = "/testkit.v1.TestkitService/AdminSetQuota"
+	TestkitService_AdminGetStats_FullMethodName             = "/testkit.v1.TestkitService/AdminGetStats"
+	TestkitService_AdminListProviders_FullMethodName        = "/testkit.v1.TestkitService/AdminListProviders"
+	TestkitService_AdminListBuckets_FullMethodName          = "/testkit.v1.TestkitService/AdminListBuckets"
+	TestkitService_AdminSoftDeleteOwnerFiles_FullMethodName = "/testkit.v1.TestkitService/AdminSoftDeleteOwnerFiles"
+	TestkitService_AdminDeleteOwner_FullMethodName          = "/testkit.v1.TestkitService/AdminDeleteOwner"
+	TestkitService_AdminListAuditLogs_FullMethodName        = "/testkit.v1.TestkitService/AdminListAuditLogs"
 )
 
 // TestkitServiceClient is the client API for TestkitService service.
@@ -155,6 +184,41 @@ type TestkitServiceClient interface {
 	UpdatePermissionGroup(ctx context.Context, in *UpdatePermissionGroupRequest, opts ...grpc.CallOption) (*PermissionGroup, error)
 	DeletePermissionGroup(ctx context.Context, in *DeletePermissionGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListPermissionGroups(ctx context.Context, in *ListPermissionGroupsRequest, opts ...grpc.CallOption) (*ListPermissionGroupsResponse, error)
+	// ---- Upload (owner from ctx) ----
+	GenerateUploadURL(ctx context.Context, in *GenerateUploadURLRequest, opts ...grpc.CallOption) (*GenerateUploadURLResponse, error)
+	GetSTSCredential(ctx context.Context, in *GetSTSCredentialRequest, opts ...grpc.CallOption) (*GetSTSCredentialResponse, error)
+	BatchGetSTSCredential(ctx context.Context, in *BatchGetSTSCredentialRequest, opts ...grpc.CallOption) (*BatchGetSTSCredentialResponse, error)
+	ConfirmUpload(ctx context.Context, in *ConfirmUploadRequest, opts ...grpc.CallOption) (*ConfirmUploadResponse, error)
+	CancelUpload(ctx context.Context, in *CancelUploadRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// ---- Download / Process (owner from ctx) ----
+	GenerateDownloadURL(ctx context.Context, in *GenerateDownloadURLRequest, opts ...grpc.CallOption) (*GenerateDownloadURLResponse, error)
+	GenerateProcessURL(ctx context.Context, in *GenerateProcessURLRequest, opts ...grpc.CallOption) (*GenerateProcessURLResponse, error)
+	GenerateCDNURL(ctx context.Context, in *GenerateCDNURLRequest, opts ...grpc.CallOption) (*GenerateCDNURLResponse, error)
+	// ---- My Files (owner from ctx) ----
+	ListMyFiles(ctx context.Context, in *ListMyFilesRequest, opts ...grpc.CallOption) (*ListMyFilesResponse, error)
+	ListMyFilesPaged(ctx context.Context, in *ListMyFilesPagedRequest, opts ...grpc.CallOption) (*ListMyFilesPagedResponse, error)
+	GetMyFile(ctx context.Context, in *GetMyFileRequest, opts ...grpc.CallOption) (*FileInfo, error)
+	UpdateMyFile(ctx context.Context, in *UpdateMyFileRequest, opts ...grpc.CallOption) (*FileInfo, error)
+	DeleteMyFile(ctx context.Context, in *DeleteMyFileRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	BatchDeleteMyFiles(ctx context.Context, in *BatchDeleteMyFilesRequest, opts ...grpc.CallOption) (*BatchDeleteMyFilesResponse, error)
+	// ---- My Quota / Audit (owner from ctx) ----
+	GetMyQuota(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*QuotaInfo, error)
+	ListMyAuditLogs(ctx context.Context, in *ListMyAuditLogsRequest, opts ...grpc.CallOption) (*ListMyAuditLogsResponse, error)
+	// ---- Owner quota (owner_type+owner_id = target via body) ----
+	SetOwnerQuota(ctx context.Context, in *SetOwnerQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error)
+	AddOwnerQuota(ctx context.Context, in *AddOwnerQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error)
+	// ---- Admin (owner_type+owner_id = query/op target via body/query, not path) ----
+	AdminListFiles(ctx context.Context, in *AdminListFilesRequest, opts ...grpc.CallOption) (*AdminListFilesResponse, error)
+	AdminGetFile(ctx context.Context, in *AdminGetFileRequest, opts ...grpc.CallOption) (*AdminFileInfo, error)
+	AdminDeleteFile(ctx context.Context, in *AdminDeleteFileRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	AdminGetQuota(ctx context.Context, in *AdminGetQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error)
+	AdminSetQuota(ctx context.Context, in *AdminSetQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error)
+	AdminGetStats(ctx context.Context, in *AdminGetStatsRequest, opts ...grpc.CallOption) (*AdminGetStatsResponse, error)
+	AdminListProviders(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AdminListProvidersResponse, error)
+	AdminListBuckets(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AdminListBucketsResponse, error)
+	AdminSoftDeleteOwnerFiles(ctx context.Context, in *AdminSoftDeleteOwnerFilesRequest, opts ...grpc.CallOption) (*AdminSoftDeleteOwnerFilesResponse, error)
+	AdminDeleteOwner(ctx context.Context, in *AdminDeleteOwnerRequest, opts ...grpc.CallOption) (*AdminDeleteOwnerResponse, error)
+	AdminListAuditLogs(ctx context.Context, in *AdminListAuditLogsRequest, opts ...grpc.CallOption) (*AdminListAuditLogsResponse, error)
 }
 
 type testkitServiceClient struct {
@@ -755,6 +819,296 @@ func (c *testkitServiceClient) ListPermissionGroups(ctx context.Context, in *Lis
 	return out, nil
 }
 
+func (c *testkitServiceClient) GenerateUploadURL(ctx context.Context, in *GenerateUploadURLRequest, opts ...grpc.CallOption) (*GenerateUploadURLResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GenerateUploadURLResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GenerateUploadURL_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetSTSCredential(ctx context.Context, in *GetSTSCredentialRequest, opts ...grpc.CallOption) (*GetSTSCredentialResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSTSCredentialResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetSTSCredential_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) BatchGetSTSCredential(ctx context.Context, in *BatchGetSTSCredentialRequest, opts ...grpc.CallOption) (*BatchGetSTSCredentialResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchGetSTSCredentialResponse)
+	err := c.cc.Invoke(ctx, TestkitService_BatchGetSTSCredential_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ConfirmUpload(ctx context.Context, in *ConfirmUploadRequest, opts ...grpc.CallOption) (*ConfirmUploadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ConfirmUploadResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ConfirmUpload_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) CancelUpload(ctx context.Context, in *CancelUploadRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_CancelUpload_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GenerateDownloadURL(ctx context.Context, in *GenerateDownloadURLRequest, opts ...grpc.CallOption) (*GenerateDownloadURLResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GenerateDownloadURLResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GenerateDownloadURL_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GenerateProcessURL(ctx context.Context, in *GenerateProcessURLRequest, opts ...grpc.CallOption) (*GenerateProcessURLResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GenerateProcessURLResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GenerateProcessURL_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GenerateCDNURL(ctx context.Context, in *GenerateCDNURLRequest, opts ...grpc.CallOption) (*GenerateCDNURLResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GenerateCDNURLResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GenerateCDNURL_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListMyFiles(ctx context.Context, in *ListMyFilesRequest, opts ...grpc.CallOption) (*ListMyFilesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyFilesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListMyFiles_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListMyFilesPaged(ctx context.Context, in *ListMyFilesPagedRequest, opts ...grpc.CallOption) (*ListMyFilesPagedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyFilesPagedResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListMyFilesPaged_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetMyFile(ctx context.Context, in *GetMyFileRequest, opts ...grpc.CallOption) (*FileInfo, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FileInfo)
+	err := c.cc.Invoke(ctx, TestkitService_GetMyFile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UpdateMyFile(ctx context.Context, in *UpdateMyFileRequest, opts ...grpc.CallOption) (*FileInfo, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FileInfo)
+	err := c.cc.Invoke(ctx, TestkitService_UpdateMyFile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) DeleteMyFile(ctx context.Context, in *DeleteMyFileRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_DeleteMyFile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) BatchDeleteMyFiles(ctx context.Context, in *BatchDeleteMyFilesRequest, opts ...grpc.CallOption) (*BatchDeleteMyFilesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchDeleteMyFilesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_BatchDeleteMyFiles_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetMyQuota(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*QuotaInfo, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QuotaInfo)
+	err := c.cc.Invoke(ctx, TestkitService_GetMyQuota_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListMyAuditLogs(ctx context.Context, in *ListMyAuditLogsRequest, opts ...grpc.CallOption) (*ListMyAuditLogsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyAuditLogsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListMyAuditLogs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) SetOwnerQuota(ctx context.Context, in *SetOwnerQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QuotaInfo)
+	err := c.cc.Invoke(ctx, TestkitService_SetOwnerQuota_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AddOwnerQuota(ctx context.Context, in *AddOwnerQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QuotaInfo)
+	err := c.cc.Invoke(ctx, TestkitService_AddOwnerQuota_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminListFiles(ctx context.Context, in *AdminListFilesRequest, opts ...grpc.CallOption) (*AdminListFilesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminListFilesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_AdminListFiles_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminGetFile(ctx context.Context, in *AdminGetFileRequest, opts ...grpc.CallOption) (*AdminFileInfo, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminFileInfo)
+	err := c.cc.Invoke(ctx, TestkitService_AdminGetFile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminDeleteFile(ctx context.Context, in *AdminDeleteFileRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_AdminDeleteFile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminGetQuota(ctx context.Context, in *AdminGetQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QuotaInfo)
+	err := c.cc.Invoke(ctx, TestkitService_AdminGetQuota_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminSetQuota(ctx context.Context, in *AdminSetQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QuotaInfo)
+	err := c.cc.Invoke(ctx, TestkitService_AdminSetQuota_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminGetStats(ctx context.Context, in *AdminGetStatsRequest, opts ...grpc.CallOption) (*AdminGetStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminGetStatsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_AdminGetStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminListProviders(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AdminListProvidersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminListProvidersResponse)
+	err := c.cc.Invoke(ctx, TestkitService_AdminListProviders_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminListBuckets(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AdminListBucketsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminListBucketsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_AdminListBuckets_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminSoftDeleteOwnerFiles(ctx context.Context, in *AdminSoftDeleteOwnerFilesRequest, opts ...grpc.CallOption) (*AdminSoftDeleteOwnerFilesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminSoftDeleteOwnerFilesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_AdminSoftDeleteOwnerFiles_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminDeleteOwner(ctx context.Context, in *AdminDeleteOwnerRequest, opts ...grpc.CallOption) (*AdminDeleteOwnerResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminDeleteOwnerResponse)
+	err := c.cc.Invoke(ctx, TestkitService_AdminDeleteOwner_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AdminListAuditLogs(ctx context.Context, in *AdminListAuditLogsRequest, opts ...grpc.CallOption) (*AdminListAuditLogsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminListAuditLogsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_AdminListAuditLogs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TestkitServiceServer is the server API for TestkitService service.
 // All implementations must embed UnimplementedTestkitServiceServer
 // for forward compatibility.
@@ -829,6 +1183,41 @@ type TestkitServiceServer interface {
 	UpdatePermissionGroup(context.Context, *UpdatePermissionGroupRequest) (*PermissionGroup, error)
 	DeletePermissionGroup(context.Context, *DeletePermissionGroupRequest) (*emptypb.Empty, error)
 	ListPermissionGroups(context.Context, *ListPermissionGroupsRequest) (*ListPermissionGroupsResponse, error)
+	// ---- Upload (owner from ctx) ----
+	GenerateUploadURL(context.Context, *GenerateUploadURLRequest) (*GenerateUploadURLResponse, error)
+	GetSTSCredential(context.Context, *GetSTSCredentialRequest) (*GetSTSCredentialResponse, error)
+	BatchGetSTSCredential(context.Context, *BatchGetSTSCredentialRequest) (*BatchGetSTSCredentialResponse, error)
+	ConfirmUpload(context.Context, *ConfirmUploadRequest) (*ConfirmUploadResponse, error)
+	CancelUpload(context.Context, *CancelUploadRequest) (*emptypb.Empty, error)
+	// ---- Download / Process (owner from ctx) ----
+	GenerateDownloadURL(context.Context, *GenerateDownloadURLRequest) (*GenerateDownloadURLResponse, error)
+	GenerateProcessURL(context.Context, *GenerateProcessURLRequest) (*GenerateProcessURLResponse, error)
+	GenerateCDNURL(context.Context, *GenerateCDNURLRequest) (*GenerateCDNURLResponse, error)
+	// ---- My Files (owner from ctx) ----
+	ListMyFiles(context.Context, *ListMyFilesRequest) (*ListMyFilesResponse, error)
+	ListMyFilesPaged(context.Context, *ListMyFilesPagedRequest) (*ListMyFilesPagedResponse, error)
+	GetMyFile(context.Context, *GetMyFileRequest) (*FileInfo, error)
+	UpdateMyFile(context.Context, *UpdateMyFileRequest) (*FileInfo, error)
+	DeleteMyFile(context.Context, *DeleteMyFileRequest) (*emptypb.Empty, error)
+	BatchDeleteMyFiles(context.Context, *BatchDeleteMyFilesRequest) (*BatchDeleteMyFilesResponse, error)
+	// ---- My Quota / Audit (owner from ctx) ----
+	GetMyQuota(context.Context, *emptypb.Empty) (*QuotaInfo, error)
+	ListMyAuditLogs(context.Context, *ListMyAuditLogsRequest) (*ListMyAuditLogsResponse, error)
+	// ---- Owner quota (owner_type+owner_id = target via body) ----
+	SetOwnerQuota(context.Context, *SetOwnerQuotaRequest) (*QuotaInfo, error)
+	AddOwnerQuota(context.Context, *AddOwnerQuotaRequest) (*QuotaInfo, error)
+	// ---- Admin (owner_type+owner_id = query/op target via body/query, not path) ----
+	AdminListFiles(context.Context, *AdminListFilesRequest) (*AdminListFilesResponse, error)
+	AdminGetFile(context.Context, *AdminGetFileRequest) (*AdminFileInfo, error)
+	AdminDeleteFile(context.Context, *AdminDeleteFileRequest) (*emptypb.Empty, error)
+	AdminGetQuota(context.Context, *AdminGetQuotaRequest) (*QuotaInfo, error)
+	AdminSetQuota(context.Context, *AdminSetQuotaRequest) (*QuotaInfo, error)
+	AdminGetStats(context.Context, *AdminGetStatsRequest) (*AdminGetStatsResponse, error)
+	AdminListProviders(context.Context, *emptypb.Empty) (*AdminListProvidersResponse, error)
+	AdminListBuckets(context.Context, *emptypb.Empty) (*AdminListBucketsResponse, error)
+	AdminSoftDeleteOwnerFiles(context.Context, *AdminSoftDeleteOwnerFilesRequest) (*AdminSoftDeleteOwnerFilesResponse, error)
+	AdminDeleteOwner(context.Context, *AdminDeleteOwnerRequest) (*AdminDeleteOwnerResponse, error)
+	AdminListAuditLogs(context.Context, *AdminListAuditLogsRequest) (*AdminListAuditLogsResponse, error)
 	mustEmbedUnimplementedTestkitServiceServer()
 }
 
@@ -1015,6 +1404,93 @@ func (UnimplementedTestkitServiceServer) DeletePermissionGroup(context.Context, 
 }
 func (UnimplementedTestkitServiceServer) ListPermissionGroups(context.Context, *ListPermissionGroupsRequest) (*ListPermissionGroupsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListPermissionGroups not implemented")
+}
+func (UnimplementedTestkitServiceServer) GenerateUploadURL(context.Context, *GenerateUploadURLRequest) (*GenerateUploadURLResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GenerateUploadURL not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetSTSCredential(context.Context, *GetSTSCredentialRequest) (*GetSTSCredentialResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSTSCredential not implemented")
+}
+func (UnimplementedTestkitServiceServer) BatchGetSTSCredential(context.Context, *BatchGetSTSCredentialRequest) (*BatchGetSTSCredentialResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method BatchGetSTSCredential not implemented")
+}
+func (UnimplementedTestkitServiceServer) ConfirmUpload(context.Context, *ConfirmUploadRequest) (*ConfirmUploadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ConfirmUpload not implemented")
+}
+func (UnimplementedTestkitServiceServer) CancelUpload(context.Context, *CancelUploadRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method CancelUpload not implemented")
+}
+func (UnimplementedTestkitServiceServer) GenerateDownloadURL(context.Context, *GenerateDownloadURLRequest) (*GenerateDownloadURLResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GenerateDownloadURL not implemented")
+}
+func (UnimplementedTestkitServiceServer) GenerateProcessURL(context.Context, *GenerateProcessURLRequest) (*GenerateProcessURLResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GenerateProcessURL not implemented")
+}
+func (UnimplementedTestkitServiceServer) GenerateCDNURL(context.Context, *GenerateCDNURLRequest) (*GenerateCDNURLResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GenerateCDNURL not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListMyFiles(context.Context, *ListMyFilesRequest) (*ListMyFilesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListMyFiles not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListMyFilesPaged(context.Context, *ListMyFilesPagedRequest) (*ListMyFilesPagedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListMyFilesPaged not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetMyFile(context.Context, *GetMyFileRequest) (*FileInfo, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetMyFile not implemented")
+}
+func (UnimplementedTestkitServiceServer) UpdateMyFile(context.Context, *UpdateMyFileRequest) (*FileInfo, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateMyFile not implemented")
+}
+func (UnimplementedTestkitServiceServer) DeleteMyFile(context.Context, *DeleteMyFileRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteMyFile not implemented")
+}
+func (UnimplementedTestkitServiceServer) BatchDeleteMyFiles(context.Context, *BatchDeleteMyFilesRequest) (*BatchDeleteMyFilesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method BatchDeleteMyFiles not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetMyQuota(context.Context, *emptypb.Empty) (*QuotaInfo, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetMyQuota not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListMyAuditLogs(context.Context, *ListMyAuditLogsRequest) (*ListMyAuditLogsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListMyAuditLogs not implemented")
+}
+func (UnimplementedTestkitServiceServer) SetOwnerQuota(context.Context, *SetOwnerQuotaRequest) (*QuotaInfo, error) {
+	return nil, status.Error(codes.Unimplemented, "method SetOwnerQuota not implemented")
+}
+func (UnimplementedTestkitServiceServer) AddOwnerQuota(context.Context, *AddOwnerQuotaRequest) (*QuotaInfo, error) {
+	return nil, status.Error(codes.Unimplemented, "method AddOwnerQuota not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminListFiles(context.Context, *AdminListFilesRequest) (*AdminListFilesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminListFiles not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminGetFile(context.Context, *AdminGetFileRequest) (*AdminFileInfo, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminGetFile not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminDeleteFile(context.Context, *AdminDeleteFileRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminDeleteFile not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminGetQuota(context.Context, *AdminGetQuotaRequest) (*QuotaInfo, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminGetQuota not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminSetQuota(context.Context, *AdminSetQuotaRequest) (*QuotaInfo, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminSetQuota not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminGetStats(context.Context, *AdminGetStatsRequest) (*AdminGetStatsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminGetStats not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminListProviders(context.Context, *emptypb.Empty) (*AdminListProvidersResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminListProviders not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminListBuckets(context.Context, *emptypb.Empty) (*AdminListBucketsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminListBuckets not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminSoftDeleteOwnerFiles(context.Context, *AdminSoftDeleteOwnerFilesRequest) (*AdminSoftDeleteOwnerFilesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminSoftDeleteOwnerFiles not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminDeleteOwner(context.Context, *AdminDeleteOwnerRequest) (*AdminDeleteOwnerResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminDeleteOwner not implemented")
+}
+func (UnimplementedTestkitServiceServer) AdminListAuditLogs(context.Context, *AdminListAuditLogsRequest) (*AdminListAuditLogsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminListAuditLogs not implemented")
 }
 func (UnimplementedTestkitServiceServer) mustEmbedUnimplementedTestkitServiceServer() {}
 func (UnimplementedTestkitServiceServer) testEmbeddedByValue()                        {}
@@ -2099,6 +2575,528 @@ func _TestkitService_ListPermissionGroups_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestkitService_GenerateUploadURL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateUploadURLRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GenerateUploadURL(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GenerateUploadURL_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GenerateUploadURL(ctx, req.(*GenerateUploadURLRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetSTSCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSTSCredentialRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetSTSCredential(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetSTSCredential_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetSTSCredential(ctx, req.(*GetSTSCredentialRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_BatchGetSTSCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchGetSTSCredentialRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).BatchGetSTSCredential(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_BatchGetSTSCredential_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).BatchGetSTSCredential(ctx, req.(*BatchGetSTSCredentialRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ConfirmUpload_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmUploadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ConfirmUpload(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ConfirmUpload_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ConfirmUpload(ctx, req.(*ConfirmUploadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_CancelUpload_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelUploadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CancelUpload(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CancelUpload_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CancelUpload(ctx, req.(*CancelUploadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GenerateDownloadURL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateDownloadURLRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GenerateDownloadURL(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GenerateDownloadURL_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GenerateDownloadURL(ctx, req.(*GenerateDownloadURLRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GenerateProcessURL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateProcessURLRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GenerateProcessURL(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GenerateProcessURL_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GenerateProcessURL(ctx, req.(*GenerateProcessURLRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GenerateCDNURL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateCDNURLRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GenerateCDNURL(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GenerateCDNURL_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GenerateCDNURL(ctx, req.(*GenerateCDNURLRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListMyFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyFilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListMyFiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListMyFiles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListMyFiles(ctx, req.(*ListMyFilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListMyFilesPaged_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyFilesPagedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListMyFilesPaged(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListMyFilesPaged_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListMyFilesPaged(ctx, req.(*ListMyFilesPagedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetMyFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMyFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetMyFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetMyFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetMyFile(ctx, req.(*GetMyFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UpdateMyFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMyFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UpdateMyFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UpdateMyFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UpdateMyFile(ctx, req.(*UpdateMyFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_DeleteMyFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMyFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).DeleteMyFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_DeleteMyFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).DeleteMyFile(ctx, req.(*DeleteMyFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_BatchDeleteMyFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchDeleteMyFilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).BatchDeleteMyFiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_BatchDeleteMyFiles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).BatchDeleteMyFiles(ctx, req.(*BatchDeleteMyFilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetMyQuota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetMyQuota(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetMyQuota_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetMyQuota(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListMyAuditLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyAuditLogsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListMyAuditLogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListMyAuditLogs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListMyAuditLogs(ctx, req.(*ListMyAuditLogsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_SetOwnerQuota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetOwnerQuotaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).SetOwnerQuota(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_SetOwnerQuota_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).SetOwnerQuota(ctx, req.(*SetOwnerQuotaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AddOwnerQuota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOwnerQuotaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AddOwnerQuota(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AddOwnerQuota_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AddOwnerQuota(ctx, req.(*AddOwnerQuotaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminListFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminListFilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminListFiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminListFiles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminListFiles(ctx, req.(*AdminListFilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminGetFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminGetFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminGetFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminGetFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminGetFile(ctx, req.(*AdminGetFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminDeleteFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminDeleteFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminDeleteFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminDeleteFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminDeleteFile(ctx, req.(*AdminDeleteFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminGetQuota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminGetQuotaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminGetQuota(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminGetQuota_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminGetQuota(ctx, req.(*AdminGetQuotaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminSetQuota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminSetQuotaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminSetQuota(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminSetQuota_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminSetQuota(ctx, req.(*AdminSetQuotaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminGetStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminGetStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminGetStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminGetStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminGetStats(ctx, req.(*AdminGetStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminListProviders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminListProviders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminListProviders_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminListProviders(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminListBuckets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminListBuckets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminListBuckets_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminListBuckets(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminSoftDeleteOwnerFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminSoftDeleteOwnerFilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminSoftDeleteOwnerFiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminSoftDeleteOwnerFiles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminSoftDeleteOwnerFiles(ctx, req.(*AdminSoftDeleteOwnerFilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminDeleteOwner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminDeleteOwnerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminDeleteOwner(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminDeleteOwner_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminDeleteOwner(ctx, req.(*AdminDeleteOwnerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AdminListAuditLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminListAuditLogsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AdminListAuditLogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AdminListAuditLogs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AdminListAuditLogs(ctx, req.(*AdminListAuditLogsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TestkitService_ServiceDesc is the grpc.ServiceDesc for TestkitService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2341,6 +3339,122 @@ var TestkitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListPermissionGroups",
 			Handler:    _TestkitService_ListPermissionGroups_Handler,
+		},
+		{
+			MethodName: "GenerateUploadURL",
+			Handler:    _TestkitService_GenerateUploadURL_Handler,
+		},
+		{
+			MethodName: "GetSTSCredential",
+			Handler:    _TestkitService_GetSTSCredential_Handler,
+		},
+		{
+			MethodName: "BatchGetSTSCredential",
+			Handler:    _TestkitService_BatchGetSTSCredential_Handler,
+		},
+		{
+			MethodName: "ConfirmUpload",
+			Handler:    _TestkitService_ConfirmUpload_Handler,
+		},
+		{
+			MethodName: "CancelUpload",
+			Handler:    _TestkitService_CancelUpload_Handler,
+		},
+		{
+			MethodName: "GenerateDownloadURL",
+			Handler:    _TestkitService_GenerateDownloadURL_Handler,
+		},
+		{
+			MethodName: "GenerateProcessURL",
+			Handler:    _TestkitService_GenerateProcessURL_Handler,
+		},
+		{
+			MethodName: "GenerateCDNURL",
+			Handler:    _TestkitService_GenerateCDNURL_Handler,
+		},
+		{
+			MethodName: "ListMyFiles",
+			Handler:    _TestkitService_ListMyFiles_Handler,
+		},
+		{
+			MethodName: "ListMyFilesPaged",
+			Handler:    _TestkitService_ListMyFilesPaged_Handler,
+		},
+		{
+			MethodName: "GetMyFile",
+			Handler:    _TestkitService_GetMyFile_Handler,
+		},
+		{
+			MethodName: "UpdateMyFile",
+			Handler:    _TestkitService_UpdateMyFile_Handler,
+		},
+		{
+			MethodName: "DeleteMyFile",
+			Handler:    _TestkitService_DeleteMyFile_Handler,
+		},
+		{
+			MethodName: "BatchDeleteMyFiles",
+			Handler:    _TestkitService_BatchDeleteMyFiles_Handler,
+		},
+		{
+			MethodName: "GetMyQuota",
+			Handler:    _TestkitService_GetMyQuota_Handler,
+		},
+		{
+			MethodName: "ListMyAuditLogs",
+			Handler:    _TestkitService_ListMyAuditLogs_Handler,
+		},
+		{
+			MethodName: "SetOwnerQuota",
+			Handler:    _TestkitService_SetOwnerQuota_Handler,
+		},
+		{
+			MethodName: "AddOwnerQuota",
+			Handler:    _TestkitService_AddOwnerQuota_Handler,
+		},
+		{
+			MethodName: "AdminListFiles",
+			Handler:    _TestkitService_AdminListFiles_Handler,
+		},
+		{
+			MethodName: "AdminGetFile",
+			Handler:    _TestkitService_AdminGetFile_Handler,
+		},
+		{
+			MethodName: "AdminDeleteFile",
+			Handler:    _TestkitService_AdminDeleteFile_Handler,
+		},
+		{
+			MethodName: "AdminGetQuota",
+			Handler:    _TestkitService_AdminGetQuota_Handler,
+		},
+		{
+			MethodName: "AdminSetQuota",
+			Handler:    _TestkitService_AdminSetQuota_Handler,
+		},
+		{
+			MethodName: "AdminGetStats",
+			Handler:    _TestkitService_AdminGetStats_Handler,
+		},
+		{
+			MethodName: "AdminListProviders",
+			Handler:    _TestkitService_AdminListProviders_Handler,
+		},
+		{
+			MethodName: "AdminListBuckets",
+			Handler:    _TestkitService_AdminListBuckets_Handler,
+		},
+		{
+			MethodName: "AdminSoftDeleteOwnerFiles",
+			Handler:    _TestkitService_AdminSoftDeleteOwnerFiles_Handler,
+		},
+		{
+			MethodName: "AdminDeleteOwner",
+			Handler:    _TestkitService_AdminDeleteOwner_Handler,
+		},
+		{
+			MethodName: "AdminListAuditLogs",
+			Handler:    _TestkitService_AdminListAuditLogs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

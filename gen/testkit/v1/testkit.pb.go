@@ -11,7 +11,9 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -609,6 +611,717 @@ func (x UserSortField) Number() protoreflect.EnumNumber {
 // Deprecated: Use UserSortField.Descriptor instead.
 func (UserSortField) EnumDescriptor() ([]byte, []int) {
 	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{9}
+}
+
+// OwnerType classifies who owns a file (user, system, group, etc.).
+type OwnerType int32
+
+const (
+	OwnerType_OWNER_TYPE_UNSPECIFIED OwnerType = 0
+	OwnerType_OWNER_TYPE_USER        OwnerType = 1
+	OwnerType_OWNER_TYPE_SYSTEM      OwnerType = 2
+	OwnerType_OWNER_TYPE_GROUP       OwnerType = 3
+	OwnerType_OWNER_TYPE_BUSINESS    OwnerType = 4
+	OwnerType_OWNER_TYPE_SERVICE     OwnerType = 5
+)
+
+// Enum value maps for OwnerType.
+var (
+	OwnerType_name = map[int32]string{
+		0: "OWNER_TYPE_UNSPECIFIED",
+		1: "OWNER_TYPE_USER",
+		2: "OWNER_TYPE_SYSTEM",
+		3: "OWNER_TYPE_GROUP",
+		4: "OWNER_TYPE_BUSINESS",
+		5: "OWNER_TYPE_SERVICE",
+	}
+	OwnerType_value = map[string]int32{
+		"OWNER_TYPE_UNSPECIFIED": 0,
+		"OWNER_TYPE_USER":        1,
+		"OWNER_TYPE_SYSTEM":      2,
+		"OWNER_TYPE_GROUP":       3,
+		"OWNER_TYPE_BUSINESS":    4,
+		"OWNER_TYPE_SERVICE":     5,
+	}
+)
+
+func (x OwnerType) Enum() *OwnerType {
+	p := new(OwnerType)
+	*p = x
+	return p
+}
+
+func (x OwnerType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OwnerType) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[10].Descriptor()
+}
+
+func (OwnerType) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[10]
+}
+
+func (x OwnerType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use OwnerType.Descriptor instead.
+func (OwnerType) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{10}
+}
+
+// Vendor classifies storage backends (cloud storage providers).
+type Vendor int32
+
+const (
+	Vendor_VENDOR_UNSPECIFIED    Vendor = 0
+	Vendor_VENDOR_ALIYUN_OSS     Vendor = 1
+	Vendor_VENDOR_AWS_S3         Vendor = 2
+	Vendor_VENDOR_S3_COMPATIBLE  Vendor = 3
+	Vendor_VENDOR_TENCENT_COS    Vendor = 4
+	Vendor_VENDOR_HUAWEI_OBS     Vendor = 5
+	Vendor_VENDOR_VOLCENGINE_TOS Vendor = 6
+)
+
+// Enum value maps for Vendor.
+var (
+	Vendor_name = map[int32]string{
+		0: "VENDOR_UNSPECIFIED",
+		1: "VENDOR_ALIYUN_OSS",
+		2: "VENDOR_AWS_S3",
+		3: "VENDOR_S3_COMPATIBLE",
+		4: "VENDOR_TENCENT_COS",
+		5: "VENDOR_HUAWEI_OBS",
+		6: "VENDOR_VOLCENGINE_TOS",
+	}
+	Vendor_value = map[string]int32{
+		"VENDOR_UNSPECIFIED":    0,
+		"VENDOR_ALIYUN_OSS":     1,
+		"VENDOR_AWS_S3":         2,
+		"VENDOR_S3_COMPATIBLE":  3,
+		"VENDOR_TENCENT_COS":    4,
+		"VENDOR_HUAWEI_OBS":     5,
+		"VENDOR_VOLCENGINE_TOS": 6,
+	}
+)
+
+func (x Vendor) Enum() *Vendor {
+	p := new(Vendor)
+	*p = x
+	return p
+}
+
+func (x Vendor) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Vendor) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[11].Descriptor()
+}
+
+func (Vendor) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[11]
+}
+
+func (x Vendor) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Vendor.Descriptor instead.
+func (Vendor) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{11}
+}
+
+// StorageClass represents cloud storage tiers.
+type StorageClass int32
+
+const (
+	StorageClass_STORAGE_CLASS_UNSPECIFIED       StorageClass = 0
+	StorageClass_STORAGE_CLASS_STANDARD          StorageClass = 1
+	StorageClass_STORAGE_CLASS_INFREQUENT_ACCESS StorageClass = 2
+	StorageClass_STORAGE_CLASS_ARCHIVE           StorageClass = 3
+	StorageClass_STORAGE_CLASS_DEEP_ARCHIVE      StorageClass = 4
+)
+
+// Enum value maps for StorageClass.
+var (
+	StorageClass_name = map[int32]string{
+		0: "STORAGE_CLASS_UNSPECIFIED",
+		1: "STORAGE_CLASS_STANDARD",
+		2: "STORAGE_CLASS_INFREQUENT_ACCESS",
+		3: "STORAGE_CLASS_ARCHIVE",
+		4: "STORAGE_CLASS_DEEP_ARCHIVE",
+	}
+	StorageClass_value = map[string]int32{
+		"STORAGE_CLASS_UNSPECIFIED":       0,
+		"STORAGE_CLASS_STANDARD":          1,
+		"STORAGE_CLASS_INFREQUENT_ACCESS": 2,
+		"STORAGE_CLASS_ARCHIVE":           3,
+		"STORAGE_CLASS_DEEP_ARCHIVE":      4,
+	}
+)
+
+func (x StorageClass) Enum() *StorageClass {
+	p := new(StorageClass)
+	*p = x
+	return p
+}
+
+func (x StorageClass) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (StorageClass) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[12].Descriptor()
+}
+
+func (StorageClass) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[12]
+}
+
+func (x StorageClass) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use StorageClass.Descriptor instead.
+func (StorageClass) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{12}
+}
+
+// BucketACL represents bucket access control levels.
+type BucketACL int32
+
+const (
+	BucketACL_BUCKET_ACL_UNSPECIFIED       BucketACL = 0
+	BucketACL_BUCKET_ACL_PRIVATE           BucketACL = 1
+	BucketACL_BUCKET_ACL_PUBLIC_READ       BucketACL = 2
+	BucketACL_BUCKET_ACL_PUBLIC_READ_WRITE BucketACL = 3
+)
+
+// Enum value maps for BucketACL.
+var (
+	BucketACL_name = map[int32]string{
+		0: "BUCKET_ACL_UNSPECIFIED",
+		1: "BUCKET_ACL_PRIVATE",
+		2: "BUCKET_ACL_PUBLIC_READ",
+		3: "BUCKET_ACL_PUBLIC_READ_WRITE",
+	}
+	BucketACL_value = map[string]int32{
+		"BUCKET_ACL_UNSPECIFIED":       0,
+		"BUCKET_ACL_PRIVATE":           1,
+		"BUCKET_ACL_PUBLIC_READ":       2,
+		"BUCKET_ACL_PUBLIC_READ_WRITE": 3,
+	}
+)
+
+func (x BucketACL) Enum() *BucketACL {
+	p := new(BucketACL)
+	*p = x
+	return p
+}
+
+func (x BucketACL) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (BucketACL) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[13].Descriptor()
+}
+
+func (BucketACL) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[13]
+}
+
+func (x BucketACL) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use BucketACL.Descriptor instead.
+func (BucketACL) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{13}
+}
+
+// ImageResizeMode controls how images are resized.
+type ImageResizeMode int32
+
+const (
+	ImageResizeMode_IMAGE_RESIZE_MODE_UNSPECIFIED ImageResizeMode = 0
+	ImageResizeMode_IMAGE_RESIZE_MODE_FIT         ImageResizeMode = 1 // lfit — fit within bounds
+	ImageResizeMode_IMAGE_RESIZE_MODE_FILL        ImageResizeMode = 2 // fill — crop to fill
+	ImageResizeMode_IMAGE_RESIZE_MODE_PAD         ImageResizeMode = 3 // pad — fit with padding
+)
+
+// Enum value maps for ImageResizeMode.
+var (
+	ImageResizeMode_name = map[int32]string{
+		0: "IMAGE_RESIZE_MODE_UNSPECIFIED",
+		1: "IMAGE_RESIZE_MODE_FIT",
+		2: "IMAGE_RESIZE_MODE_FILL",
+		3: "IMAGE_RESIZE_MODE_PAD",
+	}
+	ImageResizeMode_value = map[string]int32{
+		"IMAGE_RESIZE_MODE_UNSPECIFIED": 0,
+		"IMAGE_RESIZE_MODE_FIT":         1,
+		"IMAGE_RESIZE_MODE_FILL":        2,
+		"IMAGE_RESIZE_MODE_PAD":         3,
+	}
+)
+
+func (x ImageResizeMode) Enum() *ImageResizeMode {
+	p := new(ImageResizeMode)
+	*p = x
+	return p
+}
+
+func (x ImageResizeMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ImageResizeMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[14].Descriptor()
+}
+
+func (ImageResizeMode) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[14]
+}
+
+func (x ImageResizeMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ImageResizeMode.Descriptor instead.
+func (ImageResizeMode) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{14}
+}
+
+// ImageFormat represents output image formats.
+type ImageFormat int32
+
+const (
+	ImageFormat_IMAGE_FORMAT_UNSPECIFIED ImageFormat = 0
+	ImageFormat_IMAGE_FORMAT_JPG         ImageFormat = 1
+	ImageFormat_IMAGE_FORMAT_PNG         ImageFormat = 2
+	ImageFormat_IMAGE_FORMAT_WEBP        ImageFormat = 3
+	ImageFormat_IMAGE_FORMAT_GIF         ImageFormat = 4
+	ImageFormat_IMAGE_FORMAT_BMP         ImageFormat = 5
+	ImageFormat_IMAGE_FORMAT_HEIC        ImageFormat = 6
+	ImageFormat_IMAGE_FORMAT_AVIF        ImageFormat = 7
+)
+
+// Enum value maps for ImageFormat.
+var (
+	ImageFormat_name = map[int32]string{
+		0: "IMAGE_FORMAT_UNSPECIFIED",
+		1: "IMAGE_FORMAT_JPG",
+		2: "IMAGE_FORMAT_PNG",
+		3: "IMAGE_FORMAT_WEBP",
+		4: "IMAGE_FORMAT_GIF",
+		5: "IMAGE_FORMAT_BMP",
+		6: "IMAGE_FORMAT_HEIC",
+		7: "IMAGE_FORMAT_AVIF",
+	}
+	ImageFormat_value = map[string]int32{
+		"IMAGE_FORMAT_UNSPECIFIED": 0,
+		"IMAGE_FORMAT_JPG":         1,
+		"IMAGE_FORMAT_PNG":         2,
+		"IMAGE_FORMAT_WEBP":        3,
+		"IMAGE_FORMAT_GIF":         4,
+		"IMAGE_FORMAT_BMP":         5,
+		"IMAGE_FORMAT_HEIC":        6,
+		"IMAGE_FORMAT_AVIF":        7,
+	}
+)
+
+func (x ImageFormat) Enum() *ImageFormat {
+	p := new(ImageFormat)
+	*p = x
+	return p
+}
+
+func (x ImageFormat) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ImageFormat) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[15].Descriptor()
+}
+
+func (ImageFormat) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[15]
+}
+
+func (x ImageFormat) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ImageFormat.Descriptor instead.
+func (ImageFormat) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{15}
+}
+
+// SortField controls list ordering.
+type SortField int32
+
+const (
+	SortField_SORT_FIELD_UNSPECIFIED SortField = 0
+	SortField_SORT_FIELD_CREATED_AT  SortField = 1
+	SortField_SORT_FIELD_FILENAME    SortField = 2
+	SortField_SORT_FIELD_SIZE        SortField = 3
+)
+
+// Enum value maps for SortField.
+var (
+	SortField_name = map[int32]string{
+		0: "SORT_FIELD_UNSPECIFIED",
+		1: "SORT_FIELD_CREATED_AT",
+		2: "SORT_FIELD_FILENAME",
+		3: "SORT_FIELD_SIZE",
+	}
+	SortField_value = map[string]int32{
+		"SORT_FIELD_UNSPECIFIED": 0,
+		"SORT_FIELD_CREATED_AT":  1,
+		"SORT_FIELD_FILENAME":    2,
+		"SORT_FIELD_SIZE":        3,
+	}
+)
+
+func (x SortField) Enum() *SortField {
+	p := new(SortField)
+	*p = x
+	return p
+}
+
+func (x SortField) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SortField) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[16].Descriptor()
+}
+
+func (SortField) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[16]
+}
+
+func (x SortField) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SortField.Descriptor instead.
+func (SortField) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{16}
+}
+
+// AuditAction represents types of auditable operations.
+type AuditAction int32
+
+const (
+	AuditAction_AUDIT_ACTION_UNSPECIFIED             AuditAction = 0
+	AuditAction_AUDIT_ACTION_UPLOAD                  AuditAction = 1
+	AuditAction_AUDIT_ACTION_UPDATE                  AuditAction = 2
+	AuditAction_AUDIT_ACTION_DELETE                  AuditAction = 3
+	AuditAction_AUDIT_ACTION_BATCH_DELETE            AuditAction = 4
+	AuditAction_AUDIT_ACTION_ADMIN_DELETE            AuditAction = 5
+	AuditAction_AUDIT_ACTION_ADMIN_SET_QUOTA         AuditAction = 6
+	AuditAction_AUDIT_ACTION_ADMIN_SOFT_DELETE_OWNER AuditAction = 7
+	AuditAction_AUDIT_ACTION_ADMIN_DELETE_OWNER      AuditAction = 8
+	AuditAction_AUDIT_ACTION_SET_OWNER_QUOTA         AuditAction = 9
+	AuditAction_AUDIT_ACTION_ADD_OWNER_QUOTA         AuditAction = 10
+	AuditAction_AUDIT_ACTION_UPLOAD_SESSION_CREATE   AuditAction = 11
+	AuditAction_AUDIT_ACTION_UPLOAD_SESSION_CONFIRM  AuditAction = 12
+	AuditAction_AUDIT_ACTION_UPLOAD_SESSION_CANCEL   AuditAction = 13
+	AuditAction_AUDIT_ACTION_UPLOAD_SESSION_GC       AuditAction = 14
+)
+
+// Enum value maps for AuditAction.
+var (
+	AuditAction_name = map[int32]string{
+		0:  "AUDIT_ACTION_UNSPECIFIED",
+		1:  "AUDIT_ACTION_UPLOAD",
+		2:  "AUDIT_ACTION_UPDATE",
+		3:  "AUDIT_ACTION_DELETE",
+		4:  "AUDIT_ACTION_BATCH_DELETE",
+		5:  "AUDIT_ACTION_ADMIN_DELETE",
+		6:  "AUDIT_ACTION_ADMIN_SET_QUOTA",
+		7:  "AUDIT_ACTION_ADMIN_SOFT_DELETE_OWNER",
+		8:  "AUDIT_ACTION_ADMIN_DELETE_OWNER",
+		9:  "AUDIT_ACTION_SET_OWNER_QUOTA",
+		10: "AUDIT_ACTION_ADD_OWNER_QUOTA",
+		11: "AUDIT_ACTION_UPLOAD_SESSION_CREATE",
+		12: "AUDIT_ACTION_UPLOAD_SESSION_CONFIRM",
+		13: "AUDIT_ACTION_UPLOAD_SESSION_CANCEL",
+		14: "AUDIT_ACTION_UPLOAD_SESSION_GC",
+	}
+	AuditAction_value = map[string]int32{
+		"AUDIT_ACTION_UNSPECIFIED":             0,
+		"AUDIT_ACTION_UPLOAD":                  1,
+		"AUDIT_ACTION_UPDATE":                  2,
+		"AUDIT_ACTION_DELETE":                  3,
+		"AUDIT_ACTION_BATCH_DELETE":            4,
+		"AUDIT_ACTION_ADMIN_DELETE":            5,
+		"AUDIT_ACTION_ADMIN_SET_QUOTA":         6,
+		"AUDIT_ACTION_ADMIN_SOFT_DELETE_OWNER": 7,
+		"AUDIT_ACTION_ADMIN_DELETE_OWNER":      8,
+		"AUDIT_ACTION_SET_OWNER_QUOTA":         9,
+		"AUDIT_ACTION_ADD_OWNER_QUOTA":         10,
+		"AUDIT_ACTION_UPLOAD_SESSION_CREATE":   11,
+		"AUDIT_ACTION_UPLOAD_SESSION_CONFIRM":  12,
+		"AUDIT_ACTION_UPLOAD_SESSION_CANCEL":   13,
+		"AUDIT_ACTION_UPLOAD_SESSION_GC":       14,
+	}
+)
+
+func (x AuditAction) Enum() *AuditAction {
+	p := new(AuditAction)
+	*p = x
+	return p
+}
+
+func (x AuditAction) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AuditAction) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[17].Descriptor()
+}
+
+func (AuditAction) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[17]
+}
+
+func (x AuditAction) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AuditAction.Descriptor instead.
+func (AuditAction) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{17}
+}
+
+// UploadSessionStatus represents the lifecycle state of an upload session.
+type UploadSessionStatus int32
+
+const (
+	UploadSessionStatus_UPLOAD_SESSION_STATUS_UNSPECIFIED UploadSessionStatus = 0
+	UploadSessionStatus_UPLOAD_SESSION_STATUS_PENDING     UploadSessionStatus = 1
+	UploadSessionStatus_UPLOAD_SESSION_STATUS_CONFIRMED   UploadSessionStatus = 2
+	UploadSessionStatus_UPLOAD_SESSION_STATUS_EXPIRED     UploadSessionStatus = 3
+	UploadSessionStatus_UPLOAD_SESSION_STATUS_CANCELLED   UploadSessionStatus = 4
+)
+
+// Enum value maps for UploadSessionStatus.
+var (
+	UploadSessionStatus_name = map[int32]string{
+		0: "UPLOAD_SESSION_STATUS_UNSPECIFIED",
+		1: "UPLOAD_SESSION_STATUS_PENDING",
+		2: "UPLOAD_SESSION_STATUS_CONFIRMED",
+		3: "UPLOAD_SESSION_STATUS_EXPIRED",
+		4: "UPLOAD_SESSION_STATUS_CANCELLED",
+	}
+	UploadSessionStatus_value = map[string]int32{
+		"UPLOAD_SESSION_STATUS_UNSPECIFIED": 0,
+		"UPLOAD_SESSION_STATUS_PENDING":     1,
+		"UPLOAD_SESSION_STATUS_CONFIRMED":   2,
+		"UPLOAD_SESSION_STATUS_EXPIRED":     3,
+		"UPLOAD_SESSION_STATUS_CANCELLED":   4,
+	}
+)
+
+func (x UploadSessionStatus) Enum() *UploadSessionStatus {
+	p := new(UploadSessionStatus)
+	*p = x
+	return p
+}
+
+func (x UploadSessionStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UploadSessionStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[18].Descriptor()
+}
+
+func (UploadSessionStatus) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[18]
+}
+
+func (x UploadSessionStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UploadSessionStatus.Descriptor instead.
+func (UploadSessionStatus) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{18}
+}
+
+// AuditLogStatus represents the result of an audited operation.
+type AuditLogStatus int32
+
+const (
+	AuditLogStatus_AUDIT_LOG_STATUS_UNSPECIFIED AuditLogStatus = 0
+	AuditLogStatus_AUDIT_LOG_STATUS_SUCCESS     AuditLogStatus = 1
+	AuditLogStatus_AUDIT_LOG_STATUS_FAILED      AuditLogStatus = 2
+)
+
+// Enum value maps for AuditLogStatus.
+var (
+	AuditLogStatus_name = map[int32]string{
+		0: "AUDIT_LOG_STATUS_UNSPECIFIED",
+		1: "AUDIT_LOG_STATUS_SUCCESS",
+		2: "AUDIT_LOG_STATUS_FAILED",
+	}
+	AuditLogStatus_value = map[string]int32{
+		"AUDIT_LOG_STATUS_UNSPECIFIED": 0,
+		"AUDIT_LOG_STATUS_SUCCESS":     1,
+		"AUDIT_LOG_STATUS_FAILED":      2,
+	}
+)
+
+func (x AuditLogStatus) Enum() *AuditLogStatus {
+	p := new(AuditLogStatus)
+	*p = x
+	return p
+}
+
+func (x AuditLogStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AuditLogStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[19].Descriptor()
+}
+
+func (AuditLogStatus) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[19]
+}
+
+func (x AuditLogStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AuditLogStatus.Descriptor instead.
+func (AuditLogStatus) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{19}
+}
+
+// AuditLogTargetType represents the kind of resource an audited operation touched.
+type AuditLogTargetType int32
+
+const (
+	AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_UNSPECIFIED AuditLogTargetType = 0
+	AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_FILE        AuditLogTargetType = 1
+	AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_QUOTA       AuditLogTargetType = 2
+	AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_OWNER       AuditLogTargetType = 3
+)
+
+// Enum value maps for AuditLogTargetType.
+var (
+	AuditLogTargetType_name = map[int32]string{
+		0: "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED",
+		1: "AUDIT_LOG_TARGET_TYPE_FILE",
+		2: "AUDIT_LOG_TARGET_TYPE_QUOTA",
+		3: "AUDIT_LOG_TARGET_TYPE_OWNER",
+	}
+	AuditLogTargetType_value = map[string]int32{
+		"AUDIT_LOG_TARGET_TYPE_UNSPECIFIED": 0,
+		"AUDIT_LOG_TARGET_TYPE_FILE":        1,
+		"AUDIT_LOG_TARGET_TYPE_QUOTA":       2,
+		"AUDIT_LOG_TARGET_TYPE_OWNER":       3,
+	}
+)
+
+func (x AuditLogTargetType) Enum() *AuditLogTargetType {
+	p := new(AuditLogTargetType)
+	*p = x
+	return p
+}
+
+func (x AuditLogTargetType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AuditLogTargetType) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[20].Descriptor()
+}
+
+func (AuditLogTargetType) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[20]
+}
+
+func (x AuditLogTargetType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AuditLogTargetType.Descriptor instead.
+func (AuditLogTargetType) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{20}
+}
+
+// ImageProcessType mirrors the nested storage-service ImageProcessOp.Type enum,
+// lifted to top level here so the generated swagger exposes a real named enum.
+// Values are identical, so the testkit↔storagev1 conversion is a plain int cast
+// (storagev1.ImageProcessOp_TYPE(req.GetType())).
+type ImageProcessType int32
+
+const (
+	ImageProcessType_IMAGE_PROCESS_TYPE_UNSPECIFIED ImageProcessType = 0
+	ImageProcessType_IMAGE_PROCESS_TYPE_RESIZE      ImageProcessType = 1
+	ImageProcessType_IMAGE_PROCESS_TYPE_CROP        ImageProcessType = 2
+	ImageProcessType_IMAGE_PROCESS_TYPE_QUALITY     ImageProcessType = 3
+	ImageProcessType_IMAGE_PROCESS_TYPE_FORMAT      ImageProcessType = 4
+	ImageProcessType_IMAGE_PROCESS_TYPE_WATERMARK   ImageProcessType = 5
+	ImageProcessType_IMAGE_PROCESS_TYPE_ROTATE      ImageProcessType = 6
+)
+
+// Enum value maps for ImageProcessType.
+var (
+	ImageProcessType_name = map[int32]string{
+		0: "IMAGE_PROCESS_TYPE_UNSPECIFIED",
+		1: "IMAGE_PROCESS_TYPE_RESIZE",
+		2: "IMAGE_PROCESS_TYPE_CROP",
+		3: "IMAGE_PROCESS_TYPE_QUALITY",
+		4: "IMAGE_PROCESS_TYPE_FORMAT",
+		5: "IMAGE_PROCESS_TYPE_WATERMARK",
+		6: "IMAGE_PROCESS_TYPE_ROTATE",
+	}
+	ImageProcessType_value = map[string]int32{
+		"IMAGE_PROCESS_TYPE_UNSPECIFIED": 0,
+		"IMAGE_PROCESS_TYPE_RESIZE":      1,
+		"IMAGE_PROCESS_TYPE_CROP":        2,
+		"IMAGE_PROCESS_TYPE_QUALITY":     3,
+		"IMAGE_PROCESS_TYPE_FORMAT":      4,
+		"IMAGE_PROCESS_TYPE_WATERMARK":   5,
+		"IMAGE_PROCESS_TYPE_ROTATE":      6,
+	}
+)
+
+func (x ImageProcessType) Enum() *ImageProcessType {
+	p := new(ImageProcessType)
+	*p = x
+	return p
+}
+
+func (x ImageProcessType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ImageProcessType) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[21].Descriptor()
+}
+
+func (ImageProcessType) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[21]
+}
+
+func (x ImageProcessType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ImageProcessType.Descriptor instead.
+func (ImageProcessType) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{21}
 }
 
 // Pong is the health-check response — only public, non-sensitive info
@@ -6599,12 +7312,4243 @@ func (x *ListPermissionGroupsResponse) GetTotal() int32 {
 	return 0
 }
 
+// FileInfo is the user-facing file entity (mirrors storage.UserFileInfo; all
+// fields are file attributes — owner_type included because it is the file's
+// attribute, not the caller's identity).
+type FileInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Filename      string                 `protobuf:"bytes,2,opt,name=filename,proto3" json:"filename,omitempty"`
+	FilePath      string                 `protobuf:"bytes,3,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
+	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Metadata      map[string]string      `protobuf:"bytes,5,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	IsPublic      bool                   `protobuf:"varint,6,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
+	OwnerType     OwnerType              `protobuf:"varint,7,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	Size          int64                  `protobuf:"varint,10,opt,name=size,proto3" json:"size,omitempty"`
+	ContentType   string                 `protobuf:"bytes,11,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
+	Extension     string                 `protobuf:"bytes,12,opt,name=extension,proto3" json:"extension,omitempty"`
+	Md5           string                 `protobuf:"bytes,13,opt,name=md5,proto3" json:"md5,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,20,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     string                 `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FileInfo) Reset() {
+	*x = FileInfo{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[89]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FileInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FileInfo) ProtoMessage() {}
+
+func (x *FileInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[89]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FileInfo.ProtoReflect.Descriptor instead.
+func (*FileInfo) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{89}
+}
+
+func (x *FileInfo) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *FileInfo) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *FileInfo) GetFilePath() string {
+	if x != nil {
+		return x.FilePath
+	}
+	return ""
+}
+
+func (x *FileInfo) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *FileInfo) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *FileInfo) GetIsPublic() bool {
+	if x != nil {
+		return x.IsPublic
+	}
+	return false
+}
+
+func (x *FileInfo) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *FileInfo) GetSize() int64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+func (x *FileInfo) GetContentType() string {
+	if x != nil {
+		return x.ContentType
+	}
+	return ""
+}
+
+func (x *FileInfo) GetExtension() string {
+	if x != nil {
+		return x.Extension
+	}
+	return ""
+}
+
+func (x *FileInfo) GetMd5() string {
+	if x != nil {
+		return x.Md5
+	}
+	return ""
+}
+
+func (x *FileInfo) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+func (x *FileInfo) GetUpdatedAt() string {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return ""
+}
+
+// AdminFileInfo is the admin-facing file entity (adds provider/bucket/object_key/
+// object_id internal-location fields absent from the user view).
+type AdminFileInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	OwnerType     OwnerType              `protobuf:"varint,2,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,3,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	Filename      string                 `protobuf:"bytes,4,opt,name=filename,proto3" json:"filename,omitempty"`
+	FilePath      string                 `protobuf:"bytes,5,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
+	Description   string                 `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
+	Metadata      map[string]string      `protobuf:"bytes,7,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	IsPublic      bool                   `protobuf:"varint,8,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
+	ObjectId      int64                  `protobuf:"varint,9,opt,name=object_id,json=objectId,proto3" json:"object_id,omitempty"`
+	Size          int64                  `protobuf:"varint,10,opt,name=size,proto3" json:"size,omitempty"`
+	ContentType   string                 `protobuf:"bytes,11,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
+	Extension     string                 `protobuf:"bytes,12,opt,name=extension,proto3" json:"extension,omitempty"`
+	Md5           string                 `protobuf:"bytes,13,opt,name=md5,proto3" json:"md5,omitempty"`
+	Provider      string                 `protobuf:"bytes,14,opt,name=provider,proto3" json:"provider,omitempty"`
+	Bucket        string                 `protobuf:"bytes,15,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	ObjectKey     string                 `protobuf:"bytes,16,opt,name=object_key,json=objectKey,proto3" json:"object_key,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,20,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     string                 `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminFileInfo) Reset() {
+	*x = AdminFileInfo{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[90]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminFileInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminFileInfo) ProtoMessage() {}
+
+func (x *AdminFileInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[90]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminFileInfo.ProtoReflect.Descriptor instead.
+func (*AdminFileInfo) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{90}
+}
+
+func (x *AdminFileInfo) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *AdminFileInfo) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AdminFileInfo) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+func (x *AdminFileInfo) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetFilePath() string {
+	if x != nil {
+		return x.FilePath
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *AdminFileInfo) GetIsPublic() bool {
+	if x != nil {
+		return x.IsPublic
+	}
+	return false
+}
+
+func (x *AdminFileInfo) GetObjectId() int64 {
+	if x != nil {
+		return x.ObjectId
+	}
+	return 0
+}
+
+func (x *AdminFileInfo) GetSize() int64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+func (x *AdminFileInfo) GetContentType() string {
+	if x != nil {
+		return x.ContentType
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetExtension() string {
+	if x != nil {
+		return x.Extension
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetMd5() string {
+	if x != nil {
+		return x.Md5
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetBucket() string {
+	if x != nil {
+		return x.Bucket
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetObjectKey() string {
+	if x != nil {
+		return x.ObjectKey
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+func (x *AdminFileInfo) GetUpdatedAt() string {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return ""
+}
+
+// QuotaInfo is an owner's storage quota (returned by GetMyQuota / SetOwnerQuota /
+// Admin*Quota). owner_type+owner_id are NOT here: GetMyQuota infers them from
+// ctx, the admin/owner-quota responses echo the request target implicitly.
+type QuotaInfo struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	TotalBytes     int64                  `protobuf:"varint,1,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
+	UsedBytes      int64                  `protobuf:"varint,2,opt,name=used_bytes,json=usedBytes,proto3" json:"used_bytes,omitempty"`
+	AvailableBytes int64                  `protobuf:"varint,3,opt,name=available_bytes,json=availableBytes,proto3" json:"available_bytes,omitempty"`
+	FileCount      int32                  `protobuf:"varint,4,opt,name=file_count,json=fileCount,proto3" json:"file_count,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *QuotaInfo) Reset() {
+	*x = QuotaInfo{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[91]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *QuotaInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QuotaInfo) ProtoMessage() {}
+
+func (x *QuotaInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[91]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QuotaInfo.ProtoReflect.Descriptor instead.
+func (*QuotaInfo) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{91}
+}
+
+func (x *QuotaInfo) GetTotalBytes() int64 {
+	if x != nil {
+		return x.TotalBytes
+	}
+	return 0
+}
+
+func (x *QuotaInfo) GetUsedBytes() int64 {
+	if x != nil {
+		return x.UsedBytes
+	}
+	return 0
+}
+
+func (x *QuotaInfo) GetAvailableBytes() int64 {
+	if x != nil {
+		return x.AvailableBytes
+	}
+	return 0
+}
+
+func (x *QuotaInfo) GetFileCount() int32 {
+	if x != nil {
+		return x.FileCount
+	}
+	return 0
+}
+
+// ImageProcessOp mirrors the storage-service same-name message. type uses the
+// top-level ImageProcessType enum (int-identical to the downstream nested enum).
+type ImageProcessOp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Type          ImageProcessType       `protobuf:"varint,1,opt,name=type,proto3,enum=testkit.v1.ImageProcessType" json:"type,omitempty"`
+	Width         int32                  `protobuf:"varint,2,opt,name=width,proto3" json:"width,omitempty"`
+	Height        int32                  `protobuf:"varint,3,opt,name=height,proto3" json:"height,omitempty"`
+	Format        ImageFormat            `protobuf:"varint,4,opt,name=format,proto3,enum=testkit.v1.ImageFormat" json:"format,omitempty"`
+	Quality       int32                  `protobuf:"varint,5,opt,name=quality,proto3" json:"quality,omitempty"`
+	ResizeMode    ImageResizeMode        `protobuf:"varint,6,opt,name=resize_mode,json=resizeMode,proto3,enum=testkit.v1.ImageResizeMode" json:"resize_mode,omitempty"`
+	WatermarkText string                 `protobuf:"bytes,7,opt,name=watermark_text,json=watermarkText,proto3" json:"watermark_text,omitempty"`
+	RotateDegrees int32                  `protobuf:"varint,8,opt,name=rotate_degrees,json=rotateDegrees,proto3" json:"rotate_degrees,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ImageProcessOp) Reset() {
+	*x = ImageProcessOp{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[92]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ImageProcessOp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ImageProcessOp) ProtoMessage() {}
+
+func (x *ImageProcessOp) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[92]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ImageProcessOp.ProtoReflect.Descriptor instead.
+func (*ImageProcessOp) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{92}
+}
+
+func (x *ImageProcessOp) GetType() ImageProcessType {
+	if x != nil {
+		return x.Type
+	}
+	return ImageProcessType_IMAGE_PROCESS_TYPE_UNSPECIFIED
+}
+
+func (x *ImageProcessOp) GetWidth() int32 {
+	if x != nil {
+		return x.Width
+	}
+	return 0
+}
+
+func (x *ImageProcessOp) GetHeight() int32 {
+	if x != nil {
+		return x.Height
+	}
+	return 0
+}
+
+func (x *ImageProcessOp) GetFormat() ImageFormat {
+	if x != nil {
+		return x.Format
+	}
+	return ImageFormat_IMAGE_FORMAT_UNSPECIFIED
+}
+
+func (x *ImageProcessOp) GetQuality() int32 {
+	if x != nil {
+		return x.Quality
+	}
+	return 0
+}
+
+func (x *ImageProcessOp) GetResizeMode() ImageResizeMode {
+	if x != nil {
+		return x.ResizeMode
+	}
+	return ImageResizeMode_IMAGE_RESIZE_MODE_UNSPECIFIED
+}
+
+func (x *ImageProcessOp) GetWatermarkText() string {
+	if x != nil {
+		return x.WatermarkText
+	}
+	return ""
+}
+
+func (x *ImageProcessOp) GetRotateDegrees() int32 {
+	if x != nil {
+		return x.RotateDegrees
+	}
+	return 0
+}
+
+// UploadFileMeta carries per-file upload metadata for BatchGetSTSCredential.
+// owner is absent — the BFF injects it from ctx.
+type UploadFileMeta struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Md5           string                 `protobuf:"bytes,1,opt,name=md5,proto3" json:"md5,omitempty"`
+	Size          int64                  `protobuf:"varint,2,opt,name=size,proto3" json:"size,omitempty"`
+	Filename      string                 `protobuf:"bytes,3,opt,name=filename,proto3" json:"filename,omitempty"`
+	ContentType   string                 `protobuf:"bytes,4,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
+	FilePath      string                 `protobuf:"bytes,5,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
+	Description   string                 `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
+	Metadata      map[string]string      `protobuf:"bytes,7,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UploadFileMeta) Reset() {
+	*x = UploadFileMeta{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[93]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UploadFileMeta) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadFileMeta) ProtoMessage() {}
+
+func (x *UploadFileMeta) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[93]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadFileMeta.ProtoReflect.Descriptor instead.
+func (*UploadFileMeta) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{93}
+}
+
+func (x *UploadFileMeta) GetMd5() string {
+	if x != nil {
+		return x.Md5
+	}
+	return ""
+}
+
+func (x *UploadFileMeta) GetSize() int64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+func (x *UploadFileMeta) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *UploadFileMeta) GetContentType() string {
+	if x != nil {
+		return x.ContentType
+	}
+	return ""
+}
+
+func (x *UploadFileMeta) GetFilePath() string {
+	if x != nil {
+		return x.FilePath
+	}
+	return ""
+}
+
+func (x *UploadFileMeta) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *UploadFileMeta) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+// UploadTokenInfo carries either an upload_token (client must ConfirmUpload
+// after the upload) or a file_id when MD5 dedup hit (instant upload).
+type UploadTokenInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UploadToken   string                 `protobuf:"bytes,1,opt,name=upload_token,json=uploadToken,proto3" json:"upload_token,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	FileId        int64                  `protobuf:"varint,3,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"` // non-zero when MD5 dedup hit (instant upload)
+	ObjectKey     string                 `protobuf:"bytes,4,opt,name=object_key,json=objectKey,proto3" json:"object_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UploadTokenInfo) Reset() {
+	*x = UploadTokenInfo{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[94]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UploadTokenInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadTokenInfo) ProtoMessage() {}
+
+func (x *UploadTokenInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[94]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadTokenInfo.ProtoReflect.Descriptor instead.
+func (*UploadTokenInfo) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{94}
+}
+
+func (x *UploadTokenInfo) GetUploadToken() string {
+	if x != nil {
+		return x.UploadToken
+	}
+	return ""
+}
+
+func (x *UploadTokenInfo) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
+}
+
+func (x *UploadTokenInfo) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *UploadTokenInfo) GetObjectKey() string {
+	if x != nil {
+		return x.ObjectKey
+	}
+	return ""
+}
+
+// ItemError is a per-file failure inside a batch upload-credential response.
+type ItemError struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Index         int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ItemError) Reset() {
+	*x = ItemError{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[95]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ItemError) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ItemError) ProtoMessage() {}
+
+func (x *ItemError) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[95]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ItemError.ProtoReflect.Descriptor instead.
+func (*ItemError) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{95}
+}
+
+func (x *ItemError) GetIndex() int32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *ItemError) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *ItemError) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+// UploadCredentialItem is oneof(token | error) for batch upload-credential items.
+type UploadCredentialItem struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Result:
+	//
+	//	*UploadCredentialItem_Token
+	//	*UploadCredentialItem_Error
+	Result        isUploadCredentialItem_Result `protobuf_oneof:"result"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UploadCredentialItem) Reset() {
+	*x = UploadCredentialItem{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[96]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UploadCredentialItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadCredentialItem) ProtoMessage() {}
+
+func (x *UploadCredentialItem) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[96]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadCredentialItem.ProtoReflect.Descriptor instead.
+func (*UploadCredentialItem) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{96}
+}
+
+func (x *UploadCredentialItem) GetResult() isUploadCredentialItem_Result {
+	if x != nil {
+		return x.Result
+	}
+	return nil
+}
+
+func (x *UploadCredentialItem) GetToken() *UploadTokenInfo {
+	if x != nil {
+		if x, ok := x.Result.(*UploadCredentialItem_Token); ok {
+			return x.Token
+		}
+	}
+	return nil
+}
+
+func (x *UploadCredentialItem) GetError() *ItemError {
+	if x != nil {
+		if x, ok := x.Result.(*UploadCredentialItem_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+type isUploadCredentialItem_Result interface {
+	isUploadCredentialItem_Result()
+}
+
+type UploadCredentialItem_Token struct {
+	Token *UploadTokenInfo `protobuf:"bytes,1,opt,name=token,proto3,oneof"`
+}
+
+type UploadCredentialItem_Error struct {
+	Error *ItemError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*UploadCredentialItem_Token) isUploadCredentialItem_Result() {}
+
+func (*UploadCredentialItem_Error) isUploadCredentialItem_Result() {}
+
+// AuditLogEntry mirrors storage.AuditLogEntry. before/after are arbitrary JSON
+// (google.protobuf.Struct → swagger "object"); request_id is the trace id of the
+// audited operation, kept for the audit UI.
+type AuditLogEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Action        AuditAction            `protobuf:"varint,2,opt,name=action,proto3,enum=testkit.v1.AuditAction" json:"action,omitempty"`
+	OwnerType     OwnerType              `protobuf:"varint,3,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,4,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	TargetType    AuditLogTargetType     `protobuf:"varint,5,opt,name=target_type,json=targetType,proto3,enum=testkit.v1.AuditLogTargetType" json:"target_type,omitempty"`
+	TargetId      int64                  `protobuf:"varint,6,opt,name=target_id,json=targetId,proto3" json:"target_id,omitempty"`
+	Before        *structpb.Struct       `protobuf:"bytes,7,opt,name=before,proto3" json:"before,omitempty"`
+	After         *structpb.Struct       `protobuf:"bytes,8,opt,name=after,proto3" json:"after,omitempty"`
+	Status        AuditLogStatus         `protobuf:"varint,9,opt,name=status,proto3,enum=testkit.v1.AuditLogStatus" json:"status,omitempty"`
+	ErrorMessage  string                 `protobuf:"bytes,10,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	RequestId     string                 `protobuf:"bytes,11,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuditLogEntry) Reset() {
+	*x = AuditLogEntry{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[97]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuditLogEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuditLogEntry) ProtoMessage() {}
+
+func (x *AuditLogEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[97]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuditLogEntry.ProtoReflect.Descriptor instead.
+func (*AuditLogEntry) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{97}
+}
+
+func (x *AuditLogEntry) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *AuditLogEntry) GetAction() AuditAction {
+	if x != nil {
+		return x.Action
+	}
+	return AuditAction_AUDIT_ACTION_UNSPECIFIED
+}
+
+func (x *AuditLogEntry) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AuditLogEntry) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+func (x *AuditLogEntry) GetTargetType() AuditLogTargetType {
+	if x != nil {
+		return x.TargetType
+	}
+	return AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_UNSPECIFIED
+}
+
+func (x *AuditLogEntry) GetTargetId() int64 {
+	if x != nil {
+		return x.TargetId
+	}
+	return 0
+}
+
+func (x *AuditLogEntry) GetBefore() *structpb.Struct {
+	if x != nil {
+		return x.Before
+	}
+	return nil
+}
+
+func (x *AuditLogEntry) GetAfter() *structpb.Struct {
+	if x != nil {
+		return x.After
+	}
+	return nil
+}
+
+func (x *AuditLogEntry) GetStatus() AuditLogStatus {
+	if x != nil {
+		return x.Status
+	}
+	return AuditLogStatus_AUDIT_LOG_STATUS_UNSPECIFIED
+}
+
+func (x *AuditLogEntry) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *AuditLogEntry) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *AuditLogEntry) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+// OwnerStats / ProviderStats / BucketStats are AdminGetStats aggregates.
+type OwnerStats struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OwnerType     OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	FileCount     int64                  `protobuf:"varint,2,opt,name=file_count,json=fileCount,proto3" json:"file_count,omitempty"`
+	TotalBytes    int64                  `protobuf:"varint,3,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OwnerStats) Reset() {
+	*x = OwnerStats{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[98]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OwnerStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OwnerStats) ProtoMessage() {}
+
+func (x *OwnerStats) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[98]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OwnerStats.ProtoReflect.Descriptor instead.
+func (*OwnerStats) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{98}
+}
+
+func (x *OwnerStats) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *OwnerStats) GetFileCount() int64 {
+	if x != nil {
+		return x.FileCount
+	}
+	return 0
+}
+
+func (x *OwnerStats) GetTotalBytes() int64 {
+	if x != nil {
+		return x.TotalBytes
+	}
+	return 0
+}
+
+type ProviderStats struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Provider      string                 `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
+	ObjectCount   int64                  `protobuf:"varint,2,opt,name=object_count,json=objectCount,proto3" json:"object_count,omitempty"`
+	TotalBytes    int64                  `protobuf:"varint,3,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProviderStats) Reset() {
+	*x = ProviderStats{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[99]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProviderStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProviderStats) ProtoMessage() {}
+
+func (x *ProviderStats) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[99]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProviderStats.ProtoReflect.Descriptor instead.
+func (*ProviderStats) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{99}
+}
+
+func (x *ProviderStats) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+func (x *ProviderStats) GetObjectCount() int64 {
+	if x != nil {
+		return x.ObjectCount
+	}
+	return 0
+}
+
+func (x *ProviderStats) GetTotalBytes() int64 {
+	if x != nil {
+		return x.TotalBytes
+	}
+	return 0
+}
+
+type BucketStats struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Bucket        string                 `protobuf:"bytes,1,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	ObjectCount   int64                  `protobuf:"varint,2,opt,name=object_count,json=objectCount,proto3" json:"object_count,omitempty"`
+	TotalBytes    int64                  `protobuf:"varint,3,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
+	FileCount     int64                  `protobuf:"varint,4,opt,name=file_count,json=fileCount,proto3" json:"file_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BucketStats) Reset() {
+	*x = BucketStats{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[100]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BucketStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BucketStats) ProtoMessage() {}
+
+func (x *BucketStats) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[100]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BucketStats.ProtoReflect.Descriptor instead.
+func (*BucketStats) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{100}
+}
+
+func (x *BucketStats) GetBucket() string {
+	if x != nil {
+		return x.Bucket
+	}
+	return ""
+}
+
+func (x *BucketStats) GetObjectCount() int64 {
+	if x != nil {
+		return x.ObjectCount
+	}
+	return 0
+}
+
+func (x *BucketStats) GetTotalBytes() int64 {
+	if x != nil {
+		return x.TotalBytes
+	}
+	return 0
+}
+
+func (x *BucketStats) GetFileCount() int64 {
+	if x != nil {
+		return x.FileCount
+	}
+	return 0
+}
+
+// ProviderInfo / BucketInfo are admin catalog entities.
+type ProviderInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Vendor        Vendor                 `protobuf:"varint,2,opt,name=vendor,proto3,enum=testkit.v1.Vendor" json:"vendor,omitempty"`
+	Endpoint      string                 `protobuf:"bytes,3,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Region        string                 `protobuf:"bytes,4,opt,name=region,proto3" json:"region,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProviderInfo) Reset() {
+	*x = ProviderInfo{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[101]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProviderInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProviderInfo) ProtoMessage() {}
+
+func (x *ProviderInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[101]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProviderInfo.ProtoReflect.Descriptor instead.
+func (*ProviderInfo) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{101}
+}
+
+func (x *ProviderInfo) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ProviderInfo) GetVendor() Vendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return Vendor_VENDOR_UNSPECIFIED
+}
+
+func (x *ProviderInfo) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *ProviderInfo) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+type BucketInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider,omitempty"`
+	KeyPrefix     string                 `protobuf:"bytes,3,opt,name=key_prefix,json=keyPrefix,proto3" json:"key_prefix,omitempty"`
+	Acl           BucketACL              `protobuf:"varint,4,opt,name=acl,proto3,enum=testkit.v1.BucketACL" json:"acl,omitempty"`
+	Vendor        Vendor                 `protobuf:"varint,5,opt,name=vendor,proto3,enum=testkit.v1.Vendor" json:"vendor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BucketInfo) Reset() {
+	*x = BucketInfo{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[102]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BucketInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BucketInfo) ProtoMessage() {}
+
+func (x *BucketInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[102]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BucketInfo.ProtoReflect.Descriptor instead.
+func (*BucketInfo) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{102}
+}
+
+func (x *BucketInfo) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *BucketInfo) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+func (x *BucketInfo) GetKeyPrefix() string {
+	if x != nil {
+		return x.KeyPrefix
+	}
+	return ""
+}
+
+func (x *BucketInfo) GetAcl() BucketACL {
+	if x != nil {
+		return x.Acl
+	}
+	return BucketACL_BUCKET_ACL_UNSPECIFIED
+}
+
+func (x *BucketInfo) GetVendor() Vendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return Vendor_VENDOR_UNSPECIFIED
+}
+
+type GenerateUploadURLRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filename      string                 `protobuf:"bytes,1,opt,name=filename,proto3" json:"filename,omitempty"`
+	Size          int64                  `protobuf:"varint,2,opt,name=size,proto3" json:"size,omitempty"`
+	Md5           string                 `protobuf:"bytes,3,opt,name=md5,proto3" json:"md5,omitempty"`
+	ContentType   string                 `protobuf:"bytes,4,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
+	Bucket        string                 `protobuf:"bytes,5,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	FilePath      string                 `protobuf:"bytes,6,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
+	Description   string                 `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
+	Metadata      map[string]string      `protobuf:"bytes,8,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Vendor        Vendor                 `protobuf:"varint,10,opt,name=vendor,proto3,enum=testkit.v1.Vendor" json:"vendor,omitempty"` // optional; validates bucket vendor when non-UNSPECIFIED
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateUploadURLRequest) Reset() {
+	*x = GenerateUploadURLRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[103]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateUploadURLRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateUploadURLRequest) ProtoMessage() {}
+
+func (x *GenerateUploadURLRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[103]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateUploadURLRequest.ProtoReflect.Descriptor instead.
+func (*GenerateUploadURLRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{103}
+}
+
+func (x *GenerateUploadURLRequest) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *GenerateUploadURLRequest) GetSize() int64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+func (x *GenerateUploadURLRequest) GetMd5() string {
+	if x != nil {
+		return x.Md5
+	}
+	return ""
+}
+
+func (x *GenerateUploadURLRequest) GetContentType() string {
+	if x != nil {
+		return x.ContentType
+	}
+	return ""
+}
+
+func (x *GenerateUploadURLRequest) GetBucket() string {
+	if x != nil {
+		return x.Bucket
+	}
+	return ""
+}
+
+func (x *GenerateUploadURLRequest) GetFilePath() string {
+	if x != nil {
+		return x.FilePath
+	}
+	return ""
+}
+
+func (x *GenerateUploadURLRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *GenerateUploadURLRequest) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *GenerateUploadURLRequest) GetVendor() Vendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return Vendor_VENDOR_UNSPECIFIED
+}
+
+type GenerateUploadURLResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Instant       bool                   `protobuf:"varint,1,opt,name=instant,proto3" json:"instant,omitempty"`
+	FileId        int64                  `protobuf:"varint,2,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	FileInfo      *FileInfo              `protobuf:"bytes,3,opt,name=file_info,json=fileInfo,proto3" json:"file_info,omitempty"`
+	UploadToken   string                 `protobuf:"bytes,10,opt,name=upload_token,json=uploadToken,proto3" json:"upload_token,omitempty"`
+	UploadUrl     string                 `protobuf:"bytes,11,opt,name=upload_url,json=uploadUrl,proto3" json:"upload_url,omitempty"`
+	ObjectKey     string                 `protobuf:"bytes,12,opt,name=object_key,json=objectKey,proto3" json:"object_key,omitempty"`
+	Headers       map[string]string      `protobuf:"bytes,13,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateUploadURLResponse) Reset() {
+	*x = GenerateUploadURLResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[104]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateUploadURLResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateUploadURLResponse) ProtoMessage() {}
+
+func (x *GenerateUploadURLResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[104]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateUploadURLResponse.ProtoReflect.Descriptor instead.
+func (*GenerateUploadURLResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{104}
+}
+
+func (x *GenerateUploadURLResponse) GetInstant() bool {
+	if x != nil {
+		return x.Instant
+	}
+	return false
+}
+
+func (x *GenerateUploadURLResponse) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *GenerateUploadURLResponse) GetFileInfo() *FileInfo {
+	if x != nil {
+		return x.FileInfo
+	}
+	return nil
+}
+
+func (x *GenerateUploadURLResponse) GetUploadToken() string {
+	if x != nil {
+		return x.UploadToken
+	}
+	return ""
+}
+
+func (x *GenerateUploadURLResponse) GetUploadUrl() string {
+	if x != nil {
+		return x.UploadUrl
+	}
+	return ""
+}
+
+func (x *GenerateUploadURLResponse) GetObjectKey() string {
+	if x != nil {
+		return x.ObjectKey
+	}
+	return ""
+}
+
+func (x *GenerateUploadURLResponse) GetHeaders() map[string]string {
+	if x != nil {
+		return x.Headers
+	}
+	return nil
+}
+
+type GetSTSCredentialRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Bucket            string                 `protobuf:"bytes,1,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	MaxSize           int64                  `protobuf:"varint,2,opt,name=max_size,json=maxSize,proto3" json:"max_size,omitempty"`
+	Filename          string                 `protobuf:"bytes,3,opt,name=filename,proto3" json:"filename,omitempty"`
+	Md5               string                 `protobuf:"bytes,4,opt,name=md5,proto3" json:"md5,omitempty"`
+	ContentType       string                 `protobuf:"bytes,5,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
+	FilePath          string                 `protobuf:"bytes,6,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
+	Description       string                 `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
+	Metadata          map[string]string      `protobuf:"bytes,8,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Vendor            Vendor                 `protobuf:"varint,10,opt,name=vendor,proto3,enum=testkit.v1.Vendor" json:"vendor,omitempty"`
+	Ttl               *durationpb.Duration   `protobuf:"bytes,11,opt,name=ttl,proto3" json:"ttl,omitempty"`
+	AllowedExtensions []string               `protobuf:"bytes,12,rep,name=allowed_extensions,json=allowedExtensions,proto3" json:"allowed_extensions,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *GetSTSCredentialRequest) Reset() {
+	*x = GetSTSCredentialRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[105]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSTSCredentialRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSTSCredentialRequest) ProtoMessage() {}
+
+func (x *GetSTSCredentialRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[105]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSTSCredentialRequest.ProtoReflect.Descriptor instead.
+func (*GetSTSCredentialRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{105}
+}
+
+func (x *GetSTSCredentialRequest) GetBucket() string {
+	if x != nil {
+		return x.Bucket
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialRequest) GetMaxSize() int64 {
+	if x != nil {
+		return x.MaxSize
+	}
+	return 0
+}
+
+func (x *GetSTSCredentialRequest) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialRequest) GetMd5() string {
+	if x != nil {
+		return x.Md5
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialRequest) GetContentType() string {
+	if x != nil {
+		return x.ContentType
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialRequest) GetFilePath() string {
+	if x != nil {
+		return x.FilePath
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialRequest) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *GetSTSCredentialRequest) GetVendor() Vendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return Vendor_VENDOR_UNSPECIFIED
+}
+
+func (x *GetSTSCredentialRequest) GetTtl() *durationpb.Duration {
+	if x != nil {
+		return x.Ttl
+	}
+	return nil
+}
+
+func (x *GetSTSCredentialRequest) GetAllowedExtensions() []string {
+	if x != nil {
+		return x.AllowedExtensions
+	}
+	return nil
+}
+
+type GetSTSCredentialResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Instant       bool                   `protobuf:"varint,1,opt,name=instant,proto3" json:"instant,omitempty"`
+	FileId        int64                  `protobuf:"varint,2,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	FileInfo      *FileInfo              `protobuf:"bytes,3,opt,name=file_info,json=fileInfo,proto3" json:"file_info,omitempty"`
+	UploadToken   string                 `protobuf:"bytes,10,opt,name=upload_token,json=uploadToken,proto3" json:"upload_token,omitempty"`
+	AccessKey     string                 `protobuf:"bytes,11,opt,name=access_key,json=accessKey,proto3" json:"access_key,omitempty"`
+	SecretKey     string                 `protobuf:"bytes,12,opt,name=secret_key,json=secretKey,proto3" json:"secret_key,omitempty"`
+	SecurityToken string                 `protobuf:"bytes,13,opt,name=security_token,json=securityToken,proto3" json:"security_token,omitempty"`
+	Endpoint      string                 `protobuf:"bytes,14,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Bucket        string                 `protobuf:"bytes,15,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	ObjectKey     string                 `protobuf:"bytes,16,opt,name=object_key,json=objectKey,proto3" json:"object_key,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,17,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSTSCredentialResponse) Reset() {
+	*x = GetSTSCredentialResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[106]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSTSCredentialResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSTSCredentialResponse) ProtoMessage() {}
+
+func (x *GetSTSCredentialResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[106]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSTSCredentialResponse.ProtoReflect.Descriptor instead.
+func (*GetSTSCredentialResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{106}
+}
+
+func (x *GetSTSCredentialResponse) GetInstant() bool {
+	if x != nil {
+		return x.Instant
+	}
+	return false
+}
+
+func (x *GetSTSCredentialResponse) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *GetSTSCredentialResponse) GetFileInfo() *FileInfo {
+	if x != nil {
+		return x.FileInfo
+	}
+	return nil
+}
+
+func (x *GetSTSCredentialResponse) GetUploadToken() string {
+	if x != nil {
+		return x.UploadToken
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialResponse) GetAccessKey() string {
+	if x != nil {
+		return x.AccessKey
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialResponse) GetSecretKey() string {
+	if x != nil {
+		return x.SecretKey
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialResponse) GetSecurityToken() string {
+	if x != nil {
+		return x.SecurityToken
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialResponse) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialResponse) GetBucket() string {
+	if x != nil {
+		return x.Bucket
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialResponse) GetObjectKey() string {
+	if x != nil {
+		return x.ObjectKey
+	}
+	return ""
+}
+
+func (x *GetSTSCredentialResponse) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
+}
+
+type BatchGetSTSCredentialRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Files             []*UploadFileMeta      `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	Bucket            string                 `protobuf:"bytes,2,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	Ttl               *durationpb.Duration   `protobuf:"bytes,3,opt,name=ttl,proto3" json:"ttl,omitempty"`
+	AllowedExtensions []string               `protobuf:"bytes,4,rep,name=allowed_extensions,json=allowedExtensions,proto3" json:"allowed_extensions,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *BatchGetSTSCredentialRequest) Reset() {
+	*x = BatchGetSTSCredentialRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[107]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchGetSTSCredentialRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchGetSTSCredentialRequest) ProtoMessage() {}
+
+func (x *BatchGetSTSCredentialRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[107]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchGetSTSCredentialRequest.ProtoReflect.Descriptor instead.
+func (*BatchGetSTSCredentialRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{107}
+}
+
+func (x *BatchGetSTSCredentialRequest) GetFiles() []*UploadFileMeta {
+	if x != nil {
+		return x.Files
+	}
+	return nil
+}
+
+func (x *BatchGetSTSCredentialRequest) GetBucket() string {
+	if x != nil {
+		return x.Bucket
+	}
+	return ""
+}
+
+func (x *BatchGetSTSCredentialRequest) GetTtl() *durationpb.Duration {
+	if x != nil {
+		return x.Ttl
+	}
+	return nil
+}
+
+func (x *BatchGetSTSCredentialRequest) GetAllowedExtensions() []string {
+	if x != nil {
+		return x.AllowedExtensions
+	}
+	return nil
+}
+
+type BatchGetSTSCredentialResponse struct {
+	state         protoimpl.MessageState  `protogen:"open.v1"`
+	AccessKey     string                  `protobuf:"bytes,1,opt,name=access_key,json=accessKey,proto3" json:"access_key,omitempty"`
+	SecretKey     string                  `protobuf:"bytes,2,opt,name=secret_key,json=secretKey,proto3" json:"secret_key,omitempty"`
+	SecurityToken string                  `protobuf:"bytes,3,opt,name=security_token,json=securityToken,proto3" json:"security_token,omitempty"`
+	Endpoint      string                  `protobuf:"bytes,4,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Bucket        string                  `protobuf:"bytes,5,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	ExpiresAt     int64                   `protobuf:"varint,6,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	Items         []*UploadCredentialItem `protobuf:"bytes,7,rep,name=items,proto3" json:"items,omitempty"` // ordered to match request.files
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BatchGetSTSCredentialResponse) Reset() {
+	*x = BatchGetSTSCredentialResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[108]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchGetSTSCredentialResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchGetSTSCredentialResponse) ProtoMessage() {}
+
+func (x *BatchGetSTSCredentialResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[108]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchGetSTSCredentialResponse.ProtoReflect.Descriptor instead.
+func (*BatchGetSTSCredentialResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{108}
+}
+
+func (x *BatchGetSTSCredentialResponse) GetAccessKey() string {
+	if x != nil {
+		return x.AccessKey
+	}
+	return ""
+}
+
+func (x *BatchGetSTSCredentialResponse) GetSecretKey() string {
+	if x != nil {
+		return x.SecretKey
+	}
+	return ""
+}
+
+func (x *BatchGetSTSCredentialResponse) GetSecurityToken() string {
+	if x != nil {
+		return x.SecurityToken
+	}
+	return ""
+}
+
+func (x *BatchGetSTSCredentialResponse) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *BatchGetSTSCredentialResponse) GetBucket() string {
+	if x != nil {
+		return x.Bucket
+	}
+	return ""
+}
+
+func (x *BatchGetSTSCredentialResponse) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
+}
+
+func (x *BatchGetSTSCredentialResponse) GetItems() []*UploadCredentialItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type ConfirmUploadRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UploadToken   string                 `protobuf:"bytes,1,opt,name=upload_token,json=uploadToken,proto3" json:"upload_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConfirmUploadRequest) Reset() {
+	*x = ConfirmUploadRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[109]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConfirmUploadRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConfirmUploadRequest) ProtoMessage() {}
+
+func (x *ConfirmUploadRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[109]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConfirmUploadRequest.ProtoReflect.Descriptor instead.
+func (*ConfirmUploadRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{109}
+}
+
+func (x *ConfirmUploadRequest) GetUploadToken() string {
+	if x != nil {
+		return x.UploadToken
+	}
+	return ""
+}
+
+type ConfirmUploadResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	FileInfo      *FileInfo              `protobuf:"bytes,2,opt,name=file_info,json=fileInfo,proto3" json:"file_info,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConfirmUploadResponse) Reset() {
+	*x = ConfirmUploadResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[110]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConfirmUploadResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConfirmUploadResponse) ProtoMessage() {}
+
+func (x *ConfirmUploadResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[110]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConfirmUploadResponse.ProtoReflect.Descriptor instead.
+func (*ConfirmUploadResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{110}
+}
+
+func (x *ConfirmUploadResponse) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *ConfirmUploadResponse) GetFileInfo() *FileInfo {
+	if x != nil {
+		return x.FileInfo
+	}
+	return nil
+}
+
+type CancelUploadRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UploadToken   string                 `protobuf:"bytes,1,opt,name=upload_token,json=uploadToken,proto3" json:"upload_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CancelUploadRequest) Reset() {
+	*x = CancelUploadRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[111]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CancelUploadRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelUploadRequest) ProtoMessage() {}
+
+func (x *CancelUploadRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[111]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelUploadRequest.ProtoReflect.Descriptor instead.
+func (*CancelUploadRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{111}
+}
+
+func (x *CancelUploadRequest) GetUploadToken() string {
+	if x != nil {
+		return x.UploadToken
+	}
+	return ""
+}
+
+type GenerateDownloadURLRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	TtlSeconds    int32                  `protobuf:"varint,2,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
+	Filename      *string                `protobuf:"bytes,3,opt,name=filename,proto3,oneof" json:"filename,omitempty"` // overrides response-content-disposition filename
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateDownloadURLRequest) Reset() {
+	*x = GenerateDownloadURLRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[112]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateDownloadURLRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateDownloadURLRequest) ProtoMessage() {}
+
+func (x *GenerateDownloadURLRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[112]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateDownloadURLRequest.ProtoReflect.Descriptor instead.
+func (*GenerateDownloadURLRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{112}
+}
+
+func (x *GenerateDownloadURLRequest) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *GenerateDownloadURLRequest) GetTtlSeconds() int32 {
+	if x != nil {
+		return x.TtlSeconds
+	}
+	return 0
+}
+
+func (x *GenerateDownloadURLRequest) GetFilename() string {
+	if x != nil && x.Filename != nil {
+		return *x.Filename
+	}
+	return ""
+}
+
+type GenerateDownloadURLResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DownloadUrl   string                 `protobuf:"bytes,1,opt,name=download_url,json=downloadUrl,proto3" json:"download_url,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateDownloadURLResponse) Reset() {
+	*x = GenerateDownloadURLResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[113]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateDownloadURLResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateDownloadURLResponse) ProtoMessage() {}
+
+func (x *GenerateDownloadURLResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[113]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateDownloadURLResponse.ProtoReflect.Descriptor instead.
+func (*GenerateDownloadURLResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{113}
+}
+
+func (x *GenerateDownloadURLResponse) GetDownloadUrl() string {
+	if x != nil {
+		return x.DownloadUrl
+	}
+	return ""
+}
+
+func (x *GenerateDownloadURLResponse) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
+}
+
+type GenerateProcessURLRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	Ops           []*ImageProcessOp      `protobuf:"bytes,2,rep,name=ops,proto3" json:"ops,omitempty"`
+	TtlSeconds    int32                  `protobuf:"varint,3,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateProcessURLRequest) Reset() {
+	*x = GenerateProcessURLRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[114]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateProcessURLRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateProcessURLRequest) ProtoMessage() {}
+
+func (x *GenerateProcessURLRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[114]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateProcessURLRequest.ProtoReflect.Descriptor instead.
+func (*GenerateProcessURLRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{114}
+}
+
+func (x *GenerateProcessURLRequest) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *GenerateProcessURLRequest) GetOps() []*ImageProcessOp {
+	if x != nil {
+		return x.Ops
+	}
+	return nil
+}
+
+func (x *GenerateProcessURLRequest) GetTtlSeconds() int32 {
+	if x != nil {
+		return x.TtlSeconds
+	}
+	return 0
+}
+
+type GenerateProcessURLResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateProcessURLResponse) Reset() {
+	*x = GenerateProcessURLResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[115]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateProcessURLResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateProcessURLResponse) ProtoMessage() {}
+
+func (x *GenerateProcessURLResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[115]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateProcessURLResponse.ProtoReflect.Descriptor instead.
+func (*GenerateProcessURLResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{115}
+}
+
+func (x *GenerateProcessURLResponse) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *GenerateProcessURLResponse) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
+}
+
+type GenerateCDNURLRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	Ops           []*ImageProcessOp      `protobuf:"bytes,2,rep,name=ops,proto3" json:"ops,omitempty"` // empty = plain download URL
+	Ttl           *durationpb.Duration   `protobuf:"bytes,3,opt,name=ttl,proto3" json:"ttl,omitempty"`
+	Public        bool                   `protobuf:"varint,4,opt,name=public,proto3" json:"public,omitempty"` // unsigned permanent URL for public resources
+	Filename      *string                `protobuf:"bytes,5,opt,name=filename,proto3,oneof" json:"filename,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateCDNURLRequest) Reset() {
+	*x = GenerateCDNURLRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[116]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateCDNURLRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateCDNURLRequest) ProtoMessage() {}
+
+func (x *GenerateCDNURLRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[116]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateCDNURLRequest.ProtoReflect.Descriptor instead.
+func (*GenerateCDNURLRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{116}
+}
+
+func (x *GenerateCDNURLRequest) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *GenerateCDNURLRequest) GetOps() []*ImageProcessOp {
+	if x != nil {
+		return x.Ops
+	}
+	return nil
+}
+
+func (x *GenerateCDNURLRequest) GetTtl() *durationpb.Duration {
+	if x != nil {
+		return x.Ttl
+	}
+	return nil
+}
+
+func (x *GenerateCDNURLRequest) GetPublic() bool {
+	if x != nil {
+		return x.Public
+	}
+	return false
+}
+
+func (x *GenerateCDNURLRequest) GetFilename() string {
+	if x != nil && x.Filename != nil {
+		return *x.Filename
+	}
+	return ""
+}
+
+type GenerateCDNURLResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateCDNURLResponse) Reset() {
+	*x = GenerateCDNURLResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[117]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateCDNURLResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateCDNURLResponse) ProtoMessage() {}
+
+func (x *GenerateCDNURLResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[117]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateCDNURLResponse.ProtoReflect.Descriptor instead.
+func (*GenerateCDNURLResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{117}
+}
+
+func (x *GenerateCDNURLResponse) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *GenerateCDNURLResponse) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
+}
+
+type ListMyFilesRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	PathPrefix        string                 `protobuf:"bytes,1,opt,name=path_prefix,json=pathPrefix,proto3" json:"path_prefix,omitempty"`
+	Extension         string                 `protobuf:"bytes,2,opt,name=extension,proto3" json:"extension,omitempty"`
+	ContentTypePrefix string                 `protobuf:"bytes,3,opt,name=content_type_prefix,json=contentTypePrefix,proto3" json:"content_type_prefix,omitempty"`
+	OrderBy           SortField              `protobuf:"varint,4,opt,name=order_by,json=orderBy,proto3,enum=testkit.v1.SortField" json:"order_by,omitempty"`
+	Descending        bool                   `protobuf:"varint,5,opt,name=descending,proto3" json:"descending,omitempty"`
+	PageSize          int32                  `protobuf:"varint,6,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken         string                 `protobuf:"bytes,7,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *ListMyFilesRequest) Reset() {
+	*x = ListMyFilesRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[118]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyFilesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyFilesRequest) ProtoMessage() {}
+
+func (x *ListMyFilesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[118]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyFilesRequest.ProtoReflect.Descriptor instead.
+func (*ListMyFilesRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{118}
+}
+
+func (x *ListMyFilesRequest) GetPathPrefix() string {
+	if x != nil {
+		return x.PathPrefix
+	}
+	return ""
+}
+
+func (x *ListMyFilesRequest) GetExtension() string {
+	if x != nil {
+		return x.Extension
+	}
+	return ""
+}
+
+func (x *ListMyFilesRequest) GetContentTypePrefix() string {
+	if x != nil {
+		return x.ContentTypePrefix
+	}
+	return ""
+}
+
+func (x *ListMyFilesRequest) GetOrderBy() SortField {
+	if x != nil {
+		return x.OrderBy
+	}
+	return SortField_SORT_FIELD_UNSPECIFIED
+}
+
+func (x *ListMyFilesRequest) GetDescending() bool {
+	if x != nil {
+		return x.Descending
+	}
+	return false
+}
+
+func (x *ListMyFilesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListMyFilesRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListMyFilesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Files         []*FileInfo            `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyFilesResponse) Reset() {
+	*x = ListMyFilesResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[119]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyFilesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyFilesResponse) ProtoMessage() {}
+
+func (x *ListMyFilesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[119]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyFilesResponse.ProtoReflect.Descriptor instead.
+func (*ListMyFilesResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{119}
+}
+
+func (x *ListMyFilesResponse) GetFiles() []*FileInfo {
+	if x != nil {
+		return x.Files
+	}
+	return nil
+}
+
+func (x *ListMyFilesResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type ListMyFilesPagedRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Page              int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize          int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PathPrefix        string                 `protobuf:"bytes,3,opt,name=path_prefix,json=pathPrefix,proto3" json:"path_prefix,omitempty"`
+	Extension         string                 `protobuf:"bytes,4,opt,name=extension,proto3" json:"extension,omitempty"`
+	ContentTypePrefix string                 `protobuf:"bytes,5,opt,name=content_type_prefix,json=contentTypePrefix,proto3" json:"content_type_prefix,omitempty"`
+	OrderBy           SortField              `protobuf:"varint,6,opt,name=order_by,json=orderBy,proto3,enum=testkit.v1.SortField" json:"order_by,omitempty"`
+	Descending        bool                   `protobuf:"varint,7,opt,name=descending,proto3" json:"descending,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *ListMyFilesPagedRequest) Reset() {
+	*x = ListMyFilesPagedRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[120]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyFilesPagedRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyFilesPagedRequest) ProtoMessage() {}
+
+func (x *ListMyFilesPagedRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[120]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyFilesPagedRequest.ProtoReflect.Descriptor instead.
+func (*ListMyFilesPagedRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{120}
+}
+
+func (x *ListMyFilesPagedRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListMyFilesPagedRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListMyFilesPagedRequest) GetPathPrefix() string {
+	if x != nil {
+		return x.PathPrefix
+	}
+	return ""
+}
+
+func (x *ListMyFilesPagedRequest) GetExtension() string {
+	if x != nil {
+		return x.Extension
+	}
+	return ""
+}
+
+func (x *ListMyFilesPagedRequest) GetContentTypePrefix() string {
+	if x != nil {
+		return x.ContentTypePrefix
+	}
+	return ""
+}
+
+func (x *ListMyFilesPagedRequest) GetOrderBy() SortField {
+	if x != nil {
+		return x.OrderBy
+	}
+	return SortField_SORT_FIELD_UNSPECIFIED
+}
+
+func (x *ListMyFilesPagedRequest) GetDescending() bool {
+	if x != nil {
+		return x.Descending
+	}
+	return false
+}
+
+type ListMyFilesPagedResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Files         []*FileInfo            `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	TotalCount    int64                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	TotalPages    int32                  `protobuf:"varint,4,opt,name=total_pages,json=totalPages,proto3" json:"total_pages,omitempty"`
+	HasMore       bool                   `protobuf:"varint,5,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyFilesPagedResponse) Reset() {
+	*x = ListMyFilesPagedResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[121]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyFilesPagedResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyFilesPagedResponse) ProtoMessage() {}
+
+func (x *ListMyFilesPagedResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[121]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyFilesPagedResponse.ProtoReflect.Descriptor instead.
+func (*ListMyFilesPagedResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{121}
+}
+
+func (x *ListMyFilesPagedResponse) GetFiles() []*FileInfo {
+	if x != nil {
+		return x.Files
+	}
+	return nil
+}
+
+func (x *ListMyFilesPagedResponse) GetTotalCount() int64 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+func (x *ListMyFilesPagedResponse) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListMyFilesPagedResponse) GetTotalPages() int32 {
+	if x != nil {
+		return x.TotalPages
+	}
+	return 0
+}
+
+func (x *ListMyFilesPagedResponse) GetHasMore() bool {
+	if x != nil {
+		return x.HasMore
+	}
+	return false
+}
+
+type GetMyFileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMyFileRequest) Reset() {
+	*x = GetMyFileRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[122]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMyFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMyFileRequest) ProtoMessage() {}
+
+func (x *GetMyFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[122]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMyFileRequest.ProtoReflect.Descriptor instead.
+func (*GetMyFileRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{122}
+}
+
+func (x *GetMyFileRequest) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+type UpdateMyFileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	Filename      *string                `protobuf:"bytes,2,opt,name=filename,proto3,oneof" json:"filename,omitempty"`
+	FilePath      *string                `protobuf:"bytes,3,opt,name=file_path,json=filePath,proto3,oneof" json:"file_path,omitempty"`
+	Description   *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Metadata      map[string]string      `protobuf:"bytes,5,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ClearMetadata *bool                  `protobuf:"varint,7,opt,name=clear_metadata,json=clearMetadata,proto3,oneof" json:"clear_metadata,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMyFileRequest) Reset() {
+	*x = UpdateMyFileRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[123]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMyFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMyFileRequest) ProtoMessage() {}
+
+func (x *UpdateMyFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[123]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMyFileRequest.ProtoReflect.Descriptor instead.
+func (*UpdateMyFileRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{123}
+}
+
+func (x *UpdateMyFileRequest) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *UpdateMyFileRequest) GetFilename() string {
+	if x != nil && x.Filename != nil {
+		return *x.Filename
+	}
+	return ""
+}
+
+func (x *UpdateMyFileRequest) GetFilePath() string {
+	if x != nil && x.FilePath != nil {
+		return *x.FilePath
+	}
+	return ""
+}
+
+func (x *UpdateMyFileRequest) GetDescription() string {
+	if x != nil && x.Description != nil {
+		return *x.Description
+	}
+	return ""
+}
+
+func (x *UpdateMyFileRequest) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *UpdateMyFileRequest) GetClearMetadata() bool {
+	if x != nil && x.ClearMetadata != nil {
+		return *x.ClearMetadata
+	}
+	return false
+}
+
+type DeleteMyFileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMyFileRequest) Reset() {
+	*x = DeleteMyFileRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[124]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMyFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMyFileRequest) ProtoMessage() {}
+
+func (x *DeleteMyFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[124]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMyFileRequest.ProtoReflect.Descriptor instead.
+func (*DeleteMyFileRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{124}
+}
+
+func (x *DeleteMyFileRequest) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+type BatchDeleteMyFilesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileIds       []int64                `protobuf:"varint,1,rep,packed,name=file_ids,json=fileIds,proto3" json:"file_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BatchDeleteMyFilesRequest) Reset() {
+	*x = BatchDeleteMyFilesRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[125]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchDeleteMyFilesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchDeleteMyFilesRequest) ProtoMessage() {}
+
+func (x *BatchDeleteMyFilesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[125]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchDeleteMyFilesRequest.ProtoReflect.Descriptor instead.
+func (*BatchDeleteMyFilesRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{125}
+}
+
+func (x *BatchDeleteMyFilesRequest) GetFileIds() []int64 {
+	if x != nil {
+		return x.FileIds
+	}
+	return nil
+}
+
+type BatchDeleteMyFilesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DeletedCount  int32                  `protobuf:"varint,1,opt,name=deleted_count,json=deletedCount,proto3" json:"deleted_count,omitempty"`
+	FailedIds     []int64                `protobuf:"varint,2,rep,packed,name=failed_ids,json=failedIds,proto3" json:"failed_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BatchDeleteMyFilesResponse) Reset() {
+	*x = BatchDeleteMyFilesResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[126]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchDeleteMyFilesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchDeleteMyFilesResponse) ProtoMessage() {}
+
+func (x *BatchDeleteMyFilesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[126]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchDeleteMyFilesResponse.ProtoReflect.Descriptor instead.
+func (*BatchDeleteMyFilesResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{126}
+}
+
+func (x *BatchDeleteMyFilesResponse) GetDeletedCount() int32 {
+	if x != nil {
+		return x.DeletedCount
+	}
+	return 0
+}
+
+func (x *BatchDeleteMyFilesResponse) GetFailedIds() []int64 {
+	if x != nil {
+		return x.FailedIds
+	}
+	return nil
+}
+
+// GetMyQuota takes google.protobuf.Empty — owner is injected from ctx.
+type ListMyAuditLogsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Action        AuditAction            `protobuf:"varint,1,opt,name=action,proto3,enum=testkit.v1.AuditAction" json:"action,omitempty"`
+	TargetType    AuditLogTargetType     `protobuf:"varint,2,opt,name=target_type,json=targetType,proto3,enum=testkit.v1.AuditLogTargetType" json:"target_type,omitempty"`
+	StartTime     string                 `protobuf:"bytes,3,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime       string                 `protobuf:"bytes,4,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	PageSize      int32                  `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyAuditLogsRequest) Reset() {
+	*x = ListMyAuditLogsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[127]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyAuditLogsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyAuditLogsRequest) ProtoMessage() {}
+
+func (x *ListMyAuditLogsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[127]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyAuditLogsRequest.ProtoReflect.Descriptor instead.
+func (*ListMyAuditLogsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{127}
+}
+
+func (x *ListMyAuditLogsRequest) GetAction() AuditAction {
+	if x != nil {
+		return x.Action
+	}
+	return AuditAction_AUDIT_ACTION_UNSPECIFIED
+}
+
+func (x *ListMyAuditLogsRequest) GetTargetType() AuditLogTargetType {
+	if x != nil {
+		return x.TargetType
+	}
+	return AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_UNSPECIFIED
+}
+
+func (x *ListMyAuditLogsRequest) GetStartTime() string {
+	if x != nil {
+		return x.StartTime
+	}
+	return ""
+}
+
+func (x *ListMyAuditLogsRequest) GetEndTime() string {
+	if x != nil {
+		return x.EndTime
+	}
+	return ""
+}
+
+func (x *ListMyAuditLogsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListMyAuditLogsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListMyAuditLogsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Logs          []*AuditLogEntry       `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyAuditLogsResponse) Reset() {
+	*x = ListMyAuditLogsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[128]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyAuditLogsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyAuditLogsResponse) ProtoMessage() {}
+
+func (x *ListMyAuditLogsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[128]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyAuditLogsResponse.ProtoReflect.Descriptor instead.
+func (*ListMyAuditLogsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{128}
+}
+
+func (x *ListMyAuditLogsResponse) GetLogs() []*AuditLogEntry {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
+func (x *ListMyAuditLogsResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+func (x *ListMyAuditLogsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type SetOwnerQuotaRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OwnerType     OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	TotalBytes    int64                  `protobuf:"varint,3,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetOwnerQuotaRequest) Reset() {
+	*x = SetOwnerQuotaRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[129]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetOwnerQuotaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetOwnerQuotaRequest) ProtoMessage() {}
+
+func (x *SetOwnerQuotaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[129]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetOwnerQuotaRequest.ProtoReflect.Descriptor instead.
+func (*SetOwnerQuotaRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{129}
+}
+
+func (x *SetOwnerQuotaRequest) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *SetOwnerQuotaRequest) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+func (x *SetOwnerQuotaRequest) GetTotalBytes() int64 {
+	if x != nil {
+		return x.TotalBytes
+	}
+	return 0
+}
+
+type AddOwnerQuotaRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OwnerType     OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	DeltaBytes    int64                  `protobuf:"varint,3,opt,name=delta_bytes,json=deltaBytes,proto3" json:"delta_bytes,omitempty"` // positive = purchase, negative = refund
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddOwnerQuotaRequest) Reset() {
+	*x = AddOwnerQuotaRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[130]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddOwnerQuotaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddOwnerQuotaRequest) ProtoMessage() {}
+
+func (x *AddOwnerQuotaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[130]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddOwnerQuotaRequest.ProtoReflect.Descriptor instead.
+func (*AddOwnerQuotaRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{130}
+}
+
+func (x *AddOwnerQuotaRequest) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AddOwnerQuotaRequest) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+func (x *AddOwnerQuotaRequest) GetDeltaBytes() int64 {
+	if x != nil {
+		return x.DeltaBytes
+	}
+	return 0
+}
+
+type AdminListFilesRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	OwnerType         OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId           int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	PathPrefix        string                 `protobuf:"bytes,3,opt,name=path_prefix,json=pathPrefix,proto3" json:"path_prefix,omitempty"`
+	Extension         string                 `protobuf:"bytes,4,opt,name=extension,proto3" json:"extension,omitempty"`
+	ContentTypePrefix string                 `protobuf:"bytes,5,opt,name=content_type_prefix,json=contentTypePrefix,proto3" json:"content_type_prefix,omitempty"`
+	OrderBy           SortField              `protobuf:"varint,6,opt,name=order_by,json=orderBy,proto3,enum=testkit.v1.SortField" json:"order_by,omitempty"`
+	Descending        bool                   `protobuf:"varint,7,opt,name=descending,proto3" json:"descending,omitempty"`
+	PageSize          int32                  `protobuf:"varint,8,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken         string                 `protobuf:"bytes,9,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Provider          string                 `protobuf:"bytes,10,opt,name=provider,proto3" json:"provider,omitempty"`
+	Bucket            string                 `protobuf:"bytes,11,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *AdminListFilesRequest) Reset() {
+	*x = AdminListFilesRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[131]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminListFilesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminListFilesRequest) ProtoMessage() {}
+
+func (x *AdminListFilesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[131]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminListFilesRequest.ProtoReflect.Descriptor instead.
+func (*AdminListFilesRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{131}
+}
+
+func (x *AdminListFilesRequest) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AdminListFilesRequest) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+func (x *AdminListFilesRequest) GetPathPrefix() string {
+	if x != nil {
+		return x.PathPrefix
+	}
+	return ""
+}
+
+func (x *AdminListFilesRequest) GetExtension() string {
+	if x != nil {
+		return x.Extension
+	}
+	return ""
+}
+
+func (x *AdminListFilesRequest) GetContentTypePrefix() string {
+	if x != nil {
+		return x.ContentTypePrefix
+	}
+	return ""
+}
+
+func (x *AdminListFilesRequest) GetOrderBy() SortField {
+	if x != nil {
+		return x.OrderBy
+	}
+	return SortField_SORT_FIELD_UNSPECIFIED
+}
+
+func (x *AdminListFilesRequest) GetDescending() bool {
+	if x != nil {
+		return x.Descending
+	}
+	return false
+}
+
+func (x *AdminListFilesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *AdminListFilesRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *AdminListFilesRequest) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+func (x *AdminListFilesRequest) GetBucket() string {
+	if x != nil {
+		return x.Bucket
+	}
+	return ""
+}
+
+type AdminListFilesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Files         []*AdminFileInfo       `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminListFilesResponse) Reset() {
+	*x = AdminListFilesResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[132]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminListFilesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminListFilesResponse) ProtoMessage() {}
+
+func (x *AdminListFilesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[132]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminListFilesResponse.ProtoReflect.Descriptor instead.
+func (*AdminListFilesResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{132}
+}
+
+func (x *AdminListFilesResponse) GetFiles() []*AdminFileInfo {
+	if x != nil {
+		return x.Files
+	}
+	return nil
+}
+
+func (x *AdminListFilesResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+func (x *AdminListFilesResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type AdminGetFileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminGetFileRequest) Reset() {
+	*x = AdminGetFileRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[133]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminGetFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminGetFileRequest) ProtoMessage() {}
+
+func (x *AdminGetFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[133]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminGetFileRequest.ProtoReflect.Descriptor instead.
+func (*AdminGetFileRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{133}
+}
+
+func (x *AdminGetFileRequest) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+type AdminDeleteFileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminDeleteFileRequest) Reset() {
+	*x = AdminDeleteFileRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[134]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminDeleteFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminDeleteFileRequest) ProtoMessage() {}
+
+func (x *AdminDeleteFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[134]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminDeleteFileRequest.ProtoReflect.Descriptor instead.
+func (*AdminDeleteFileRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{134}
+}
+
+func (x *AdminDeleteFileRequest) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+type AdminGetQuotaRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OwnerType     OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminGetQuotaRequest) Reset() {
+	*x = AdminGetQuotaRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[135]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminGetQuotaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminGetQuotaRequest) ProtoMessage() {}
+
+func (x *AdminGetQuotaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[135]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminGetQuotaRequest.ProtoReflect.Descriptor instead.
+func (*AdminGetQuotaRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{135}
+}
+
+func (x *AdminGetQuotaRequest) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AdminGetQuotaRequest) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+type AdminSetQuotaRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OwnerType     OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	TotalBytes    int64                  `protobuf:"varint,3,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminSetQuotaRequest) Reset() {
+	*x = AdminSetQuotaRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[136]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminSetQuotaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminSetQuotaRequest) ProtoMessage() {}
+
+func (x *AdminSetQuotaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[136]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminSetQuotaRequest.ProtoReflect.Descriptor instead.
+func (*AdminSetQuotaRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{136}
+}
+
+func (x *AdminSetQuotaRequest) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AdminSetQuotaRequest) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+func (x *AdminSetQuotaRequest) GetTotalBytes() int64 {
+	if x != nil {
+		return x.TotalBytes
+	}
+	return 0
+}
+
+type AdminGetStatsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OwnerType     OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"` // 0 = all
+	OwnerId       int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`                                 // 0 = all
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminGetStatsRequest) Reset() {
+	*x = AdminGetStatsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[137]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminGetStatsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminGetStatsRequest) ProtoMessage() {}
+
+func (x *AdminGetStatsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[137]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminGetStatsRequest.ProtoReflect.Descriptor instead.
+func (*AdminGetStatsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{137}
+}
+
+func (x *AdminGetStatsRequest) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AdminGetStatsRequest) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+type AdminGetStatsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TotalObjects  int64                  `protobuf:"varint,1,opt,name=total_objects,json=totalObjects,proto3" json:"total_objects,omitempty"`    // deduped physical files
+	TotalFiles    int64                  `protobuf:"varint,2,opt,name=total_files,json=totalFiles,proto3" json:"total_files,omitempty"`          // file references
+	PhysicalBytes int64                  `protobuf:"varint,4,opt,name=physical_bytes,json=physicalBytes,proto3" json:"physical_bytes,omitempty"` // actual cloud storage used (deduped)
+	LogicalBytes  int64                  `protobuf:"varint,5,opt,name=logical_bytes,json=logicalBytes,proto3" json:"logical_bytes,omitempty"`    // sum of used_bytes (user quota only)
+	OwnerStats    []*OwnerStats          `protobuf:"bytes,8,rep,name=owner_stats,json=ownerStats,proto3" json:"owner_stats,omitempty"`
+	ProviderStats []*ProviderStats       `protobuf:"bytes,6,rep,name=provider_stats,json=providerStats,proto3" json:"provider_stats,omitempty"`
+	BucketStats   []*BucketStats         `protobuf:"bytes,7,rep,name=bucket_stats,json=bucketStats,proto3" json:"bucket_stats,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminGetStatsResponse) Reset() {
+	*x = AdminGetStatsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[138]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminGetStatsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminGetStatsResponse) ProtoMessage() {}
+
+func (x *AdminGetStatsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[138]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminGetStatsResponse.ProtoReflect.Descriptor instead.
+func (*AdminGetStatsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{138}
+}
+
+func (x *AdminGetStatsResponse) GetTotalObjects() int64 {
+	if x != nil {
+		return x.TotalObjects
+	}
+	return 0
+}
+
+func (x *AdminGetStatsResponse) GetTotalFiles() int64 {
+	if x != nil {
+		return x.TotalFiles
+	}
+	return 0
+}
+
+func (x *AdminGetStatsResponse) GetPhysicalBytes() int64 {
+	if x != nil {
+		return x.PhysicalBytes
+	}
+	return 0
+}
+
+func (x *AdminGetStatsResponse) GetLogicalBytes() int64 {
+	if x != nil {
+		return x.LogicalBytes
+	}
+	return 0
+}
+
+func (x *AdminGetStatsResponse) GetOwnerStats() []*OwnerStats {
+	if x != nil {
+		return x.OwnerStats
+	}
+	return nil
+}
+
+func (x *AdminGetStatsResponse) GetProviderStats() []*ProviderStats {
+	if x != nil {
+		return x.ProviderStats
+	}
+	return nil
+}
+
+func (x *AdminGetStatsResponse) GetBucketStats() []*BucketStats {
+	if x != nil {
+		return x.BucketStats
+	}
+	return nil
+}
+
+type AdminListProvidersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Providers     []*ProviderInfo        `protobuf:"bytes,1,rep,name=providers,proto3" json:"providers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminListProvidersResponse) Reset() {
+	*x = AdminListProvidersResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[139]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminListProvidersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminListProvidersResponse) ProtoMessage() {}
+
+func (x *AdminListProvidersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[139]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminListProvidersResponse.ProtoReflect.Descriptor instead.
+func (*AdminListProvidersResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{139}
+}
+
+func (x *AdminListProvidersResponse) GetProviders() []*ProviderInfo {
+	if x != nil {
+		return x.Providers
+	}
+	return nil
+}
+
+type AdminListBucketsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Buckets       []*BucketInfo          `protobuf:"bytes,1,rep,name=buckets,proto3" json:"buckets,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminListBucketsResponse) Reset() {
+	*x = AdminListBucketsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[140]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminListBucketsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminListBucketsResponse) ProtoMessage() {}
+
+func (x *AdminListBucketsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[140]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminListBucketsResponse.ProtoReflect.Descriptor instead.
+func (*AdminListBucketsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{140}
+}
+
+func (x *AdminListBucketsResponse) GetBuckets() []*BucketInfo {
+	if x != nil {
+		return x.Buckets
+	}
+	return nil
+}
+
+type AdminSoftDeleteOwnerFilesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OwnerType     OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminSoftDeleteOwnerFilesRequest) Reset() {
+	*x = AdminSoftDeleteOwnerFilesRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[141]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminSoftDeleteOwnerFilesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminSoftDeleteOwnerFilesRequest) ProtoMessage() {}
+
+func (x *AdminSoftDeleteOwnerFilesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[141]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminSoftDeleteOwnerFilesRequest.ProtoReflect.Descriptor instead.
+func (*AdminSoftDeleteOwnerFilesRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{141}
+}
+
+func (x *AdminSoftDeleteOwnerFilesRequest) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AdminSoftDeleteOwnerFilesRequest) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+type AdminSoftDeleteOwnerFilesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FilesDeleted  int64                  `protobuf:"varint,1,opt,name=files_deleted,json=filesDeleted,proto3" json:"files_deleted,omitempty"`
+	BytesReleased int64                  `protobuf:"varint,2,opt,name=bytes_released,json=bytesReleased,proto3" json:"bytes_released,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminSoftDeleteOwnerFilesResponse) Reset() {
+	*x = AdminSoftDeleteOwnerFilesResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[142]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminSoftDeleteOwnerFilesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminSoftDeleteOwnerFilesResponse) ProtoMessage() {}
+
+func (x *AdminSoftDeleteOwnerFilesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[142]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminSoftDeleteOwnerFilesResponse.ProtoReflect.Descriptor instead.
+func (*AdminSoftDeleteOwnerFilesResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{142}
+}
+
+func (x *AdminSoftDeleteOwnerFilesResponse) GetFilesDeleted() int64 {
+	if x != nil {
+		return x.FilesDeleted
+	}
+	return 0
+}
+
+func (x *AdminSoftDeleteOwnerFilesResponse) GetBytesReleased() int64 {
+	if x != nil {
+		return x.BytesReleased
+	}
+	return 0
+}
+
+type AdminDeleteOwnerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OwnerType     OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminDeleteOwnerRequest) Reset() {
+	*x = AdminDeleteOwnerRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[143]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminDeleteOwnerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminDeleteOwnerRequest) ProtoMessage() {}
+
+func (x *AdminDeleteOwnerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[143]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminDeleteOwnerRequest.ProtoReflect.Descriptor instead.
+func (*AdminDeleteOwnerRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{143}
+}
+
+func (x *AdminDeleteOwnerRequest) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AdminDeleteOwnerRequest) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+type AdminDeleteOwnerResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FilesDeleted  int64                  `protobuf:"varint,1,opt,name=files_deleted,json=filesDeleted,proto3" json:"files_deleted,omitempty"`
+	BytesReleased int64                  `protobuf:"varint,2,opt,name=bytes_released,json=bytesReleased,proto3" json:"bytes_released,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminDeleteOwnerResponse) Reset() {
+	*x = AdminDeleteOwnerResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[144]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminDeleteOwnerResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminDeleteOwnerResponse) ProtoMessage() {}
+
+func (x *AdminDeleteOwnerResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[144]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminDeleteOwnerResponse.ProtoReflect.Descriptor instead.
+func (*AdminDeleteOwnerResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{144}
+}
+
+func (x *AdminDeleteOwnerResponse) GetFilesDeleted() int64 {
+	if x != nil {
+		return x.FilesDeleted
+	}
+	return 0
+}
+
+func (x *AdminDeleteOwnerResponse) GetBytesReleased() int64 {
+	if x != nil {
+		return x.BytesReleased
+	}
+	return 0
+}
+
+// AdminListAuditLogs.request_id is a SEARCH FILTER (find logs by trace id), so
+// it is kept — unlike the request_id on write RPCs, which describes caller
+// traceability and is dropped at the BFF edge.
+type AdminListAuditLogsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Action        AuditAction            `protobuf:"varint,1,opt,name=action,proto3,enum=testkit.v1.AuditAction" json:"action,omitempty"`
+	TargetType    AuditLogTargetType     `protobuf:"varint,2,opt,name=target_type,json=targetType,proto3,enum=testkit.v1.AuditLogTargetType" json:"target_type,omitempty"`
+	Status        AuditLogStatus         `protobuf:"varint,3,opt,name=status,proto3,enum=testkit.v1.AuditLogStatus" json:"status,omitempty"`
+	RequestId     string                 `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"` // filter: search logs by trace id
+	OwnerType     OwnerType              `protobuf:"varint,5,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,6,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	TargetId      int64                  `protobuf:"varint,7,opt,name=target_id,json=targetId,proto3" json:"target_id,omitempty"`
+	StartTime     string                 `protobuf:"bytes,8,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime       string                 `protobuf:"bytes,9,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	PageSize      int32                  `protobuf:"varint,10,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,11,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminListAuditLogsRequest) Reset() {
+	*x = AdminListAuditLogsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[145]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminListAuditLogsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminListAuditLogsRequest) ProtoMessage() {}
+
+func (x *AdminListAuditLogsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[145]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminListAuditLogsRequest.ProtoReflect.Descriptor instead.
+func (*AdminListAuditLogsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{145}
+}
+
+func (x *AdminListAuditLogsRequest) GetAction() AuditAction {
+	if x != nil {
+		return x.Action
+	}
+	return AuditAction_AUDIT_ACTION_UNSPECIFIED
+}
+
+func (x *AdminListAuditLogsRequest) GetTargetType() AuditLogTargetType {
+	if x != nil {
+		return x.TargetType
+	}
+	return AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_UNSPECIFIED
+}
+
+func (x *AdminListAuditLogsRequest) GetStatus() AuditLogStatus {
+	if x != nil {
+		return x.Status
+	}
+	return AuditLogStatus_AUDIT_LOG_STATUS_UNSPECIFIED
+}
+
+func (x *AdminListAuditLogsRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *AdminListAuditLogsRequest) GetOwnerType() OwnerType {
+	if x != nil {
+		return x.OwnerType
+	}
+	return OwnerType_OWNER_TYPE_UNSPECIFIED
+}
+
+func (x *AdminListAuditLogsRequest) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+func (x *AdminListAuditLogsRequest) GetTargetId() int64 {
+	if x != nil {
+		return x.TargetId
+	}
+	return 0
+}
+
+func (x *AdminListAuditLogsRequest) GetStartTime() string {
+	if x != nil {
+		return x.StartTime
+	}
+	return ""
+}
+
+func (x *AdminListAuditLogsRequest) GetEndTime() string {
+	if x != nil {
+		return x.EndTime
+	}
+	return ""
+}
+
+func (x *AdminListAuditLogsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *AdminListAuditLogsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type AdminListAuditLogsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Logs          []*AuditLogEntry       `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdminListAuditLogsResponse) Reset() {
+	*x = AdminListAuditLogsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[146]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminListAuditLogsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminListAuditLogsResponse) ProtoMessage() {}
+
+func (x *AdminListAuditLogsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[146]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminListAuditLogsResponse.ProtoReflect.Descriptor instead.
+func (*AdminListAuditLogsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{146}
+}
+
+func (x *AdminListAuditLogsResponse) GetLogs() []*AuditLogEntry {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
+func (x *AdminListAuditLogsResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+func (x *AdminListAuditLogsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
 var File_testkit_v1_testkit_proto protoreflect.FileDescriptor
 
 const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\n" +
 	"\x18testkit/v1/testkit.proto\x12\n" +
-	"testkit.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bbuf/validate/validate.proto\"\xff\x01\n" +
+	"testkit.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xff\x01\n" +
 	"\x04Pong\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x1d\n" +
@@ -7139,7 +12083,453 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x06groups\x18\x01 \x03(\v2\x1b.testkit.v1.PermissionGroupR\x06groups\x12\x1f\n" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
 	"nextCursor\x12\x14\n" +
-	"\x05total\x18\x03 \x01(\x05R\x05total*\xcb\x01\n" +
+	"\x05total\x18\x03 \x01(\x05R\x05total\"\xea\x03\n" +
+	"\bFileInfo\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
+	"\bfilename\x18\x02 \x01(\tR\bfilename\x12\x1b\n" +
+	"\tfile_path\x18\x03 \x01(\tR\bfilePath\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12>\n" +
+	"\bmetadata\x18\x05 \x03(\v2\".testkit.v1.FileInfo.MetadataEntryR\bmetadata\x12\x1b\n" +
+	"\tis_public\x18\x06 \x01(\bR\bisPublic\x124\n" +
+	"\n" +
+	"owner_type\x18\a \x01(\x0e2\x15.testkit.v1.OwnerTypeR\townerType\x12\x12\n" +
+	"\x04size\x18\n" +
+	" \x01(\x03R\x04size\x12!\n" +
+	"\fcontent_type\x18\v \x01(\tR\vcontentType\x12\x1c\n" +
+	"\textension\x18\f \x01(\tR\textension\x12\x10\n" +
+	"\x03md5\x18\r \x01(\tR\x03md5\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x14 \x01(\tR\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x15 \x01(\tR\tupdatedAt\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xff\x04\n" +
+	"\rAdminFileInfo\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x124\n" +
+	"\n" +
+	"owner_type\x18\x02 \x01(\x0e2\x15.testkit.v1.OwnerTypeR\townerType\x12\x19\n" +
+	"\bowner_id\x18\x03 \x01(\x03R\aownerId\x12\x1a\n" +
+	"\bfilename\x18\x04 \x01(\tR\bfilename\x12\x1b\n" +
+	"\tfile_path\x18\x05 \x01(\tR\bfilePath\x12 \n" +
+	"\vdescription\x18\x06 \x01(\tR\vdescription\x12C\n" +
+	"\bmetadata\x18\a \x03(\v2'.testkit.v1.AdminFileInfo.MetadataEntryR\bmetadata\x12\x1b\n" +
+	"\tis_public\x18\b \x01(\bR\bisPublic\x12\x1b\n" +
+	"\tobject_id\x18\t \x01(\x03R\bobjectId\x12\x12\n" +
+	"\x04size\x18\n" +
+	" \x01(\x03R\x04size\x12!\n" +
+	"\fcontent_type\x18\v \x01(\tR\vcontentType\x12\x1c\n" +
+	"\textension\x18\f \x01(\tR\textension\x12\x10\n" +
+	"\x03md5\x18\r \x01(\tR\x03md5\x12\x1a\n" +
+	"\bprovider\x18\x0e \x01(\tR\bprovider\x12\x16\n" +
+	"\x06bucket\x18\x0f \x01(\tR\x06bucket\x12\x1d\n" +
+	"\n" +
+	"object_key\x18\x10 \x01(\tR\tobjectKey\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x14 \x01(\tR\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x15 \x01(\tR\tupdatedAt\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x93\x01\n" +
+	"\tQuotaInfo\x12\x1f\n" +
+	"\vtotal_bytes\x18\x01 \x01(\x03R\n" +
+	"totalBytes\x12\x1d\n" +
+	"\n" +
+	"used_bytes\x18\x02 \x01(\x03R\tusedBytes\x12'\n" +
+	"\x0favailable_bytes\x18\x03 \x01(\x03R\x0eavailableBytes\x12\x1d\n" +
+	"\n" +
+	"file_count\x18\x04 \x01(\x05R\tfileCount\"\xc7\x02\n" +
+	"\x0eImageProcessOp\x120\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x1c.testkit.v1.ImageProcessTypeR\x04type\x12\x14\n" +
+	"\x05width\x18\x02 \x01(\x05R\x05width\x12\x16\n" +
+	"\x06height\x18\x03 \x01(\x05R\x06height\x12/\n" +
+	"\x06format\x18\x04 \x01(\x0e2\x17.testkit.v1.ImageFormatR\x06format\x12\x18\n" +
+	"\aquality\x18\x05 \x01(\x05R\aquality\x12<\n" +
+	"\vresize_mode\x18\x06 \x01(\x0e2\x1b.testkit.v1.ImageResizeModeR\n" +
+	"resizeMode\x12%\n" +
+	"\x0ewatermark_text\x18\a \x01(\tR\rwatermarkText\x12%\n" +
+	"\x0erotate_degrees\x18\b \x01(\x05R\rrotateDegrees\"\xdf\x02\n" +
+	"\x0eUploadFileMeta\x12\x1a\n" +
+	"\x03md5\x18\x01 \x01(\tB\b\xbaH\x05r\x03\x98\x01 R\x03md5\x12\x1b\n" +
+	"\x04size\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x04size\x12&\n" +
+	"\bfilename\x18\x03 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x02R\bfilename\x12*\n" +
+	"\fcontent_type\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\vcontentType\x12\x1b\n" +
+	"\tfile_path\x18\x05 \x01(\tR\bfilePath\x12 \n" +
+	"\vdescription\x18\x06 \x01(\tR\vdescription\x12D\n" +
+	"\bmetadata\x18\a \x03(\v2(.testkit.v1.UploadFileMeta.MetadataEntryR\bmetadata\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8b\x01\n" +
+	"\x0fUploadTokenInfo\x12!\n" +
+	"\fupload_token\x18\x01 \x01(\tR\vuploadToken\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\x12\x17\n" +
+	"\afile_id\x18\x03 \x01(\x03R\x06fileId\x12\x1d\n" +
+	"\n" +
+	"object_key\x18\x04 \x01(\tR\tobjectKey\"O\n" +
+	"\tItemError\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\"\x84\x01\n" +
+	"\x14UploadCredentialItem\x123\n" +
+	"\x05token\x18\x01 \x01(\v2\x1b.testkit.v1.UploadTokenInfoH\x00R\x05token\x12-\n" +
+	"\x05error\x18\x02 \x01(\v2\x15.testkit.v1.ItemErrorH\x00R\x05errorB\b\n" +
+	"\x06result\"\xf6\x03\n" +
+	"\rAuditLogEntry\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12/\n" +
+	"\x06action\x18\x02 \x01(\x0e2\x17.testkit.v1.AuditActionR\x06action\x124\n" +
+	"\n" +
+	"owner_type\x18\x03 \x01(\x0e2\x15.testkit.v1.OwnerTypeR\townerType\x12\x19\n" +
+	"\bowner_id\x18\x04 \x01(\x03R\aownerId\x12?\n" +
+	"\vtarget_type\x18\x05 \x01(\x0e2\x1e.testkit.v1.AuditLogTargetTypeR\n" +
+	"targetType\x12\x1b\n" +
+	"\ttarget_id\x18\x06 \x01(\x03R\btargetId\x12/\n" +
+	"\x06before\x18\a \x01(\v2\x17.google.protobuf.StructR\x06before\x12-\n" +
+	"\x05after\x18\b \x01(\v2\x17.google.protobuf.StructR\x05after\x122\n" +
+	"\x06status\x18\t \x01(\x0e2\x1a.testkit.v1.AuditLogStatusR\x06status\x12#\n" +
+	"\rerror_message\x18\n" +
+	" \x01(\tR\ferrorMessage\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\v \x01(\tR\trequestId\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\f \x01(\tR\tcreatedAt\"\x82\x01\n" +
+	"\n" +
+	"OwnerStats\x124\n" +
+	"\n" +
+	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeR\townerType\x12\x1d\n" +
+	"\n" +
+	"file_count\x18\x02 \x01(\x03R\tfileCount\x12\x1f\n" +
+	"\vtotal_bytes\x18\x03 \x01(\x03R\n" +
+	"totalBytes\"o\n" +
+	"\rProviderStats\x12\x1a\n" +
+	"\bprovider\x18\x01 \x01(\tR\bprovider\x12!\n" +
+	"\fobject_count\x18\x02 \x01(\x03R\vobjectCount\x12\x1f\n" +
+	"\vtotal_bytes\x18\x03 \x01(\x03R\n" +
+	"totalBytes\"\x88\x01\n" +
+	"\vBucketStats\x12\x16\n" +
+	"\x06bucket\x18\x01 \x01(\tR\x06bucket\x12!\n" +
+	"\fobject_count\x18\x02 \x01(\x03R\vobjectCount\x12\x1f\n" +
+	"\vtotal_bytes\x18\x03 \x01(\x03R\n" +
+	"totalBytes\x12\x1d\n" +
+	"\n" +
+	"file_count\x18\x04 \x01(\x03R\tfileCount\"\x82\x01\n" +
+	"\fProviderInfo\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12*\n" +
+	"\x06vendor\x18\x02 \x01(\x0e2\x12.testkit.v1.VendorR\x06vendor\x12\x1a\n" +
+	"\bendpoint\x18\x03 \x01(\tR\bendpoint\x12\x16\n" +
+	"\x06region\x18\x04 \x01(\tR\x06region\"\xb0\x01\n" +
+	"\n" +
+	"BucketInfo\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1a\n" +
+	"\bprovider\x18\x02 \x01(\tR\bprovider\x12\x1d\n" +
+	"\n" +
+	"key_prefix\x18\x03 \x01(\tR\tkeyPrefix\x12'\n" +
+	"\x03acl\x18\x04 \x01(\x0e2\x15.testkit.v1.BucketACLR\x03acl\x12*\n" +
+	"\x06vendor\x18\x05 \x01(\x0e2\x12.testkit.v1.VendorR\x06vendor\"\xb7\x03\n" +
+	"\x18GenerateUploadURLRequest\x12&\n" +
+	"\bfilename\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x02R\bfilename\x12\x1b\n" +
+	"\x04size\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x04size\x12\x1a\n" +
+	"\x03md5\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x98\x01 R\x03md5\x12*\n" +
+	"\fcontent_type\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\vcontentType\x12\x16\n" +
+	"\x06bucket\x18\x05 \x01(\tR\x06bucket\x12\x1b\n" +
+	"\tfile_path\x18\x06 \x01(\tR\bfilePath\x12 \n" +
+	"\vdescription\x18\a \x01(\tR\vdescription\x12N\n" +
+	"\bmetadata\x18\b \x03(\v22.testkit.v1.GenerateUploadURLRequest.MetadataEntryR\bmetadata\x12*\n" +
+	"\x06vendor\x18\n" +
+	" \x01(\x0e2\x12.testkit.v1.VendorR\x06vendor\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xec\x02\n" +
+	"\x19GenerateUploadURLResponse\x12\x18\n" +
+	"\ainstant\x18\x01 \x01(\bR\ainstant\x12\x17\n" +
+	"\afile_id\x18\x02 \x01(\x03R\x06fileId\x121\n" +
+	"\tfile_info\x18\x03 \x01(\v2\x14.testkit.v1.FileInfoR\bfileInfo\x12!\n" +
+	"\fupload_token\x18\n" +
+	" \x01(\tR\vuploadToken\x12\x1d\n" +
+	"\n" +
+	"upload_url\x18\v \x01(\tR\tuploadUrl\x12\x1d\n" +
+	"\n" +
+	"object_key\x18\f \x01(\tR\tobjectKey\x12L\n" +
+	"\aheaders\x18\r \x03(\v22.testkit.v1.GenerateUploadURLResponse.HeadersEntryR\aheaders\x1a:\n" +
+	"\fHeadersEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8f\x04\n" +
+	"\x17GetSTSCredentialRequest\x12\x16\n" +
+	"\x06bucket\x18\x01 \x01(\tR\x06bucket\x12\x19\n" +
+	"\bmax_size\x18\x02 \x01(\x03R\amaxSize\x12&\n" +
+	"\bfilename\x18\x03 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x02R\bfilename\x12\x1a\n" +
+	"\x03md5\x18\x04 \x01(\tB\b\xbaH\x05r\x03\x98\x01 R\x03md5\x12*\n" +
+	"\fcontent_type\x18\x05 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\vcontentType\x12\x1b\n" +
+	"\tfile_path\x18\x06 \x01(\tR\bfilePath\x12 \n" +
+	"\vdescription\x18\a \x01(\tR\vdescription\x12M\n" +
+	"\bmetadata\x18\b \x03(\v21.testkit.v1.GetSTSCredentialRequest.MetadataEntryR\bmetadata\x12*\n" +
+	"\x06vendor\x18\n" +
+	" \x01(\x0e2\x12.testkit.v1.VendorR\x06vendor\x12+\n" +
+	"\x03ttl\x18\v \x01(\v2\x19.google.protobuf.DurationR\x03ttl\x12-\n" +
+	"\x12allowed_extensions\x18\f \x03(\tR\x11allowedExtensions\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xfa\x02\n" +
+	"\x18GetSTSCredentialResponse\x12\x18\n" +
+	"\ainstant\x18\x01 \x01(\bR\ainstant\x12\x17\n" +
+	"\afile_id\x18\x02 \x01(\x03R\x06fileId\x121\n" +
+	"\tfile_info\x18\x03 \x01(\v2\x14.testkit.v1.FileInfoR\bfileInfo\x12!\n" +
+	"\fupload_token\x18\n" +
+	" \x01(\tR\vuploadToken\x12\x1d\n" +
+	"\n" +
+	"access_key\x18\v \x01(\tR\taccessKey\x12\x1d\n" +
+	"\n" +
+	"secret_key\x18\f \x01(\tR\tsecretKey\x12%\n" +
+	"\x0esecurity_token\x18\r \x01(\tR\rsecurityToken\x12\x1a\n" +
+	"\bendpoint\x18\x0e \x01(\tR\bendpoint\x12\x16\n" +
+	"\x06bucket\x18\x0f \x01(\tR\x06bucket\x12\x1d\n" +
+	"\n" +
+	"object_key\x18\x10 \x01(\tR\tobjectKey\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x11 \x01(\x03R\texpiresAt\"\xd0\x01\n" +
+	"\x1cBatchGetSTSCredentialRequest\x12<\n" +
+	"\x05files\x18\x01 \x03(\v2\x1a.testkit.v1.UploadFileMetaB\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x10dR\x05files\x12\x16\n" +
+	"\x06bucket\x18\x02 \x01(\tR\x06bucket\x12+\n" +
+	"\x03ttl\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\x03ttl\x12-\n" +
+	"\x12allowed_extensions\x18\x04 \x03(\tR\x11allowedExtensions\"\x8f\x02\n" +
+	"\x1dBatchGetSTSCredentialResponse\x12\x1d\n" +
+	"\n" +
+	"access_key\x18\x01 \x01(\tR\taccessKey\x12\x1d\n" +
+	"\n" +
+	"secret_key\x18\x02 \x01(\tR\tsecretKey\x12%\n" +
+	"\x0esecurity_token\x18\x03 \x01(\tR\rsecurityToken\x12\x1a\n" +
+	"\bendpoint\x18\x04 \x01(\tR\bendpoint\x12\x16\n" +
+	"\x06bucket\x18\x05 \x01(\tR\x06bucket\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x06 \x01(\x03R\texpiresAt\x126\n" +
+	"\x05items\x18\a \x03(\v2 .testkit.v1.UploadCredentialItemR\x05items\"B\n" +
+	"\x14ConfirmUploadRequest\x12*\n" +
+	"\fupload_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\vuploadToken\"c\n" +
+	"\x15ConfirmUploadResponse\x12\x17\n" +
+	"\afile_id\x18\x01 \x01(\x03R\x06fileId\x121\n" +
+	"\tfile_info\x18\x02 \x01(\v2\x14.testkit.v1.FileInfoR\bfileInfo\"A\n" +
+	"\x13CancelUploadRequest\x12*\n" +
+	"\fupload_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\vuploadToken\"\x8d\x01\n" +
+	"\x1aGenerateDownloadURLRequest\x12 \n" +
+	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\x12\x1f\n" +
+	"\vttl_seconds\x18\x02 \x01(\x05R\n" +
+	"ttlSeconds\x12\x1f\n" +
+	"\bfilename\x18\x03 \x01(\tH\x00R\bfilename\x88\x01\x01B\v\n" +
+	"\t_filename\"_\n" +
+	"\x1bGenerateDownloadURLResponse\x12!\n" +
+	"\fdownload_url\x18\x01 \x01(\tR\vdownloadUrl\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"\x96\x01\n" +
+	"\x19GenerateProcessURLRequest\x12 \n" +
+	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\x126\n" +
+	"\x03ops\x18\x02 \x03(\v2\x1a.testkit.v1.ImageProcessOpB\b\xbaH\x05\x92\x01\x02\b\x01R\x03ops\x12\x1f\n" +
+	"\vttl_seconds\x18\x03 \x01(\x05R\n" +
+	"ttlSeconds\"M\n" +
+	"\x1aGenerateProcessURLResponse\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"\xda\x01\n" +
+	"\x15GenerateCDNURLRequest\x12 \n" +
+	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\x12,\n" +
+	"\x03ops\x18\x02 \x03(\v2\x1a.testkit.v1.ImageProcessOpR\x03ops\x12+\n" +
+	"\x03ttl\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\x03ttl\x12\x16\n" +
+	"\x06public\x18\x04 \x01(\bR\x06public\x12\x1f\n" +
+	"\bfilename\x18\x05 \x01(\tH\x00R\bfilename\x88\x01\x01B\v\n" +
+	"\t_filename\"I\n" +
+	"\x16GenerateCDNURLResponse\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"\x91\x02\n" +
+	"\x12ListMyFilesRequest\x12\x1f\n" +
+	"\vpath_prefix\x18\x01 \x01(\tR\n" +
+	"pathPrefix\x12\x1c\n" +
+	"\textension\x18\x02 \x01(\tR\textension\x12.\n" +
+	"\x13content_type_prefix\x18\x03 \x01(\tR\x11contentTypePrefix\x120\n" +
+	"\border_by\x18\x04 \x01(\x0e2\x15.testkit.v1.SortFieldR\aorderBy\x12\x1e\n" +
+	"\n" +
+	"descending\x18\x05 \x01(\bR\n" +
+	"descending\x12\x1b\n" +
+	"\tpage_size\x18\x06 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\a \x01(\tR\tpageToken\"i\n" +
+	"\x13ListMyFilesResponse\x12*\n" +
+	"\x05files\x18\x01 \x03(\v2\x14.testkit.v1.FileInfoR\x05files\x12&\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"\x8b\x02\n" +
+	"\x17ListMyFilesPagedRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1f\n" +
+	"\vpath_prefix\x18\x03 \x01(\tR\n" +
+	"pathPrefix\x12\x1c\n" +
+	"\textension\x18\x04 \x01(\tR\textension\x12.\n" +
+	"\x13content_type_prefix\x18\x05 \x01(\tR\x11contentTypePrefix\x120\n" +
+	"\border_by\x18\x06 \x01(\x0e2\x15.testkit.v1.SortFieldR\aorderBy\x12\x1e\n" +
+	"\n" +
+	"descending\x18\a \x01(\bR\n" +
+	"descending\"\xb7\x01\n" +
+	"\x18ListMyFilesPagedResponse\x12*\n" +
+	"\x05files\x18\x01 \x03(\v2\x14.testkit.v1.FileInfoR\x05files\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x03R\n" +
+	"totalCount\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1f\n" +
+	"\vtotal_pages\x18\x04 \x01(\x05R\n" +
+	"totalPages\x12\x19\n" +
+	"\bhas_more\x18\x05 \x01(\bR\ahasMore\"4\n" +
+	"\x10GetMyFileRequest\x12 \n" +
+	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\"\x93\x03\n" +
+	"\x13UpdateMyFileRequest\x12 \n" +
+	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\x12\x1f\n" +
+	"\bfilename\x18\x02 \x01(\tH\x00R\bfilename\x88\x01\x01\x12 \n" +
+	"\tfile_path\x18\x03 \x01(\tH\x01R\bfilePath\x88\x01\x01\x12%\n" +
+	"\vdescription\x18\x04 \x01(\tH\x02R\vdescription\x88\x01\x01\x12I\n" +
+	"\bmetadata\x18\x05 \x03(\v2-.testkit.v1.UpdateMyFileRequest.MetadataEntryR\bmetadata\x12*\n" +
+	"\x0eclear_metadata\x18\a \x01(\bH\x03R\rclearMetadata\x88\x01\x01\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\v\n" +
+	"\t_filenameB\f\n" +
+	"\n" +
+	"_file_pathB\x0e\n" +
+	"\f_descriptionB\x11\n" +
+	"\x0f_clear_metadata\"7\n" +
+	"\x13DeleteMyFileRequest\x12 \n" +
+	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\"B\n" +
+	"\x19BatchDeleteMyFilesRequest\x12%\n" +
+	"\bfile_ids\x18\x01 \x03(\x03B\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x10dR\afileIds\"`\n" +
+	"\x1aBatchDeleteMyFilesResponse\x12#\n" +
+	"\rdeleted_count\x18\x01 \x01(\x05R\fdeletedCount\x12\x1d\n" +
+	"\n" +
+	"failed_ids\x18\x02 \x03(\x03R\tfailedIds\"\x80\x02\n" +
+	"\x16ListMyAuditLogsRequest\x12/\n" +
+	"\x06action\x18\x01 \x01(\x0e2\x17.testkit.v1.AuditActionR\x06action\x12?\n" +
+	"\vtarget_type\x18\x02 \x01(\x0e2\x1e.testkit.v1.AuditLogTargetTypeR\n" +
+	"targetType\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\x03 \x01(\tR\tstartTime\x12\x19\n" +
+	"\bend_time\x18\x04 \x01(\tR\aendTime\x12\x1b\n" +
+	"\tpage_size\x18\x05 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x06 \x01(\tR\tpageToken\"\x91\x01\n" +
+	"\x17ListMyAuditLogsResponse\x12-\n" +
+	"\x04logs\x18\x01 \x03(\v2\x19.testkit.v1.AuditLogEntryR\x04logs\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount\x12&\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"\xa6\x01\n" +
+	"\x14SetOwnerQuotaRequest\x12@\n" +
+	"\n" +
+	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\townerType\x12\"\n" +
+	"\bowner_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aownerId\x12(\n" +
+	"\vtotal_bytes\x18\x03 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\n" +
+	"totalBytes\"\x9d\x01\n" +
+	"\x14AddOwnerQuotaRequest\x12@\n" +
+	"\n" +
+	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\townerType\x12\"\n" +
+	"\bowner_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aownerId\x12\x1f\n" +
+	"\vdelta_bytes\x18\x03 \x01(\x03R\n" +
+	"deltaBytes\"\x99\x03\n" +
+	"\x15AdminListFilesRequest\x124\n" +
+	"\n" +
+	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeR\townerType\x12\x19\n" +
+	"\bowner_id\x18\x02 \x01(\x03R\aownerId\x12\x1f\n" +
+	"\vpath_prefix\x18\x03 \x01(\tR\n" +
+	"pathPrefix\x12\x1c\n" +
+	"\textension\x18\x04 \x01(\tR\textension\x12.\n" +
+	"\x13content_type_prefix\x18\x05 \x01(\tR\x11contentTypePrefix\x120\n" +
+	"\border_by\x18\x06 \x01(\x0e2\x15.testkit.v1.SortFieldR\aorderBy\x12\x1e\n" +
+	"\n" +
+	"descending\x18\a \x01(\bR\n" +
+	"descending\x12\x1b\n" +
+	"\tpage_size\x18\b \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\t \x01(\tR\tpageToken\x12\x1a\n" +
+	"\bprovider\x18\n" +
+	" \x01(\tR\bprovider\x12\x16\n" +
+	"\x06bucket\x18\v \x01(\tR\x06bucket\"\x92\x01\n" +
+	"\x16AdminListFilesResponse\x12/\n" +
+	"\x05files\x18\x01 \x03(\v2\x19.testkit.v1.AdminFileInfoR\x05files\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount\x12&\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"7\n" +
+	"\x13AdminGetFileRequest\x12 \n" +
+	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\":\n" +
+	"\x16AdminDeleteFileRequest\x12 \n" +
+	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\"|\n" +
+	"\x14AdminGetQuotaRequest\x12@\n" +
+	"\n" +
+	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\townerType\x12\"\n" +
+	"\bowner_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aownerId\"\xa6\x01\n" +
+	"\x14AdminSetQuotaRequest\x12@\n" +
+	"\n" +
+	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\townerType\x12\"\n" +
+	"\bowner_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aownerId\x12(\n" +
+	"\vtotal_bytes\x18\x03 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\n" +
+	"totalBytes\"g\n" +
+	"\x14AdminGetStatsRequest\x124\n" +
+	"\n" +
+	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeR\townerType\x12\x19\n" +
+	"\bowner_id\x18\x02 \x01(\x03R\aownerId\"\xe0\x02\n" +
+	"\x15AdminGetStatsResponse\x12#\n" +
+	"\rtotal_objects\x18\x01 \x01(\x03R\ftotalObjects\x12\x1f\n" +
+	"\vtotal_files\x18\x02 \x01(\x03R\n" +
+	"totalFiles\x12%\n" +
+	"\x0ephysical_bytes\x18\x04 \x01(\x03R\rphysicalBytes\x12#\n" +
+	"\rlogical_bytes\x18\x05 \x01(\x03R\flogicalBytes\x127\n" +
+	"\vowner_stats\x18\b \x03(\v2\x16.testkit.v1.OwnerStatsR\n" +
+	"ownerStats\x12@\n" +
+	"\x0eprovider_stats\x18\x06 \x03(\v2\x19.testkit.v1.ProviderStatsR\rproviderStats\x12:\n" +
+	"\fbucket_stats\x18\a \x03(\v2\x17.testkit.v1.BucketStatsR\vbucketStats\"T\n" +
+	"\x1aAdminListProvidersResponse\x126\n" +
+	"\tproviders\x18\x01 \x03(\v2\x18.testkit.v1.ProviderInfoR\tproviders\"L\n" +
+	"\x18AdminListBucketsResponse\x120\n" +
+	"\abuckets\x18\x01 \x03(\v2\x16.testkit.v1.BucketInfoR\abuckets\"\x88\x01\n" +
+	" AdminSoftDeleteOwnerFilesRequest\x12@\n" +
+	"\n" +
+	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\townerType\x12\"\n" +
+	"\bowner_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aownerId\"o\n" +
+	"!AdminSoftDeleteOwnerFilesResponse\x12#\n" +
+	"\rfiles_deleted\x18\x01 \x01(\x03R\ffilesDeleted\x12%\n" +
+	"\x0ebytes_released\x18\x02 \x01(\x03R\rbytesReleased\"\x7f\n" +
+	"\x17AdminDeleteOwnerRequest\x12@\n" +
+	"\n" +
+	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\townerType\x12\"\n" +
+	"\bowner_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aownerId\"f\n" +
+	"\x18AdminDeleteOwnerResponse\x12#\n" +
+	"\rfiles_deleted\x18\x01 \x01(\x03R\ffilesDeleted\x12%\n" +
+	"\x0ebytes_released\x18\x02 \x01(\x03R\rbytesReleased\"\xc4\x03\n" +
+	"\x19AdminListAuditLogsRequest\x12/\n" +
+	"\x06action\x18\x01 \x01(\x0e2\x17.testkit.v1.AuditActionR\x06action\x12?\n" +
+	"\vtarget_type\x18\x02 \x01(\x0e2\x1e.testkit.v1.AuditLogTargetTypeR\n" +
+	"targetType\x122\n" +
+	"\x06status\x18\x03 \x01(\x0e2\x1a.testkit.v1.AuditLogStatusR\x06status\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x04 \x01(\tR\trequestId\x124\n" +
+	"\n" +
+	"owner_type\x18\x05 \x01(\x0e2\x15.testkit.v1.OwnerTypeR\townerType\x12\x19\n" +
+	"\bowner_id\x18\x06 \x01(\x03R\aownerId\x12\x1b\n" +
+	"\ttarget_id\x18\a \x01(\x03R\btargetId\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\b \x01(\tR\tstartTime\x12\x19\n" +
+	"\bend_time\x18\t \x01(\tR\aendTime\x12\x1b\n" +
+	"\tpage_size\x18\n" +
+	" \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\v \x01(\tR\tpageToken\"\x94\x01\n" +
+	"\x1aAdminListAuditLogsResponse\x12-\n" +
+	"\x04logs\x18\x01 \x03(\v2\x19.testkit.v1.AuditLogEntryR\x04logs\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount\x12&\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken*\xcb\x01\n" +
 	"\vLoginMethod\x12\x1c\n" +
 	"\x18LOGIN_METHOD_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bLOGIN_METHOD_EMAIL_PASSWORD\x10\x01\x12\x1f\n" +
@@ -7205,7 +12595,92 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x12USER_SORT_FIELD_ID\x10\x01\x12\x1e\n" +
 	"\x1aUSER_SORT_FIELD_CREATED_AT\x10\x02\x12\x1e\n" +
 	"\x1aUSER_SORT_FIELD_UPDATED_AT\x10\x03\x12!\n" +
-	"\x1dUSER_SORT_FIELD_LAST_LOGIN_AT\x10\x042\xcc6\n" +
+	"\x1dUSER_SORT_FIELD_LAST_LOGIN_AT\x10\x04*\x9a\x01\n" +
+	"\tOwnerType\x12\x1a\n" +
+	"\x16OWNER_TYPE_UNSPECIFIED\x10\x00\x12\x13\n" +
+	"\x0fOWNER_TYPE_USER\x10\x01\x12\x15\n" +
+	"\x11OWNER_TYPE_SYSTEM\x10\x02\x12\x14\n" +
+	"\x10OWNER_TYPE_GROUP\x10\x03\x12\x17\n" +
+	"\x13OWNER_TYPE_BUSINESS\x10\x04\x12\x16\n" +
+	"\x12OWNER_TYPE_SERVICE\x10\x05*\xae\x01\n" +
+	"\x06Vendor\x12\x16\n" +
+	"\x12VENDOR_UNSPECIFIED\x10\x00\x12\x15\n" +
+	"\x11VENDOR_ALIYUN_OSS\x10\x01\x12\x11\n" +
+	"\rVENDOR_AWS_S3\x10\x02\x12\x18\n" +
+	"\x14VENDOR_S3_COMPATIBLE\x10\x03\x12\x16\n" +
+	"\x12VENDOR_TENCENT_COS\x10\x04\x12\x15\n" +
+	"\x11VENDOR_HUAWEI_OBS\x10\x05\x12\x19\n" +
+	"\x15VENDOR_VOLCENGINE_TOS\x10\x06*\xa9\x01\n" +
+	"\fStorageClass\x12\x1d\n" +
+	"\x19STORAGE_CLASS_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16STORAGE_CLASS_STANDARD\x10\x01\x12#\n" +
+	"\x1fSTORAGE_CLASS_INFREQUENT_ACCESS\x10\x02\x12\x19\n" +
+	"\x15STORAGE_CLASS_ARCHIVE\x10\x03\x12\x1e\n" +
+	"\x1aSTORAGE_CLASS_DEEP_ARCHIVE\x10\x04*}\n" +
+	"\tBucketACL\x12\x1a\n" +
+	"\x16BUCKET_ACL_UNSPECIFIED\x10\x00\x12\x16\n" +
+	"\x12BUCKET_ACL_PRIVATE\x10\x01\x12\x1a\n" +
+	"\x16BUCKET_ACL_PUBLIC_READ\x10\x02\x12 \n" +
+	"\x1cBUCKET_ACL_PUBLIC_READ_WRITE\x10\x03*\x86\x01\n" +
+	"\x0fImageResizeMode\x12!\n" +
+	"\x1dIMAGE_RESIZE_MODE_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15IMAGE_RESIZE_MODE_FIT\x10\x01\x12\x1a\n" +
+	"\x16IMAGE_RESIZE_MODE_FILL\x10\x02\x12\x19\n" +
+	"\x15IMAGE_RESIZE_MODE_PAD\x10\x03*\xc8\x01\n" +
+	"\vImageFormat\x12\x1c\n" +
+	"\x18IMAGE_FORMAT_UNSPECIFIED\x10\x00\x12\x14\n" +
+	"\x10IMAGE_FORMAT_JPG\x10\x01\x12\x14\n" +
+	"\x10IMAGE_FORMAT_PNG\x10\x02\x12\x15\n" +
+	"\x11IMAGE_FORMAT_WEBP\x10\x03\x12\x14\n" +
+	"\x10IMAGE_FORMAT_GIF\x10\x04\x12\x14\n" +
+	"\x10IMAGE_FORMAT_BMP\x10\x05\x12\x15\n" +
+	"\x11IMAGE_FORMAT_HEIC\x10\x06\x12\x15\n" +
+	"\x11IMAGE_FORMAT_AVIF\x10\a*p\n" +
+	"\tSortField\x12\x1a\n" +
+	"\x16SORT_FIELD_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15SORT_FIELD_CREATED_AT\x10\x01\x12\x17\n" +
+	"\x13SORT_FIELD_FILENAME\x10\x02\x12\x13\n" +
+	"\x0fSORT_FIELD_SIZE\x10\x03*\x86\x04\n" +
+	"\vAuditAction\x12\x1c\n" +
+	"\x18AUDIT_ACTION_UNSPECIFIED\x10\x00\x12\x17\n" +
+	"\x13AUDIT_ACTION_UPLOAD\x10\x01\x12\x17\n" +
+	"\x13AUDIT_ACTION_UPDATE\x10\x02\x12\x17\n" +
+	"\x13AUDIT_ACTION_DELETE\x10\x03\x12\x1d\n" +
+	"\x19AUDIT_ACTION_BATCH_DELETE\x10\x04\x12\x1d\n" +
+	"\x19AUDIT_ACTION_ADMIN_DELETE\x10\x05\x12 \n" +
+	"\x1cAUDIT_ACTION_ADMIN_SET_QUOTA\x10\x06\x12(\n" +
+	"$AUDIT_ACTION_ADMIN_SOFT_DELETE_OWNER\x10\a\x12#\n" +
+	"\x1fAUDIT_ACTION_ADMIN_DELETE_OWNER\x10\b\x12 \n" +
+	"\x1cAUDIT_ACTION_SET_OWNER_QUOTA\x10\t\x12 \n" +
+	"\x1cAUDIT_ACTION_ADD_OWNER_QUOTA\x10\n" +
+	"\x12&\n" +
+	"\"AUDIT_ACTION_UPLOAD_SESSION_CREATE\x10\v\x12'\n" +
+	"#AUDIT_ACTION_UPLOAD_SESSION_CONFIRM\x10\f\x12&\n" +
+	"\"AUDIT_ACTION_UPLOAD_SESSION_CANCEL\x10\r\x12\"\n" +
+	"\x1eAUDIT_ACTION_UPLOAD_SESSION_GC\x10\x0e*\xcc\x01\n" +
+	"\x13UploadSessionStatus\x12%\n" +
+	"!UPLOAD_SESSION_STATUS_UNSPECIFIED\x10\x00\x12!\n" +
+	"\x1dUPLOAD_SESSION_STATUS_PENDING\x10\x01\x12#\n" +
+	"\x1fUPLOAD_SESSION_STATUS_CONFIRMED\x10\x02\x12!\n" +
+	"\x1dUPLOAD_SESSION_STATUS_EXPIRED\x10\x03\x12#\n" +
+	"\x1fUPLOAD_SESSION_STATUS_CANCELLED\x10\x04*m\n" +
+	"\x0eAuditLogStatus\x12 \n" +
+	"\x1cAUDIT_LOG_STATUS_UNSPECIFIED\x10\x00\x12\x1c\n" +
+	"\x18AUDIT_LOG_STATUS_SUCCESS\x10\x01\x12\x1b\n" +
+	"\x17AUDIT_LOG_STATUS_FAILED\x10\x02*\x9d\x01\n" +
+	"\x12AuditLogTargetType\x12%\n" +
+	"!AUDIT_LOG_TARGET_TYPE_UNSPECIFIED\x10\x00\x12\x1e\n" +
+	"\x1aAUDIT_LOG_TARGET_TYPE_FILE\x10\x01\x12\x1f\n" +
+	"\x1bAUDIT_LOG_TARGET_TYPE_QUOTA\x10\x02\x12\x1f\n" +
+	"\x1bAUDIT_LOG_TARGET_TYPE_OWNER\x10\x03*\xf2\x01\n" +
+	"\x10ImageProcessType\x12\"\n" +
+	"\x1eIMAGE_PROCESS_TYPE_UNSPECIFIED\x10\x00\x12\x1d\n" +
+	"\x19IMAGE_PROCESS_TYPE_RESIZE\x10\x01\x12\x1b\n" +
+	"\x17IMAGE_PROCESS_TYPE_CROP\x10\x02\x12\x1e\n" +
+	"\x1aIMAGE_PROCESS_TYPE_QUALITY\x10\x03\x12\x1d\n" +
+	"\x19IMAGE_PROCESS_TYPE_FORMAT\x10\x04\x12 \n" +
+	"\x1cIMAGE_PROCESS_TYPE_WATERMARK\x10\x05\x12\x1d\n" +
+	"\x19IMAGE_PROCESS_TYPE_ROTATE\x10\x062\xf0R\n" +
 	"\x0eTestkitService\x12?\n" +
 	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x10.testkit.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/ping\x12[\n" +
 	"\x05Login\x12\x18.testkit.v1.LoginRequest\x1a\x19.testkit.v1.TokenResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/auth/login\x12d\n" +
@@ -7274,7 +12749,37 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x12GetPermissionGroup\x12%.testkit.v1.GetPermissionGroupRequest\x1a\x1b.testkit.v1.PermissionGroup\"<\x82\xd3\xe4\x93\x026\x124/api/v1/rbac/permission-groups/{permission_group_id}\x12\x9f\x01\n" +
 	"\x15UpdatePermissionGroup\x12(.testkit.v1.UpdatePermissionGroupRequest\x1a\x1b.testkit.v1.PermissionGroup\"?\x82\xd3\xe4\x93\x029:\x01*\x1a4/api/v1/rbac/permission-groups/{permission_group_id}\x12\x97\x01\n" +
 	"\x15DeletePermissionGroup\x12(.testkit.v1.DeletePermissionGroupRequest\x1a\x16.google.protobuf.Empty\"<\x82\xd3\xe4\x93\x026*4/api/v1/rbac/permission-groups/{permission_group_id}\x12\x91\x01\n" +
-	"\x14ListPermissionGroups\x12'.testkit.v1.ListPermissionGroupsRequest\x1a(.testkit.v1.ListPermissionGroupsResponse\"&\x82\xd3\xe4\x93\x02 \x12\x1e/api/v1/rbac/permission-groupsB\xa5\x01\n" +
+	"\x14ListPermissionGroups\x12'.testkit.v1.ListPermissionGroupsRequest\x1a(.testkit.v1.ListPermissionGroupsResponse\"&\x82\xd3\xe4\x93\x02 \x12\x1e/api/v1/rbac/permission-groups\x12\x82\x01\n" +
+	"\x11GenerateUploadURL\x12$.testkit.v1.GenerateUploadURLRequest\x1a%.testkit.v1.GenerateUploadURLResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/v1/files/uploads\x12{\n" +
+	"\x10GetSTSCredential\x12#.testkit.v1.GetSTSCredentialRequest\x1a$.testkit.v1.GetSTSCredentialResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/v1/files/sts\x12\x90\x01\n" +
+	"\x15BatchGetSTSCredential\x12(.testkit.v1.BatchGetSTSCredentialRequest\x1a).testkit.v1.BatchGetSTSCredentialResponse\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/v1/files/sts:batch\x12~\n" +
+	"\rConfirmUpload\x12 .testkit.v1.ConfirmUploadRequest\x1a!.testkit.v1.ConfirmUploadResponse\"(\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/api/v1/files/uploads:confirm\x12p\n" +
+	"\fCancelUpload\x12\x1f.testkit.v1.CancelUploadRequest\x1a\x16.google.protobuf.Empty\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/v1/files/uploads:cancel\x12\x96\x01\n" +
+	"\x13GenerateDownloadURL\x12&.testkit.v1.GenerateDownloadURLRequest\x1a'.testkit.v1.GenerateDownloadURLResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/api/v1/files/{file_id}:downloadUrl\x12\x92\x01\n" +
+	"\x12GenerateProcessURL\x12%.testkit.v1.GenerateProcessURLRequest\x1a&.testkit.v1.GenerateProcessURLResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/v1/files/{file_id}:processUrl\x12\x82\x01\n" +
+	"\x0eGenerateCDNURL\x12!.testkit.v1.GenerateCDNURLRequest\x1a\".testkit.v1.GenerateCDNURLResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/v1/files/{file_id}:cdnUrl\x12e\n" +
+	"\vListMyFiles\x12\x1e.testkit.v1.ListMyFilesRequest\x1a\x1f.testkit.v1.ListMyFilesResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/api/v1/files\x12y\n" +
+	"\x10ListMyFilesPaged\x12#.testkit.v1.ListMyFilesPagedRequest\x1a$.testkit.v1.ListMyFilesPagedResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/files:page\x12`\n" +
+	"\tGetMyFile\x12\x1c.testkit.v1.GetMyFileRequest\x1a\x14.testkit.v1.FileInfo\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/api/v1/files/{file_id}\x12i\n" +
+	"\fUpdateMyFile\x12\x1f.testkit.v1.UpdateMyFileRequest\x1a\x14.testkit.v1.FileInfo\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*2\x17/api/v1/files/{file_id}\x12h\n" +
+	"\fDeleteMyFile\x12\x1f.testkit.v1.DeleteMyFileRequest\x1a\x16.google.protobuf.Empty\"\x1f\x82\xd3\xe4\x93\x02\x19*\x17/api/v1/files/{file_id}\x12\x89\x01\n" +
+	"\x12BatchDeleteMyFiles\x12%.testkit.v1.BatchDeleteMyFilesRequest\x1a&.testkit.v1.BatchDeleteMyFilesResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/v1/files:batchDelete\x12Z\n" +
+	"\n" +
+	"GetMyQuota\x12\x16.google.protobuf.Empty\x1a\x15.testkit.v1.QuotaInfo\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/api/v1/storage/quota\x12~\n" +
+	"\x0fListMyAuditLogs\x12\".testkit.v1.ListMyAuditLogsRequest\x1a#.testkit.v1.ListMyAuditLogsResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/api/v1/storage/audit-logs\x12q\n" +
+	"\rSetOwnerQuota\x12 .testkit.v1.SetOwnerQuotaRequest\x1a\x15.testkit.v1.QuotaInfo\"'\x82\xd3\xe4\x93\x02!:\x01*\x1a\x1c/api/v1/storage/owners/quota\x12u\n" +
+	"\rAddOwnerQuota\x12 .testkit.v1.AddOwnerQuotaRequest\x1a\x15.testkit.v1.QuotaInfo\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/v1/storage/owners/quota:add\x12t\n" +
+	"\x0eAdminListFiles\x12!.testkit.v1.AdminListFilesRequest\x1a\".testkit.v1.AdminListFilesResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/admin/files\x12q\n" +
+	"\fAdminGetFile\x12\x1f.testkit.v1.AdminGetFileRequest\x1a\x19.testkit.v1.AdminFileInfo\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/admin/files/{file_id}\x12t\n" +
+	"\x0fAdminDeleteFile\x12\".testkit.v1.AdminDeleteFileRequest\x1a\x16.google.protobuf.Empty\"%\x82\xd3\xe4\x93\x02\x1f*\x1d/api/v1/admin/files/{file_id}\x12m\n" +
+	"\rAdminGetQuota\x12 .testkit.v1.AdminGetQuotaRequest\x1a\x15.testkit.v1.QuotaInfo\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/api/v1/admin/storage/quota\x12p\n" +
+	"\rAdminSetQuota\x12 .testkit.v1.AdminSetQuotaRequest\x1a\x15.testkit.v1.QuotaInfo\"&\x82\xd3\xe4\x93\x02 :\x01*\x1a\x1b/api/v1/admin/storage/quota\x12y\n" +
+	"\rAdminGetStats\x12 .testkit.v1.AdminGetStatsRequest\x1a!.testkit.v1.AdminGetStatsResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/api/v1/admin/storage/stats\x12}\n" +
+	"\x12AdminListProviders\x12\x16.google.protobuf.Empty\x1a&.testkit.v1.AdminListProvidersResponse\"'\x82\xd3\xe4\x93\x02!\x12\x1f/api/v1/admin/storage/providers\x12w\n" +
+	"\x10AdminListBuckets\x12\x16.google.protobuf.Empty\x1a$.testkit.v1.AdminListBucketsResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/admin/storage/buckets\x12\xb1\x01\n" +
+	"\x19AdminSoftDeleteOwnerFiles\x12,.testkit.v1.AdminSoftDeleteOwnerFilesRequest\x1a-.testkit.v1.AdminSoftDeleteOwnerFilesResponse\"7\x82\xd3\xe4\x93\x021:\x01*\",/api/v1/admin/storage/owners:softDeleteFiles\x12\x8d\x01\n" +
+	"\x10AdminDeleteOwner\x12#.testkit.v1.AdminDeleteOwnerRequest\x1a$.testkit.v1.AdminDeleteOwnerResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/api/v1/admin/storage/owners:delete\x12\x85\x01\n" +
+	"\x12AdminListAuditLogs\x12%.testkit.v1.AdminListAuditLogsRequest\x1a&.testkit.v1.AdminListAuditLogsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/admin/audit-logsB\xa5\x01\n" +
 	"\x0ecom.testkit.v1B\fTestkitProtoP\x01Z<github.com/servekit/testkit-service/gen/testkit/v1;testkitv1\xa2\x02\x03TXX\xaa\x02\n" +
 	"Testkit.V1\xca\x02\n" +
 	"Testkit\\V1\xe2\x02\x16Testkit\\V1\\GPBMetadata\xea\x02\vTestkit::V1b\x06proto3"
@@ -7291,110 +12796,189 @@ func file_testkit_v1_testkit_proto_rawDescGZIP() []byte {
 	return file_testkit_v1_testkit_proto_rawDescData
 }
 
-var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 10)
-var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 89)
+var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 22)
+var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 154)
 var file_testkit_v1_testkit_proto_goTypes = []any{
-	(LoginMethod)(0),                     // 0: testkit.v1.LoginMethod
-	(IdentityProvider)(0),                // 1: testkit.v1.IdentityProvider
-	(VerificationChannel)(0),             // 2: testkit.v1.VerificationChannel
-	(VerificationPurpose)(0),             // 3: testkit.v1.VerificationPurpose
-	(UserType)(0),                        // 4: testkit.v1.UserType
-	(UserStatus)(0),                      // 5: testkit.v1.UserStatus
-	(Gender)(0),                          // 6: testkit.v1.Gender
-	(DeviceType)(0),                      // 7: testkit.v1.DeviceType
-	(LoginAction)(0),                     // 8: testkit.v1.LoginAction
-	(UserSortField)(0),                   // 9: testkit.v1.UserSortField
-	(*Pong)(nil),                         // 10: testkit.v1.Pong
-	(*LoginRequest)(nil),                 // 11: testkit.v1.LoginRequest
-	(*RegisterRequest)(nil),              // 12: testkit.v1.RegisterRequest
-	(*SendVerificationCodeRequest)(nil),  // 13: testkit.v1.SendVerificationCodeRequest
-	(*SendVerificationCodeResponse)(nil), // 14: testkit.v1.SendVerificationCodeResponse
-	(*RefreshSessionRequest)(nil),        // 15: testkit.v1.RefreshSessionRequest
-	(*User)(nil),                         // 16: testkit.v1.User
-	(*Identity)(nil),                     // 17: testkit.v1.Identity
-	(*Session)(nil),                      // 18: testkit.v1.Session
-	(*Group)(nil),                        // 19: testkit.v1.Group
-	(*Role)(nil),                         // 20: testkit.v1.Role
-	(*Permission)(nil),                   // 21: testkit.v1.Permission
-	(*PermissionGroup)(nil),              // 22: testkit.v1.PermissionGroup
-	(*GroupMember)(nil),                  // 23: testkit.v1.GroupMember
-	(*LoginLog)(nil),                     // 24: testkit.v1.LoginLog
-	(*UserRole)(nil),                     // 25: testkit.v1.UserRole
-	(*TokenResponse)(nil),                // 26: testkit.v1.TokenResponse
-	(*GetProfileRequest)(nil),            // 27: testkit.v1.GetProfileRequest
-	(*UpdateProfileRequest)(nil),         // 28: testkit.v1.UpdateProfileRequest
-	(*ChangePasswordRequest)(nil),        // 29: testkit.v1.ChangePasswordRequest
-	(*ResetPasswordRequest)(nil),         // 30: testkit.v1.ResetPasswordRequest
-	(*ListIdentitiesRequest)(nil),        // 31: testkit.v1.ListIdentitiesRequest
-	(*ListIdentitiesResponse)(nil),       // 32: testkit.v1.ListIdentitiesResponse
-	(*BindIdentityRequest)(nil),          // 33: testkit.v1.BindIdentityRequest
-	(*BindOAuthIdentityRequest)(nil),     // 34: testkit.v1.BindOAuthIdentityRequest
-	(*BindOAuthIdentityResponse)(nil),    // 35: testkit.v1.BindOAuthIdentityResponse
-	(*UnbindIdentityRequest)(nil),        // 36: testkit.v1.UnbindIdentityRequest
-	(*ListSessionsRequest)(nil),          // 37: testkit.v1.ListSessionsRequest
-	(*ListSessionsResponse)(nil),         // 38: testkit.v1.ListSessionsResponse
-	(*RevokeSessionRequest)(nil),         // 39: testkit.v1.RevokeSessionRequest
-	(*RevokeAllSessionsRequest)(nil),     // 40: testkit.v1.RevokeAllSessionsRequest
-	(*GetSessionRequest)(nil),            // 41: testkit.v1.GetSessionRequest
-	(*GetSessionResponse)(nil),           // 42: testkit.v1.GetSessionResponse
-	(*IssueSessionCodeRequest)(nil),      // 43: testkit.v1.IssueSessionCodeRequest
-	(*IssueSessionCodeResponse)(nil),     // 44: testkit.v1.IssueSessionCodeResponse
-	(*ExchangeSessionCodeRequest)(nil),   // 45: testkit.v1.ExchangeSessionCodeRequest
-	(*ExchangeSessionCodeResponse)(nil),  // 46: testkit.v1.ExchangeSessionCodeResponse
-	(*GetOAuthURLRequest)(nil),           // 47: testkit.v1.GetOAuthURLRequest
-	(*GetOAuthURLResponse)(nil),          // 48: testkit.v1.GetOAuthURLResponse
-	(*SocialLoginRequest)(nil),           // 49: testkit.v1.SocialLoginRequest
-	(*MiniProgramLoginRequest)(nil),      // 50: testkit.v1.MiniProgramLoginRequest
-	(*MiniProgramPhoneLoginRequest)(nil), // 51: testkit.v1.MiniProgramPhoneLoginRequest
-	(*SocialLoginResponse)(nil),          // 52: testkit.v1.SocialLoginResponse
-	(*CreateUserRequest)(nil),            // 53: testkit.v1.CreateUserRequest
-	(*CreateUserResponse)(nil),           // 54: testkit.v1.CreateUserResponse
-	(*GetUserRequest)(nil),               // 55: testkit.v1.GetUserRequest
-	(*DisableUserRequest)(nil),           // 56: testkit.v1.DisableUserRequest
-	(*ListUsersRequest)(nil),             // 57: testkit.v1.ListUsersRequest
-	(*ListUsersResponse)(nil),            // 58: testkit.v1.ListUsersResponse
-	(*ListUsersPagedRequest)(nil),        // 59: testkit.v1.ListUsersPagedRequest
-	(*ListUsersPagedResponse)(nil),       // 60: testkit.v1.ListUsersPagedResponse
-	(*GetLoginLogsRequest)(nil),          // 61: testkit.v1.GetLoginLogsRequest
-	(*GetLoginLogsResponse)(nil),         // 62: testkit.v1.GetLoginLogsResponse
-	(*CreateGroupRequest)(nil),           // 63: testkit.v1.CreateGroupRequest
-	(*GetGroupRequest)(nil),              // 64: testkit.v1.GetGroupRequest
-	(*UpdateGroupRequest)(nil),           // 65: testkit.v1.UpdateGroupRequest
-	(*ListGroupsRequest)(nil),            // 66: testkit.v1.ListGroupsRequest
-	(*ListGroupsResponse)(nil),           // 67: testkit.v1.ListGroupsResponse
-	(*DeleteGroupRequest)(nil),           // 68: testkit.v1.DeleteGroupRequest
-	(*AddGroupMemberRequest)(nil),        // 69: testkit.v1.AddGroupMemberRequest
-	(*RemoveGroupMemberRequest)(nil),     // 70: testkit.v1.RemoveGroupMemberRequest
-	(*ListGroupMembersRequest)(nil),      // 71: testkit.v1.ListGroupMembersRequest
-	(*ListGroupMembersResponse)(nil),     // 72: testkit.v1.ListGroupMembersResponse
-	(*AddGroupRoleRequest)(nil),          // 73: testkit.v1.AddGroupRoleRequest
-	(*RemoveGroupRoleRequest)(nil),       // 74: testkit.v1.RemoveGroupRoleRequest
-	(*ListGroupRolesRequest)(nil),        // 75: testkit.v1.ListGroupRolesRequest
-	(*ListGroupRolesResponse)(nil),       // 76: testkit.v1.ListGroupRolesResponse
-	(*CreateRoleRequest)(nil),            // 77: testkit.v1.CreateRoleRequest
-	(*GetRoleRequest)(nil),               // 78: testkit.v1.GetRoleRequest
-	(*UpdateRoleRequest)(nil),            // 79: testkit.v1.UpdateRoleRequest
-	(*DeleteRoleRequest)(nil),            // 80: testkit.v1.DeleteRoleRequest
-	(*ListRolesRequest)(nil),             // 81: testkit.v1.ListRolesRequest
-	(*ListRolesResponse)(nil),            // 82: testkit.v1.ListRolesResponse
-	(*AssignRoleRequest)(nil),            // 83: testkit.v1.AssignRoleRequest
-	(*RevokeRoleRequest)(nil),            // 84: testkit.v1.RevokeRoleRequest
-	(*ListUserRolesRequest)(nil),         // 85: testkit.v1.ListUserRolesRequest
-	(*ListUserRolesResponse)(nil),        // 86: testkit.v1.ListUserRolesResponse
-	(*ListPermissionsRequest)(nil),       // 87: testkit.v1.ListPermissionsRequest
-	(*ListPermissionsResponse)(nil),      // 88: testkit.v1.ListPermissionsResponse
-	(*CreatePermissionRequest)(nil),      // 89: testkit.v1.CreatePermissionRequest
-	(*GetPermissionRequest)(nil),         // 90: testkit.v1.GetPermissionRequest
-	(*UpdatePermissionRequest)(nil),      // 91: testkit.v1.UpdatePermissionRequest
-	(*DeletePermissionRequest)(nil),      // 92: testkit.v1.DeletePermissionRequest
-	(*CreatePermissionGroupRequest)(nil), // 93: testkit.v1.CreatePermissionGroupRequest
-	(*GetPermissionGroupRequest)(nil),    // 94: testkit.v1.GetPermissionGroupRequest
-	(*UpdatePermissionGroupRequest)(nil), // 95: testkit.v1.UpdatePermissionGroupRequest
-	(*DeletePermissionGroupRequest)(nil), // 96: testkit.v1.DeletePermissionGroupRequest
-	(*ListPermissionGroupsRequest)(nil),  // 97: testkit.v1.ListPermissionGroupsRequest
-	(*ListPermissionGroupsResponse)(nil), // 98: testkit.v1.ListPermissionGroupsResponse
-	(*timestamppb.Timestamp)(nil),        // 99: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),                // 100: google.protobuf.Empty
+	(LoginMethod)(0),                          // 0: testkit.v1.LoginMethod
+	(IdentityProvider)(0),                     // 1: testkit.v1.IdentityProvider
+	(VerificationChannel)(0),                  // 2: testkit.v1.VerificationChannel
+	(VerificationPurpose)(0),                  // 3: testkit.v1.VerificationPurpose
+	(UserType)(0),                             // 4: testkit.v1.UserType
+	(UserStatus)(0),                           // 5: testkit.v1.UserStatus
+	(Gender)(0),                               // 6: testkit.v1.Gender
+	(DeviceType)(0),                           // 7: testkit.v1.DeviceType
+	(LoginAction)(0),                          // 8: testkit.v1.LoginAction
+	(UserSortField)(0),                        // 9: testkit.v1.UserSortField
+	(OwnerType)(0),                            // 10: testkit.v1.OwnerType
+	(Vendor)(0),                               // 11: testkit.v1.Vendor
+	(StorageClass)(0),                         // 12: testkit.v1.StorageClass
+	(BucketACL)(0),                            // 13: testkit.v1.BucketACL
+	(ImageResizeMode)(0),                      // 14: testkit.v1.ImageResizeMode
+	(ImageFormat)(0),                          // 15: testkit.v1.ImageFormat
+	(SortField)(0),                            // 16: testkit.v1.SortField
+	(AuditAction)(0),                          // 17: testkit.v1.AuditAction
+	(UploadSessionStatus)(0),                  // 18: testkit.v1.UploadSessionStatus
+	(AuditLogStatus)(0),                       // 19: testkit.v1.AuditLogStatus
+	(AuditLogTargetType)(0),                   // 20: testkit.v1.AuditLogTargetType
+	(ImageProcessType)(0),                     // 21: testkit.v1.ImageProcessType
+	(*Pong)(nil),                              // 22: testkit.v1.Pong
+	(*LoginRequest)(nil),                      // 23: testkit.v1.LoginRequest
+	(*RegisterRequest)(nil),                   // 24: testkit.v1.RegisterRequest
+	(*SendVerificationCodeRequest)(nil),       // 25: testkit.v1.SendVerificationCodeRequest
+	(*SendVerificationCodeResponse)(nil),      // 26: testkit.v1.SendVerificationCodeResponse
+	(*RefreshSessionRequest)(nil),             // 27: testkit.v1.RefreshSessionRequest
+	(*User)(nil),                              // 28: testkit.v1.User
+	(*Identity)(nil),                          // 29: testkit.v1.Identity
+	(*Session)(nil),                           // 30: testkit.v1.Session
+	(*Group)(nil),                             // 31: testkit.v1.Group
+	(*Role)(nil),                              // 32: testkit.v1.Role
+	(*Permission)(nil),                        // 33: testkit.v1.Permission
+	(*PermissionGroup)(nil),                   // 34: testkit.v1.PermissionGroup
+	(*GroupMember)(nil),                       // 35: testkit.v1.GroupMember
+	(*LoginLog)(nil),                          // 36: testkit.v1.LoginLog
+	(*UserRole)(nil),                          // 37: testkit.v1.UserRole
+	(*TokenResponse)(nil),                     // 38: testkit.v1.TokenResponse
+	(*GetProfileRequest)(nil),                 // 39: testkit.v1.GetProfileRequest
+	(*UpdateProfileRequest)(nil),              // 40: testkit.v1.UpdateProfileRequest
+	(*ChangePasswordRequest)(nil),             // 41: testkit.v1.ChangePasswordRequest
+	(*ResetPasswordRequest)(nil),              // 42: testkit.v1.ResetPasswordRequest
+	(*ListIdentitiesRequest)(nil),             // 43: testkit.v1.ListIdentitiesRequest
+	(*ListIdentitiesResponse)(nil),            // 44: testkit.v1.ListIdentitiesResponse
+	(*BindIdentityRequest)(nil),               // 45: testkit.v1.BindIdentityRequest
+	(*BindOAuthIdentityRequest)(nil),          // 46: testkit.v1.BindOAuthIdentityRequest
+	(*BindOAuthIdentityResponse)(nil),         // 47: testkit.v1.BindOAuthIdentityResponse
+	(*UnbindIdentityRequest)(nil),             // 48: testkit.v1.UnbindIdentityRequest
+	(*ListSessionsRequest)(nil),               // 49: testkit.v1.ListSessionsRequest
+	(*ListSessionsResponse)(nil),              // 50: testkit.v1.ListSessionsResponse
+	(*RevokeSessionRequest)(nil),              // 51: testkit.v1.RevokeSessionRequest
+	(*RevokeAllSessionsRequest)(nil),          // 52: testkit.v1.RevokeAllSessionsRequest
+	(*GetSessionRequest)(nil),                 // 53: testkit.v1.GetSessionRequest
+	(*GetSessionResponse)(nil),                // 54: testkit.v1.GetSessionResponse
+	(*IssueSessionCodeRequest)(nil),           // 55: testkit.v1.IssueSessionCodeRequest
+	(*IssueSessionCodeResponse)(nil),          // 56: testkit.v1.IssueSessionCodeResponse
+	(*ExchangeSessionCodeRequest)(nil),        // 57: testkit.v1.ExchangeSessionCodeRequest
+	(*ExchangeSessionCodeResponse)(nil),       // 58: testkit.v1.ExchangeSessionCodeResponse
+	(*GetOAuthURLRequest)(nil),                // 59: testkit.v1.GetOAuthURLRequest
+	(*GetOAuthURLResponse)(nil),               // 60: testkit.v1.GetOAuthURLResponse
+	(*SocialLoginRequest)(nil),                // 61: testkit.v1.SocialLoginRequest
+	(*MiniProgramLoginRequest)(nil),           // 62: testkit.v1.MiniProgramLoginRequest
+	(*MiniProgramPhoneLoginRequest)(nil),      // 63: testkit.v1.MiniProgramPhoneLoginRequest
+	(*SocialLoginResponse)(nil),               // 64: testkit.v1.SocialLoginResponse
+	(*CreateUserRequest)(nil),                 // 65: testkit.v1.CreateUserRequest
+	(*CreateUserResponse)(nil),                // 66: testkit.v1.CreateUserResponse
+	(*GetUserRequest)(nil),                    // 67: testkit.v1.GetUserRequest
+	(*DisableUserRequest)(nil),                // 68: testkit.v1.DisableUserRequest
+	(*ListUsersRequest)(nil),                  // 69: testkit.v1.ListUsersRequest
+	(*ListUsersResponse)(nil),                 // 70: testkit.v1.ListUsersResponse
+	(*ListUsersPagedRequest)(nil),             // 71: testkit.v1.ListUsersPagedRequest
+	(*ListUsersPagedResponse)(nil),            // 72: testkit.v1.ListUsersPagedResponse
+	(*GetLoginLogsRequest)(nil),               // 73: testkit.v1.GetLoginLogsRequest
+	(*GetLoginLogsResponse)(nil),              // 74: testkit.v1.GetLoginLogsResponse
+	(*CreateGroupRequest)(nil),                // 75: testkit.v1.CreateGroupRequest
+	(*GetGroupRequest)(nil),                   // 76: testkit.v1.GetGroupRequest
+	(*UpdateGroupRequest)(nil),                // 77: testkit.v1.UpdateGroupRequest
+	(*ListGroupsRequest)(nil),                 // 78: testkit.v1.ListGroupsRequest
+	(*ListGroupsResponse)(nil),                // 79: testkit.v1.ListGroupsResponse
+	(*DeleteGroupRequest)(nil),                // 80: testkit.v1.DeleteGroupRequest
+	(*AddGroupMemberRequest)(nil),             // 81: testkit.v1.AddGroupMemberRequest
+	(*RemoveGroupMemberRequest)(nil),          // 82: testkit.v1.RemoveGroupMemberRequest
+	(*ListGroupMembersRequest)(nil),           // 83: testkit.v1.ListGroupMembersRequest
+	(*ListGroupMembersResponse)(nil),          // 84: testkit.v1.ListGroupMembersResponse
+	(*AddGroupRoleRequest)(nil),               // 85: testkit.v1.AddGroupRoleRequest
+	(*RemoveGroupRoleRequest)(nil),            // 86: testkit.v1.RemoveGroupRoleRequest
+	(*ListGroupRolesRequest)(nil),             // 87: testkit.v1.ListGroupRolesRequest
+	(*ListGroupRolesResponse)(nil),            // 88: testkit.v1.ListGroupRolesResponse
+	(*CreateRoleRequest)(nil),                 // 89: testkit.v1.CreateRoleRequest
+	(*GetRoleRequest)(nil),                    // 90: testkit.v1.GetRoleRequest
+	(*UpdateRoleRequest)(nil),                 // 91: testkit.v1.UpdateRoleRequest
+	(*DeleteRoleRequest)(nil),                 // 92: testkit.v1.DeleteRoleRequest
+	(*ListRolesRequest)(nil),                  // 93: testkit.v1.ListRolesRequest
+	(*ListRolesResponse)(nil),                 // 94: testkit.v1.ListRolesResponse
+	(*AssignRoleRequest)(nil),                 // 95: testkit.v1.AssignRoleRequest
+	(*RevokeRoleRequest)(nil),                 // 96: testkit.v1.RevokeRoleRequest
+	(*ListUserRolesRequest)(nil),              // 97: testkit.v1.ListUserRolesRequest
+	(*ListUserRolesResponse)(nil),             // 98: testkit.v1.ListUserRolesResponse
+	(*ListPermissionsRequest)(nil),            // 99: testkit.v1.ListPermissionsRequest
+	(*ListPermissionsResponse)(nil),           // 100: testkit.v1.ListPermissionsResponse
+	(*CreatePermissionRequest)(nil),           // 101: testkit.v1.CreatePermissionRequest
+	(*GetPermissionRequest)(nil),              // 102: testkit.v1.GetPermissionRequest
+	(*UpdatePermissionRequest)(nil),           // 103: testkit.v1.UpdatePermissionRequest
+	(*DeletePermissionRequest)(nil),           // 104: testkit.v1.DeletePermissionRequest
+	(*CreatePermissionGroupRequest)(nil),      // 105: testkit.v1.CreatePermissionGroupRequest
+	(*GetPermissionGroupRequest)(nil),         // 106: testkit.v1.GetPermissionGroupRequest
+	(*UpdatePermissionGroupRequest)(nil),      // 107: testkit.v1.UpdatePermissionGroupRequest
+	(*DeletePermissionGroupRequest)(nil),      // 108: testkit.v1.DeletePermissionGroupRequest
+	(*ListPermissionGroupsRequest)(nil),       // 109: testkit.v1.ListPermissionGroupsRequest
+	(*ListPermissionGroupsResponse)(nil),      // 110: testkit.v1.ListPermissionGroupsResponse
+	(*FileInfo)(nil),                          // 111: testkit.v1.FileInfo
+	(*AdminFileInfo)(nil),                     // 112: testkit.v1.AdminFileInfo
+	(*QuotaInfo)(nil),                         // 113: testkit.v1.QuotaInfo
+	(*ImageProcessOp)(nil),                    // 114: testkit.v1.ImageProcessOp
+	(*UploadFileMeta)(nil),                    // 115: testkit.v1.UploadFileMeta
+	(*UploadTokenInfo)(nil),                   // 116: testkit.v1.UploadTokenInfo
+	(*ItemError)(nil),                         // 117: testkit.v1.ItemError
+	(*UploadCredentialItem)(nil),              // 118: testkit.v1.UploadCredentialItem
+	(*AuditLogEntry)(nil),                     // 119: testkit.v1.AuditLogEntry
+	(*OwnerStats)(nil),                        // 120: testkit.v1.OwnerStats
+	(*ProviderStats)(nil),                     // 121: testkit.v1.ProviderStats
+	(*BucketStats)(nil),                       // 122: testkit.v1.BucketStats
+	(*ProviderInfo)(nil),                      // 123: testkit.v1.ProviderInfo
+	(*BucketInfo)(nil),                        // 124: testkit.v1.BucketInfo
+	(*GenerateUploadURLRequest)(nil),          // 125: testkit.v1.GenerateUploadURLRequest
+	(*GenerateUploadURLResponse)(nil),         // 126: testkit.v1.GenerateUploadURLResponse
+	(*GetSTSCredentialRequest)(nil),           // 127: testkit.v1.GetSTSCredentialRequest
+	(*GetSTSCredentialResponse)(nil),          // 128: testkit.v1.GetSTSCredentialResponse
+	(*BatchGetSTSCredentialRequest)(nil),      // 129: testkit.v1.BatchGetSTSCredentialRequest
+	(*BatchGetSTSCredentialResponse)(nil),     // 130: testkit.v1.BatchGetSTSCredentialResponse
+	(*ConfirmUploadRequest)(nil),              // 131: testkit.v1.ConfirmUploadRequest
+	(*ConfirmUploadResponse)(nil),             // 132: testkit.v1.ConfirmUploadResponse
+	(*CancelUploadRequest)(nil),               // 133: testkit.v1.CancelUploadRequest
+	(*GenerateDownloadURLRequest)(nil),        // 134: testkit.v1.GenerateDownloadURLRequest
+	(*GenerateDownloadURLResponse)(nil),       // 135: testkit.v1.GenerateDownloadURLResponse
+	(*GenerateProcessURLRequest)(nil),         // 136: testkit.v1.GenerateProcessURLRequest
+	(*GenerateProcessURLResponse)(nil),        // 137: testkit.v1.GenerateProcessURLResponse
+	(*GenerateCDNURLRequest)(nil),             // 138: testkit.v1.GenerateCDNURLRequest
+	(*GenerateCDNURLResponse)(nil),            // 139: testkit.v1.GenerateCDNURLResponse
+	(*ListMyFilesRequest)(nil),                // 140: testkit.v1.ListMyFilesRequest
+	(*ListMyFilesResponse)(nil),               // 141: testkit.v1.ListMyFilesResponse
+	(*ListMyFilesPagedRequest)(nil),           // 142: testkit.v1.ListMyFilesPagedRequest
+	(*ListMyFilesPagedResponse)(nil),          // 143: testkit.v1.ListMyFilesPagedResponse
+	(*GetMyFileRequest)(nil),                  // 144: testkit.v1.GetMyFileRequest
+	(*UpdateMyFileRequest)(nil),               // 145: testkit.v1.UpdateMyFileRequest
+	(*DeleteMyFileRequest)(nil),               // 146: testkit.v1.DeleteMyFileRequest
+	(*BatchDeleteMyFilesRequest)(nil),         // 147: testkit.v1.BatchDeleteMyFilesRequest
+	(*BatchDeleteMyFilesResponse)(nil),        // 148: testkit.v1.BatchDeleteMyFilesResponse
+	(*ListMyAuditLogsRequest)(nil),            // 149: testkit.v1.ListMyAuditLogsRequest
+	(*ListMyAuditLogsResponse)(nil),           // 150: testkit.v1.ListMyAuditLogsResponse
+	(*SetOwnerQuotaRequest)(nil),              // 151: testkit.v1.SetOwnerQuotaRequest
+	(*AddOwnerQuotaRequest)(nil),              // 152: testkit.v1.AddOwnerQuotaRequest
+	(*AdminListFilesRequest)(nil),             // 153: testkit.v1.AdminListFilesRequest
+	(*AdminListFilesResponse)(nil),            // 154: testkit.v1.AdminListFilesResponse
+	(*AdminGetFileRequest)(nil),               // 155: testkit.v1.AdminGetFileRequest
+	(*AdminDeleteFileRequest)(nil),            // 156: testkit.v1.AdminDeleteFileRequest
+	(*AdminGetQuotaRequest)(nil),              // 157: testkit.v1.AdminGetQuotaRequest
+	(*AdminSetQuotaRequest)(nil),              // 158: testkit.v1.AdminSetQuotaRequest
+	(*AdminGetStatsRequest)(nil),              // 159: testkit.v1.AdminGetStatsRequest
+	(*AdminGetStatsResponse)(nil),             // 160: testkit.v1.AdminGetStatsResponse
+	(*AdminListProvidersResponse)(nil),        // 161: testkit.v1.AdminListProvidersResponse
+	(*AdminListBucketsResponse)(nil),          // 162: testkit.v1.AdminListBucketsResponse
+	(*AdminSoftDeleteOwnerFilesRequest)(nil),  // 163: testkit.v1.AdminSoftDeleteOwnerFilesRequest
+	(*AdminSoftDeleteOwnerFilesResponse)(nil), // 164: testkit.v1.AdminSoftDeleteOwnerFilesResponse
+	(*AdminDeleteOwnerRequest)(nil),           // 165: testkit.v1.AdminDeleteOwnerRequest
+	(*AdminDeleteOwnerResponse)(nil),          // 166: testkit.v1.AdminDeleteOwnerResponse
+	(*AdminListAuditLogsRequest)(nil),         // 167: testkit.v1.AdminListAuditLogsRequest
+	(*AdminListAuditLogsResponse)(nil),        // 168: testkit.v1.AdminListAuditLogsResponse
+	nil,                                       // 169: testkit.v1.FileInfo.MetadataEntry
+	nil,                                       // 170: testkit.v1.AdminFileInfo.MetadataEntry
+	nil,                                       // 171: testkit.v1.UploadFileMeta.MetadataEntry
+	nil,                                       // 172: testkit.v1.GenerateUploadURLRequest.MetadataEntry
+	nil,                                       // 173: testkit.v1.GenerateUploadURLResponse.HeadersEntry
+	nil,                                       // 174: testkit.v1.GetSTSCredentialRequest.MetadataEntry
+	nil,                                       // 175: testkit.v1.UpdateMyFileRequest.MetadataEntry
+	(*timestamppb.Timestamp)(nil),             // 176: google.protobuf.Timestamp
+	(*structpb.Struct)(nil),                   // 177: google.protobuf.Struct
+	(*durationpb.Duration)(nil),               // 178: google.protobuf.Duration
+	(*emptypb.Empty)(nil),                     // 179: google.protobuf.Empty
 }
 var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	0,   // 0: testkit.v1.LoginRequest.method:type_name -> testkit.v1.LoginMethod
@@ -7405,196 +12989,317 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	5,   // 5: testkit.v1.User.status:type_name -> testkit.v1.UserStatus
 	1,   // 6: testkit.v1.User.register_source:type_name -> testkit.v1.IdentityProvider
 	4,   // 7: testkit.v1.User.user_type:type_name -> testkit.v1.UserType
-	99,  // 8: testkit.v1.User.last_login_at:type_name -> google.protobuf.Timestamp
-	99,  // 9: testkit.v1.User.created_at:type_name -> google.protobuf.Timestamp
-	99,  // 10: testkit.v1.User.updated_at:type_name -> google.protobuf.Timestamp
+	176, // 8: testkit.v1.User.last_login_at:type_name -> google.protobuf.Timestamp
+	176, // 9: testkit.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	176, // 10: testkit.v1.User.updated_at:type_name -> google.protobuf.Timestamp
 	1,   // 11: testkit.v1.Identity.provider:type_name -> testkit.v1.IdentityProvider
-	99,  // 12: testkit.v1.Identity.created_at:type_name -> google.protobuf.Timestamp
+	176, // 12: testkit.v1.Identity.created_at:type_name -> google.protobuf.Timestamp
 	7,   // 13: testkit.v1.Session.device_type:type_name -> testkit.v1.DeviceType
-	99,  // 14: testkit.v1.Session.created_at:type_name -> google.protobuf.Timestamp
-	99,  // 15: testkit.v1.Session.last_active_at:type_name -> google.protobuf.Timestamp
-	99,  // 16: testkit.v1.Group.created_at:type_name -> google.protobuf.Timestamp
-	99,  // 17: testkit.v1.Group.updated_at:type_name -> google.protobuf.Timestamp
-	21,  // 18: testkit.v1.Role.permissions:type_name -> testkit.v1.Permission
-	22,  // 19: testkit.v1.Role.perm_groups:type_name -> testkit.v1.PermissionGroup
-	99,  // 20: testkit.v1.Role.created_at:type_name -> google.protobuf.Timestamp
-	99,  // 21: testkit.v1.Role.updated_at:type_name -> google.protobuf.Timestamp
-	21,  // 22: testkit.v1.PermissionGroup.permissions:type_name -> testkit.v1.Permission
-	99,  // 23: testkit.v1.GroupMember.created_at:type_name -> google.protobuf.Timestamp
+	176, // 14: testkit.v1.Session.created_at:type_name -> google.protobuf.Timestamp
+	176, // 15: testkit.v1.Session.last_active_at:type_name -> google.protobuf.Timestamp
+	176, // 16: testkit.v1.Group.created_at:type_name -> google.protobuf.Timestamp
+	176, // 17: testkit.v1.Group.updated_at:type_name -> google.protobuf.Timestamp
+	33,  // 18: testkit.v1.Role.permissions:type_name -> testkit.v1.Permission
+	34,  // 19: testkit.v1.Role.perm_groups:type_name -> testkit.v1.PermissionGroup
+	176, // 20: testkit.v1.Role.created_at:type_name -> google.protobuf.Timestamp
+	176, // 21: testkit.v1.Role.updated_at:type_name -> google.protobuf.Timestamp
+	33,  // 22: testkit.v1.PermissionGroup.permissions:type_name -> testkit.v1.Permission
+	176, // 23: testkit.v1.GroupMember.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 24: testkit.v1.LoginLog.provider:type_name -> testkit.v1.IdentityProvider
 	8,   // 25: testkit.v1.LoginLog.action:type_name -> testkit.v1.LoginAction
 	7,   // 26: testkit.v1.LoginLog.device_type:type_name -> testkit.v1.DeviceType
-	99,  // 27: testkit.v1.LoginLog.created_at:type_name -> google.protobuf.Timestamp
-	99,  // 28: testkit.v1.UserRole.created_at:type_name -> google.protobuf.Timestamp
-	16,  // 29: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
+	176, // 27: testkit.v1.LoginLog.created_at:type_name -> google.protobuf.Timestamp
+	176, // 28: testkit.v1.UserRole.created_at:type_name -> google.protobuf.Timestamp
+	28,  // 29: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
 	6,   // 30: testkit.v1.UpdateProfileRequest.gender:type_name -> testkit.v1.Gender
-	17,  // 31: testkit.v1.ListIdentitiesResponse.identities:type_name -> testkit.v1.Identity
+	29,  // 31: testkit.v1.ListIdentitiesResponse.identities:type_name -> testkit.v1.Identity
 	1,   // 32: testkit.v1.BindIdentityRequest.provider:type_name -> testkit.v1.IdentityProvider
 	1,   // 33: testkit.v1.BindOAuthIdentityRequest.provider:type_name -> testkit.v1.IdentityProvider
-	17,  // 34: testkit.v1.BindOAuthIdentityResponse.identity:type_name -> testkit.v1.Identity
-	18,  // 35: testkit.v1.ListSessionsResponse.sessions:type_name -> testkit.v1.Session
-	99,  // 36: testkit.v1.GetSessionResponse.expires_at:type_name -> google.protobuf.Timestamp
-	99,  // 37: testkit.v1.GetSessionResponse.created_at:type_name -> google.protobuf.Timestamp
+	29,  // 34: testkit.v1.BindOAuthIdentityResponse.identity:type_name -> testkit.v1.Identity
+	30,  // 35: testkit.v1.ListSessionsResponse.sessions:type_name -> testkit.v1.Session
+	176, // 36: testkit.v1.GetSessionResponse.expires_at:type_name -> google.protobuf.Timestamp
+	176, // 37: testkit.v1.GetSessionResponse.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 38: testkit.v1.GetOAuthURLRequest.provider:type_name -> testkit.v1.IdentityProvider
 	1,   // 39: testkit.v1.SocialLoginRequest.provider:type_name -> testkit.v1.IdentityProvider
-	16,  // 40: testkit.v1.SocialLoginResponse.user:type_name -> testkit.v1.User
+	28,  // 40: testkit.v1.SocialLoginResponse.user:type_name -> testkit.v1.User
 	4,   // 41: testkit.v1.CreateUserRequest.user_type:type_name -> testkit.v1.UserType
 	6,   // 42: testkit.v1.CreateUserRequest.gender:type_name -> testkit.v1.Gender
-	16,  // 43: testkit.v1.CreateUserResponse.user:type_name -> testkit.v1.User
+	28,  // 43: testkit.v1.CreateUserResponse.user:type_name -> testkit.v1.User
 	5,   // 44: testkit.v1.ListUsersRequest.status:type_name -> testkit.v1.UserStatus
 	6,   // 45: testkit.v1.ListUsersRequest.gender:type_name -> testkit.v1.Gender
 	1,   // 46: testkit.v1.ListUsersRequest.register_source:type_name -> testkit.v1.IdentityProvider
 	7,   // 47: testkit.v1.ListUsersRequest.register_device:type_name -> testkit.v1.DeviceType
-	99,  // 48: testkit.v1.ListUsersRequest.created_at_start:type_name -> google.protobuf.Timestamp
-	99,  // 49: testkit.v1.ListUsersRequest.created_at_end:type_name -> google.protobuf.Timestamp
-	99,  // 50: testkit.v1.ListUsersRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
-	99,  // 51: testkit.v1.ListUsersRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	176, // 48: testkit.v1.ListUsersRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	176, // 49: testkit.v1.ListUsersRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	176, // 50: testkit.v1.ListUsersRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	176, // 51: testkit.v1.ListUsersRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
 	4,   // 52: testkit.v1.ListUsersRequest.user_type:type_name -> testkit.v1.UserType
 	9,   // 53: testkit.v1.ListUsersRequest.order_by:type_name -> testkit.v1.UserSortField
-	16,  // 54: testkit.v1.ListUsersResponse.users:type_name -> testkit.v1.User
+	28,  // 54: testkit.v1.ListUsersResponse.users:type_name -> testkit.v1.User
 	5,   // 55: testkit.v1.ListUsersPagedRequest.status:type_name -> testkit.v1.UserStatus
 	6,   // 56: testkit.v1.ListUsersPagedRequest.gender:type_name -> testkit.v1.Gender
 	1,   // 57: testkit.v1.ListUsersPagedRequest.register_source:type_name -> testkit.v1.IdentityProvider
 	7,   // 58: testkit.v1.ListUsersPagedRequest.register_device:type_name -> testkit.v1.DeviceType
 	4,   // 59: testkit.v1.ListUsersPagedRequest.user_type:type_name -> testkit.v1.UserType
-	99,  // 60: testkit.v1.ListUsersPagedRequest.created_at_start:type_name -> google.protobuf.Timestamp
-	99,  // 61: testkit.v1.ListUsersPagedRequest.created_at_end:type_name -> google.protobuf.Timestamp
-	99,  // 62: testkit.v1.ListUsersPagedRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
-	99,  // 63: testkit.v1.ListUsersPagedRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	176, // 60: testkit.v1.ListUsersPagedRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	176, // 61: testkit.v1.ListUsersPagedRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	176, // 62: testkit.v1.ListUsersPagedRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	176, // 63: testkit.v1.ListUsersPagedRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
 	9,   // 64: testkit.v1.ListUsersPagedRequest.order_by:type_name -> testkit.v1.UserSortField
-	16,  // 65: testkit.v1.ListUsersPagedResponse.users:type_name -> testkit.v1.User
+	28,  // 65: testkit.v1.ListUsersPagedResponse.users:type_name -> testkit.v1.User
 	1,   // 66: testkit.v1.GetLoginLogsRequest.provider:type_name -> testkit.v1.IdentityProvider
-	24,  // 67: testkit.v1.GetLoginLogsResponse.logs:type_name -> testkit.v1.LoginLog
-	19,  // 68: testkit.v1.ListGroupsResponse.groups:type_name -> testkit.v1.Group
-	23,  // 69: testkit.v1.ListGroupMembersResponse.members:type_name -> testkit.v1.GroupMember
-	20,  // 70: testkit.v1.ListGroupRolesResponse.roles:type_name -> testkit.v1.Role
-	20,  // 71: testkit.v1.ListRolesResponse.roles:type_name -> testkit.v1.Role
-	25,  // 72: testkit.v1.ListUserRolesResponse.roles:type_name -> testkit.v1.UserRole
-	21,  // 73: testkit.v1.ListPermissionsResponse.permissions:type_name -> testkit.v1.Permission
-	22,  // 74: testkit.v1.ListPermissionGroupsResponse.groups:type_name -> testkit.v1.PermissionGroup
-	100, // 75: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
-	11,  // 76: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
-	12,  // 77: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
-	13,  // 78: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
-	100, // 79: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
-	15,  // 80: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
-	27,  // 81: testkit.v1.TestkitService.GetProfile:input_type -> testkit.v1.GetProfileRequest
-	28,  // 82: testkit.v1.TestkitService.UpdateProfile:input_type -> testkit.v1.UpdateProfileRequest
-	29,  // 83: testkit.v1.TestkitService.ChangePassword:input_type -> testkit.v1.ChangePasswordRequest
-	30,  // 84: testkit.v1.TestkitService.ResetPassword:input_type -> testkit.v1.ResetPasswordRequest
-	31,  // 85: testkit.v1.TestkitService.ListIdentities:input_type -> testkit.v1.ListIdentitiesRequest
-	33,  // 86: testkit.v1.TestkitService.BindIdentity:input_type -> testkit.v1.BindIdentityRequest
-	34,  // 87: testkit.v1.TestkitService.BindOAuthIdentity:input_type -> testkit.v1.BindOAuthIdentityRequest
-	36,  // 88: testkit.v1.TestkitService.UnbindIdentity:input_type -> testkit.v1.UnbindIdentityRequest
-	37,  // 89: testkit.v1.TestkitService.ListSessions:input_type -> testkit.v1.ListSessionsRequest
-	39,  // 90: testkit.v1.TestkitService.RevokeSession:input_type -> testkit.v1.RevokeSessionRequest
-	40,  // 91: testkit.v1.TestkitService.RevokeAllSessions:input_type -> testkit.v1.RevokeAllSessionsRequest
-	41,  // 92: testkit.v1.TestkitService.GetSession:input_type -> testkit.v1.GetSessionRequest
-	43,  // 93: testkit.v1.TestkitService.IssueSessionCode:input_type -> testkit.v1.IssueSessionCodeRequest
-	45,  // 94: testkit.v1.TestkitService.ExchangeSessionCode:input_type -> testkit.v1.ExchangeSessionCodeRequest
-	47,  // 95: testkit.v1.TestkitService.GetOAuthURL:input_type -> testkit.v1.GetOAuthURLRequest
-	49,  // 96: testkit.v1.TestkitService.SocialLogin:input_type -> testkit.v1.SocialLoginRequest
-	50,  // 97: testkit.v1.TestkitService.MiniProgramLogin:input_type -> testkit.v1.MiniProgramLoginRequest
-	51,  // 98: testkit.v1.TestkitService.MiniProgramPhoneLogin:input_type -> testkit.v1.MiniProgramPhoneLoginRequest
-	53,  // 99: testkit.v1.TestkitService.CreateUser:input_type -> testkit.v1.CreateUserRequest
-	55,  // 100: testkit.v1.TestkitService.GetUser:input_type -> testkit.v1.GetUserRequest
-	57,  // 101: testkit.v1.TestkitService.ListUsers:input_type -> testkit.v1.ListUsersRequest
-	59,  // 102: testkit.v1.TestkitService.ListUsersPaged:input_type -> testkit.v1.ListUsersPagedRequest
-	56,  // 103: testkit.v1.TestkitService.DisableUser:input_type -> testkit.v1.DisableUserRequest
-	61,  // 104: testkit.v1.TestkitService.GetLoginLogs:input_type -> testkit.v1.GetLoginLogsRequest
-	63,  // 105: testkit.v1.TestkitService.CreateGroup:input_type -> testkit.v1.CreateGroupRequest
-	64,  // 106: testkit.v1.TestkitService.GetGroup:input_type -> testkit.v1.GetGroupRequest
-	65,  // 107: testkit.v1.TestkitService.UpdateGroup:input_type -> testkit.v1.UpdateGroupRequest
-	66,  // 108: testkit.v1.TestkitService.ListGroups:input_type -> testkit.v1.ListGroupsRequest
-	68,  // 109: testkit.v1.TestkitService.DeleteGroup:input_type -> testkit.v1.DeleteGroupRequest
-	69,  // 110: testkit.v1.TestkitService.AddGroupMember:input_type -> testkit.v1.AddGroupMemberRequest
-	70,  // 111: testkit.v1.TestkitService.RemoveGroupMember:input_type -> testkit.v1.RemoveGroupMemberRequest
-	71,  // 112: testkit.v1.TestkitService.ListGroupMembers:input_type -> testkit.v1.ListGroupMembersRequest
-	73,  // 113: testkit.v1.TestkitService.AddGroupRole:input_type -> testkit.v1.AddGroupRoleRequest
-	74,  // 114: testkit.v1.TestkitService.RemoveGroupRole:input_type -> testkit.v1.RemoveGroupRoleRequest
-	75,  // 115: testkit.v1.TestkitService.ListGroupRoles:input_type -> testkit.v1.ListGroupRolesRequest
-	77,  // 116: testkit.v1.TestkitService.CreateRole:input_type -> testkit.v1.CreateRoleRequest
-	78,  // 117: testkit.v1.TestkitService.GetRole:input_type -> testkit.v1.GetRoleRequest
-	79,  // 118: testkit.v1.TestkitService.UpdateRole:input_type -> testkit.v1.UpdateRoleRequest
-	80,  // 119: testkit.v1.TestkitService.DeleteRole:input_type -> testkit.v1.DeleteRoleRequest
-	81,  // 120: testkit.v1.TestkitService.ListRoles:input_type -> testkit.v1.ListRolesRequest
-	83,  // 121: testkit.v1.TestkitService.AssignRole:input_type -> testkit.v1.AssignRoleRequest
-	84,  // 122: testkit.v1.TestkitService.RevokeRole:input_type -> testkit.v1.RevokeRoleRequest
-	85,  // 123: testkit.v1.TestkitService.ListUserRoles:input_type -> testkit.v1.ListUserRolesRequest
-	87,  // 124: testkit.v1.TestkitService.ListPermissions:input_type -> testkit.v1.ListPermissionsRequest
-	89,  // 125: testkit.v1.TestkitService.CreatePermission:input_type -> testkit.v1.CreatePermissionRequest
-	90,  // 126: testkit.v1.TestkitService.GetPermission:input_type -> testkit.v1.GetPermissionRequest
-	91,  // 127: testkit.v1.TestkitService.UpdatePermission:input_type -> testkit.v1.UpdatePermissionRequest
-	92,  // 128: testkit.v1.TestkitService.DeletePermission:input_type -> testkit.v1.DeletePermissionRequest
-	93,  // 129: testkit.v1.TestkitService.CreatePermissionGroup:input_type -> testkit.v1.CreatePermissionGroupRequest
-	94,  // 130: testkit.v1.TestkitService.GetPermissionGroup:input_type -> testkit.v1.GetPermissionGroupRequest
-	95,  // 131: testkit.v1.TestkitService.UpdatePermissionGroup:input_type -> testkit.v1.UpdatePermissionGroupRequest
-	96,  // 132: testkit.v1.TestkitService.DeletePermissionGroup:input_type -> testkit.v1.DeletePermissionGroupRequest
-	97,  // 133: testkit.v1.TestkitService.ListPermissionGroups:input_type -> testkit.v1.ListPermissionGroupsRequest
-	10,  // 134: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
-	26,  // 135: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
-	26,  // 136: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
-	14,  // 137: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
-	100, // 138: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
-	26,  // 139: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
-	16,  // 140: testkit.v1.TestkitService.GetProfile:output_type -> testkit.v1.User
-	16,  // 141: testkit.v1.TestkitService.UpdateProfile:output_type -> testkit.v1.User
-	100, // 142: testkit.v1.TestkitService.ChangePassword:output_type -> google.protobuf.Empty
-	100, // 143: testkit.v1.TestkitService.ResetPassword:output_type -> google.protobuf.Empty
-	32,  // 144: testkit.v1.TestkitService.ListIdentities:output_type -> testkit.v1.ListIdentitiesResponse
-	17,  // 145: testkit.v1.TestkitService.BindIdentity:output_type -> testkit.v1.Identity
-	35,  // 146: testkit.v1.TestkitService.BindOAuthIdentity:output_type -> testkit.v1.BindOAuthIdentityResponse
-	100, // 147: testkit.v1.TestkitService.UnbindIdentity:output_type -> google.protobuf.Empty
-	38,  // 148: testkit.v1.TestkitService.ListSessions:output_type -> testkit.v1.ListSessionsResponse
-	100, // 149: testkit.v1.TestkitService.RevokeSession:output_type -> google.protobuf.Empty
-	100, // 150: testkit.v1.TestkitService.RevokeAllSessions:output_type -> google.protobuf.Empty
-	42,  // 151: testkit.v1.TestkitService.GetSession:output_type -> testkit.v1.GetSessionResponse
-	44,  // 152: testkit.v1.TestkitService.IssueSessionCode:output_type -> testkit.v1.IssueSessionCodeResponse
-	46,  // 153: testkit.v1.TestkitService.ExchangeSessionCode:output_type -> testkit.v1.ExchangeSessionCodeResponse
-	48,  // 154: testkit.v1.TestkitService.GetOAuthURL:output_type -> testkit.v1.GetOAuthURLResponse
-	52,  // 155: testkit.v1.TestkitService.SocialLogin:output_type -> testkit.v1.SocialLoginResponse
-	52,  // 156: testkit.v1.TestkitService.MiniProgramLogin:output_type -> testkit.v1.SocialLoginResponse
-	52,  // 157: testkit.v1.TestkitService.MiniProgramPhoneLogin:output_type -> testkit.v1.SocialLoginResponse
-	54,  // 158: testkit.v1.TestkitService.CreateUser:output_type -> testkit.v1.CreateUserResponse
-	16,  // 159: testkit.v1.TestkitService.GetUser:output_type -> testkit.v1.User
-	58,  // 160: testkit.v1.TestkitService.ListUsers:output_type -> testkit.v1.ListUsersResponse
-	60,  // 161: testkit.v1.TestkitService.ListUsersPaged:output_type -> testkit.v1.ListUsersPagedResponse
-	16,  // 162: testkit.v1.TestkitService.DisableUser:output_type -> testkit.v1.User
-	62,  // 163: testkit.v1.TestkitService.GetLoginLogs:output_type -> testkit.v1.GetLoginLogsResponse
-	19,  // 164: testkit.v1.TestkitService.CreateGroup:output_type -> testkit.v1.Group
-	19,  // 165: testkit.v1.TestkitService.GetGroup:output_type -> testkit.v1.Group
-	19,  // 166: testkit.v1.TestkitService.UpdateGroup:output_type -> testkit.v1.Group
-	67,  // 167: testkit.v1.TestkitService.ListGroups:output_type -> testkit.v1.ListGroupsResponse
-	100, // 168: testkit.v1.TestkitService.DeleteGroup:output_type -> google.protobuf.Empty
-	100, // 169: testkit.v1.TestkitService.AddGroupMember:output_type -> google.protobuf.Empty
-	100, // 170: testkit.v1.TestkitService.RemoveGroupMember:output_type -> google.protobuf.Empty
-	72,  // 171: testkit.v1.TestkitService.ListGroupMembers:output_type -> testkit.v1.ListGroupMembersResponse
-	100, // 172: testkit.v1.TestkitService.AddGroupRole:output_type -> google.protobuf.Empty
-	100, // 173: testkit.v1.TestkitService.RemoveGroupRole:output_type -> google.protobuf.Empty
-	76,  // 174: testkit.v1.TestkitService.ListGroupRoles:output_type -> testkit.v1.ListGroupRolesResponse
-	20,  // 175: testkit.v1.TestkitService.CreateRole:output_type -> testkit.v1.Role
-	20,  // 176: testkit.v1.TestkitService.GetRole:output_type -> testkit.v1.Role
-	20,  // 177: testkit.v1.TestkitService.UpdateRole:output_type -> testkit.v1.Role
-	100, // 178: testkit.v1.TestkitService.DeleteRole:output_type -> google.protobuf.Empty
-	82,  // 179: testkit.v1.TestkitService.ListRoles:output_type -> testkit.v1.ListRolesResponse
-	100, // 180: testkit.v1.TestkitService.AssignRole:output_type -> google.protobuf.Empty
-	100, // 181: testkit.v1.TestkitService.RevokeRole:output_type -> google.protobuf.Empty
-	86,  // 182: testkit.v1.TestkitService.ListUserRoles:output_type -> testkit.v1.ListUserRolesResponse
-	88,  // 183: testkit.v1.TestkitService.ListPermissions:output_type -> testkit.v1.ListPermissionsResponse
-	21,  // 184: testkit.v1.TestkitService.CreatePermission:output_type -> testkit.v1.Permission
-	21,  // 185: testkit.v1.TestkitService.GetPermission:output_type -> testkit.v1.Permission
-	21,  // 186: testkit.v1.TestkitService.UpdatePermission:output_type -> testkit.v1.Permission
-	100, // 187: testkit.v1.TestkitService.DeletePermission:output_type -> google.protobuf.Empty
-	22,  // 188: testkit.v1.TestkitService.CreatePermissionGroup:output_type -> testkit.v1.PermissionGroup
-	22,  // 189: testkit.v1.TestkitService.GetPermissionGroup:output_type -> testkit.v1.PermissionGroup
-	22,  // 190: testkit.v1.TestkitService.UpdatePermissionGroup:output_type -> testkit.v1.PermissionGroup
-	100, // 191: testkit.v1.TestkitService.DeletePermissionGroup:output_type -> google.protobuf.Empty
-	98,  // 192: testkit.v1.TestkitService.ListPermissionGroups:output_type -> testkit.v1.ListPermissionGroupsResponse
-	134, // [134:193] is the sub-list for method output_type
-	75,  // [75:134] is the sub-list for method input_type
-	75,  // [75:75] is the sub-list for extension type_name
-	75,  // [75:75] is the sub-list for extension extendee
-	0,   // [0:75] is the sub-list for field type_name
+	36,  // 67: testkit.v1.GetLoginLogsResponse.logs:type_name -> testkit.v1.LoginLog
+	31,  // 68: testkit.v1.ListGroupsResponse.groups:type_name -> testkit.v1.Group
+	35,  // 69: testkit.v1.ListGroupMembersResponse.members:type_name -> testkit.v1.GroupMember
+	32,  // 70: testkit.v1.ListGroupRolesResponse.roles:type_name -> testkit.v1.Role
+	32,  // 71: testkit.v1.ListRolesResponse.roles:type_name -> testkit.v1.Role
+	37,  // 72: testkit.v1.ListUserRolesResponse.roles:type_name -> testkit.v1.UserRole
+	33,  // 73: testkit.v1.ListPermissionsResponse.permissions:type_name -> testkit.v1.Permission
+	34,  // 74: testkit.v1.ListPermissionGroupsResponse.groups:type_name -> testkit.v1.PermissionGroup
+	169, // 75: testkit.v1.FileInfo.metadata:type_name -> testkit.v1.FileInfo.MetadataEntry
+	10,  // 76: testkit.v1.FileInfo.owner_type:type_name -> testkit.v1.OwnerType
+	10,  // 77: testkit.v1.AdminFileInfo.owner_type:type_name -> testkit.v1.OwnerType
+	170, // 78: testkit.v1.AdminFileInfo.metadata:type_name -> testkit.v1.AdminFileInfo.MetadataEntry
+	21,  // 79: testkit.v1.ImageProcessOp.type:type_name -> testkit.v1.ImageProcessType
+	15,  // 80: testkit.v1.ImageProcessOp.format:type_name -> testkit.v1.ImageFormat
+	14,  // 81: testkit.v1.ImageProcessOp.resize_mode:type_name -> testkit.v1.ImageResizeMode
+	171, // 82: testkit.v1.UploadFileMeta.metadata:type_name -> testkit.v1.UploadFileMeta.MetadataEntry
+	116, // 83: testkit.v1.UploadCredentialItem.token:type_name -> testkit.v1.UploadTokenInfo
+	117, // 84: testkit.v1.UploadCredentialItem.error:type_name -> testkit.v1.ItemError
+	17,  // 85: testkit.v1.AuditLogEntry.action:type_name -> testkit.v1.AuditAction
+	10,  // 86: testkit.v1.AuditLogEntry.owner_type:type_name -> testkit.v1.OwnerType
+	20,  // 87: testkit.v1.AuditLogEntry.target_type:type_name -> testkit.v1.AuditLogTargetType
+	177, // 88: testkit.v1.AuditLogEntry.before:type_name -> google.protobuf.Struct
+	177, // 89: testkit.v1.AuditLogEntry.after:type_name -> google.protobuf.Struct
+	19,  // 90: testkit.v1.AuditLogEntry.status:type_name -> testkit.v1.AuditLogStatus
+	10,  // 91: testkit.v1.OwnerStats.owner_type:type_name -> testkit.v1.OwnerType
+	11,  // 92: testkit.v1.ProviderInfo.vendor:type_name -> testkit.v1.Vendor
+	13,  // 93: testkit.v1.BucketInfo.acl:type_name -> testkit.v1.BucketACL
+	11,  // 94: testkit.v1.BucketInfo.vendor:type_name -> testkit.v1.Vendor
+	172, // 95: testkit.v1.GenerateUploadURLRequest.metadata:type_name -> testkit.v1.GenerateUploadURLRequest.MetadataEntry
+	11,  // 96: testkit.v1.GenerateUploadURLRequest.vendor:type_name -> testkit.v1.Vendor
+	111, // 97: testkit.v1.GenerateUploadURLResponse.file_info:type_name -> testkit.v1.FileInfo
+	173, // 98: testkit.v1.GenerateUploadURLResponse.headers:type_name -> testkit.v1.GenerateUploadURLResponse.HeadersEntry
+	174, // 99: testkit.v1.GetSTSCredentialRequest.metadata:type_name -> testkit.v1.GetSTSCredentialRequest.MetadataEntry
+	11,  // 100: testkit.v1.GetSTSCredentialRequest.vendor:type_name -> testkit.v1.Vendor
+	178, // 101: testkit.v1.GetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
+	111, // 102: testkit.v1.GetSTSCredentialResponse.file_info:type_name -> testkit.v1.FileInfo
+	115, // 103: testkit.v1.BatchGetSTSCredentialRequest.files:type_name -> testkit.v1.UploadFileMeta
+	178, // 104: testkit.v1.BatchGetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
+	118, // 105: testkit.v1.BatchGetSTSCredentialResponse.items:type_name -> testkit.v1.UploadCredentialItem
+	111, // 106: testkit.v1.ConfirmUploadResponse.file_info:type_name -> testkit.v1.FileInfo
+	114, // 107: testkit.v1.GenerateProcessURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
+	114, // 108: testkit.v1.GenerateCDNURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
+	178, // 109: testkit.v1.GenerateCDNURLRequest.ttl:type_name -> google.protobuf.Duration
+	16,  // 110: testkit.v1.ListMyFilesRequest.order_by:type_name -> testkit.v1.SortField
+	111, // 111: testkit.v1.ListMyFilesResponse.files:type_name -> testkit.v1.FileInfo
+	16,  // 112: testkit.v1.ListMyFilesPagedRequest.order_by:type_name -> testkit.v1.SortField
+	111, // 113: testkit.v1.ListMyFilesPagedResponse.files:type_name -> testkit.v1.FileInfo
+	175, // 114: testkit.v1.UpdateMyFileRequest.metadata:type_name -> testkit.v1.UpdateMyFileRequest.MetadataEntry
+	17,  // 115: testkit.v1.ListMyAuditLogsRequest.action:type_name -> testkit.v1.AuditAction
+	20,  // 116: testkit.v1.ListMyAuditLogsRequest.target_type:type_name -> testkit.v1.AuditLogTargetType
+	119, // 117: testkit.v1.ListMyAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
+	10,  // 118: testkit.v1.SetOwnerQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
+	10,  // 119: testkit.v1.AddOwnerQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
+	10,  // 120: testkit.v1.AdminListFilesRequest.owner_type:type_name -> testkit.v1.OwnerType
+	16,  // 121: testkit.v1.AdminListFilesRequest.order_by:type_name -> testkit.v1.SortField
+	112, // 122: testkit.v1.AdminListFilesResponse.files:type_name -> testkit.v1.AdminFileInfo
+	10,  // 123: testkit.v1.AdminGetQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
+	10,  // 124: testkit.v1.AdminSetQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
+	10,  // 125: testkit.v1.AdminGetStatsRequest.owner_type:type_name -> testkit.v1.OwnerType
+	120, // 126: testkit.v1.AdminGetStatsResponse.owner_stats:type_name -> testkit.v1.OwnerStats
+	121, // 127: testkit.v1.AdminGetStatsResponse.provider_stats:type_name -> testkit.v1.ProviderStats
+	122, // 128: testkit.v1.AdminGetStatsResponse.bucket_stats:type_name -> testkit.v1.BucketStats
+	123, // 129: testkit.v1.AdminListProvidersResponse.providers:type_name -> testkit.v1.ProviderInfo
+	124, // 130: testkit.v1.AdminListBucketsResponse.buckets:type_name -> testkit.v1.BucketInfo
+	10,  // 131: testkit.v1.AdminSoftDeleteOwnerFilesRequest.owner_type:type_name -> testkit.v1.OwnerType
+	10,  // 132: testkit.v1.AdminDeleteOwnerRequest.owner_type:type_name -> testkit.v1.OwnerType
+	17,  // 133: testkit.v1.AdminListAuditLogsRequest.action:type_name -> testkit.v1.AuditAction
+	20,  // 134: testkit.v1.AdminListAuditLogsRequest.target_type:type_name -> testkit.v1.AuditLogTargetType
+	19,  // 135: testkit.v1.AdminListAuditLogsRequest.status:type_name -> testkit.v1.AuditLogStatus
+	10,  // 136: testkit.v1.AdminListAuditLogsRequest.owner_type:type_name -> testkit.v1.OwnerType
+	119, // 137: testkit.v1.AdminListAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
+	179, // 138: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
+	23,  // 139: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
+	24,  // 140: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
+	25,  // 141: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
+	179, // 142: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
+	27,  // 143: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
+	39,  // 144: testkit.v1.TestkitService.GetProfile:input_type -> testkit.v1.GetProfileRequest
+	40,  // 145: testkit.v1.TestkitService.UpdateProfile:input_type -> testkit.v1.UpdateProfileRequest
+	41,  // 146: testkit.v1.TestkitService.ChangePassword:input_type -> testkit.v1.ChangePasswordRequest
+	42,  // 147: testkit.v1.TestkitService.ResetPassword:input_type -> testkit.v1.ResetPasswordRequest
+	43,  // 148: testkit.v1.TestkitService.ListIdentities:input_type -> testkit.v1.ListIdentitiesRequest
+	45,  // 149: testkit.v1.TestkitService.BindIdentity:input_type -> testkit.v1.BindIdentityRequest
+	46,  // 150: testkit.v1.TestkitService.BindOAuthIdentity:input_type -> testkit.v1.BindOAuthIdentityRequest
+	48,  // 151: testkit.v1.TestkitService.UnbindIdentity:input_type -> testkit.v1.UnbindIdentityRequest
+	49,  // 152: testkit.v1.TestkitService.ListSessions:input_type -> testkit.v1.ListSessionsRequest
+	51,  // 153: testkit.v1.TestkitService.RevokeSession:input_type -> testkit.v1.RevokeSessionRequest
+	52,  // 154: testkit.v1.TestkitService.RevokeAllSessions:input_type -> testkit.v1.RevokeAllSessionsRequest
+	53,  // 155: testkit.v1.TestkitService.GetSession:input_type -> testkit.v1.GetSessionRequest
+	55,  // 156: testkit.v1.TestkitService.IssueSessionCode:input_type -> testkit.v1.IssueSessionCodeRequest
+	57,  // 157: testkit.v1.TestkitService.ExchangeSessionCode:input_type -> testkit.v1.ExchangeSessionCodeRequest
+	59,  // 158: testkit.v1.TestkitService.GetOAuthURL:input_type -> testkit.v1.GetOAuthURLRequest
+	61,  // 159: testkit.v1.TestkitService.SocialLogin:input_type -> testkit.v1.SocialLoginRequest
+	62,  // 160: testkit.v1.TestkitService.MiniProgramLogin:input_type -> testkit.v1.MiniProgramLoginRequest
+	63,  // 161: testkit.v1.TestkitService.MiniProgramPhoneLogin:input_type -> testkit.v1.MiniProgramPhoneLoginRequest
+	65,  // 162: testkit.v1.TestkitService.CreateUser:input_type -> testkit.v1.CreateUserRequest
+	67,  // 163: testkit.v1.TestkitService.GetUser:input_type -> testkit.v1.GetUserRequest
+	69,  // 164: testkit.v1.TestkitService.ListUsers:input_type -> testkit.v1.ListUsersRequest
+	71,  // 165: testkit.v1.TestkitService.ListUsersPaged:input_type -> testkit.v1.ListUsersPagedRequest
+	68,  // 166: testkit.v1.TestkitService.DisableUser:input_type -> testkit.v1.DisableUserRequest
+	73,  // 167: testkit.v1.TestkitService.GetLoginLogs:input_type -> testkit.v1.GetLoginLogsRequest
+	75,  // 168: testkit.v1.TestkitService.CreateGroup:input_type -> testkit.v1.CreateGroupRequest
+	76,  // 169: testkit.v1.TestkitService.GetGroup:input_type -> testkit.v1.GetGroupRequest
+	77,  // 170: testkit.v1.TestkitService.UpdateGroup:input_type -> testkit.v1.UpdateGroupRequest
+	78,  // 171: testkit.v1.TestkitService.ListGroups:input_type -> testkit.v1.ListGroupsRequest
+	80,  // 172: testkit.v1.TestkitService.DeleteGroup:input_type -> testkit.v1.DeleteGroupRequest
+	81,  // 173: testkit.v1.TestkitService.AddGroupMember:input_type -> testkit.v1.AddGroupMemberRequest
+	82,  // 174: testkit.v1.TestkitService.RemoveGroupMember:input_type -> testkit.v1.RemoveGroupMemberRequest
+	83,  // 175: testkit.v1.TestkitService.ListGroupMembers:input_type -> testkit.v1.ListGroupMembersRequest
+	85,  // 176: testkit.v1.TestkitService.AddGroupRole:input_type -> testkit.v1.AddGroupRoleRequest
+	86,  // 177: testkit.v1.TestkitService.RemoveGroupRole:input_type -> testkit.v1.RemoveGroupRoleRequest
+	87,  // 178: testkit.v1.TestkitService.ListGroupRoles:input_type -> testkit.v1.ListGroupRolesRequest
+	89,  // 179: testkit.v1.TestkitService.CreateRole:input_type -> testkit.v1.CreateRoleRequest
+	90,  // 180: testkit.v1.TestkitService.GetRole:input_type -> testkit.v1.GetRoleRequest
+	91,  // 181: testkit.v1.TestkitService.UpdateRole:input_type -> testkit.v1.UpdateRoleRequest
+	92,  // 182: testkit.v1.TestkitService.DeleteRole:input_type -> testkit.v1.DeleteRoleRequest
+	93,  // 183: testkit.v1.TestkitService.ListRoles:input_type -> testkit.v1.ListRolesRequest
+	95,  // 184: testkit.v1.TestkitService.AssignRole:input_type -> testkit.v1.AssignRoleRequest
+	96,  // 185: testkit.v1.TestkitService.RevokeRole:input_type -> testkit.v1.RevokeRoleRequest
+	97,  // 186: testkit.v1.TestkitService.ListUserRoles:input_type -> testkit.v1.ListUserRolesRequest
+	99,  // 187: testkit.v1.TestkitService.ListPermissions:input_type -> testkit.v1.ListPermissionsRequest
+	101, // 188: testkit.v1.TestkitService.CreatePermission:input_type -> testkit.v1.CreatePermissionRequest
+	102, // 189: testkit.v1.TestkitService.GetPermission:input_type -> testkit.v1.GetPermissionRequest
+	103, // 190: testkit.v1.TestkitService.UpdatePermission:input_type -> testkit.v1.UpdatePermissionRequest
+	104, // 191: testkit.v1.TestkitService.DeletePermission:input_type -> testkit.v1.DeletePermissionRequest
+	105, // 192: testkit.v1.TestkitService.CreatePermissionGroup:input_type -> testkit.v1.CreatePermissionGroupRequest
+	106, // 193: testkit.v1.TestkitService.GetPermissionGroup:input_type -> testkit.v1.GetPermissionGroupRequest
+	107, // 194: testkit.v1.TestkitService.UpdatePermissionGroup:input_type -> testkit.v1.UpdatePermissionGroupRequest
+	108, // 195: testkit.v1.TestkitService.DeletePermissionGroup:input_type -> testkit.v1.DeletePermissionGroupRequest
+	109, // 196: testkit.v1.TestkitService.ListPermissionGroups:input_type -> testkit.v1.ListPermissionGroupsRequest
+	125, // 197: testkit.v1.TestkitService.GenerateUploadURL:input_type -> testkit.v1.GenerateUploadURLRequest
+	127, // 198: testkit.v1.TestkitService.GetSTSCredential:input_type -> testkit.v1.GetSTSCredentialRequest
+	129, // 199: testkit.v1.TestkitService.BatchGetSTSCredential:input_type -> testkit.v1.BatchGetSTSCredentialRequest
+	131, // 200: testkit.v1.TestkitService.ConfirmUpload:input_type -> testkit.v1.ConfirmUploadRequest
+	133, // 201: testkit.v1.TestkitService.CancelUpload:input_type -> testkit.v1.CancelUploadRequest
+	134, // 202: testkit.v1.TestkitService.GenerateDownloadURL:input_type -> testkit.v1.GenerateDownloadURLRequest
+	136, // 203: testkit.v1.TestkitService.GenerateProcessURL:input_type -> testkit.v1.GenerateProcessURLRequest
+	138, // 204: testkit.v1.TestkitService.GenerateCDNURL:input_type -> testkit.v1.GenerateCDNURLRequest
+	140, // 205: testkit.v1.TestkitService.ListMyFiles:input_type -> testkit.v1.ListMyFilesRequest
+	142, // 206: testkit.v1.TestkitService.ListMyFilesPaged:input_type -> testkit.v1.ListMyFilesPagedRequest
+	144, // 207: testkit.v1.TestkitService.GetMyFile:input_type -> testkit.v1.GetMyFileRequest
+	145, // 208: testkit.v1.TestkitService.UpdateMyFile:input_type -> testkit.v1.UpdateMyFileRequest
+	146, // 209: testkit.v1.TestkitService.DeleteMyFile:input_type -> testkit.v1.DeleteMyFileRequest
+	147, // 210: testkit.v1.TestkitService.BatchDeleteMyFiles:input_type -> testkit.v1.BatchDeleteMyFilesRequest
+	179, // 211: testkit.v1.TestkitService.GetMyQuota:input_type -> google.protobuf.Empty
+	149, // 212: testkit.v1.TestkitService.ListMyAuditLogs:input_type -> testkit.v1.ListMyAuditLogsRequest
+	151, // 213: testkit.v1.TestkitService.SetOwnerQuota:input_type -> testkit.v1.SetOwnerQuotaRequest
+	152, // 214: testkit.v1.TestkitService.AddOwnerQuota:input_type -> testkit.v1.AddOwnerQuotaRequest
+	153, // 215: testkit.v1.TestkitService.AdminListFiles:input_type -> testkit.v1.AdminListFilesRequest
+	155, // 216: testkit.v1.TestkitService.AdminGetFile:input_type -> testkit.v1.AdminGetFileRequest
+	156, // 217: testkit.v1.TestkitService.AdminDeleteFile:input_type -> testkit.v1.AdminDeleteFileRequest
+	157, // 218: testkit.v1.TestkitService.AdminGetQuota:input_type -> testkit.v1.AdminGetQuotaRequest
+	158, // 219: testkit.v1.TestkitService.AdminSetQuota:input_type -> testkit.v1.AdminSetQuotaRequest
+	159, // 220: testkit.v1.TestkitService.AdminGetStats:input_type -> testkit.v1.AdminGetStatsRequest
+	179, // 221: testkit.v1.TestkitService.AdminListProviders:input_type -> google.protobuf.Empty
+	179, // 222: testkit.v1.TestkitService.AdminListBuckets:input_type -> google.protobuf.Empty
+	163, // 223: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:input_type -> testkit.v1.AdminSoftDeleteOwnerFilesRequest
+	165, // 224: testkit.v1.TestkitService.AdminDeleteOwner:input_type -> testkit.v1.AdminDeleteOwnerRequest
+	167, // 225: testkit.v1.TestkitService.AdminListAuditLogs:input_type -> testkit.v1.AdminListAuditLogsRequest
+	22,  // 226: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
+	38,  // 227: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
+	38,  // 228: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
+	26,  // 229: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
+	179, // 230: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
+	38,  // 231: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
+	28,  // 232: testkit.v1.TestkitService.GetProfile:output_type -> testkit.v1.User
+	28,  // 233: testkit.v1.TestkitService.UpdateProfile:output_type -> testkit.v1.User
+	179, // 234: testkit.v1.TestkitService.ChangePassword:output_type -> google.protobuf.Empty
+	179, // 235: testkit.v1.TestkitService.ResetPassword:output_type -> google.protobuf.Empty
+	44,  // 236: testkit.v1.TestkitService.ListIdentities:output_type -> testkit.v1.ListIdentitiesResponse
+	29,  // 237: testkit.v1.TestkitService.BindIdentity:output_type -> testkit.v1.Identity
+	47,  // 238: testkit.v1.TestkitService.BindOAuthIdentity:output_type -> testkit.v1.BindOAuthIdentityResponse
+	179, // 239: testkit.v1.TestkitService.UnbindIdentity:output_type -> google.protobuf.Empty
+	50,  // 240: testkit.v1.TestkitService.ListSessions:output_type -> testkit.v1.ListSessionsResponse
+	179, // 241: testkit.v1.TestkitService.RevokeSession:output_type -> google.protobuf.Empty
+	179, // 242: testkit.v1.TestkitService.RevokeAllSessions:output_type -> google.protobuf.Empty
+	54,  // 243: testkit.v1.TestkitService.GetSession:output_type -> testkit.v1.GetSessionResponse
+	56,  // 244: testkit.v1.TestkitService.IssueSessionCode:output_type -> testkit.v1.IssueSessionCodeResponse
+	58,  // 245: testkit.v1.TestkitService.ExchangeSessionCode:output_type -> testkit.v1.ExchangeSessionCodeResponse
+	60,  // 246: testkit.v1.TestkitService.GetOAuthURL:output_type -> testkit.v1.GetOAuthURLResponse
+	64,  // 247: testkit.v1.TestkitService.SocialLogin:output_type -> testkit.v1.SocialLoginResponse
+	64,  // 248: testkit.v1.TestkitService.MiniProgramLogin:output_type -> testkit.v1.SocialLoginResponse
+	64,  // 249: testkit.v1.TestkitService.MiniProgramPhoneLogin:output_type -> testkit.v1.SocialLoginResponse
+	66,  // 250: testkit.v1.TestkitService.CreateUser:output_type -> testkit.v1.CreateUserResponse
+	28,  // 251: testkit.v1.TestkitService.GetUser:output_type -> testkit.v1.User
+	70,  // 252: testkit.v1.TestkitService.ListUsers:output_type -> testkit.v1.ListUsersResponse
+	72,  // 253: testkit.v1.TestkitService.ListUsersPaged:output_type -> testkit.v1.ListUsersPagedResponse
+	28,  // 254: testkit.v1.TestkitService.DisableUser:output_type -> testkit.v1.User
+	74,  // 255: testkit.v1.TestkitService.GetLoginLogs:output_type -> testkit.v1.GetLoginLogsResponse
+	31,  // 256: testkit.v1.TestkitService.CreateGroup:output_type -> testkit.v1.Group
+	31,  // 257: testkit.v1.TestkitService.GetGroup:output_type -> testkit.v1.Group
+	31,  // 258: testkit.v1.TestkitService.UpdateGroup:output_type -> testkit.v1.Group
+	79,  // 259: testkit.v1.TestkitService.ListGroups:output_type -> testkit.v1.ListGroupsResponse
+	179, // 260: testkit.v1.TestkitService.DeleteGroup:output_type -> google.protobuf.Empty
+	179, // 261: testkit.v1.TestkitService.AddGroupMember:output_type -> google.protobuf.Empty
+	179, // 262: testkit.v1.TestkitService.RemoveGroupMember:output_type -> google.protobuf.Empty
+	84,  // 263: testkit.v1.TestkitService.ListGroupMembers:output_type -> testkit.v1.ListGroupMembersResponse
+	179, // 264: testkit.v1.TestkitService.AddGroupRole:output_type -> google.protobuf.Empty
+	179, // 265: testkit.v1.TestkitService.RemoveGroupRole:output_type -> google.protobuf.Empty
+	88,  // 266: testkit.v1.TestkitService.ListGroupRoles:output_type -> testkit.v1.ListGroupRolesResponse
+	32,  // 267: testkit.v1.TestkitService.CreateRole:output_type -> testkit.v1.Role
+	32,  // 268: testkit.v1.TestkitService.GetRole:output_type -> testkit.v1.Role
+	32,  // 269: testkit.v1.TestkitService.UpdateRole:output_type -> testkit.v1.Role
+	179, // 270: testkit.v1.TestkitService.DeleteRole:output_type -> google.protobuf.Empty
+	94,  // 271: testkit.v1.TestkitService.ListRoles:output_type -> testkit.v1.ListRolesResponse
+	179, // 272: testkit.v1.TestkitService.AssignRole:output_type -> google.protobuf.Empty
+	179, // 273: testkit.v1.TestkitService.RevokeRole:output_type -> google.protobuf.Empty
+	98,  // 274: testkit.v1.TestkitService.ListUserRoles:output_type -> testkit.v1.ListUserRolesResponse
+	100, // 275: testkit.v1.TestkitService.ListPermissions:output_type -> testkit.v1.ListPermissionsResponse
+	33,  // 276: testkit.v1.TestkitService.CreatePermission:output_type -> testkit.v1.Permission
+	33,  // 277: testkit.v1.TestkitService.GetPermission:output_type -> testkit.v1.Permission
+	33,  // 278: testkit.v1.TestkitService.UpdatePermission:output_type -> testkit.v1.Permission
+	179, // 279: testkit.v1.TestkitService.DeletePermission:output_type -> google.protobuf.Empty
+	34,  // 280: testkit.v1.TestkitService.CreatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	34,  // 281: testkit.v1.TestkitService.GetPermissionGroup:output_type -> testkit.v1.PermissionGroup
+	34,  // 282: testkit.v1.TestkitService.UpdatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	179, // 283: testkit.v1.TestkitService.DeletePermissionGroup:output_type -> google.protobuf.Empty
+	110, // 284: testkit.v1.TestkitService.ListPermissionGroups:output_type -> testkit.v1.ListPermissionGroupsResponse
+	126, // 285: testkit.v1.TestkitService.GenerateUploadURL:output_type -> testkit.v1.GenerateUploadURLResponse
+	128, // 286: testkit.v1.TestkitService.GetSTSCredential:output_type -> testkit.v1.GetSTSCredentialResponse
+	130, // 287: testkit.v1.TestkitService.BatchGetSTSCredential:output_type -> testkit.v1.BatchGetSTSCredentialResponse
+	132, // 288: testkit.v1.TestkitService.ConfirmUpload:output_type -> testkit.v1.ConfirmUploadResponse
+	179, // 289: testkit.v1.TestkitService.CancelUpload:output_type -> google.protobuf.Empty
+	135, // 290: testkit.v1.TestkitService.GenerateDownloadURL:output_type -> testkit.v1.GenerateDownloadURLResponse
+	137, // 291: testkit.v1.TestkitService.GenerateProcessURL:output_type -> testkit.v1.GenerateProcessURLResponse
+	139, // 292: testkit.v1.TestkitService.GenerateCDNURL:output_type -> testkit.v1.GenerateCDNURLResponse
+	141, // 293: testkit.v1.TestkitService.ListMyFiles:output_type -> testkit.v1.ListMyFilesResponse
+	143, // 294: testkit.v1.TestkitService.ListMyFilesPaged:output_type -> testkit.v1.ListMyFilesPagedResponse
+	111, // 295: testkit.v1.TestkitService.GetMyFile:output_type -> testkit.v1.FileInfo
+	111, // 296: testkit.v1.TestkitService.UpdateMyFile:output_type -> testkit.v1.FileInfo
+	179, // 297: testkit.v1.TestkitService.DeleteMyFile:output_type -> google.protobuf.Empty
+	148, // 298: testkit.v1.TestkitService.BatchDeleteMyFiles:output_type -> testkit.v1.BatchDeleteMyFilesResponse
+	113, // 299: testkit.v1.TestkitService.GetMyQuota:output_type -> testkit.v1.QuotaInfo
+	150, // 300: testkit.v1.TestkitService.ListMyAuditLogs:output_type -> testkit.v1.ListMyAuditLogsResponse
+	113, // 301: testkit.v1.TestkitService.SetOwnerQuota:output_type -> testkit.v1.QuotaInfo
+	113, // 302: testkit.v1.TestkitService.AddOwnerQuota:output_type -> testkit.v1.QuotaInfo
+	154, // 303: testkit.v1.TestkitService.AdminListFiles:output_type -> testkit.v1.AdminListFilesResponse
+	112, // 304: testkit.v1.TestkitService.AdminGetFile:output_type -> testkit.v1.AdminFileInfo
+	179, // 305: testkit.v1.TestkitService.AdminDeleteFile:output_type -> google.protobuf.Empty
+	113, // 306: testkit.v1.TestkitService.AdminGetQuota:output_type -> testkit.v1.QuotaInfo
+	113, // 307: testkit.v1.TestkitService.AdminSetQuota:output_type -> testkit.v1.QuotaInfo
+	160, // 308: testkit.v1.TestkitService.AdminGetStats:output_type -> testkit.v1.AdminGetStatsResponse
+	161, // 309: testkit.v1.TestkitService.AdminListProviders:output_type -> testkit.v1.AdminListProvidersResponse
+	162, // 310: testkit.v1.TestkitService.AdminListBuckets:output_type -> testkit.v1.AdminListBucketsResponse
+	164, // 311: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:output_type -> testkit.v1.AdminSoftDeleteOwnerFilesResponse
+	166, // 312: testkit.v1.TestkitService.AdminDeleteOwner:output_type -> testkit.v1.AdminDeleteOwnerResponse
+	168, // 313: testkit.v1.TestkitService.AdminListAuditLogs:output_type -> testkit.v1.AdminListAuditLogsResponse
+	226, // [226:314] is the sub-list for method output_type
+	138, // [138:226] is the sub-list for method input_type
+	138, // [138:138] is the sub-list for extension type_name
+	138, // [138:138] is the sub-list for extension extendee
+	0,   // [0:138] is the sub-list for field type_name
 }
 
 func init() { file_testkit_v1_testkit_proto_init() }
@@ -7602,13 +13307,20 @@ func file_testkit_v1_testkit_proto_init() {
 	if File_testkit_v1_testkit_proto != nil {
 		return
 	}
+	file_testkit_v1_testkit_proto_msgTypes[96].OneofWrappers = []any{
+		(*UploadCredentialItem_Token)(nil),
+		(*UploadCredentialItem_Error)(nil),
+	}
+	file_testkit_v1_testkit_proto_msgTypes[112].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[116].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[123].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_testkit_v1_testkit_proto_rawDesc), len(file_testkit_v1_testkit_proto_rawDesc)),
-			NumEnums:      10,
-			NumMessages:   89,
+			NumEnums:      22,
+			NumMessages:   154,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
