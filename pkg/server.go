@@ -15,7 +15,10 @@ import (
 	"github.com/servekit/go-common/signalx"
 
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	"github.com/servekit/testkit-service/internal/adapter"
+	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service"
+	"github.com/servekit/testkit-service/pkg/auth"
 	"github.com/servekit/testkit-service/pkg/config"
 	"github.com/servekit/testkit-service/pkg/handler"
 	"github.com/servekit/testkit-service/pkg/option"
@@ -49,14 +52,26 @@ func WithServiceOptions(opts ...option.Option) ServerOption {
 
 // NewServer constructs a Server with all dependencies wired.
 //
-// The gRPC server runs with three interceptors in order:
-//   - grpcx.ErrorInterceptor: maps xerr-wrapped service errors to gRPC status
-//     codes (404 → NotFound, 400 → InvalidArgument, etc.)
+// The gRPC server runs a three-interceptor chain (outermost first):
+//   - grpcx.ErrorInterceptor: maps *xerr.Error returned by inner layers to
+//     gRPC status codes (Unauthorized → Unauthenticated/401, NotFound → 404,
+//     BadRequest → InvalidArgument/400, ...). It MUST sit outside the auth
+//     gate: the auth interceptor returns xcodes.ErrUnauthorized (an *xerr.Error
+//     that has no GRPCStatus method), so without ErrorInterceptor wrapping it,
+//     auth rejections would surface to clients as codes.Unknown.
+//   - auth.Interceptor (pkg/auth): the JWT authentication gate. Skips the
+//     public whitelist (Ping/Login/Register/SendVerificationCode + the health
+//     check), then for every other RPC verifies the bearer JWT, resolves
+//     session→user via the embedded user-service GetSession, and injects
+//     user_id + session_id into the handler ctx.
 //   - protovalidate.UnaryServerInterceptor: enforces (buf.validate.field)
-//     rules declared in testkit.proto
+//     rules declared in testkit.proto.
 //
 // The HTTP gateway auto-registers via testkitv1.RegisterTestkitServiceHandlerFromEndpoint
-// when cfg.Server.GatewayAddr is non-empty.
+// when cfg.Server.GatewayAddr is non-empty. grpc-gateway forwards the HTTP
+// Authorization header to gRPC metadata under the unprefixed "authorization"
+// key by default (verified in grpc-gateway runtime/context.go), so no custom
+// header matcher is needed (design decision 4).
 func NewServer(cfg *config.Config, opts ...ServerOption) (*Server, error) {
 	var so serverOptions
 	for _, opt := range opts {
@@ -69,6 +84,36 @@ func NewServer(cfg *config.Config, opts ...ServerOption) (*Server, error) {
 	}
 
 	hdl := handler.New(svc)
+
+	// Auth gate (design spec §5.2): a JWT manager + a session→user_id resolver
+	// bridged to the embedded user-service GetSession. The manager is stateless
+	// (HS256 secret + ttl from cfg); service.New built its own identical
+	// manager for the auth domain's signing path — two stateless instances off
+	// the same config interoperate freely.
+	jwtMgr, err := jwt.NewManager(cfg.JWT.Secret, cfg.JWT.TTL)
+	if err != nil {
+		return nil, err
+	}
+	resolver := adapter.NewSessionResolver(svc.UserHandler())
+	authIntercept := auth.NewInterceptor(
+		jwtMgr,
+		resolver,
+		auth.WithPublicMethods(
+			"/testkit.v1.TestkitService/Ping",
+			"/testkit.v1.TestkitService/Login",
+			"/testkit.v1.TestkitService/Register",
+			"/testkit.v1.TestkitService/SendVerificationCode",
+			// grpcx auto-registers grpc.health.v1.Health; health probes carry
+			// no token, so the Check RPC must stay public.
+			"/grpc.health.v1.Health/Check",
+			// RefreshSession is intentionally PROTECTED — a deviation from
+			// design §3.5's whitelist: testkit's JWT is itself the session
+			// carrier (there is no separate refresh token), so the frontend
+			// must refresh proactively before expiry. The interceptor validates
+			// the session and injects session_id, which RefreshSession reuses
+			// as the target when the request omits it.
+		),
+	)
 
 	validator, err := protovalidate.New()
 	if err != nil {
@@ -84,7 +129,13 @@ func NewServer(cfg *config.Config, opts ...ServerOption) (*Server, error) {
 			testkitv1.RegisterTestkitServiceServer(gs, hdl)
 		},
 		testkitv1.RegisterTestkitServiceHandlerFromEndpoint,
+		// Chain order is outermost-first (grpc.ChainUnaryInterceptor).
+		// ErrorInterceptor wraps the auth gate so its *xerr.Error rejections
+		// (and protovalidate's) are translated to gRPC status / HTTP codes.
+		// Auth runs before protovalidate so unauthenticated requests are
+		// rejected without paying for request-body validation.
 		grpcx.ErrorInterceptor,
+		authIntercept.Unary(),
 		protovalidate_middleware.UnaryServerInterceptor(validator),
 	)
 
