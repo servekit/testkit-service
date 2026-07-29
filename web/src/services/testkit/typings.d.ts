@@ -150,6 +150,29 @@ declare namespace API {
     fileId: string;
   };
 
+  type GetEmailParams = {
+    id: string;
+  };
+
+  type GetEmailStatsParams = {
+    vendor?:
+      | "EMAIL_VENDOR_UNSPECIFIED"
+      | "EMAIL_VENDOR_ALIYUN"
+      | "EMAIL_VENDOR_TENCENT"
+      | "EMAIL_VENDOR_NETEASE";
+    scene?:
+      | "EMAIL_SCENE_UNSPECIFIED"
+      | "EMAIL_SCENE_LOGIN_CODE"
+      | "EMAIL_SCENE_FORGOT_PASSWORD"
+      | "EMAIL_SCENE_REGISTER"
+      | "EMAIL_SCENE_CHANGE_PASSWORD"
+      | "EMAIL_SCENE_BIND_ACCOUNT"
+      | "EMAIL_SCENE_NOTIFICATION"
+      | "EMAIL_SCENE_VERIFY_EMAIL";
+    startTime?: string;
+    endTime?: string;
+  };
+
   type GetGroupParams = {
     groupId: string;
   };
@@ -208,9 +231,106 @@ declare namespace API {
     sessionId: string;
   };
 
+  type GetSMSParams = {
+    id: string;
+  };
+
+  type GetSMSStatsParams = {
+    vendor?:
+      | "SMS_VENDOR_UNSPECIFIED"
+      | "SMS_VENDOR_ALIYUN"
+      | "SMS_VENDOR_TENCENT"
+      | "SMS_VENDOR_VOLCENGINE"
+      | "SMS_VENDOR_BYTEPLUS"
+      | "SMS_VENDOR_HUAWEI";
+    scene?:
+      | "SMS_SCENE_UNSPECIFIED"
+      | "SMS_SCENE_LOGIN_CODE"
+      | "SMS_SCENE_FORGOT_PASSWORD"
+      | "SMS_SCENE_REGISTER"
+      | "SMS_SCENE_CHANGE_PASSWORD"
+      | "SMS_SCENE_BIND_ACCOUNT"
+      | "SMS_SCENE_VERIFY_PHONE";
+    startTime?: string;
+    endTime?: string;
+  };
+
   type GetUserParams = {
     /** target user (kept) */
     userId: string;
+  };
+
+  type ListEmailsByCursorParams = {
+    vendor?:
+      | "EMAIL_VENDOR_UNSPECIFIED"
+      | "EMAIL_VENDOR_ALIYUN"
+      | "EMAIL_VENDOR_TENCENT"
+      | "EMAIL_VENDOR_NETEASE";
+    scene?:
+      | "EMAIL_SCENE_UNSPECIFIED"
+      | "EMAIL_SCENE_LOGIN_CODE"
+      | "EMAIL_SCENE_FORGOT_PASSWORD"
+      | "EMAIL_SCENE_REGISTER"
+      | "EMAIL_SCENE_CHANGE_PASSWORD"
+      | "EMAIL_SCENE_BIND_ACCOUNT"
+      | "EMAIL_SCENE_NOTIFICATION"
+      | "EMAIL_SCENE_VERIFY_EMAIL";
+    status?:
+      | "MESSAGE_STATUS_UNSPECIFIED"
+      | "MESSAGE_STATUS_PENDING"
+      | "MESSAGE_STATUS_SENT"
+      | "MESSAGE_STATUS_FAILED";
+    target?: string;
+    startTime?: string;
+    endTime?: string;
+    sortField?:
+      | "SORT_FIELD_UNSPECIFIED"
+      | "SORT_FIELD_CREATED_AT"
+      | "SORT_FIELD_FILENAME"
+      | "SORT_FIELD_SIZE";
+    sortDirection?:
+      | "SORT_DIRECTION_UNSPECIFIED"
+      | "SORT_DIRECTION_ASC"
+      | "SORT_DIRECTION_DESC";
+    pageSize?: number;
+    pageToken?: string;
+    includeTotal?: boolean;
+  };
+
+  type ListEmailsParams = {
+    vendor?:
+      | "EMAIL_VENDOR_UNSPECIFIED"
+      | "EMAIL_VENDOR_ALIYUN"
+      | "EMAIL_VENDOR_TENCENT"
+      | "EMAIL_VENDOR_NETEASE";
+    scene?:
+      | "EMAIL_SCENE_UNSPECIFIED"
+      | "EMAIL_SCENE_LOGIN_CODE"
+      | "EMAIL_SCENE_FORGOT_PASSWORD"
+      | "EMAIL_SCENE_REGISTER"
+      | "EMAIL_SCENE_CHANGE_PASSWORD"
+      | "EMAIL_SCENE_BIND_ACCOUNT"
+      | "EMAIL_SCENE_NOTIFICATION"
+      | "EMAIL_SCENE_VERIFY_EMAIL";
+    status?:
+      | "MESSAGE_STATUS_UNSPECIFIED"
+      | "MESSAGE_STATUS_PENDING"
+      | "MESSAGE_STATUS_SENT"
+      | "MESSAGE_STATUS_FAILED";
+    target?: string;
+    startTime?: string;
+    endTime?: string;
+    page?: number;
+    pageSize?: number;
+    sortField?:
+      | "SORT_FIELD_UNSPECIFIED"
+      | "SORT_FIELD_CREATED_AT"
+      | "SORT_FIELD_FILENAME"
+      | "SORT_FIELD_SIZE";
+    sortDirection?:
+      | "SORT_DIRECTION_UNSPECIFIED"
+      | "SORT_DIRECTION_ASC"
+      | "SORT_DIRECTION_DESC";
   };
 
   type ListGroupMembersParams = {
@@ -300,6 +420,83 @@ declare namespace API {
   type ListRolesParams = {
     pageSize?: number;
     cursor?: string;
+  };
+
+  type ListSMSByCursorParams = {
+    vendor?:
+      | "SMS_VENDOR_UNSPECIFIED"
+      | "SMS_VENDOR_ALIYUN"
+      | "SMS_VENDOR_TENCENT"
+      | "SMS_VENDOR_VOLCENGINE"
+      | "SMS_VENDOR_BYTEPLUS"
+      | "SMS_VENDOR_HUAWEI";
+    scene?:
+      | "SMS_SCENE_UNSPECIFIED"
+      | "SMS_SCENE_LOGIN_CODE"
+      | "SMS_SCENE_FORGOT_PASSWORD"
+      | "SMS_SCENE_REGISTER"
+      | "SMS_SCENE_CHANGE_PASSWORD"
+      | "SMS_SCENE_BIND_ACCOUNT"
+      | "SMS_SCENE_VERIFY_PHONE";
+    status?:
+      | "MESSAGE_STATUS_UNSPECIFIED"
+      | "MESSAGE_STATUS_PENDING"
+      | "MESSAGE_STATUS_SENT"
+      | "MESSAGE_STATUS_FAILED";
+    regionCode?: string;
+    phone?: string;
+    startTime?: string;
+    endTime?: string;
+    sortField?:
+      | "SORT_FIELD_UNSPECIFIED"
+      | "SORT_FIELD_CREATED_AT"
+      | "SORT_FIELD_FILENAME"
+      | "SORT_FIELD_SIZE";
+    sortDirection?:
+      | "SORT_DIRECTION_UNSPECIFIED"
+      | "SORT_DIRECTION_ASC"
+      | "SORT_DIRECTION_DESC";
+    pageSize?: number;
+    pageToken?: string;
+    includeTotal?: boolean;
+  };
+
+  type ListSMSParams = {
+    vendor?:
+      | "SMS_VENDOR_UNSPECIFIED"
+      | "SMS_VENDOR_ALIYUN"
+      | "SMS_VENDOR_TENCENT"
+      | "SMS_VENDOR_VOLCENGINE"
+      | "SMS_VENDOR_BYTEPLUS"
+      | "SMS_VENDOR_HUAWEI";
+    scene?:
+      | "SMS_SCENE_UNSPECIFIED"
+      | "SMS_SCENE_LOGIN_CODE"
+      | "SMS_SCENE_FORGOT_PASSWORD"
+      | "SMS_SCENE_REGISTER"
+      | "SMS_SCENE_CHANGE_PASSWORD"
+      | "SMS_SCENE_BIND_ACCOUNT"
+      | "SMS_SCENE_VERIFY_PHONE";
+    status?:
+      | "MESSAGE_STATUS_UNSPECIFIED"
+      | "MESSAGE_STATUS_PENDING"
+      | "MESSAGE_STATUS_SENT"
+      | "MESSAGE_STATUS_FAILED";
+    regionCode?: string;
+    phone?: string;
+    startTime?: string;
+    endTime?: string;
+    page?: number;
+    pageSize?: number;
+    sortField?:
+      | "SORT_FIELD_UNSPECIFIED"
+      | "SORT_FIELD_CREATED_AT"
+      | "SORT_FIELD_FILENAME"
+      | "SORT_FIELD_SIZE";
+    sortDirection?:
+      | "SORT_DIRECTION_UNSPECIFIED"
+      | "SORT_DIRECTION_ASC"
+      | "SORT_DIRECTION_DESC";
   };
 
   type ListUserRolesParams = {
@@ -822,6 +1019,77 @@ declare namespace API {
     | "DEVICE_TYPE_ANDROID"
     | "DEVICE_TYPE_API";
 
+  type v1EmailAddress = {
+    email?: string;
+    displayName?: string;
+  };
+
+  type v1EmailAttachment = {
+    filename?: string;
+    url?: string;
+    content?: string;
+    inline?: boolean;
+    mimeType?: string;
+    sizeBytes?: string;
+  };
+
+  type v1EmailRecord = {
+    id?: string;
+    vendor?: v1EmailVendor;
+    account?: string;
+    scene?: v1EmailScene;
+    status?: v1MessageStatus;
+    target?: v1EmailAddress;
+    /** read-only echo (testkit's sends echo cfg.Message.SenderID) */
+    senderId?: string;
+    cc?: v1EmailAddress[];
+    bcc?: v1EmailAddress[];
+    subject?: string;
+    content?: string;
+    htmlBody?: string;
+    replyTo?: v1EmailAddress;
+    templateId?: string;
+    templateParams?: Record<string, any>;
+    errorMessage?: string;
+    attempts?: number;
+    sentAt?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    attachments?: v1EmailAttachment[];
+  };
+
+  type v1EmailScene =
+    | "EMAIL_SCENE_UNSPECIFIED"
+    | "EMAIL_SCENE_LOGIN_CODE"
+    | "EMAIL_SCENE_FORGOT_PASSWORD"
+    | "EMAIL_SCENE_REGISTER"
+    | "EMAIL_SCENE_CHANGE_PASSWORD"
+    | "EMAIL_SCENE_BIND_ACCOUNT"
+    | "EMAIL_SCENE_NOTIFICATION"
+    | "EMAIL_SCENE_VERIFY_EMAIL";
+
+  type v1EmailStatsResponse = {
+    total?: string;
+    sent?: string;
+    failed?: string;
+    /** [0,100]; -1 = no data */
+    successRate?: number;
+    vendors?: v1EmailVendorStats[];
+  };
+
+  type v1EmailVendor =
+    | "EMAIL_VENDOR_UNSPECIFIED"
+    | "EMAIL_VENDOR_ALIYUN"
+    | "EMAIL_VENDOR_TENCENT"
+    | "EMAIL_VENDOR_NETEASE";
+
+  type v1EmailVendorStats = {
+    vendor?: v1EmailVendor;
+    total?: string;
+    sent?: string;
+    failed?: string;
+  };
+
   type v1ExchangeSessionCodeRequest = {
     code?: string;
   };
@@ -1029,6 +1297,23 @@ declare namespace API {
     message?: string;
   };
 
+  type v1ListEmailsByCursorResponse = {
+    records?: v1EmailRecord[];
+    total?: number;
+    nextPageToken?: string;
+  };
+
+  type v1ListEmailSendersResponse = {
+    senderIds?: string[];
+  };
+
+  type v1ListEmailsResponse = {
+    records?: v1EmailRecord[];
+    total?: number;
+    totalPages?: number;
+    hasMore?: boolean;
+  };
+
   type v1ListGroupMembersResponse = {
     members?: v1GroupMember[];
     nextCursor?: string;
@@ -1090,6 +1375,27 @@ declare namespace API {
     sessions?: v1Session[];
   };
 
+  type v1ListSMSByCursorResponse = {
+    records?: v1SMSRecord[];
+    total?: number;
+    nextPageToken?: string;
+  };
+
+  type v1ListSMSRegionsResponse = {
+    regionCodes?: string[];
+  };
+
+  type v1ListSMSResponse = {
+    records?: v1SMSRecord[];
+    total?: number;
+    totalPages?: number;
+    hasMore?: boolean;
+  };
+
+  type v1ListSMSSendersResponse = {
+    senderIds?: string[];
+  };
+
   type v1ListUserRolesResponse = {
     roles?: v1UserRole[];
   };
@@ -1149,6 +1455,12 @@ declare namespace API {
     /** captcha_id returned by SendVerificationCode; required for code-based login. */
     captchaId?: string;
   };
+
+  type v1MessageStatus =
+    | "MESSAGE_STATUS_UNSPECIFIED"
+    | "MESSAGE_STATUS_PENDING"
+    | "MESSAGE_STATUS_SENT"
+    | "MESSAGE_STATUS_FAILED";
 
   type v1MiniProgramLoginRequest = {
     code?: string;
@@ -1270,6 +1582,46 @@ declare namespace API {
     updatedAt?: string;
   };
 
+  type v1SendEmailRequest = {
+    to?: v1EmailAddress[];
+    cc?: v1EmailAddress[];
+    bcc?: v1EmailAddress[];
+    subject?: string;
+    body?: string;
+    htmlBody?: string;
+    replyTo?: v1EmailAddress;
+    vendor?: v1EmailVendor;
+    account?: string;
+    templateId?: string;
+    templateParams?: Record<string, any>;
+    scene?: v1EmailScene;
+    /** sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1). */
+    idempotencyKey?: string;
+    from?: v1EmailAddress;
+    attachments?: v1EmailAttachment[];
+  };
+
+  type v1SendResponse = {
+    id?: string;
+    status?: v1MessageStatus;
+    emailVendor?: v1EmailVendor;
+    smsVendor?: v1SmsVendor;
+  };
+
+  type v1SendSMSRequest = {
+    regionCode?: string;
+    phone?: string;
+    content?: string;
+    templateId?: string;
+    templateParams?: Record<string, any>;
+    vendor?: v1SmsVendor;
+    account?: string;
+    scene?: v1SmsScene;
+    /** sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1). */
+    idempotencyKey?: string;
+    signName?: string;
+  };
+
   type v1SendVerificationCodeRequest = {
     email?: string;
     channel?: v1VerificationChannel;
@@ -1306,6 +1658,57 @@ a platform identifier (e.g. the target email/phone or "testkit-web"). */
     totalBytes?: string;
   };
 
+  type v1SMSRecord = {
+    id?: string;
+    vendor?: v1SmsVendor;
+    account?: string;
+    scene?: v1SmsScene;
+    status?: v1MessageStatus;
+    regionCode?: string;
+    phone?: string;
+    senderId?: string;
+    content?: string;
+    templateId?: string;
+    templateParams?: Record<string, any>;
+    errorMessage?: string;
+    attempts?: number;
+    sentAt?: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
+  type v1SmsScene =
+    | "SMS_SCENE_UNSPECIFIED"
+    | "SMS_SCENE_LOGIN_CODE"
+    | "SMS_SCENE_FORGOT_PASSWORD"
+    | "SMS_SCENE_REGISTER"
+    | "SMS_SCENE_CHANGE_PASSWORD"
+    | "SMS_SCENE_BIND_ACCOUNT"
+    | "SMS_SCENE_VERIFY_PHONE";
+
+  type v1SMSStatsResponse = {
+    total?: string;
+    sent?: string;
+    failed?: string;
+    successRate?: number;
+    vendors?: v1SmsVendorStats[];
+  };
+
+  type v1SmsVendor =
+    | "SMS_VENDOR_UNSPECIFIED"
+    | "SMS_VENDOR_ALIYUN"
+    | "SMS_VENDOR_TENCENT"
+    | "SMS_VENDOR_VOLCENGINE"
+    | "SMS_VENDOR_BYTEPLUS"
+    | "SMS_VENDOR_HUAWEI";
+
+  type v1SmsVendorStats = {
+    vendor?: v1SmsVendor;
+    total?: string;
+    sent?: string;
+    failed?: string;
+  };
+
   type v1SocialLoginRequest = {
     provider?: v1IdentityProvider;
     code?: string;
@@ -1319,6 +1722,11 @@ a platform identifier (e.g. the target email/phone or "testkit-web"). */
     /** meaningful only for SocialLogin (OAuth callback flow) */
     returnTo?: string;
   };
+
+  type v1SortDirection =
+    | "SORT_DIRECTION_UNSPECIFIED"
+    | "SORT_DIRECTION_ASC"
+    | "SORT_DIRECTION_DESC";
 
   type v1SortField =
     | "SORT_FIELD_UNSPECIFIED"

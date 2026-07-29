@@ -189,13 +189,38 @@ export default defineConfig({
       access: "canInternal",
       component: "./Admin/Audit",
     },
-    // --- Future-phase placeholders (P4–P6) ---
+    // --- Message ops console (P4) → access: canInternal ---
+    // Internal-only ops surface: ad-hoc send (email/SMS) + full-fidelity record
+    // lists with stats. message = internal (per cross-plan decision); backend
+    // does no RBAC this phase (design §3.5), the split is a frontend route guard.
     {
-      path: "/messages",
-      name: "消息",
+      path: "/message",
+      name: "消息管理",
       icon: "MessageOutlined",
       access: "canInternal",
-      component: "./Placeholder",
+      routes: [
+        { path: "/message", redirect: "/message/send/email" },
+        {
+          path: "/message/send/email",
+          name: "发送邮件",
+          component: "./Message/SendEmail",
+        },
+        {
+          path: "/message/send/sms",
+          name: "发送短信",
+          component: "./Message/SendSMS",
+        },
+        {
+          path: "/message/emails",
+          name: "邮件记录",
+          component: "./Message/Emails",
+        },
+        {
+          path: "/message/sms",
+          name: "短信记录",
+          component: "./Message/SMS",
+        },
+      ],
     },
     {
       path: "/gid",

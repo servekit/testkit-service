@@ -270,6 +270,112 @@ export async function sendVerificationCode(body: API.v1SendVerificationCodeReque
   });
 }
 
+/** 此处后端没有提供注释 GET /api/v1/emails */
+export async function listEmails(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListEmailsParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListEmailsResponse>('/api/v1/emails', {
+  method: 'GET',
+    params: {
+        // vendor has a default value: EMAIL_VENDOR_UNSPECIFIED
+          'vendor': 'EMAIL_VENDOR_UNSPECIFIED',
+        // scene has a default value: EMAIL_SCENE_UNSPECIFIED
+          'scene': 'EMAIL_SCENE_UNSPECIFIED',
+        // status has a default value: MESSAGE_STATUS_UNSPECIFIED
+          'status': 'MESSAGE_STATUS_UNSPECIFIED',
+        
+        
+        
+        
+        
+        // sortField has a default value: SORT_FIELD_UNSPECIFIED
+          'sortField': 'SORT_FIELD_UNSPECIFIED',
+        // sortDirection has a default value: SORT_DIRECTION_UNSPECIFIED
+          'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',...params,},
+    ...(options || {}),
+  });
+}
+
+/** Email records. GET /api/v1/emails/${param0} */
+export async function getEmail(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GetEmailParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1EmailRecord>(`/api/v1/emails/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/emails${cursor} */
+export async function listEmailsByCursor(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListEmailsByCursorParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListEmailsByCursorResponse>(`/api/v1/emails:cursor`, {
+  method: 'GET',
+    params: {
+        // vendor has a default value: EMAIL_VENDOR_UNSPECIFIED
+          'vendor': 'EMAIL_VENDOR_UNSPECIFIED',
+        // scene has a default value: EMAIL_SCENE_UNSPECIFIED
+          'scene': 'EMAIL_SCENE_UNSPECIFIED',
+        // status has a default value: MESSAGE_STATUS_UNSPECIFIED
+          'status': 'MESSAGE_STATUS_UNSPECIFIED',
+        
+        
+        
+        // sortField has a default value: SORT_FIELD_UNSPECIFIED
+          'sortField': 'SORT_FIELD_UNSPECIFIED',
+        // sortDirection has a default value: SORT_DIRECTION_UNSPECIFIED
+          'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',
+        
+        
+        ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/emails${senders} */
+export async function listEmailSenders(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListEmailSendersResponse>(`/api/v1/emails:senders`, {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/emails${stats} */
+export async function getEmailStats(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GetEmailStatsParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1EmailStatsResponse>(`/api/v1/emails:stats`, {
+  method: 'GET',
+    params: {
+        // vendor has a default value: EMAIL_VENDOR_UNSPECIFIED
+          'vendor': 'EMAIL_VENDOR_UNSPECIFIED',
+        // scene has a default value: EMAIL_SCENE_UNSPECIFIED
+          'scene': 'EMAIL_SCENE_UNSPECIFIED',
+        
+        ...params,},
+    ...(options || {}),
+  });
+}
+
 /** ---- My Files (owner from ctx) ---- GET /api/v1/files */
 export async function listMyFiles(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -563,6 +669,34 @@ export async function bindOAuthIdentity(body: API.v1BindOAuthIdentityRequest,
   options ?: {[key: string]: any}
 ) {
   return request<API.v1BindOAuthIdentityResponse>('/api/v1/identities/oauth', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** Send (sender_id injected from config). POST /api/v1/messages${email} */
+export async function sendEmail(body: API.v1SendEmailRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1SendResponse>(`/api/v1/messages:email`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/messages${sms} */
+export async function sendSms(body: API.v1SendSMSRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1SendResponse>(`/api/v1/messages:sms`, {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -1197,6 +1331,124 @@ export async function revokeAllSessions(
 ) {
   return request<Record<string, any>>('/api/v1/sessions/revoke-all', {
   method: 'POST',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/sms */
+export async function listSms(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListSMSParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListSMSResponse>('/api/v1/sms', {
+  method: 'GET',
+    params: {
+        // vendor has a default value: SMS_VENDOR_UNSPECIFIED
+          'vendor': 'SMS_VENDOR_UNSPECIFIED',
+        // scene has a default value: SMS_SCENE_UNSPECIFIED
+          'scene': 'SMS_SCENE_UNSPECIFIED',
+        // status has a default value: MESSAGE_STATUS_UNSPECIFIED
+          'status': 'MESSAGE_STATUS_UNSPECIFIED',
+        
+        
+        
+        
+        
+        
+        // sortField has a default value: SORT_FIELD_UNSPECIFIED
+          'sortField': 'SORT_FIELD_UNSPECIFIED',
+        // sortDirection has a default value: SORT_DIRECTION_UNSPECIFIED
+          'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',...params,},
+    ...(options || {}),
+  });
+}
+
+/** SMS records. GET /api/v1/sms/${param0} */
+export async function getSms(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GetSMSParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1SMSRecord>(`/api/v1/sms/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/sms${cursor} */
+export async function listSmsByCursor(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListSMSByCursorParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListSMSByCursorResponse>(`/api/v1/sms:cursor`, {
+  method: 'GET',
+    params: {
+        // vendor has a default value: SMS_VENDOR_UNSPECIFIED
+          'vendor': 'SMS_VENDOR_UNSPECIFIED',
+        // scene has a default value: SMS_SCENE_UNSPECIFIED
+          'scene': 'SMS_SCENE_UNSPECIFIED',
+        // status has a default value: MESSAGE_STATUS_UNSPECIFIED
+          'status': 'MESSAGE_STATUS_UNSPECIFIED',
+        
+        
+        
+        
+        // sortField has a default value: SORT_FIELD_UNSPECIFIED
+          'sortField': 'SORT_FIELD_UNSPECIFIED',
+        // sortDirection has a default value: SORT_DIRECTION_UNSPECIFIED
+          'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',
+        
+        
+        ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/sms${regions} */
+export async function listSmsRegions(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListSMSRegionsResponse>(`/api/v1/sms:regions`, {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/sms${senders} */
+export async function listSmsSenders(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListSMSSendersResponse>(`/api/v1/sms:senders`, {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/sms${stats} */
+export async function getSmsStats(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GetSMSStatsParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1SMSStatsResponse>(`/api/v1/sms:stats`, {
+  method: 'GET',
+    params: {
+        // vendor has a default value: SMS_VENDOR_UNSPECIFIED
+          'vendor': 'SMS_VENDOR_UNSPECIFIED',
+        // scene has a default value: SMS_SCENE_UNSPECIFIED
+          'scene': 'SMS_SCENE_UNSPECIFIED',
+        
+        ...params,},
     ...(options || {}),
   });
 }
