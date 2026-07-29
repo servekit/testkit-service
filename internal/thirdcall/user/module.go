@@ -29,8 +29,14 @@ type Handler = *userhandler.Handler
 //
 // Captcha is intentionally not injected: user-service builds its own from its
 // config when the option is absent.
+//
+// The config is normalized first (normalizeConfig): user-service dereferences
+// Session/RBAC/OAuth (and each OAuth provider) unconditionally at startup, so
+// an operator leaving third_party.user.config empty would otherwise nil-deref.
+// normalizeConfig backfills safe disabled defaults, merging with any values the
+// operator did provide.
 func NewModule(cfg *config.Config, db *gorm.DB, rdb *redis.Client, gid *adapter.GIDAdapter, msg *adapter.MessageAdapter) (Handler, error) {
-	hdl, err := userservice.NewModule(cfg,
+	hdl, err := userservice.NewModule(normalizeConfig(cfg),
 		usroption.WithDB(db),
 		usroption.WithRedis(rdb),
 		usroption.WithGIDService(gid),
