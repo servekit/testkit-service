@@ -17,6 +17,10 @@
 // sanctioned adapter exception to the "only internal/thirdcall imports gen"
 // rule (design spec §3.4), mirroring how user-service's own thirdcall bridges
 // the same incompatibility internally.
+//
+// The package additionally bridges the shared user handler's GetSession to the
+// auth interceptor's SessionResolver seam (user.go), so pkg/auth can stay free
+// of downstream gen — the same boundary, applied to authentication.
 package adapter
 
 import (
