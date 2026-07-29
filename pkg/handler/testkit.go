@@ -50,4 +50,3 @@ func (h *Handler) Stop() error { return h.svc.Stop() }
 func (h *Handler) Ping(ctx context.Context, _ *emptypb.Empty) (*testkitv1.Pong, error) {
 	return h.svc.Ping(ctx)
 }
-
