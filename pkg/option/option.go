@@ -29,9 +29,11 @@
 package option
 
 import (
-	"github.com/robfig/cron/v3"
-
 	"github.com/redis/go-redis/v9"
+	"github.com/robfig/cron/v3"
+	"gorm.io/gorm"
+
+	"github.com/servekit/testkit-service/pkg/thirdcall"
 )
 
 // Option mutates Options.
@@ -42,19 +44,49 @@ type Option func(*Options)
 type Options struct {
 	// Redis is the cache/key-value store. resolveRedis builds it from cfg.Redis.
 	Redis *redis.Client
+	// DB is the shared PostgreSQL pool. resolveDB builds it from cfg.Database.
+	// The same pool is injected into every embedded downstream module so the
+	// whole BFF uses one connection set.
+	DB *gorm.DB
 	// Cron is optional. The scaffold already wires jobs.Scheduler (built on
 	// cronx) in service.setupJobs — most periodic-task needs should extend
 	// that rather than inject a separate *cron.Cron. This option exists for
 	// advanced cases (e.g., a parent process sharing its scheduler).
 	Cron *cron.Cron
+
+	// The four embedded downstream handlers. When injected, service.New uses
+	// them as-is and does NOT register them on its lifecycle.Manager (caller
+	// owns their lifecycle). When nil, service.New builds them from
+	// cfg.ThirdParty and registers each via mgr.Add for full Start/Stop.
+	GID     thirdcall.GIDService
+	Message thirdcall.MessageService
+	Storage thirdcall.StorageService
+	User    thirdcall.UserService
 }
 
 // WithRedis injects an existing *redis.Client. Caller owns its lifecycle.
 func WithRedis(c *redis.Client) Option { return func(o *Options) { o.Redis = c } }
 
+// WithDB injects a shared *gorm.DB. Caller owns its lifecycle.
+func WithDB(db *gorm.DB) Option { return func(o *Options) { o.DB = db } }
+
 // WithCron injects an existing *cron.Cron. Caller owns its lifecycle. Most
 // periodic-task needs should extend the scaffold's jobs.Scheduler instead.
 func WithCron(c *cron.Cron) Option { return func(o *Options) { o.Cron = c } }
+
+// WithGID injects a pre-built gid-service handler. Caller owns its lifecycle.
+func WithGID(h thirdcall.GIDService) Option { return func(o *Options) { o.GID = h } }
+
+// WithMessage injects a pre-built message-service handler. Caller owns its
+// lifecycle.
+func WithMessage(h thirdcall.MessageService) Option { return func(o *Options) { o.Message = h } }
+
+// WithStorage injects a pre-built storage-service handler. Caller owns its
+// lifecycle.
+func WithStorage(h thirdcall.StorageService) Option { return func(o *Options) { o.Storage = h } }
+
+// WithUser injects a pre-built user-service handler. Caller owns its lifecycle.
+func WithUser(h thirdcall.UserService) Option { return func(o *Options) { o.User = h } }
 
 // Apply evaluates all options and returns the resolved Options. A nil field
 // means "not injected — service owns it and will Stop it on shutdown".
