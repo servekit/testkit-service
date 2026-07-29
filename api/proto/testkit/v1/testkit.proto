@@ -6,6 +6,7 @@ option go_package = "github.com/servekit/testkit-service/gen/testkit/v1;testkitv
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 import "buf/validate/validate.proto";
 
 // Pong is the health-check response — only public, non-sensitive info
@@ -96,6 +97,66 @@ enum UserType {
   USER_TYPE_INTERNAL = 2; // Platform internal user (staff, operations, etc.).
 }
 
+// ==================== P2 shared enums (mirror user-service name-for-name,
+// number-for-number) ====================
+//
+// Conversion in internal/service/user is a plain int cast, e.g.
+// uservl.UserStatus(req.GetStatus()). See design spec §3.1 (self-contained
+// proto) — these are re-defined here rather than imported so the generated
+// swagger exposes real enum types to the frontend, and so testkit never
+// depends on a downstream .proto.
+
+// UserStatus is the account lifecycle state. Mirrors user-service
+// same-name/same-number.
+enum UserStatus {
+  USER_STATUS_UNSPECIFIED = 0;
+  USER_STATUS_ACTIVE = 1;
+  USER_STATUS_DISABLED = 2;
+  USER_STATUS_PENDING_REVIEW = 3;
+}
+
+// Gender is the user's self-reported gender. Mirrors user-service
+// same-name/same-number.
+enum Gender {
+  GENDER_UNSPECIFIED = 0;
+  GENDER_MALE = 1;
+  GENDER_FEMALE = 2;
+  GENDER_OTHER = 3;
+  GENDER_UNKNOWN = 4;
+}
+
+// DeviceType categorizes the client device for session/audit metadata. Mirrors
+// user-service same-name/same-number.
+enum DeviceType {
+  DEVICE_TYPE_UNSPECIFIED = 0;
+  DEVICE_TYPE_WEB = 1;
+  DEVICE_TYPE_IOS = 2;
+  DEVICE_TYPE_ANDROID = 3;
+  DEVICE_TYPE_API = 4;
+}
+
+// LoginAction classifies a login audit log entry. Mirrors user-service
+// same-name/same-number.
+enum LoginAction {
+  LOGIN_ACTION_UNSPECIFIED = 0;
+  LOGIN_ACTION_LOGIN = 1;
+  LOGIN_ACTION_REGISTER = 2;
+  LOGIN_ACTION_SOCIAL_LOGIN = 3;
+  LOGIN_ACTION_SOCIAL_REGISTER = 4;
+  LOGIN_ACTION_BIND = 5;
+  LOGIN_ACTION_UNBIND = 6;
+}
+
+// UserSortField is the sort column for ListUsers / ListUsersPaged. Mirrors
+// user-service same-name/same-number.
+enum UserSortField {
+  USER_SORT_FIELD_UNSPECIFIED = 0;
+  USER_SORT_FIELD_ID = 1;
+  USER_SORT_FIELD_CREATED_AT = 2;
+  USER_SORT_FIELD_UPDATED_AT = 3;
+  USER_SORT_FIELD_LAST_LOGIN_AT = 4;
+}
+
 // LoginRequest is the curated frontend DTO for login. Field names line up 1:1
 // with user-service LoginRequest; the auth mapping layer int-casts the enums.
 message LoginRequest {
@@ -154,16 +215,135 @@ message RefreshSessionRequest {
   string session_id = 1 [(buf.validate.field).string.max_len = 128];
 }
 
-// User is the curated frontend user view. Carries user_type so the frontend can
-// do its two-track split (design spec §3.5). Sensitive/internal fields
-// (status, register_source, real_name, timestamps, ...) are curated out.
+// User is the frontend-facing user shape (P2 enriched). Fields are renumbered
+// sequentially vs uservl.User (which has gaps from historical edits); the
+// mapping layer translates field-by-name, not field-by-number. Unlike P1's
+// 6-field login view, this carries the full profile surface (status, gender,
+// timestamps, register_source, ...) used by profile/admin UIs. user_type is
+// retained so the frontend can still do its two-track split (design spec §3.5).
 message User {
   int64 id = 1;
   string username = 2;
-  string email = 3;
-  string phone = 4;
-  string nickname = 5;
-  UserType user_type = 6 [(buf.validate.field).enum.defined_only = true];
+  string nickname = 3;
+  string real_name = 4;
+  string avatar_url = 5;
+  string email = 6;
+  string region_code = 7;
+  string phone = 8;
+  Gender gender = 9 [(buf.validate.field).enum.defined_only = true];
+  string birthday = 10; // YYYY-MM-DD
+  string timezone = 11;
+  string locale = 12;
+  string bio = 13;
+  UserStatus status = 14 [(buf.validate.field).enum.defined_only = true];
+  IdentityProvider register_source = 15;
+  UserType user_type = 16 [(buf.validate.field).enum.defined_only = true];
+  google.protobuf.Timestamp last_login_at = 17;
+  google.protobuf.Timestamp created_at = 18;
+  google.protobuf.Timestamp updated_at = 19;
+}
+
+// ---- P2 shared entity messages (curated frontend-facing shapes) ----
+
+// Identity is a login method linked to a user (email, phone, each OAuth
+// provider, miniprogram openid).
+message Identity {
+  int64 id = 1;
+  IdentityProvider provider = 2 [(buf.validate.field).enum.defined_only = true];
+  string provider_uid = 3;
+  bool verified = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+// Session is an active login session for the "manage devices" UI.
+message Session {
+  string id = 1;
+  string ip = 2;
+  DeviceType device_type = 3 [(buf.validate.field).enum.defined_only = true];
+  string os = 4;
+  string browser = 5;
+  string country = 6;
+  string city = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp last_active_at = 9;
+  bool current = 10;
+}
+
+// Group is an organizational unit; members inherit the group's roles.
+message Group {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  int64 parent_id = 4;
+  string status = 5;
+  int32 member_count = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+// Role is a named bundle of permissions assignable to users or groups.
+message Role {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  bool is_builtin = 4;
+  repeated Permission permissions = 5;
+  repeated PermissionGroup perm_groups = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+// Permission is a resource:action catalog entry.
+message Permission {
+  int64 id = 1;
+  string resource = 2;
+  string action = 3;
+  string description = 4;
+  bool is_builtin = 5;
+}
+
+// PermissionGroup is a named bundle of permissions.
+message PermissionGroup {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  repeated Permission permissions = 4;
+  bool is_builtin = 5;
+}
+
+// GroupMember is a user's membership row within a group.
+message GroupMember {
+  int64 user_id = 1;
+  string nickname = 2;
+  string avatar_url = 3;
+  string role = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+// LoginLog is one row of the login audit trail.
+message LoginLog {
+  int64 id = 1;
+  int64 user_id = 2;
+  IdentityProvider provider = 3;
+  LoginAction action = 4;
+  bool success = 5;
+  string fail_reason = 6;
+  string ip = 7;
+  DeviceType device_type = 8;
+  string os = 9;
+  string browser = 10;
+  string country = 11;
+  string city = 12;
+  google.protobuf.Timestamp created_at = 13;
+}
+
+// UserRole is one role held by a user (direct or group-inherited).
+message UserRole {
+  int64 id = 1;
+  int64 role_id = 2;
+  string role_name = 3;
+  string source = 4; // "direct" | "group:<group_name>"
+  google.protobuf.Timestamp created_at = 5;
 }
 
 // TokenResponse is returned by every login-class RPC (Login, Register,
@@ -173,6 +353,477 @@ message User {
 message TokenResponse {
   string token = 1;
   User user = 2;
+}
+
+// ==================== P2 request/response messages ====================
+//
+// Curation (design spec §3.2): "my" RPCs (GetProfile / UpdateProfile /
+// ChangePassword / ListIdentities / BindIdentity / BindOAuthIdentity /
+// UnbindIdentity / ListSessions / RevokeAllSessions) drop the caller's user_id
+// — the BFF injects it from ctx. Target resource IDs (user_id / identity_id /
+// session_id / group_id / role_id / permission_id / permission_group_id) are
+// kept: they describe WHAT is acted on, not WHO is calling.
+
+// ---- Profile (P2) ----
+message GetProfileRequest {} // user_id injected from ctx
+
+message UpdateProfileRequest {
+  string username = 1 [(buf.validate.field).string.max_len = 64];
+  string nickname = 2 [(buf.validate.field).string.max_len = 64];
+  string real_name = 3 [(buf.validate.field).string.max_len = 64];
+  string avatar_url = 4 [(buf.validate.field).string.max_len = 512];
+  Gender gender = 5 [(buf.validate.field).enum.defined_only = true];
+  string birthday = 6 [(buf.validate.field).string.max_len = 10];
+  string timezone = 7 [(buf.validate.field).string.max_len = 64];
+  string locale = 8 [(buf.validate.field).string.max_len = 16];
+  string bio = 9 [(buf.validate.field).string.max_len = 512];
+}
+
+message ChangePasswordRequest {
+  string old_password = 1 [(buf.validate.field).string = {min_len: 1, max_len: 128}];
+  string new_password = 2 [(buf.validate.field).string = {min_len: 8, max_len: 128}];
+}
+
+message ResetPasswordRequest {
+  string email = 1 [(buf.validate.field).string.max_len = 256];
+  string code = 2 [(buf.validate.field).string = {min_len: 1, max_len: 16}];
+  string new_password = 3 [(buf.validate.field).string = {min_len: 8, max_len: 128}];
+  string region_code = 4 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string phone = 5 [(buf.validate.field).string.max_len = 20];
+
+  option (buf.validate.message).cel = {
+    id: "target_exclusive"
+    message: "exactly one of email or region_code+phone must be set"
+    expression: "(this.email != '' && this.region_code == '' && this.phone == '') || (this.email == '' && this.region_code != '' && this.phone != '')"
+  };
+}
+
+// ---- Identity (P2) ----
+message ListIdentitiesRequest {} // user_id from ctx
+
+message ListIdentitiesResponse {
+  repeated Identity identities = 1;
+}
+
+message BindIdentityRequest {
+  IdentityProvider provider = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  string email = 2 [(buf.validate.field).string.max_len = 256];
+  string code = 3 [(buf.validate.field).string = {min_len: 1, max_len: 16}];
+  string password = 4 [(buf.validate.field).string.max_len = 128];
+  string region_code = 5 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string phone = 6 [(buf.validate.field).string.max_len = 20];
+
+  option (buf.validate.message).cel = {
+    id: "target_exclusive"
+    message: "exactly one of email or region_code+phone must be set"
+    expression: "(this.email != '' && this.region_code == '' && this.phone == '') || (this.email == '' && this.region_code != '' && this.phone != '')"
+  };
+}
+
+message BindOAuthIdentityRequest {
+  IdentityProvider provider = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0, 1, 2]}]; // OAuth only
+  string code = 2 [(buf.validate.field).string = {min_len: 1, max_len: 512}];
+  string state = 3 [(buf.validate.field).string = {min_len: 1, max_len: 128}];
+}
+
+message BindOAuthIdentityResponse {
+  Identity identity = 1;
+}
+
+message UnbindIdentityRequest {
+  int64 identity_id = 1 [(buf.validate.field).int64.gt = 0]; // target identity
+  string code = 2 [(buf.validate.field).string = {min_len: 1, max_len: 16}];
+  // user_id injected from ctx
+}
+
+// ---- Session (P2) ----
+message ListSessionsRequest {} // user_id from ctx
+
+message ListSessionsResponse {
+  repeated Session sessions = 1;
+}
+
+message RevokeSessionRequest {
+  string session_id = 1 [(buf.validate.field).string = {min_len: 1, max_len: 128}];
+}
+
+message RevokeAllSessionsRequest {} // user_id from ctx
+
+message GetSessionRequest {
+  string session_id = 1 [(buf.validate.field).string = {min_len: 1, max_len: 128}];
+}
+
+message GetSessionResponse {
+  int64 user_id = 1;
+  google.protobuf.Timestamp expires_at = 2;
+  google.protobuf.Timestamp created_at = 3;
+  string ip = 4;
+  string user_agent = 5;
+  string os = 6;
+  string browser = 7;
+  string login_method = 8;
+}
+
+message IssueSessionCodeRequest {
+  string session_id = 1 [(buf.validate.field).string = {min_len: 1, max_len: 128}];
+}
+
+message IssueSessionCodeResponse {
+  string code = 1;
+}
+
+message ExchangeSessionCodeRequest {
+  string code = 1 [(buf.validate.field).string = {min_len: 1, max_len: 128}];
+}
+
+message ExchangeSessionCodeResponse {
+  string session_id = 1;
+  int64 user_id = 2;
+}
+
+// ---- Social (P2) ----
+// All four are public (no caller user_id). SocialLogin / MiniProgram* consume
+// the downstream session_id to issue a testkit JWT — session_id is never
+// surfaced (design spec §5.1).
+message GetOAuthURLRequest {
+  IdentityProvider provider = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  string return_to = 2 [(buf.validate.field).string.max_len = 512];
+  string state = 3 [(buf.validate.field).string.max_len = 128];
+}
+
+message GetOAuthURLResponse {
+  string url = 1;
+  string state = 2;
+}
+
+message SocialLoginRequest {
+  IdentityProvider provider = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  string code = 2 [(buf.validate.field).string = {min_len: 1}];
+  string state = 3 [(buf.validate.field).string = {min_len: 1, max_len: 128}];
+}
+
+message MiniProgramLoginRequest {
+  string code = 1 [(buf.validate.field).string = {min_len: 1}];
+  string nickname = 2 [(buf.validate.field).string.max_len = 64];
+  string avatar_url = 3 [(buf.validate.field).string.max_len = 512];
+}
+
+message MiniProgramPhoneLoginRequest {
+  string login_code = 1 [(buf.validate.field).string = {min_len: 1}];
+  string phone_code = 2 [(buf.validate.field).string = {min_len: 1}];
+  string nickname = 3 [(buf.validate.field).string.max_len = 64];
+  string avatar_url = 4 [(buf.validate.field).string.max_len = 512];
+}
+
+// SocialLoginResponse is the shared response for all social-login RPCs.
+// token = testkit-issued JWT (consumes the downstream session_id); session_id
+// itself is NOT returned to the frontend.
+message SocialLoginResponse {
+  string token = 1;
+  User user = 2;
+  bool is_new = 3;
+  string return_to = 4; // meaningful only for SocialLogin (OAuth callback flow)
+}
+
+// ---- Admin-Users (P2) ----
+// target user_id is kept; GetLoginLogs.user_id is an optional filter.
+message CreateUserRequest {
+  UserType user_type = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  string username = 2 [(buf.validate.field).string.max_len = 64];
+  string nickname = 3 [(buf.validate.field).string.max_len = 64];
+  string real_name = 4 [(buf.validate.field).string.max_len = 64];
+  string email = 5 [(buf.validate.field).string.max_len = 256];
+  string region_code = 6 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string phone = 7 [(buf.validate.field).string.max_len = 20];
+  string password = 8 [(buf.validate.field).string = {min_len: 8, max_len: 128}];
+  Gender gender = 9 [(buf.validate.field).enum.defined_only = true];
+  string timezone = 10 [(buf.validate.field).string.max_len = 64];
+  string locale = 11 [(buf.validate.field).string.max_len = 16];
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message GetUserRequest {
+  int64 user_id = 1 [(buf.validate.field).int64.gt = 0]; // target user (kept)
+}
+
+message DisableUserRequest {
+  int64 user_id = 1 [(buf.validate.field).int64.gt = 0]; // target user (kept)
+  bool disable = 2;
+  string reason = 3 [(buf.validate.field).string.max_len = 512];
+}
+
+message ListUsersRequest {
+  UserStatus status = 1;
+  string nickname = 2 [(buf.validate.field).string.max_len = 64];
+  int32 page_size = 3 [(buf.validate.field).int32 = {gte: 1, lte: 100}];
+  string cursor = 4 [(buf.validate.field).string.max_len = 64];
+  Gender gender = 5;
+  IdentityProvider register_source = 6;
+  DeviceType register_device = 7;
+  string locale = 8 [(buf.validate.field).string.max_len = 16];
+  string timezone = 9 [(buf.validate.field).string.max_len = 64];
+  string register_ip = 10 [(buf.validate.field).string.max_len = 45];
+  string last_login_ip = 11 [(buf.validate.field).string.max_len = 45];
+  google.protobuf.Timestamp created_at_start = 12;
+  google.protobuf.Timestamp created_at_end = 13;
+  google.protobuf.Timestamp last_login_at_start = 14;
+  google.protobuf.Timestamp last_login_at_end = 15;
+  repeated int64 user_ids = 16;
+  string email = 17 [(buf.validate.field).string.max_len = 256];
+  string region_code = 18 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string phone = 19 [(buf.validate.field).string.max_len = 20];
+  string username = 20 [(buf.validate.field).string.max_len = 64];
+  UserType user_type = 21 [(buf.validate.field).enum.defined_only = true];
+  UserSortField order_by = 22 [(buf.validate.field).enum.defined_only = true];
+  bool descending = 23;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+  string next_cursor = 2;
+}
+
+message ListUsersPagedRequest {
+  UserStatus status = 1;
+  string nickname = 2 [(buf.validate.field).string.max_len = 64];
+  Gender gender = 3;
+  IdentityProvider register_source = 4;
+  DeviceType register_device = 5;
+  UserType user_type = 6;
+  string locale = 7 [(buf.validate.field).string.max_len = 16];
+  string timezone = 8 [(buf.validate.field).string.max_len = 64];
+  string register_ip = 9 [(buf.validate.field).string.max_len = 45];
+  string last_login_ip = 10 [(buf.validate.field).string.max_len = 45];
+  google.protobuf.Timestamp created_at_start = 11;
+  google.protobuf.Timestamp created_at_end = 12;
+  google.protobuf.Timestamp last_login_at_start = 13;
+  google.protobuf.Timestamp last_login_at_end = 14;
+  repeated int64 user_ids = 15;
+  string email = 16 [(buf.validate.field).string.max_len = 256];
+  string region_code = 17 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string phone = 18 [(buf.validate.field).string.max_len = 20];
+  string username = 19 [(buf.validate.field).string.max_len = 64];
+  UserSortField order_by = 20 [(buf.validate.field).enum.defined_only = true];
+  bool descending = 21;
+  int32 page = 22 [(buf.validate.field).int32.gte = 1];
+  int32 page_size = 23 [(buf.validate.field).int32 = {gte: 1, lte: 100}];
+  bool count = 24;
+}
+
+message ListUsersPagedResponse {
+  repeated User users = 1;
+  int64 total = 2;
+  int32 total_pages = 3;
+}
+
+message GetLoginLogsRequest {
+  int64 user_id = 1; // optional filter (0 = all); kept
+  IdentityProvider provider = 2;
+  bool success = 3;
+  int32 page_size = 4 [(buf.validate.field).int32 = {gte: 1, lte: 100}];
+  string cursor = 5 [(buf.validate.field).string.max_len = 64];
+}
+
+message GetLoginLogsResponse {
+  repeated LoginLog logs = 1;
+  string next_cursor = 2;
+  int32 total = 3;
+}
+
+// ---- RBAC-Group (P2) ----
+message CreateGroupRequest {
+  string name = 1 [(buf.validate.field).string = {min_len: 1, max_len: 64}];
+  string description = 2 [(buf.validate.field).string.max_len = 512];
+  int64 parent_id = 3;
+}
+
+message GetGroupRequest {
+  int64 group_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message UpdateGroupRequest {
+  int64 group_id = 1 [(buf.validate.field).int64.gt = 0];
+  string name = 2 [(buf.validate.field).string.max_len = 64];
+  string description = 3 [(buf.validate.field).string.max_len = 512];
+}
+
+message ListGroupsRequest {
+  string status = 1 [(buf.validate.field).string.max_len = 32];
+  int32 page_size = 2 [(buf.validate.field).int32 = {gte: 1, lte: 100}];
+  string cursor = 3 [(buf.validate.field).string.max_len = 64];
+}
+
+message ListGroupsResponse {
+  repeated Group groups = 1;
+  string next_cursor = 2;
+  int32 total = 3;
+}
+
+message DeleteGroupRequest {
+  int64 group_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message AddGroupMemberRequest {
+  int64 group_id = 1 [(buf.validate.field).int64.gt = 0]; // path
+  int64 user_id = 2 [(buf.validate.field).int64.gt = 0];  // target member (kept)
+  string role = 3 [(buf.validate.field).string = {in: ["owner", "admin", "member"]}];
+}
+
+message RemoveGroupMemberRequest { // group_id + user_id both from path
+  int64 group_id = 1 [(buf.validate.field).int64.gt = 0];
+  int64 user_id = 2 [(buf.validate.field).int64.gt = 0];
+}
+
+message ListGroupMembersRequest {
+  int64 group_id = 1 [(buf.validate.field).int64.gt = 0]; // path
+  string role = 2 [(buf.validate.field).string.max_len = 32];
+  int32 page_size = 3 [(buf.validate.field).int32 = {gte: 1, lte: 100}];
+  string cursor = 4 [(buf.validate.field).string.max_len = 64];
+}
+
+message ListGroupMembersResponse {
+  repeated GroupMember members = 1;
+  string next_cursor = 2;
+  int32 total = 3;
+}
+
+message AddGroupRoleRequest {
+  int64 group_id = 1 [(buf.validate.field).int64.gt = 0]; // path
+  int64 role_id = 2 [(buf.validate.field).int64.gt = 0];
+}
+
+message RemoveGroupRoleRequest { // group_id + role_id from path
+  int64 group_id = 1 [(buf.validate.field).int64.gt = 0];
+  int64 role_id = 2 [(buf.validate.field).int64.gt = 0];
+}
+
+message ListGroupRolesRequest {
+  int64 group_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message ListGroupRolesResponse {
+  repeated Role roles = 1;
+}
+
+// ---- RBAC-Role (P2) ----
+message CreateRoleRequest {
+  string name = 1 [(buf.validate.field).string = {min_len: 1, max_len: 64}];
+  string description = 2 [(buf.validate.field).string.max_len = 512];
+  repeated int64 permission_ids = 3;
+  repeated int64 permission_group_ids = 4;
+}
+
+message GetRoleRequest {
+  int64 role_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message UpdateRoleRequest {
+  int64 role_id = 1 [(buf.validate.field).int64.gt = 0];
+  string name = 2 [(buf.validate.field).string.max_len = 64];
+  string description = 3 [(buf.validate.field).string.max_len = 512];
+  repeated int64 permission_ids = 4;
+  repeated int64 permission_group_ids = 5;
+}
+
+message DeleteRoleRequest {
+  int64 role_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message ListRolesRequest {
+  int32 page_size = 1 [(buf.validate.field).int32 = {gte: 1, lte: 100}];
+  string cursor = 2 [(buf.validate.field).string.max_len = 64];
+}
+
+message ListRolesResponse {
+  repeated Role roles = 1;
+  string next_cursor = 2;
+  int32 total = 3;
+}
+
+message AssignRoleRequest {
+  int64 user_id = 1 [(buf.validate.field).int64.gt = 0]; // target user (path)
+  int64 role_id = 2 [(buf.validate.field).int64.gt = 0];
+}
+
+message RevokeRoleRequest { // user_id + role_id from path
+  int64 user_id = 1 [(buf.validate.field).int64.gt = 0];
+  int64 role_id = 2 [(buf.validate.field).int64.gt = 0];
+}
+
+message ListUserRolesRequest {
+  int64 user_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message ListUserRolesResponse {
+  repeated UserRole roles = 1;
+}
+
+// ---- RBAC-Permission (P2) ----
+message ListPermissionsRequest {
+  int32 page_size = 1 [(buf.validate.field).int32 = {gte: 1, lte: 100}];
+  string cursor = 2 [(buf.validate.field).string.max_len = 64];
+}
+
+message ListPermissionsResponse {
+  repeated Permission permissions = 1;
+  string next_cursor = 2;
+  int32 total = 3;
+}
+
+message CreatePermissionRequest {
+  string resource = 1 [(buf.validate.field).string = {min_len: 1, max_len: 64}];
+  string action = 2 [(buf.validate.field).string = {min_len: 1, max_len: 32}];
+  string description = 3 [(buf.validate.field).string.max_len = 256];
+}
+
+message GetPermissionRequest {
+  int64 permission_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message UpdatePermissionRequest {
+  int64 permission_id = 1 [(buf.validate.field).int64.gt = 0];
+  string resource = 2 [(buf.validate.field).string.max_len = 64];
+  string action = 3 [(buf.validate.field).string.max_len = 32];
+  string description = 4 [(buf.validate.field).string.max_len = 256];
+}
+
+message DeletePermissionRequest {
+  int64 permission_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message CreatePermissionGroupRequest {
+  string name = 1 [(buf.validate.field).string = {min_len: 1, max_len: 64}];
+  string description = 2 [(buf.validate.field).string.max_len = 512];
+  repeated int64 permission_ids = 3;
+}
+
+message GetPermissionGroupRequest {
+  int64 permission_group_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message UpdatePermissionGroupRequest {
+  int64 permission_group_id = 1 [(buf.validate.field).int64.gt = 0];
+  string name = 2 [(buf.validate.field).string.max_len = 64];
+  string description = 3 [(buf.validate.field).string.max_len = 512];
+  repeated int64 permission_ids = 4;
+}
+
+message DeletePermissionGroupRequest {
+  int64 permission_group_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message ListPermissionGroupsRequest {
+  int32 page_size = 1 [(buf.validate.field).int32 = {gte: 1, lte: 100}];
+  string cursor = 2 [(buf.validate.field).string.max_len = 64];
+}
+
+message ListPermissionGroupsResponse {
+  repeated PermissionGroup groups = 1;
+  string next_cursor = 2;
+  int32 total = 3;
 }
 
 service TestkitService {
@@ -213,5 +864,182 @@ service TestkitService {
       post: "/api/v1/auth/refresh"
       body: "*"
     };
+  }
+
+  // ==================== P2 RPCs (53 forwarders to user-service) ====================
+
+  // ---- Profile (P2) ----
+  rpc GetProfile(GetProfileRequest) returns (User) {
+    option (google.api.http) = { get: "/api/v1/profile" };
+  }
+  rpc UpdateProfile(UpdateProfileRequest) returns (User) {
+    option (google.api.http) = { put: "/api/v1/profile" body: "*" };
+  }
+  rpc ChangePassword(ChangePasswordRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { post: "/api/v1/profile/password" body: "*" };
+  }
+  rpc ResetPassword(ResetPasswordRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { post: "/api/v1/auth/password-reset" body: "*" };
+  }
+
+  // ---- Identity (P2) ----
+  rpc ListIdentities(ListIdentitiesRequest) returns (ListIdentitiesResponse) {
+    option (google.api.http) = { get: "/api/v1/identities" };
+  }
+  rpc BindIdentity(BindIdentityRequest) returns (Identity) {
+    option (google.api.http) = { post: "/api/v1/identities" body: "*" };
+  }
+  rpc BindOAuthIdentity(BindOAuthIdentityRequest) returns (BindOAuthIdentityResponse) {
+    option (google.api.http) = { post: "/api/v1/identities/oauth" body: "*" };
+  }
+  rpc UnbindIdentity(UnbindIdentityRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { delete: "/api/v1/identities/{identity_id}" };
+  }
+
+  // ---- Session (P2) ----
+  rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse) {
+    option (google.api.http) = { get: "/api/v1/sessions" };
+  }
+  rpc RevokeSession(RevokeSessionRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { post: "/api/v1/sessions/{session_id}/revoke" };
+  }
+  rpc RevokeAllSessions(RevokeAllSessionsRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { post: "/api/v1/sessions/revoke-all" };
+  }
+  rpc GetSession(GetSessionRequest) returns (GetSessionResponse) {
+    option (google.api.http) = { get: "/api/v1/sessions/{session_id}" };
+  }
+  rpc IssueSessionCode(IssueSessionCodeRequest) returns (IssueSessionCodeResponse) {
+    option (google.api.http) = { post: "/api/v1/sessions/issue-code" body: "*" };
+  }
+  rpc ExchangeSessionCode(ExchangeSessionCodeRequest) returns (ExchangeSessionCodeResponse) {
+    option (google.api.http) = { post: "/api/v1/sessions/exchange" body: "*" };
+  }
+
+  // ---- Social (P2) ----
+  rpc GetOAuthURL(GetOAuthURLRequest) returns (GetOAuthURLResponse) {
+    option (google.api.http) = { get: "/api/v1/social/{provider}/url" };
+  }
+  rpc SocialLogin(SocialLoginRequest) returns (SocialLoginResponse) {
+    option (google.api.http) = { post: "/api/v1/social/login" body: "*" };
+  }
+  rpc MiniProgramLogin(MiniProgramLoginRequest) returns (SocialLoginResponse) {
+    option (google.api.http) = { post: "/api/v1/social/miniprogram" body: "*" };
+  }
+  rpc MiniProgramPhoneLogin(MiniProgramPhoneLoginRequest) returns (SocialLoginResponse) {
+    option (google.api.http) = { post: "/api/v1/social/miniprogram/phone" body: "*" };
+  }
+
+  // ---- Admin-Users (P2) ----
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = { post: "/api/v1/users" body: "*" };
+  }
+  rpc GetUser(GetUserRequest) returns (User) {
+    option (google.api.http) = { get: "/api/v1/users/{user_id}" };
+  }
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = { get: "/api/v1/users" };
+  }
+  rpc ListUsersPaged(ListUsersPagedRequest) returns (ListUsersPagedResponse) {
+    option (google.api.http) = { get: "/api/v1/users/paged" };
+  }
+  rpc DisableUser(DisableUserRequest) returns (User) {
+    option (google.api.http) = { post: "/api/v1/users/{user_id}/disable" body: "*" };
+  }
+  rpc GetLoginLogs(GetLoginLogsRequest) returns (GetLoginLogsResponse) {
+    option (google.api.http) = { get: "/api/v1/users/login-logs" };
+  }
+
+  // ---- RBAC-Group (P2) ----
+  rpc CreateGroup(CreateGroupRequest) returns (Group) {
+    option (google.api.http) = { post: "/api/v1/rbac/groups" body: "*" };
+  }
+  rpc GetGroup(GetGroupRequest) returns (Group) {
+    option (google.api.http) = { get: "/api/v1/rbac/groups/{group_id}" };
+  }
+  rpc UpdateGroup(UpdateGroupRequest) returns (Group) {
+    option (google.api.http) = { put: "/api/v1/rbac/groups/{group_id}" body: "*" };
+  }
+  rpc ListGroups(ListGroupsRequest) returns (ListGroupsResponse) {
+    option (google.api.http) = { get: "/api/v1/rbac/groups" };
+  }
+  rpc DeleteGroup(DeleteGroupRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { delete: "/api/v1/rbac/groups/{group_id}" };
+  }
+  rpc AddGroupMember(AddGroupMemberRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { post: "/api/v1/rbac/groups/{group_id}/members" body: "*" };
+  }
+  rpc RemoveGroupMember(RemoveGroupMemberRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { delete: "/api/v1/rbac/groups/{group_id}/members/{user_id}" };
+  }
+  rpc ListGroupMembers(ListGroupMembersRequest) returns (ListGroupMembersResponse) {
+    option (google.api.http) = { get: "/api/v1/rbac/groups/{group_id}/members" };
+  }
+  rpc AddGroupRole(AddGroupRoleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { post: "/api/v1/rbac/groups/{group_id}/roles" body: "*" };
+  }
+  rpc RemoveGroupRole(RemoveGroupRoleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { delete: "/api/v1/rbac/groups/{group_id}/roles/{role_id}" };
+  }
+  rpc ListGroupRoles(ListGroupRolesRequest) returns (ListGroupRolesResponse) {
+    option (google.api.http) = { get: "/api/v1/rbac/groups/{group_id}/roles" };
+  }
+
+  // ---- RBAC-Role (P2) ----
+  rpc CreateRole(CreateRoleRequest) returns (Role) {
+    option (google.api.http) = { post: "/api/v1/rbac/roles" body: "*" };
+  }
+  rpc GetRole(GetRoleRequest) returns (Role) {
+    option (google.api.http) = { get: "/api/v1/rbac/roles/{role_id}" };
+  }
+  rpc UpdateRole(UpdateRoleRequest) returns (Role) {
+    option (google.api.http) = { put: "/api/v1/rbac/roles/{role_id}" body: "*" };
+  }
+  rpc DeleteRole(DeleteRoleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { delete: "/api/v1/rbac/roles/{role_id}" };
+  }
+  rpc ListRoles(ListRolesRequest) returns (ListRolesResponse) {
+    option (google.api.http) = { get: "/api/v1/rbac/roles" };
+  }
+  rpc AssignRole(AssignRoleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { post: "/api/v1/rbac/users/{user_id}/roles" body: "*" };
+  }
+  rpc RevokeRole(RevokeRoleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { delete: "/api/v1/rbac/users/{user_id}/roles/{role_id}" };
+  }
+  rpc ListUserRoles(ListUserRolesRequest) returns (ListUserRolesResponse) {
+    option (google.api.http) = { get: "/api/v1/rbac/users/{user_id}/roles" };
+  }
+
+  // ---- RBAC-Permission (P2) ----
+  rpc ListPermissions(ListPermissionsRequest) returns (ListPermissionsResponse) {
+    option (google.api.http) = { get: "/api/v1/rbac/permissions" };
+  }
+  rpc CreatePermission(CreatePermissionRequest) returns (Permission) {
+    option (google.api.http) = { post: "/api/v1/rbac/permissions" body: "*" };
+  }
+  rpc GetPermission(GetPermissionRequest) returns (Permission) {
+    option (google.api.http) = { get: "/api/v1/rbac/permissions/{permission_id}" };
+  }
+  rpc UpdatePermission(UpdatePermissionRequest) returns (Permission) {
+    option (google.api.http) = { put: "/api/v1/rbac/permissions/{permission_id}" body: "*" };
+  }
+  rpc DeletePermission(DeletePermissionRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { delete: "/api/v1/rbac/permissions/{permission_id}" };
+  }
+  rpc CreatePermissionGroup(CreatePermissionGroupRequest) returns (PermissionGroup) {
+    option (google.api.http) = { post: "/api/v1/rbac/permission-groups" body: "*" };
+  }
+  rpc GetPermissionGroup(GetPermissionGroupRequest) returns (PermissionGroup) {
+    option (google.api.http) = { get: "/api/v1/rbac/permission-groups/{permission_group_id}" };
+  }
+  rpc UpdatePermissionGroup(UpdatePermissionGroupRequest) returns (PermissionGroup) {
+    option (google.api.http) = { put: "/api/v1/rbac/permission-groups/{permission_group_id}" body: "*" };
+  }
+  rpc DeletePermissionGroup(DeletePermissionGroupRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { delete: "/api/v1/rbac/permission-groups/{permission_group_id}" };
+  }
+  rpc ListPermissionGroups(ListPermissionGroupsRequest) returns (ListPermissionGroupsResponse) {
+    option (google.api.http) = { get: "/api/v1/rbac/permission-groups" };
   }
 }

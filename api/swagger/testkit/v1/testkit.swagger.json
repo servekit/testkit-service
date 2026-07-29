@@ -73,6 +73,39 @@
         ]
       }
     },
+    "/api/v1/auth/password-reset": {
+      "post": {
+        "operationId": "ResetPassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ResetPasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
     "/api/v1/auth/refresh": {
       "post": {
         "operationId": "RefreshSession",
@@ -172,6 +205,2181 @@
         ]
       }
     },
+    "/api/v1/identities": {
+      "get": {
+        "summary": "---- Identity (P2) ----",
+        "operationId": "ListIdentities",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListIdentitiesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "operationId": "BindIdentity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Identity"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1BindIdentityRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/identities/oauth": {
+      "post": {
+        "operationId": "BindOAuthIdentity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BindOAuthIdentityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1BindOAuthIdentityRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/identities/{identityId}": {
+      "delete": {
+        "operationId": "UnbindIdentity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "identityId",
+            "description": "target identity",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "code",
+            "description": "user_id injected from ctx",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/profile": {
+      "get": {
+        "summary": "---- Profile (P2) ----",
+        "operationId": "GetProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1User"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "put": {
+        "operationId": "UpdateProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1User"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateProfileRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/profile/password": {
+      "post": {
+        "operationId": "ChangePassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ChangePasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/groups": {
+      "get": {
+        "operationId": "ListGroups",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListGroupsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "summary": "---- RBAC-Group (P2) ----",
+        "operationId": "CreateGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Group"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateGroupRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/groups/{groupId}": {
+      "get": {
+        "operationId": "GetGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Group"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "delete": {
+        "operationId": "DeleteGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "put": {
+        "operationId": "UpdateGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Group"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceUpdateGroupBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/groups/{groupId}/members": {
+      "get": {
+        "operationId": "ListGroupMembers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListGroupMembersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "groupId",
+            "description": "path",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "operationId": "AddGroupMember",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "groupId",
+            "description": "path",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceAddGroupMemberBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/groups/{groupId}/members/{userId}": {
+      "delete": {
+        "operationId": "RemoveGroupMember",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/groups/{groupId}/roles": {
+      "get": {
+        "operationId": "ListGroupRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListGroupRolesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "operationId": "AddGroupRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "groupId",
+            "description": "path",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceAddGroupRoleBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/groups/{groupId}/roles/{roleId}": {
+      "delete": {
+        "operationId": "RemoveGroupRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/permission-groups": {
+      "get": {
+        "operationId": "ListPermissionGroups",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListPermissionGroupsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "operationId": "CreatePermissionGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PermissionGroup"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreatePermissionGroupRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/permission-groups/{permissionGroupId}": {
+      "get": {
+        "operationId": "GetPermissionGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PermissionGroup"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "permissionGroupId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "delete": {
+        "operationId": "DeletePermissionGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "permissionGroupId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "put": {
+        "operationId": "UpdatePermissionGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PermissionGroup"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "permissionGroupId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceUpdatePermissionGroupBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/permissions": {
+      "get": {
+        "summary": "---- RBAC-Permission (P2) ----",
+        "operationId": "ListPermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListPermissionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "operationId": "CreatePermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Permission"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreatePermissionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/permissions/{permissionId}": {
+      "get": {
+        "operationId": "GetPermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Permission"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "permissionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "delete": {
+        "operationId": "DeletePermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "permissionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "put": {
+        "operationId": "UpdatePermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Permission"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "permissionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceUpdatePermissionBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/roles": {
+      "get": {
+        "operationId": "ListRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListRolesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "summary": "---- RBAC-Role (P2) ----",
+        "operationId": "CreateRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Role"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateRoleRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/roles/{roleId}": {
+      "get": {
+        "operationId": "GetRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Role"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "delete": {
+        "operationId": "DeleteRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "put": {
+        "operationId": "UpdateRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Role"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceUpdateRoleBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/users/{userId}/roles": {
+      "get": {
+        "operationId": "ListUserRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListUserRolesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "operationId": "AssignRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "target user (path)",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceAssignRoleBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/rbac/users/{userId}/roles/{roleId}": {
+      "delete": {
+        "operationId": "RevokeRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sessions": {
+      "get": {
+        "summary": "---- Session (P2) ----",
+        "operationId": "ListSessions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListSessionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sessions/exchange": {
+      "post": {
+        "operationId": "ExchangeSessionCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ExchangeSessionCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ExchangeSessionCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sessions/issue-code": {
+      "post": {
+        "operationId": "IssueSessionCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1IssueSessionCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1IssueSessionCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sessions/revoke-all": {
+      "post": {
+        "operationId": "RevokeAllSessions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sessions/{sessionId}": {
+      "get": {
+        "operationId": "GetSession",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSessionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sessions/{sessionId}/revoke": {
+      "post": {
+        "operationId": "RevokeSession",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/social/login": {
+      "post": {
+        "operationId": "SocialLogin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SocialLoginResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SocialLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/social/miniprogram": {
+      "post": {
+        "operationId": "MiniProgramLogin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SocialLoginResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1MiniProgramLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/social/miniprogram/phone": {
+      "post": {
+        "operationId": "MiniProgramPhoneLogin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SocialLoginResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1MiniProgramPhoneLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/social/{provider}/url": {
+      "get": {
+        "summary": "---- Social (P2) ----",
+        "operationId": "GetOAuthURL",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetOAuthURLResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "IDENTITY_PROVIDER_UNSPECIFIED",
+              "IDENTITY_PROVIDER_EMAIL",
+              "IDENTITY_PROVIDER_PHONE",
+              "IDENTITY_PROVIDER_GITHUB",
+              "IDENTITY_PROVIDER_GOOGLE",
+              "IDENTITY_PROVIDER_WECHAT",
+              "IDENTITY_PROVIDER_APPLE",
+              "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM",
+              "IDENTITY_PROVIDER_ADMIN"
+            ]
+          },
+          {
+            "name": "returnTo",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "operationId": "ListUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListUsersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "USER_STATUS_UNSPECIFIED",
+              "USER_STATUS_ACTIVE",
+              "USER_STATUS_DISABLED",
+              "USER_STATUS_PENDING_REVIEW"
+            ],
+            "default": "USER_STATUS_UNSPECIFIED"
+          },
+          {
+            "name": "nickname",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "GENDER_UNSPECIFIED",
+              "GENDER_MALE",
+              "GENDER_FEMALE",
+              "GENDER_OTHER",
+              "GENDER_UNKNOWN"
+            ],
+            "default": "GENDER_UNSPECIFIED"
+          },
+          {
+            "name": "registerSource",
+            "description": " - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "IDENTITY_PROVIDER_UNSPECIFIED",
+              "IDENTITY_PROVIDER_EMAIL",
+              "IDENTITY_PROVIDER_PHONE",
+              "IDENTITY_PROVIDER_GITHUB",
+              "IDENTITY_PROVIDER_GOOGLE",
+              "IDENTITY_PROVIDER_WECHAT",
+              "IDENTITY_PROVIDER_APPLE",
+              "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM",
+              "IDENTITY_PROVIDER_ADMIN"
+            ],
+            "default": "IDENTITY_PROVIDER_UNSPECIFIED"
+          },
+          {
+            "name": "registerDevice",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "DEVICE_TYPE_UNSPECIFIED",
+              "DEVICE_TYPE_WEB",
+              "DEVICE_TYPE_IOS",
+              "DEVICE_TYPE_ANDROID",
+              "DEVICE_TYPE_API"
+            ],
+            "default": "DEVICE_TYPE_UNSPECIFIED"
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "registerIp",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastLoginIp",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdAtStart",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "createdAtEnd",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "lastLoginAtStart",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "lastLoginAtEnd",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "userIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "int64"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "regionCode",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userType",
+            "description": " - USER_TYPE_NORMAL: External end user (default).\n - USER_TYPE_INTERNAL: Platform internal user (staff, operations, etc.).",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "USER_TYPE_UNSPECIFIED",
+              "USER_TYPE_NORMAL",
+              "USER_TYPE_INTERNAL"
+            ],
+            "default": "USER_TYPE_UNSPECIFIED"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "USER_SORT_FIELD_UNSPECIFIED",
+              "USER_SORT_FIELD_ID",
+              "USER_SORT_FIELD_CREATED_AT",
+              "USER_SORT_FIELD_UPDATED_AT",
+              "USER_SORT_FIELD_LAST_LOGIN_AT"
+            ],
+            "default": "USER_SORT_FIELD_UNSPECIFIED"
+          },
+          {
+            "name": "descending",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "summary": "---- Admin-Users (P2) ----",
+        "operationId": "CreateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "---- Admin-Users (P2) ----\ntarget user_id is kept; GetLoginLogs.user_id is an optional filter.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/users/login-logs": {
+      "get": {
+        "operationId": "GetLoginLogs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetLoginLogsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "optional filter (0 = all); kept",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "provider",
+            "description": " - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "IDENTITY_PROVIDER_UNSPECIFIED",
+              "IDENTITY_PROVIDER_EMAIL",
+              "IDENTITY_PROVIDER_PHONE",
+              "IDENTITY_PROVIDER_GITHUB",
+              "IDENTITY_PROVIDER_GOOGLE",
+              "IDENTITY_PROVIDER_WECHAT",
+              "IDENTITY_PROVIDER_APPLE",
+              "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM",
+              "IDENTITY_PROVIDER_ADMIN"
+            ],
+            "default": "IDENTITY_PROVIDER_UNSPECIFIED"
+          },
+          {
+            "name": "success",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/users/paged": {
+      "get": {
+        "operationId": "ListUsersPaged",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListUsersPagedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "USER_STATUS_UNSPECIFIED",
+              "USER_STATUS_ACTIVE",
+              "USER_STATUS_DISABLED",
+              "USER_STATUS_PENDING_REVIEW"
+            ],
+            "default": "USER_STATUS_UNSPECIFIED"
+          },
+          {
+            "name": "nickname",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "GENDER_UNSPECIFIED",
+              "GENDER_MALE",
+              "GENDER_FEMALE",
+              "GENDER_OTHER",
+              "GENDER_UNKNOWN"
+            ],
+            "default": "GENDER_UNSPECIFIED"
+          },
+          {
+            "name": "registerSource",
+            "description": " - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "IDENTITY_PROVIDER_UNSPECIFIED",
+              "IDENTITY_PROVIDER_EMAIL",
+              "IDENTITY_PROVIDER_PHONE",
+              "IDENTITY_PROVIDER_GITHUB",
+              "IDENTITY_PROVIDER_GOOGLE",
+              "IDENTITY_PROVIDER_WECHAT",
+              "IDENTITY_PROVIDER_APPLE",
+              "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM",
+              "IDENTITY_PROVIDER_ADMIN"
+            ],
+            "default": "IDENTITY_PROVIDER_UNSPECIFIED"
+          },
+          {
+            "name": "registerDevice",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "DEVICE_TYPE_UNSPECIFIED",
+              "DEVICE_TYPE_WEB",
+              "DEVICE_TYPE_IOS",
+              "DEVICE_TYPE_ANDROID",
+              "DEVICE_TYPE_API"
+            ],
+            "default": "DEVICE_TYPE_UNSPECIFIED"
+          },
+          {
+            "name": "userType",
+            "description": " - USER_TYPE_NORMAL: External end user (default).\n - USER_TYPE_INTERNAL: Platform internal user (staff, operations, etc.).",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "USER_TYPE_UNSPECIFIED",
+              "USER_TYPE_NORMAL",
+              "USER_TYPE_INTERNAL"
+            ],
+            "default": "USER_TYPE_UNSPECIFIED"
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "registerIp",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastLoginIp",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdAtStart",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "createdAtEnd",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "lastLoginAtStart",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "lastLoginAtEnd",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "userIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "int64"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "regionCode",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "USER_SORT_FIELD_UNSPECIFIED",
+              "USER_SORT_FIELD_ID",
+              "USER_SORT_FIELD_CREATED_AT",
+              "USER_SORT_FIELD_UPDATED_AT",
+              "USER_SORT_FIELD_LAST_LOGIN_AT"
+            ],
+            "default": "USER_SORT_FIELD_UNSPECIFIED"
+          },
+          {
+            "name": "descending",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/users/{userId}": {
+      "get": {
+        "operationId": "GetUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1User"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "target user (kept)",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/users/{userId}/disable": {
+      "post": {
+        "operationId": "DisableUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1User"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "target user (kept)",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceDisableUserBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
     "/ping": {
       "get": {
         "operationId": "Ping",
@@ -196,6 +2404,116 @@
     }
   },
   "definitions": {
+    "TestkitServiceAddGroupMemberBody": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64",
+          "title": "target member (kept)"
+        },
+        "role": {
+          "type": "string"
+        }
+      }
+    },
+    "TestkitServiceAddGroupRoleBody": {
+      "type": "object",
+      "properties": {
+        "roleId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "TestkitServiceAssignRoleBody": {
+      "type": "object",
+      "properties": {
+        "roleId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "TestkitServiceDisableUserBody": {
+      "type": "object",
+      "properties": {
+        "disable": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "TestkitServiceUpdateGroupBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "TestkitServiceUpdatePermissionBody": {
+      "type": "object",
+      "properties": {
+        "resource": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "TestkitServiceUpdatePermissionGroupBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "permissionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "TestkitServiceUpdateRoleBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "permissionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        },
+        "permissionGroupIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -224,6 +2542,371 @@
         }
       }
     },
+    "v1BindIdentityRequest": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "$ref": "#/definitions/v1IdentityProvider"
+        },
+        "email": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "regionCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
+    },
+    "v1BindOAuthIdentityRequest": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "$ref": "#/definitions/v1IdentityProvider",
+          "title": "OAuth only"
+        },
+        "code": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "v1BindOAuthIdentityResponse": {
+      "type": "object",
+      "properties": {
+        "identity": {
+          "$ref": "#/definitions/v1Identity"
+        }
+      }
+    },
+    "v1ChangePasswordRequest": {
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateGroupRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "title": "---- RBAC-Group (P2) ----"
+    },
+    "v1CreatePermissionGroupRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "permissionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "v1CreatePermissionRequest": {
+      "type": "object",
+      "properties": {
+        "resource": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateRoleRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "permissionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        },
+        "permissionGroupIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      },
+      "title": "---- RBAC-Role (P2) ----"
+    },
+    "v1CreateUserRequest": {
+      "type": "object",
+      "properties": {
+        "userType": {
+          "$ref": "#/definitions/v1UserType"
+        },
+        "username": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "realName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "regionCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "gender": {
+          "$ref": "#/definitions/v1Gender"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        }
+      },
+      "description": "---- Admin-Users (P2) ----\ntarget user_id is kept; GetLoginLogs.user_id is an optional filter."
+    },
+    "v1CreateUserResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/v1User"
+        }
+      }
+    },
+    "v1DeviceType": {
+      "type": "string",
+      "enum": [
+        "DEVICE_TYPE_UNSPECIFIED",
+        "DEVICE_TYPE_WEB",
+        "DEVICE_TYPE_IOS",
+        "DEVICE_TYPE_ANDROID",
+        "DEVICE_TYPE_API"
+      ],
+      "default": "DEVICE_TYPE_UNSPECIFIED",
+      "description": "DeviceType categorizes the client device for session/audit metadata. Mirrors\nuser-service same-name/same-number."
+    },
+    "v1ExchangeSessionCodeRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ExchangeSessionCodeResponse": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1Gender": {
+      "type": "string",
+      "enum": [
+        "GENDER_UNSPECIFIED",
+        "GENDER_MALE",
+        "GENDER_FEMALE",
+        "GENDER_OTHER",
+        "GENDER_UNKNOWN"
+      ],
+      "default": "GENDER_UNSPECIFIED",
+      "description": "Gender is the user's self-reported gender. Mirrors user-service\nsame-name/same-number."
+    },
+    "v1GetLoginLogsResponse": {
+      "type": "object",
+      "properties": {
+        "logs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1LoginLog"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1GetOAuthURLResponse": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetSessionResponse": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "userAgent": {
+          "type": "string"
+        },
+        "os": {
+          "type": "string"
+        },
+        "browser": {
+          "type": "string"
+        },
+        "loginMethod": {
+          "type": "string"
+        }
+      }
+    },
+    "v1Group": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "status": {
+          "type": "string"
+        },
+        "memberCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "Group is an organizational unit; members inherit the group's roles."
+    },
+    "v1GroupMember": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "avatarUrl": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "GroupMember is a user's membership row within a group."
+    },
+    "v1Identity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "provider": {
+          "$ref": "#/definitions/v1IdentityProvider"
+        },
+        "providerUid": {
+          "type": "string"
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "Identity is a login method linked to a user (email, phone, each OAuth\nprovider, miniprogram openid)."
+    },
     "v1IdentityProvider": {
       "type": "string",
       "enum": [
@@ -239,6 +2922,262 @@
       ],
       "default": "IDENTITY_PROVIDER_UNSPECIFIED",
       "description": "IdentityProvider identifies which login system an identity belongs to. Mirrors\nuser-service IdentityProvider same-name/same-number. ADMIN=8 is an audit tag\nfor CreateUser — not a real login method (Login never uses it).\n\n - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method."
+    },
+    "v1IssueSessionCodeRequest": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1IssueSessionCodeResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListGroupMembersResponse": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1GroupMember"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1ListGroupRolesResponse": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Role"
+          }
+        }
+      }
+    },
+    "v1ListGroupsResponse": {
+      "type": "object",
+      "properties": {
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Group"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1ListIdentitiesResponse": {
+      "type": "object",
+      "properties": {
+        "identities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Identity"
+          }
+        }
+      }
+    },
+    "v1ListPermissionGroupsResponse": {
+      "type": "object",
+      "properties": {
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PermissionGroup"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1ListPermissionsResponse": {
+      "type": "object",
+      "properties": {
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Permission"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1ListRolesResponse": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Role"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1ListSessionsResponse": {
+      "type": "object",
+      "properties": {
+        "sessions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Session"
+          }
+        }
+      }
+    },
+    "v1ListUserRolesResponse": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1UserRole"
+          }
+        }
+      }
+    },
+    "v1ListUsersPagedResponse": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1User"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "totalPages": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1ListUsersResponse": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1User"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        }
+      }
+    },
+    "v1LoginAction": {
+      "type": "string",
+      "enum": [
+        "LOGIN_ACTION_UNSPECIFIED",
+        "LOGIN_ACTION_LOGIN",
+        "LOGIN_ACTION_REGISTER",
+        "LOGIN_ACTION_SOCIAL_LOGIN",
+        "LOGIN_ACTION_SOCIAL_REGISTER",
+        "LOGIN_ACTION_BIND",
+        "LOGIN_ACTION_UNBIND"
+      ],
+      "default": "LOGIN_ACTION_UNSPECIFIED",
+      "description": "LoginAction classifies a login audit log entry. Mirrors user-service\nsame-name/same-number."
+    },
+    "v1LoginLog": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "provider": {
+          "$ref": "#/definitions/v1IdentityProvider"
+        },
+        "action": {
+          "$ref": "#/definitions/v1LoginAction"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "failReason": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "deviceType": {
+          "$ref": "#/definitions/v1DeviceType"
+        },
+        "os": {
+          "type": "string"
+        },
+        "browser": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "LoginLog is one row of the login audit trail."
     },
     "v1LoginMethod": {
       "type": "string",
@@ -283,6 +3222,85 @@
         }
       },
       "description": "LoginRequest is the curated frontend DTO for login. Field names line up 1:1\nwith user-service LoginRequest; the auth mapping layer int-casts the enums."
+    },
+    "v1MiniProgramLoginRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "avatarUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "v1MiniProgramPhoneLoginRequest": {
+      "type": "object",
+      "properties": {
+        "loginCode": {
+          "type": "string"
+        },
+        "phoneCode": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "avatarUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "v1Permission": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isBuiltin": {
+          "type": "boolean"
+        }
+      },
+      "description": "Permission is a resource:action catalog entry."
+    },
+    "v1PermissionGroup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Permission"
+          }
+        },
+        "isBuiltin": {
+          "type": "boolean"
+        }
+      },
+      "description": "PermissionGroup is a named bundle of permissions."
     },
     "v1Pong": {
       "type": "object",
@@ -371,6 +3389,67 @@
       },
       "description": "RegisterRequest is the curated frontend DTO for registration."
     },
+    "v1ResetPasswordRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        },
+        "regionCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
+    },
+    "v1Role": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isBuiltin": {
+          "type": "boolean"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Permission"
+          }
+        },
+        "permGroups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PermissionGroup"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "Role is a named bundle of permissions assignable to users or groups."
+    },
     "v1SendVerificationCodeRequest": {
       "type": "object",
       "properties": {
@@ -405,6 +3484,77 @@
       },
       "description": "SendVerificationCodeResponse returns the captcha_id that binds the generated\ncode to this flow; it must be passed back to Register/Login."
     },
+    "v1Session": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "deviceType": {
+          "$ref": "#/definitions/v1DeviceType"
+        },
+        "os": {
+          "type": "string"
+        },
+        "browser": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastActiveAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "current": {
+          "type": "boolean"
+        }
+      },
+      "description": "Session is an active login session for the \"manage devices\" UI."
+    },
+    "v1SocialLoginRequest": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "$ref": "#/definitions/v1IdentityProvider"
+        },
+        "code": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "v1SocialLoginResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/v1User"
+        },
+        "isNew": {
+          "type": "boolean"
+        },
+        "returnTo": {
+          "type": "string",
+          "title": "meaningful only for SocialLogin (OAuth callback flow)"
+        }
+      },
+      "description": "SocialLoginResponse is the shared response for all social-login RPCs.\ntoken = testkit-issued JWT (consumes the downstream session_id); session_id\nitself is NOT returned to the frontend."
+    },
     "v1TokenResponse": {
       "type": "object",
       "properties": {
@@ -417,6 +3567,38 @@
       },
       "description": "TokenResponse is returned by every login-class RPC (Login, Register,\nRefreshSession). It carries the JWT (which embeds session_id internally) plus\nthe curated user. session_id is deliberately NOT surfaced — the frontend\nholds only the token (design spec §5.1/§11)."
     },
+    "v1UpdateProfileRequest": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "realName": {
+          "type": "string"
+        },
+        "avatarUrl": {
+          "type": "string"
+        },
+        "gender": {
+          "$ref": "#/definitions/v1Gender"
+        },
+        "birthday": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        }
+      }
+    },
     "v1User": {
       "type": "object",
       "properties": {
@@ -427,20 +3609,111 @@
         "username": {
           "type": "string"
         },
+        "nickname": {
+          "type": "string"
+        },
+        "realName": {
+          "type": "string"
+        },
+        "avatarUrl": {
+          "type": "string"
+        },
         "email": {
+          "type": "string"
+        },
+        "regionCode": {
           "type": "string"
         },
         "phone": {
           "type": "string"
         },
-        "nickname": {
+        "gender": {
+          "$ref": "#/definitions/v1Gender"
+        },
+        "birthday": {
+          "type": "string",
+          "title": "YYYY-MM-DD"
+        },
+        "timezone": {
           "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/v1UserStatus"
+        },
+        "registerSource": {
+          "$ref": "#/definitions/v1IdentityProvider"
         },
         "userType": {
           "$ref": "#/definitions/v1UserType"
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
         }
       },
-      "description": "User is the curated frontend user view. Carries user_type so the frontend can\ndo its two-track split (design spec §3.5). Sensitive/internal fields\n(status, register_source, real_name, timestamps, ...) are curated out."
+      "description": "User is the frontend-facing user shape (P2 enriched). Fields are renumbered\nsequentially vs uservl.User (which has gaps from historical edits); the\nmapping layer translates field-by-name, not field-by-number. Unlike P1's\n6-field login view, this carries the full profile surface (status, gender,\ntimestamps, register_source, ...) used by profile/admin UIs. user_type is\nretained so the frontend can still do its two-track split (design spec §3.5)."
+    },
+    "v1UserRole": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "roleId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "roleName": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string",
+          "title": "\"direct\" | \"group:\u003cgroup_name\u003e\""
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "UserRole is one role held by a user (direct or group-inherited)."
+    },
+    "v1UserSortField": {
+      "type": "string",
+      "enum": [
+        "USER_SORT_FIELD_UNSPECIFIED",
+        "USER_SORT_FIELD_ID",
+        "USER_SORT_FIELD_CREATED_AT",
+        "USER_SORT_FIELD_UPDATED_AT",
+        "USER_SORT_FIELD_LAST_LOGIN_AT"
+      ],
+      "default": "USER_SORT_FIELD_UNSPECIFIED",
+      "description": "UserSortField is the sort column for ListUsers / ListUsersPaged. Mirrors\nuser-service same-name/same-number."
+    },
+    "v1UserStatus": {
+      "type": "string",
+      "enum": [
+        "USER_STATUS_UNSPECIFIED",
+        "USER_STATUS_ACTIVE",
+        "USER_STATUS_DISABLED",
+        "USER_STATUS_PENDING_REVIEW"
+      ],
+      "default": "USER_STATUS_UNSPECIFIED",
+      "description": "UserStatus is the account lifecycle state. Mirrors user-service\nsame-name/same-number."
     },
     "v1UserType": {
       "type": "string",

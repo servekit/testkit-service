@@ -12,6 +12,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -320,6 +321,294 @@ func (x UserType) Number() protoreflect.EnumNumber {
 // Deprecated: Use UserType.Descriptor instead.
 func (UserType) EnumDescriptor() ([]byte, []int) {
 	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{4}
+}
+
+// UserStatus is the account lifecycle state. Mirrors user-service
+// same-name/same-number.
+type UserStatus int32
+
+const (
+	UserStatus_USER_STATUS_UNSPECIFIED    UserStatus = 0
+	UserStatus_USER_STATUS_ACTIVE         UserStatus = 1
+	UserStatus_USER_STATUS_DISABLED       UserStatus = 2
+	UserStatus_USER_STATUS_PENDING_REVIEW UserStatus = 3
+)
+
+// Enum value maps for UserStatus.
+var (
+	UserStatus_name = map[int32]string{
+		0: "USER_STATUS_UNSPECIFIED",
+		1: "USER_STATUS_ACTIVE",
+		2: "USER_STATUS_DISABLED",
+		3: "USER_STATUS_PENDING_REVIEW",
+	}
+	UserStatus_value = map[string]int32{
+		"USER_STATUS_UNSPECIFIED":    0,
+		"USER_STATUS_ACTIVE":         1,
+		"USER_STATUS_DISABLED":       2,
+		"USER_STATUS_PENDING_REVIEW": 3,
+	}
+)
+
+func (x UserStatus) Enum() *UserStatus {
+	p := new(UserStatus)
+	*p = x
+	return p
+}
+
+func (x UserStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[5].Descriptor()
+}
+
+func (UserStatus) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[5]
+}
+
+func (x UserStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserStatus.Descriptor instead.
+func (UserStatus) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{5}
+}
+
+// Gender is the user's self-reported gender. Mirrors user-service
+// same-name/same-number.
+type Gender int32
+
+const (
+	Gender_GENDER_UNSPECIFIED Gender = 0
+	Gender_GENDER_MALE        Gender = 1
+	Gender_GENDER_FEMALE      Gender = 2
+	Gender_GENDER_OTHER       Gender = 3
+	Gender_GENDER_UNKNOWN     Gender = 4
+)
+
+// Enum value maps for Gender.
+var (
+	Gender_name = map[int32]string{
+		0: "GENDER_UNSPECIFIED",
+		1: "GENDER_MALE",
+		2: "GENDER_FEMALE",
+		3: "GENDER_OTHER",
+		4: "GENDER_UNKNOWN",
+	}
+	Gender_value = map[string]int32{
+		"GENDER_UNSPECIFIED": 0,
+		"GENDER_MALE":        1,
+		"GENDER_FEMALE":      2,
+		"GENDER_OTHER":       3,
+		"GENDER_UNKNOWN":     4,
+	}
+)
+
+func (x Gender) Enum() *Gender {
+	p := new(Gender)
+	*p = x
+	return p
+}
+
+func (x Gender) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Gender) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[6].Descriptor()
+}
+
+func (Gender) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[6]
+}
+
+func (x Gender) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Gender.Descriptor instead.
+func (Gender) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{6}
+}
+
+// DeviceType categorizes the client device for session/audit metadata. Mirrors
+// user-service same-name/same-number.
+type DeviceType int32
+
+const (
+	DeviceType_DEVICE_TYPE_UNSPECIFIED DeviceType = 0
+	DeviceType_DEVICE_TYPE_WEB         DeviceType = 1
+	DeviceType_DEVICE_TYPE_IOS         DeviceType = 2
+	DeviceType_DEVICE_TYPE_ANDROID     DeviceType = 3
+	DeviceType_DEVICE_TYPE_API         DeviceType = 4
+)
+
+// Enum value maps for DeviceType.
+var (
+	DeviceType_name = map[int32]string{
+		0: "DEVICE_TYPE_UNSPECIFIED",
+		1: "DEVICE_TYPE_WEB",
+		2: "DEVICE_TYPE_IOS",
+		3: "DEVICE_TYPE_ANDROID",
+		4: "DEVICE_TYPE_API",
+	}
+	DeviceType_value = map[string]int32{
+		"DEVICE_TYPE_UNSPECIFIED": 0,
+		"DEVICE_TYPE_WEB":         1,
+		"DEVICE_TYPE_IOS":         2,
+		"DEVICE_TYPE_ANDROID":     3,
+		"DEVICE_TYPE_API":         4,
+	}
+)
+
+func (x DeviceType) Enum() *DeviceType {
+	p := new(DeviceType)
+	*p = x
+	return p
+}
+
+func (x DeviceType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (DeviceType) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[7].Descriptor()
+}
+
+func (DeviceType) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[7]
+}
+
+func (x DeviceType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use DeviceType.Descriptor instead.
+func (DeviceType) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{7}
+}
+
+// LoginAction classifies a login audit log entry. Mirrors user-service
+// same-name/same-number.
+type LoginAction int32
+
+const (
+	LoginAction_LOGIN_ACTION_UNSPECIFIED     LoginAction = 0
+	LoginAction_LOGIN_ACTION_LOGIN           LoginAction = 1
+	LoginAction_LOGIN_ACTION_REGISTER        LoginAction = 2
+	LoginAction_LOGIN_ACTION_SOCIAL_LOGIN    LoginAction = 3
+	LoginAction_LOGIN_ACTION_SOCIAL_REGISTER LoginAction = 4
+	LoginAction_LOGIN_ACTION_BIND            LoginAction = 5
+	LoginAction_LOGIN_ACTION_UNBIND          LoginAction = 6
+)
+
+// Enum value maps for LoginAction.
+var (
+	LoginAction_name = map[int32]string{
+		0: "LOGIN_ACTION_UNSPECIFIED",
+		1: "LOGIN_ACTION_LOGIN",
+		2: "LOGIN_ACTION_REGISTER",
+		3: "LOGIN_ACTION_SOCIAL_LOGIN",
+		4: "LOGIN_ACTION_SOCIAL_REGISTER",
+		5: "LOGIN_ACTION_BIND",
+		6: "LOGIN_ACTION_UNBIND",
+	}
+	LoginAction_value = map[string]int32{
+		"LOGIN_ACTION_UNSPECIFIED":     0,
+		"LOGIN_ACTION_LOGIN":           1,
+		"LOGIN_ACTION_REGISTER":        2,
+		"LOGIN_ACTION_SOCIAL_LOGIN":    3,
+		"LOGIN_ACTION_SOCIAL_REGISTER": 4,
+		"LOGIN_ACTION_BIND":            5,
+		"LOGIN_ACTION_UNBIND":          6,
+	}
+)
+
+func (x LoginAction) Enum() *LoginAction {
+	p := new(LoginAction)
+	*p = x
+	return p
+}
+
+func (x LoginAction) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LoginAction) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[8].Descriptor()
+}
+
+func (LoginAction) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[8]
+}
+
+func (x LoginAction) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LoginAction.Descriptor instead.
+func (LoginAction) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{8}
+}
+
+// UserSortField is the sort column for ListUsers / ListUsersPaged. Mirrors
+// user-service same-name/same-number.
+type UserSortField int32
+
+const (
+	UserSortField_USER_SORT_FIELD_UNSPECIFIED   UserSortField = 0
+	UserSortField_USER_SORT_FIELD_ID            UserSortField = 1
+	UserSortField_USER_SORT_FIELD_CREATED_AT    UserSortField = 2
+	UserSortField_USER_SORT_FIELD_UPDATED_AT    UserSortField = 3
+	UserSortField_USER_SORT_FIELD_LAST_LOGIN_AT UserSortField = 4
+)
+
+// Enum value maps for UserSortField.
+var (
+	UserSortField_name = map[int32]string{
+		0: "USER_SORT_FIELD_UNSPECIFIED",
+		1: "USER_SORT_FIELD_ID",
+		2: "USER_SORT_FIELD_CREATED_AT",
+		3: "USER_SORT_FIELD_UPDATED_AT",
+		4: "USER_SORT_FIELD_LAST_LOGIN_AT",
+	}
+	UserSortField_value = map[string]int32{
+		"USER_SORT_FIELD_UNSPECIFIED":   0,
+		"USER_SORT_FIELD_ID":            1,
+		"USER_SORT_FIELD_CREATED_AT":    2,
+		"USER_SORT_FIELD_UPDATED_AT":    3,
+		"USER_SORT_FIELD_LAST_LOGIN_AT": 4,
+	}
+)
+
+func (x UserSortField) Enum() *UserSortField {
+	p := new(UserSortField)
+	*p = x
+	return p
+}
+
+func (x UserSortField) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserSortField) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[9].Descriptor()
+}
+
+func (UserSortField) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[9]
+}
+
+func (x UserSortField) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserSortField.Descriptor instead.
+func (UserSortField) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{9}
 }
 
 // Pong is the health-check response — only public, non-sensitive info
@@ -831,19 +1120,35 @@ func (x *RefreshSessionRequest) GetSessionId() string {
 	return ""
 }
 
-// User is the curated frontend user view. Carries user_type so the frontend can
-// do its two-track split (design spec §3.5). Sensitive/internal fields
-// (status, register_source, real_name, timestamps, ...) are curated out.
+// User is the frontend-facing user shape (P2 enriched). Fields are renumbered
+// sequentially vs uservl.User (which has gaps from historical edits); the
+// mapping layer translates field-by-name, not field-by-number. Unlike P1's
+// 6-field login view, this carries the full profile surface (status, gender,
+// timestamps, register_source, ...) used by profile/admin UIs. user_type is
+// retained so the frontend can still do its two-track split (design spec §3.5).
 type User struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
-	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
-	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
-	Nickname      string                 `protobuf:"bytes,5,opt,name=nickname,proto3" json:"nickname,omitempty"`
-	UserType      UserType               `protobuf:"varint,6,opt,name=user_type,json=userType,proto3,enum=testkit.v1.UserType" json:"user_type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Username       string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Nickname       string                 `protobuf:"bytes,3,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	RealName       string                 `protobuf:"bytes,4,opt,name=real_name,json=realName,proto3" json:"real_name,omitempty"`
+	AvatarUrl      string                 `protobuf:"bytes,5,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	Email          string                 `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`
+	RegionCode     string                 `protobuf:"bytes,7,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone          string                 `protobuf:"bytes,8,opt,name=phone,proto3" json:"phone,omitempty"`
+	Gender         Gender                 `protobuf:"varint,9,opt,name=gender,proto3,enum=testkit.v1.Gender" json:"gender,omitempty"`
+	Birthday       string                 `protobuf:"bytes,10,opt,name=birthday,proto3" json:"birthday,omitempty"` // YYYY-MM-DD
+	Timezone       string                 `protobuf:"bytes,11,opt,name=timezone,proto3" json:"timezone,omitempty"`
+	Locale         string                 `protobuf:"bytes,12,opt,name=locale,proto3" json:"locale,omitempty"`
+	Bio            string                 `protobuf:"bytes,13,opt,name=bio,proto3" json:"bio,omitempty"`
+	Status         UserStatus             `protobuf:"varint,14,opt,name=status,proto3,enum=testkit.v1.UserStatus" json:"status,omitempty"`
+	RegisterSource IdentityProvider       `protobuf:"varint,15,opt,name=register_source,json=registerSource,proto3,enum=testkit.v1.IdentityProvider" json:"register_source,omitempty"`
+	UserType       UserType               `protobuf:"varint,16,opt,name=user_type,json=userType,proto3,enum=testkit.v1.UserType" json:"user_type,omitempty"`
+	LastLoginAt    *timestamppb.Timestamp `protobuf:"bytes,17,opt,name=last_login_at,json=lastLoginAt,proto3" json:"last_login_at,omitempty"`
+	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,18,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,19,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *User) Reset() {
@@ -890,9 +1195,37 @@ func (x *User) GetUsername() string {
 	return ""
 }
 
+func (x *User) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *User) GetRealName() string {
+	if x != nil {
+		return x.RealName
+	}
+	return ""
+}
+
+func (x *User) GetAvatarUrl() string {
+	if x != nil {
+		return x.AvatarUrl
+	}
+	return ""
+}
+
 func (x *User) GetEmail() string {
 	if x != nil {
 		return x.Email
+	}
+	return ""
+}
+
+func (x *User) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
 	}
 	return ""
 }
@@ -904,11 +1237,53 @@ func (x *User) GetPhone() string {
 	return ""
 }
 
-func (x *User) GetNickname() string {
+func (x *User) GetGender() Gender {
 	if x != nil {
-		return x.Nickname
+		return x.Gender
+	}
+	return Gender_GENDER_UNSPECIFIED
+}
+
+func (x *User) GetBirthday() string {
+	if x != nil {
+		return x.Birthday
 	}
 	return ""
+}
+
+func (x *User) GetTimezone() string {
+	if x != nil {
+		return x.Timezone
+	}
+	return ""
+}
+
+func (x *User) GetLocale() string {
+	if x != nil {
+		return x.Locale
+	}
+	return ""
+}
+
+func (x *User) GetBio() string {
+	if x != nil {
+		return x.Bio
+	}
+	return ""
+}
+
+func (x *User) GetStatus() UserStatus {
+	if x != nil {
+		return x.Status
+	}
+	return UserStatus_USER_STATUS_UNSPECIFIED
+}
+
+func (x *User) GetRegisterSource() IdentityProvider {
+	if x != nil {
+		return x.RegisterSource
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
 }
 
 func (x *User) GetUserType() UserType {
@@ -916,6 +1291,873 @@ func (x *User) GetUserType() UserType {
 		return x.UserType
 	}
 	return UserType_USER_TYPE_UNSPECIFIED
+}
+
+func (x *User) GetLastLoginAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastLoginAt
+	}
+	return nil
+}
+
+func (x *User) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *User) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+// Identity is a login method linked to a user (email, phone, each OAuth
+// provider, miniprogram openid).
+type Identity struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Provider      IdentityProvider       `protobuf:"varint,2,opt,name=provider,proto3,enum=testkit.v1.IdentityProvider" json:"provider,omitempty"`
+	ProviderUid   string                 `protobuf:"bytes,3,opt,name=provider_uid,json=providerUid,proto3" json:"provider_uid,omitempty"`
+	Verified      bool                   `protobuf:"varint,4,opt,name=verified,proto3" json:"verified,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Identity) Reset() {
+	*x = Identity{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Identity) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Identity) ProtoMessage() {}
+
+func (x *Identity) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Identity.ProtoReflect.Descriptor instead.
+func (*Identity) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *Identity) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Identity) GetProvider() IdentityProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *Identity) GetProviderUid() string {
+	if x != nil {
+		return x.ProviderUid
+	}
+	return ""
+}
+
+func (x *Identity) GetVerified() bool {
+	if x != nil {
+		return x.Verified
+	}
+	return false
+}
+
+func (x *Identity) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+// Session is an active login session for the "manage devices" UI.
+type Session struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Ip            string                 `protobuf:"bytes,2,opt,name=ip,proto3" json:"ip,omitempty"`
+	DeviceType    DeviceType             `protobuf:"varint,3,opt,name=device_type,json=deviceType,proto3,enum=testkit.v1.DeviceType" json:"device_type,omitempty"`
+	Os            string                 `protobuf:"bytes,4,opt,name=os,proto3" json:"os,omitempty"`
+	Browser       string                 `protobuf:"bytes,5,opt,name=browser,proto3" json:"browser,omitempty"`
+	Country       string                 `protobuf:"bytes,6,opt,name=country,proto3" json:"country,omitempty"`
+	City          string                 `protobuf:"bytes,7,opt,name=city,proto3" json:"city,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	LastActiveAt  *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=last_active_at,json=lastActiveAt,proto3" json:"last_active_at,omitempty"`
+	Current       bool                   `protobuf:"varint,10,opt,name=current,proto3" json:"current,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Session) Reset() {
+	*x = Session{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Session) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Session) ProtoMessage() {}
+
+func (x *Session) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Session.ProtoReflect.Descriptor instead.
+func (*Session) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *Session) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Session) GetIp() string {
+	if x != nil {
+		return x.Ip
+	}
+	return ""
+}
+
+func (x *Session) GetDeviceType() DeviceType {
+	if x != nil {
+		return x.DeviceType
+	}
+	return DeviceType_DEVICE_TYPE_UNSPECIFIED
+}
+
+func (x *Session) GetOs() string {
+	if x != nil {
+		return x.Os
+	}
+	return ""
+}
+
+func (x *Session) GetBrowser() string {
+	if x != nil {
+		return x.Browser
+	}
+	return ""
+}
+
+func (x *Session) GetCountry() string {
+	if x != nil {
+		return x.Country
+	}
+	return ""
+}
+
+func (x *Session) GetCity() string {
+	if x != nil {
+		return x.City
+	}
+	return ""
+}
+
+func (x *Session) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Session) GetLastActiveAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastActiveAt
+	}
+	return nil
+}
+
+func (x *Session) GetCurrent() bool {
+	if x != nil {
+		return x.Current
+	}
+	return false
+}
+
+// Group is an organizational unit; members inherit the group's roles.
+type Group struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	ParentId      int64                  `protobuf:"varint,4,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	Status        string                 `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	MemberCount   int32                  `protobuf:"varint,6,opt,name=member_count,json=memberCount,proto3" json:"member_count,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Group) Reset() {
+	*x = Group{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Group) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Group) ProtoMessage() {}
+
+func (x *Group) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Group.ProtoReflect.Descriptor instead.
+func (*Group) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *Group) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Group) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Group) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *Group) GetParentId() int64 {
+	if x != nil {
+		return x.ParentId
+	}
+	return 0
+}
+
+func (x *Group) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *Group) GetMemberCount() int32 {
+	if x != nil {
+		return x.MemberCount
+	}
+	return 0
+}
+
+func (x *Group) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Group) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+// Role is a named bundle of permissions assignable to users or groups.
+type Role struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	IsBuiltin     bool                   `protobuf:"varint,4,opt,name=is_builtin,json=isBuiltin,proto3" json:"is_builtin,omitempty"`
+	Permissions   []*Permission          `protobuf:"bytes,5,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	PermGroups    []*PermissionGroup     `protobuf:"bytes,6,rep,name=perm_groups,json=permGroups,proto3" json:"perm_groups,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Role) Reset() {
+	*x = Role{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Role) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Role) ProtoMessage() {}
+
+func (x *Role) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Role.ProtoReflect.Descriptor instead.
+func (*Role) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *Role) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Role) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Role) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *Role) GetIsBuiltin() bool {
+	if x != nil {
+		return x.IsBuiltin
+	}
+	return false
+}
+
+func (x *Role) GetPermissions() []*Permission {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
+func (x *Role) GetPermGroups() []*PermissionGroup {
+	if x != nil {
+		return x.PermGroups
+	}
+	return nil
+}
+
+func (x *Role) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Role) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+// Permission is a resource:action catalog entry.
+type Permission struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Resource      string                 `protobuf:"bytes,2,opt,name=resource,proto3" json:"resource,omitempty"`
+	Action        string                 `protobuf:"bytes,3,opt,name=action,proto3" json:"action,omitempty"`
+	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	IsBuiltin     bool                   `protobuf:"varint,5,opt,name=is_builtin,json=isBuiltin,proto3" json:"is_builtin,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Permission) Reset() {
+	*x = Permission{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Permission) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Permission) ProtoMessage() {}
+
+func (x *Permission) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Permission.ProtoReflect.Descriptor instead.
+func (*Permission) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *Permission) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Permission) GetResource() string {
+	if x != nil {
+		return x.Resource
+	}
+	return ""
+}
+
+func (x *Permission) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
+func (x *Permission) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *Permission) GetIsBuiltin() bool {
+	if x != nil {
+		return x.IsBuiltin
+	}
+	return false
+}
+
+// PermissionGroup is a named bundle of permissions.
+type PermissionGroup struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Permissions   []*Permission          `protobuf:"bytes,4,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	IsBuiltin     bool                   `protobuf:"varint,5,opt,name=is_builtin,json=isBuiltin,proto3" json:"is_builtin,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PermissionGroup) Reset() {
+	*x = PermissionGroup{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PermissionGroup) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PermissionGroup) ProtoMessage() {}
+
+func (x *PermissionGroup) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PermissionGroup.ProtoReflect.Descriptor instead.
+func (*PermissionGroup) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *PermissionGroup) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *PermissionGroup) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *PermissionGroup) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *PermissionGroup) GetPermissions() []*Permission {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
+func (x *PermissionGroup) GetIsBuiltin() bool {
+	if x != nil {
+		return x.IsBuiltin
+	}
+	return false
+}
+
+// GroupMember is a user's membership row within a group.
+type GroupMember struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	AvatarUrl     string                 `protobuf:"bytes,3,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GroupMember) Reset() {
+	*x = GroupMember{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GroupMember) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GroupMember) ProtoMessage() {}
+
+func (x *GroupMember) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GroupMember.ProtoReflect.Descriptor instead.
+func (*GroupMember) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GroupMember) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GroupMember) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *GroupMember) GetAvatarUrl() string {
+	if x != nil {
+		return x.AvatarUrl
+	}
+	return ""
+}
+
+func (x *GroupMember) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+func (x *GroupMember) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+// LoginLog is one row of the login audit trail.
+type LoginLog struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Provider      IdentityProvider       `protobuf:"varint,3,opt,name=provider,proto3,enum=testkit.v1.IdentityProvider" json:"provider,omitempty"`
+	Action        LoginAction            `protobuf:"varint,4,opt,name=action,proto3,enum=testkit.v1.LoginAction" json:"action,omitempty"`
+	Success       bool                   `protobuf:"varint,5,opt,name=success,proto3" json:"success,omitempty"`
+	FailReason    string                 `protobuf:"bytes,6,opt,name=fail_reason,json=failReason,proto3" json:"fail_reason,omitempty"`
+	Ip            string                 `protobuf:"bytes,7,opt,name=ip,proto3" json:"ip,omitempty"`
+	DeviceType    DeviceType             `protobuf:"varint,8,opt,name=device_type,json=deviceType,proto3,enum=testkit.v1.DeviceType" json:"device_type,omitempty"`
+	Os            string                 `protobuf:"bytes,9,opt,name=os,proto3" json:"os,omitempty"`
+	Browser       string                 `protobuf:"bytes,10,opt,name=browser,proto3" json:"browser,omitempty"`
+	Country       string                 `protobuf:"bytes,11,opt,name=country,proto3" json:"country,omitempty"`
+	City          string                 `protobuf:"bytes,12,opt,name=city,proto3" json:"city,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginLog) Reset() {
+	*x = LoginLog{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginLog) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginLog) ProtoMessage() {}
+
+func (x *LoginLog) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginLog.ProtoReflect.Descriptor instead.
+func (*LoginLog) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *LoginLog) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *LoginLog) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *LoginLog) GetProvider() IdentityProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *LoginLog) GetAction() LoginAction {
+	if x != nil {
+		return x.Action
+	}
+	return LoginAction_LOGIN_ACTION_UNSPECIFIED
+}
+
+func (x *LoginLog) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *LoginLog) GetFailReason() string {
+	if x != nil {
+		return x.FailReason
+	}
+	return ""
+}
+
+func (x *LoginLog) GetIp() string {
+	if x != nil {
+		return x.Ip
+	}
+	return ""
+}
+
+func (x *LoginLog) GetDeviceType() DeviceType {
+	if x != nil {
+		return x.DeviceType
+	}
+	return DeviceType_DEVICE_TYPE_UNSPECIFIED
+}
+
+func (x *LoginLog) GetOs() string {
+	if x != nil {
+		return x.Os
+	}
+	return ""
+}
+
+func (x *LoginLog) GetBrowser() string {
+	if x != nil {
+		return x.Browser
+	}
+	return ""
+}
+
+func (x *LoginLog) GetCountry() string {
+	if x != nil {
+		return x.Country
+	}
+	return ""
+}
+
+func (x *LoginLog) GetCity() string {
+	if x != nil {
+		return x.City
+	}
+	return ""
+}
+
+func (x *LoginLog) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+// UserRole is one role held by a user (direct or group-inherited).
+type UserRole struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	RoleId        int64                  `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	RoleName      string                 `protobuf:"bytes,3,opt,name=role_name,json=roleName,proto3" json:"role_name,omitempty"`
+	Source        string                 `protobuf:"bytes,4,opt,name=source,proto3" json:"source,omitempty"` // "direct" | "group:<group_name>"
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserRole) Reset() {
+	*x = UserRole{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserRole) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserRole) ProtoMessage() {}
+
+func (x *UserRole) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserRole.ProtoReflect.Descriptor instead.
+func (*UserRole) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UserRole) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserRole) GetRoleId() int64 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
+func (x *UserRole) GetRoleName() string {
+	if x != nil {
+		return x.RoleName
+	}
+	return ""
+}
+
+func (x *UserRole) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *UserRole) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
 }
 
 // TokenResponse is returned by every login-class RPC (Login, Register,
@@ -932,7 +2174,7 @@ type TokenResponse struct {
 
 func (x *TokenResponse) Reset() {
 	*x = TokenResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[7]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -944,7 +2186,7 @@ func (x *TokenResponse) String() string {
 func (*TokenResponse) ProtoMessage() {}
 
 func (x *TokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[7]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -957,7 +2199,7 @@ func (x *TokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenResponse.ProtoReflect.Descriptor instead.
 func (*TokenResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{7}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *TokenResponse) GetToken() string {
@@ -974,12 +2216,4395 @@ func (x *TokenResponse) GetUser() *User {
 	return nil
 }
 
+// ---- Profile (P2) ----
+type GetProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProfileRequest) Reset() {
+	*x = GetProfileRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProfileRequest) ProtoMessage() {}
+
+func (x *GetProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProfileRequest.ProtoReflect.Descriptor instead.
+func (*GetProfileRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{17}
+}
+
+type UpdateProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	RealName      string                 `protobuf:"bytes,3,opt,name=real_name,json=realName,proto3" json:"real_name,omitempty"`
+	AvatarUrl     string                 `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	Gender        Gender                 `protobuf:"varint,5,opt,name=gender,proto3,enum=testkit.v1.Gender" json:"gender,omitempty"`
+	Birthday      string                 `protobuf:"bytes,6,opt,name=birthday,proto3" json:"birthday,omitempty"`
+	Timezone      string                 `protobuf:"bytes,7,opt,name=timezone,proto3" json:"timezone,omitempty"`
+	Locale        string                 `protobuf:"bytes,8,opt,name=locale,proto3" json:"locale,omitempty"`
+	Bio           string                 `protobuf:"bytes,9,opt,name=bio,proto3" json:"bio,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateProfileRequest) Reset() {
+	*x = UpdateProfileRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateProfileRequest) ProtoMessage() {}
+
+func (x *UpdateProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateProfileRequest.ProtoReflect.Descriptor instead.
+func (*UpdateProfileRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *UpdateProfileRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetRealName() string {
+	if x != nil {
+		return x.RealName
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetAvatarUrl() string {
+	if x != nil {
+		return x.AvatarUrl
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetGender() Gender {
+	if x != nil {
+		return x.Gender
+	}
+	return Gender_GENDER_UNSPECIFIED
+}
+
+func (x *UpdateProfileRequest) GetBirthday() string {
+	if x != nil {
+		return x.Birthday
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetTimezone() string {
+	if x != nil {
+		return x.Timezone
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetLocale() string {
+	if x != nil {
+		return x.Locale
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetBio() string {
+	if x != nil {
+		return x.Bio
+	}
+	return ""
+}
+
+type ChangePasswordRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OldPassword   string                 `protobuf:"bytes,1,opt,name=old_password,json=oldPassword,proto3" json:"old_password,omitempty"`
+	NewPassword   string                 `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChangePasswordRequest) Reset() {
+	*x = ChangePasswordRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangePasswordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangePasswordRequest) ProtoMessage() {}
+
+func (x *ChangePasswordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangePasswordRequest.ProtoReflect.Descriptor instead.
+func (*ChangePasswordRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ChangePasswordRequest) GetOldPassword() string {
+	if x != nil {
+		return x.OldPassword
+	}
+	return ""
+}
+
+func (x *ChangePasswordRequest) GetNewPassword() string {
+	if x != nil {
+		return x.NewPassword
+	}
+	return ""
+}
+
+type ResetPasswordRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	NewPassword   string                 `protobuf:"bytes,3,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
+	RegionCode    string                 `protobuf:"bytes,4,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone         string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResetPasswordRequest) Reset() {
+	*x = ResetPasswordRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResetPasswordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResetPasswordRequest) ProtoMessage() {}
+
+func (x *ResetPasswordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResetPasswordRequest.ProtoReflect.Descriptor instead.
+func (*ResetPasswordRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ResetPasswordRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *ResetPasswordRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *ResetPasswordRequest) GetNewPassword() string {
+	if x != nil {
+		return x.NewPassword
+	}
+	return ""
+}
+
+func (x *ResetPasswordRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *ResetPasswordRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+// ---- Identity (P2) ----
+type ListIdentitiesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListIdentitiesRequest) Reset() {
+	*x = ListIdentitiesRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListIdentitiesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListIdentitiesRequest) ProtoMessage() {}
+
+func (x *ListIdentitiesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListIdentitiesRequest.ProtoReflect.Descriptor instead.
+func (*ListIdentitiesRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{21}
+}
+
+type ListIdentitiesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Identities    []*Identity            `protobuf:"bytes,1,rep,name=identities,proto3" json:"identities,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListIdentitiesResponse) Reset() {
+	*x = ListIdentitiesResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListIdentitiesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListIdentitiesResponse) ProtoMessage() {}
+
+func (x *ListIdentitiesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListIdentitiesResponse.ProtoReflect.Descriptor instead.
+func (*ListIdentitiesResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ListIdentitiesResponse) GetIdentities() []*Identity {
+	if x != nil {
+		return x.Identities
+	}
+	return nil
+}
+
+type BindIdentityRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Provider      IdentityProvider       `protobuf:"varint,1,opt,name=provider,proto3,enum=testkit.v1.IdentityProvider" json:"provider,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Code          string                 `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
+	Password      string                 `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
+	RegionCode    string                 `protobuf:"bytes,5,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone         string                 `protobuf:"bytes,6,opt,name=phone,proto3" json:"phone,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BindIdentityRequest) Reset() {
+	*x = BindIdentityRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BindIdentityRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BindIdentityRequest) ProtoMessage() {}
+
+func (x *BindIdentityRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BindIdentityRequest.ProtoReflect.Descriptor instead.
+func (*BindIdentityRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *BindIdentityRequest) GetProvider() IdentityProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *BindIdentityRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *BindIdentityRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *BindIdentityRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *BindIdentityRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *BindIdentityRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+type BindOAuthIdentityRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Provider      IdentityProvider       `protobuf:"varint,1,opt,name=provider,proto3,enum=testkit.v1.IdentityProvider" json:"provider,omitempty"` // OAuth only
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	State         string                 `protobuf:"bytes,3,opt,name=state,proto3" json:"state,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BindOAuthIdentityRequest) Reset() {
+	*x = BindOAuthIdentityRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BindOAuthIdentityRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BindOAuthIdentityRequest) ProtoMessage() {}
+
+func (x *BindOAuthIdentityRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BindOAuthIdentityRequest.ProtoReflect.Descriptor instead.
+func (*BindOAuthIdentityRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *BindOAuthIdentityRequest) GetProvider() IdentityProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *BindOAuthIdentityRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *BindOAuthIdentityRequest) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+type BindOAuthIdentityResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Identity      *Identity              `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BindOAuthIdentityResponse) Reset() {
+	*x = BindOAuthIdentityResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BindOAuthIdentityResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BindOAuthIdentityResponse) ProtoMessage() {}
+
+func (x *BindOAuthIdentityResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BindOAuthIdentityResponse.ProtoReflect.Descriptor instead.
+func (*BindOAuthIdentityResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *BindOAuthIdentityResponse) GetIdentity() *Identity {
+	if x != nil {
+		return x.Identity
+	}
+	return nil
+}
+
+type UnbindIdentityRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IdentityId    int64                  `protobuf:"varint,1,opt,name=identity_id,json=identityId,proto3" json:"identity_id,omitempty"` // target identity
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`                                // user_id injected from ctx
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnbindIdentityRequest) Reset() {
+	*x = UnbindIdentityRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnbindIdentityRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnbindIdentityRequest) ProtoMessage() {}
+
+func (x *UnbindIdentityRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnbindIdentityRequest.ProtoReflect.Descriptor instead.
+func (*UnbindIdentityRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *UnbindIdentityRequest) GetIdentityId() int64 {
+	if x != nil {
+		return x.IdentityId
+	}
+	return 0
+}
+
+func (x *UnbindIdentityRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+// ---- Session (P2) ----
+type ListSessionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSessionsRequest) Reset() {
+	*x = ListSessionsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSessionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsRequest) ProtoMessage() {}
+
+func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsRequest.ProtoReflect.Descriptor instead.
+func (*ListSessionsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{27}
+}
+
+type ListSessionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sessions      []*Session             `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSessionsResponse) Reset() {
+	*x = ListSessionsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSessionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsResponse) ProtoMessage() {}
+
+func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsResponse.ProtoReflect.Descriptor instead.
+func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *ListSessionsResponse) GetSessions() []*Session {
+	if x != nil {
+		return x.Sessions
+	}
+	return nil
+}
+
+type RevokeSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeSessionRequest) Reset() {
+	*x = RevokeSessionRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeSessionRequest) ProtoMessage() {}
+
+func (x *RevokeSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeSessionRequest.ProtoReflect.Descriptor instead.
+func (*RevokeSessionRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *RevokeSessionRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+type RevokeAllSessionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeAllSessionsRequest) Reset() {
+	*x = RevokeAllSessionsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeAllSessionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeAllSessionsRequest) ProtoMessage() {}
+
+func (x *RevokeAllSessionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeAllSessionsRequest.ProtoReflect.Descriptor instead.
+func (*RevokeAllSessionsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{30}
+}
+
+type GetSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSessionRequest) Reset() {
+	*x = GetSessionRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSessionRequest) ProtoMessage() {}
+
+func (x *GetSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSessionRequest.ProtoReflect.Descriptor instead.
+func (*GetSessionRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *GetSessionRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+type GetSessionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Ip            string                 `protobuf:"bytes,4,opt,name=ip,proto3" json:"ip,omitempty"`
+	UserAgent     string                 `protobuf:"bytes,5,opt,name=user_agent,json=userAgent,proto3" json:"user_agent,omitempty"`
+	Os            string                 `protobuf:"bytes,6,opt,name=os,proto3" json:"os,omitempty"`
+	Browser       string                 `protobuf:"bytes,7,opt,name=browser,proto3" json:"browser,omitempty"`
+	LoginMethod   string                 `protobuf:"bytes,8,opt,name=login_method,json=loginMethod,proto3" json:"login_method,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSessionResponse) Reset() {
+	*x = GetSessionResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSessionResponse) ProtoMessage() {}
+
+func (x *GetSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSessionResponse.ProtoReflect.Descriptor instead.
+func (*GetSessionResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *GetSessionResponse) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GetSessionResponse) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
+}
+
+func (x *GetSessionResponse) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *GetSessionResponse) GetIp() string {
+	if x != nil {
+		return x.Ip
+	}
+	return ""
+}
+
+func (x *GetSessionResponse) GetUserAgent() string {
+	if x != nil {
+		return x.UserAgent
+	}
+	return ""
+}
+
+func (x *GetSessionResponse) GetOs() string {
+	if x != nil {
+		return x.Os
+	}
+	return ""
+}
+
+func (x *GetSessionResponse) GetBrowser() string {
+	if x != nil {
+		return x.Browser
+	}
+	return ""
+}
+
+func (x *GetSessionResponse) GetLoginMethod() string {
+	if x != nil {
+		return x.LoginMethod
+	}
+	return ""
+}
+
+type IssueSessionCodeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IssueSessionCodeRequest) Reset() {
+	*x = IssueSessionCodeRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IssueSessionCodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IssueSessionCodeRequest) ProtoMessage() {}
+
+func (x *IssueSessionCodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IssueSessionCodeRequest.ProtoReflect.Descriptor instead.
+func (*IssueSessionCodeRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *IssueSessionCodeRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+type IssueSessionCodeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IssueSessionCodeResponse) Reset() {
+	*x = IssueSessionCodeResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IssueSessionCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IssueSessionCodeResponse) ProtoMessage() {}
+
+func (x *IssueSessionCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IssueSessionCodeResponse.ProtoReflect.Descriptor instead.
+func (*IssueSessionCodeResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *IssueSessionCodeResponse) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+type ExchangeSessionCodeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExchangeSessionCodeRequest) Reset() {
+	*x = ExchangeSessionCodeRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExchangeSessionCodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExchangeSessionCodeRequest) ProtoMessage() {}
+
+func (x *ExchangeSessionCodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExchangeSessionCodeRequest.ProtoReflect.Descriptor instead.
+func (*ExchangeSessionCodeRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *ExchangeSessionCodeRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+type ExchangeSessionCodeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	UserId        int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExchangeSessionCodeResponse) Reset() {
+	*x = ExchangeSessionCodeResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExchangeSessionCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExchangeSessionCodeResponse) ProtoMessage() {}
+
+func (x *ExchangeSessionCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExchangeSessionCodeResponse.ProtoReflect.Descriptor instead.
+func (*ExchangeSessionCodeResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *ExchangeSessionCodeResponse) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *ExchangeSessionCodeResponse) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+// ---- Social (P2) ----
+// All four are public (no caller user_id). SocialLogin / MiniProgram* consume
+// the downstream session_id to issue a testkit JWT — session_id is never
+// surfaced (design spec §5.1).
+type GetOAuthURLRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Provider      IdentityProvider       `protobuf:"varint,1,opt,name=provider,proto3,enum=testkit.v1.IdentityProvider" json:"provider,omitempty"`
+	ReturnTo      string                 `protobuf:"bytes,2,opt,name=return_to,json=returnTo,proto3" json:"return_to,omitempty"`
+	State         string                 `protobuf:"bytes,3,opt,name=state,proto3" json:"state,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOAuthURLRequest) Reset() {
+	*x = GetOAuthURLRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOAuthURLRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOAuthURLRequest) ProtoMessage() {}
+
+func (x *GetOAuthURLRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOAuthURLRequest.ProtoReflect.Descriptor instead.
+func (*GetOAuthURLRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *GetOAuthURLRequest) GetProvider() IdentityProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *GetOAuthURLRequest) GetReturnTo() string {
+	if x != nil {
+		return x.ReturnTo
+	}
+	return ""
+}
+
+func (x *GetOAuthURLRequest) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+type GetOAuthURLResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	State         string                 `protobuf:"bytes,2,opt,name=state,proto3" json:"state,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOAuthURLResponse) Reset() {
+	*x = GetOAuthURLResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOAuthURLResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOAuthURLResponse) ProtoMessage() {}
+
+func (x *GetOAuthURLResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOAuthURLResponse.ProtoReflect.Descriptor instead.
+func (*GetOAuthURLResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *GetOAuthURLResponse) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *GetOAuthURLResponse) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+type SocialLoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Provider      IdentityProvider       `protobuf:"varint,1,opt,name=provider,proto3,enum=testkit.v1.IdentityProvider" json:"provider,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	State         string                 `protobuf:"bytes,3,opt,name=state,proto3" json:"state,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SocialLoginRequest) Reset() {
+	*x = SocialLoginRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SocialLoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SocialLoginRequest) ProtoMessage() {}
+
+func (x *SocialLoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SocialLoginRequest.ProtoReflect.Descriptor instead.
+func (*SocialLoginRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *SocialLoginRequest) GetProvider() IdentityProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *SocialLoginRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *SocialLoginRequest) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+type MiniProgramLoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	AvatarUrl     string                 `protobuf:"bytes,3,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MiniProgramLoginRequest) Reset() {
+	*x = MiniProgramLoginRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MiniProgramLoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MiniProgramLoginRequest) ProtoMessage() {}
+
+func (x *MiniProgramLoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MiniProgramLoginRequest.ProtoReflect.Descriptor instead.
+func (*MiniProgramLoginRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *MiniProgramLoginRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *MiniProgramLoginRequest) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *MiniProgramLoginRequest) GetAvatarUrl() string {
+	if x != nil {
+		return x.AvatarUrl
+	}
+	return ""
+}
+
+type MiniProgramPhoneLoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	LoginCode     string                 `protobuf:"bytes,1,opt,name=login_code,json=loginCode,proto3" json:"login_code,omitempty"`
+	PhoneCode     string                 `protobuf:"bytes,2,opt,name=phone_code,json=phoneCode,proto3" json:"phone_code,omitempty"`
+	Nickname      string                 `protobuf:"bytes,3,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	AvatarUrl     string                 `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MiniProgramPhoneLoginRequest) Reset() {
+	*x = MiniProgramPhoneLoginRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MiniProgramPhoneLoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MiniProgramPhoneLoginRequest) ProtoMessage() {}
+
+func (x *MiniProgramPhoneLoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MiniProgramPhoneLoginRequest.ProtoReflect.Descriptor instead.
+func (*MiniProgramPhoneLoginRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *MiniProgramPhoneLoginRequest) GetLoginCode() string {
+	if x != nil {
+		return x.LoginCode
+	}
+	return ""
+}
+
+func (x *MiniProgramPhoneLoginRequest) GetPhoneCode() string {
+	if x != nil {
+		return x.PhoneCode
+	}
+	return ""
+}
+
+func (x *MiniProgramPhoneLoginRequest) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *MiniProgramPhoneLoginRequest) GetAvatarUrl() string {
+	if x != nil {
+		return x.AvatarUrl
+	}
+	return ""
+}
+
+// SocialLoginResponse is the shared response for all social-login RPCs.
+// token = testkit-issued JWT (consumes the downstream session_id); session_id
+// itself is NOT returned to the frontend.
+type SocialLoginResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	User          *User                  `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	IsNew         bool                   `protobuf:"varint,3,opt,name=is_new,json=isNew,proto3" json:"is_new,omitempty"`
+	ReturnTo      string                 `protobuf:"bytes,4,opt,name=return_to,json=returnTo,proto3" json:"return_to,omitempty"` // meaningful only for SocialLogin (OAuth callback flow)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SocialLoginResponse) Reset() {
+	*x = SocialLoginResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SocialLoginResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SocialLoginResponse) ProtoMessage() {}
+
+func (x *SocialLoginResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SocialLoginResponse.ProtoReflect.Descriptor instead.
+func (*SocialLoginResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *SocialLoginResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *SocialLoginResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+func (x *SocialLoginResponse) GetIsNew() bool {
+	if x != nil {
+		return x.IsNew
+	}
+	return false
+}
+
+func (x *SocialLoginResponse) GetReturnTo() string {
+	if x != nil {
+		return x.ReturnTo
+	}
+	return ""
+}
+
+// ---- Admin-Users (P2) ----
+// target user_id is kept; GetLoginLogs.user_id is an optional filter.
+type CreateUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserType      UserType               `protobuf:"varint,1,opt,name=user_type,json=userType,proto3,enum=testkit.v1.UserType" json:"user_type,omitempty"`
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Nickname      string                 `protobuf:"bytes,3,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	RealName      string                 `protobuf:"bytes,4,opt,name=real_name,json=realName,proto3" json:"real_name,omitempty"`
+	Email         string                 `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`
+	RegionCode    string                 `protobuf:"bytes,6,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone         string                 `protobuf:"bytes,7,opt,name=phone,proto3" json:"phone,omitempty"`
+	Password      string                 `protobuf:"bytes,8,opt,name=password,proto3" json:"password,omitempty"`
+	Gender        Gender                 `protobuf:"varint,9,opt,name=gender,proto3,enum=testkit.v1.Gender" json:"gender,omitempty"`
+	Timezone      string                 `protobuf:"bytes,10,opt,name=timezone,proto3" json:"timezone,omitempty"`
+	Locale        string                 `protobuf:"bytes,11,opt,name=locale,proto3" json:"locale,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateUserRequest) Reset() {
+	*x = CreateUserRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateUserRequest) ProtoMessage() {}
+
+func (x *CreateUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateUserRequest.ProtoReflect.Descriptor instead.
+func (*CreateUserRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *CreateUserRequest) GetUserType() UserType {
+	if x != nil {
+		return x.UserType
+	}
+	return UserType_USER_TYPE_UNSPECIFIED
+}
+
+func (x *CreateUserRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetRealName() string {
+	if x != nil {
+		return x.RealName
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetGender() Gender {
+	if x != nil {
+		return x.Gender
+	}
+	return Gender_GENDER_UNSPECIFIED
+}
+
+func (x *CreateUserRequest) GetTimezone() string {
+	if x != nil {
+		return x.Timezone
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetLocale() string {
+	if x != nil {
+		return x.Locale
+	}
+	return ""
+}
+
+type CreateUserResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateUserResponse) Reset() {
+	*x = CreateUserResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateUserResponse) ProtoMessage() {}
+
+func (x *CreateUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateUserResponse.ProtoReflect.Descriptor instead.
+func (*CreateUserResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *CreateUserResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type GetUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // target user (kept)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserRequest) Reset() {
+	*x = GetUserRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserRequest) ProtoMessage() {}
+
+func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserRequest.ProtoReflect.Descriptor instead.
+func (*GetUserRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *GetUserRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type DisableUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // target user (kept)
+	Disable       bool                   `protobuf:"varint,2,opt,name=disable,proto3" json:"disable,omitempty"`
+	Reason        string                 `protobuf:"bytes,3,opt,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DisableUserRequest) Reset() {
+	*x = DisableUserRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DisableUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DisableUserRequest) ProtoMessage() {}
+
+func (x *DisableUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DisableUserRequest.ProtoReflect.Descriptor instead.
+func (*DisableUserRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *DisableUserRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *DisableUserRequest) GetDisable() bool {
+	if x != nil {
+		return x.Disable
+	}
+	return false
+}
+
+func (x *DisableUserRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+type ListUsersRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Status           UserStatus             `protobuf:"varint,1,opt,name=status,proto3,enum=testkit.v1.UserStatus" json:"status,omitempty"`
+	Nickname         string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	PageSize         int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	Cursor           string                 `protobuf:"bytes,4,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	Gender           Gender                 `protobuf:"varint,5,opt,name=gender,proto3,enum=testkit.v1.Gender" json:"gender,omitempty"`
+	RegisterSource   IdentityProvider       `protobuf:"varint,6,opt,name=register_source,json=registerSource,proto3,enum=testkit.v1.IdentityProvider" json:"register_source,omitempty"`
+	RegisterDevice   DeviceType             `protobuf:"varint,7,opt,name=register_device,json=registerDevice,proto3,enum=testkit.v1.DeviceType" json:"register_device,omitempty"`
+	Locale           string                 `protobuf:"bytes,8,opt,name=locale,proto3" json:"locale,omitempty"`
+	Timezone         string                 `protobuf:"bytes,9,opt,name=timezone,proto3" json:"timezone,omitempty"`
+	RegisterIp       string                 `protobuf:"bytes,10,opt,name=register_ip,json=registerIp,proto3" json:"register_ip,omitempty"`
+	LastLoginIp      string                 `protobuf:"bytes,11,opt,name=last_login_ip,json=lastLoginIp,proto3" json:"last_login_ip,omitempty"`
+	CreatedAtStart   *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at_start,json=createdAtStart,proto3" json:"created_at_start,omitempty"`
+	CreatedAtEnd     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=created_at_end,json=createdAtEnd,proto3" json:"created_at_end,omitempty"`
+	LastLoginAtStart *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=last_login_at_start,json=lastLoginAtStart,proto3" json:"last_login_at_start,omitempty"`
+	LastLoginAtEnd   *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=last_login_at_end,json=lastLoginAtEnd,proto3" json:"last_login_at_end,omitempty"`
+	UserIds          []int64                `protobuf:"varint,16,rep,packed,name=user_ids,json=userIds,proto3" json:"user_ids,omitempty"`
+	Email            string                 `protobuf:"bytes,17,opt,name=email,proto3" json:"email,omitempty"`
+	RegionCode       string                 `protobuf:"bytes,18,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone            string                 `protobuf:"bytes,19,opt,name=phone,proto3" json:"phone,omitempty"`
+	Username         string                 `protobuf:"bytes,20,opt,name=username,proto3" json:"username,omitempty"`
+	UserType         UserType               `protobuf:"varint,21,opt,name=user_type,json=userType,proto3,enum=testkit.v1.UserType" json:"user_type,omitempty"`
+	OrderBy          UserSortField          `protobuf:"varint,22,opt,name=order_by,json=orderBy,proto3,enum=testkit.v1.UserSortField" json:"order_by,omitempty"`
+	Descending       bool                   `protobuf:"varint,23,opt,name=descending,proto3" json:"descending,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *ListUsersRequest) Reset() {
+	*x = ListUsersRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUsersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUsersRequest) ProtoMessage() {}
+
+func (x *ListUsersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUsersRequest.ProtoReflect.Descriptor instead.
+func (*ListUsersRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *ListUsersRequest) GetStatus() UserStatus {
+	if x != nil {
+		return x.Status
+	}
+	return UserStatus_USER_STATUS_UNSPECIFIED
+}
+
+func (x *ListUsersRequest) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListUsersRequest) GetCursor() string {
+	if x != nil {
+		return x.Cursor
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetGender() Gender {
+	if x != nil {
+		return x.Gender
+	}
+	return Gender_GENDER_UNSPECIFIED
+}
+
+func (x *ListUsersRequest) GetRegisterSource() IdentityProvider {
+	if x != nil {
+		return x.RegisterSource
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *ListUsersRequest) GetRegisterDevice() DeviceType {
+	if x != nil {
+		return x.RegisterDevice
+	}
+	return DeviceType_DEVICE_TYPE_UNSPECIFIED
+}
+
+func (x *ListUsersRequest) GetLocale() string {
+	if x != nil {
+		return x.Locale
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetTimezone() string {
+	if x != nil {
+		return x.Timezone
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetRegisterIp() string {
+	if x != nil {
+		return x.RegisterIp
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetLastLoginIp() string {
+	if x != nil {
+		return x.LastLoginIp
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetCreatedAtStart() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAtStart
+	}
+	return nil
+}
+
+func (x *ListUsersRequest) GetCreatedAtEnd() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAtEnd
+	}
+	return nil
+}
+
+func (x *ListUsersRequest) GetLastLoginAtStart() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastLoginAtStart
+	}
+	return nil
+}
+
+func (x *ListUsersRequest) GetLastLoginAtEnd() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastLoginAtEnd
+	}
+	return nil
+}
+
+func (x *ListUsersRequest) GetUserIds() []int64 {
+	if x != nil {
+		return x.UserIds
+	}
+	return nil
+}
+
+func (x *ListUsersRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetUserType() UserType {
+	if x != nil {
+		return x.UserType
+	}
+	return UserType_USER_TYPE_UNSPECIFIED
+}
+
+func (x *ListUsersRequest) GetOrderBy() UserSortField {
+	if x != nil {
+		return x.OrderBy
+	}
+	return UserSortField_USER_SORT_FIELD_UNSPECIFIED
+}
+
+func (x *ListUsersRequest) GetDescending() bool {
+	if x != nil {
+		return x.Descending
+	}
+	return false
+}
+
+type ListUsersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Users         []*User                `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUsersResponse) Reset() {
+	*x = ListUsersResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUsersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUsersResponse) ProtoMessage() {}
+
+func (x *ListUsersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUsersResponse.ProtoReflect.Descriptor instead.
+func (*ListUsersResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *ListUsersResponse) GetUsers() []*User {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+func (x *ListUsersResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
+}
+
+type ListUsersPagedRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Status           UserStatus             `protobuf:"varint,1,opt,name=status,proto3,enum=testkit.v1.UserStatus" json:"status,omitempty"`
+	Nickname         string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Gender           Gender                 `protobuf:"varint,3,opt,name=gender,proto3,enum=testkit.v1.Gender" json:"gender,omitempty"`
+	RegisterSource   IdentityProvider       `protobuf:"varint,4,opt,name=register_source,json=registerSource,proto3,enum=testkit.v1.IdentityProvider" json:"register_source,omitempty"`
+	RegisterDevice   DeviceType             `protobuf:"varint,5,opt,name=register_device,json=registerDevice,proto3,enum=testkit.v1.DeviceType" json:"register_device,omitempty"`
+	UserType         UserType               `protobuf:"varint,6,opt,name=user_type,json=userType,proto3,enum=testkit.v1.UserType" json:"user_type,omitempty"`
+	Locale           string                 `protobuf:"bytes,7,opt,name=locale,proto3" json:"locale,omitempty"`
+	Timezone         string                 `protobuf:"bytes,8,opt,name=timezone,proto3" json:"timezone,omitempty"`
+	RegisterIp       string                 `protobuf:"bytes,9,opt,name=register_ip,json=registerIp,proto3" json:"register_ip,omitempty"`
+	LastLoginIp      string                 `protobuf:"bytes,10,opt,name=last_login_ip,json=lastLoginIp,proto3" json:"last_login_ip,omitempty"`
+	CreatedAtStart   *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at_start,json=createdAtStart,proto3" json:"created_at_start,omitempty"`
+	CreatedAtEnd     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at_end,json=createdAtEnd,proto3" json:"created_at_end,omitempty"`
+	LastLoginAtStart *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=last_login_at_start,json=lastLoginAtStart,proto3" json:"last_login_at_start,omitempty"`
+	LastLoginAtEnd   *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=last_login_at_end,json=lastLoginAtEnd,proto3" json:"last_login_at_end,omitempty"`
+	UserIds          []int64                `protobuf:"varint,15,rep,packed,name=user_ids,json=userIds,proto3" json:"user_ids,omitempty"`
+	Email            string                 `protobuf:"bytes,16,opt,name=email,proto3" json:"email,omitempty"`
+	RegionCode       string                 `protobuf:"bytes,17,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone            string                 `protobuf:"bytes,18,opt,name=phone,proto3" json:"phone,omitempty"`
+	Username         string                 `protobuf:"bytes,19,opt,name=username,proto3" json:"username,omitempty"`
+	OrderBy          UserSortField          `protobuf:"varint,20,opt,name=order_by,json=orderBy,proto3,enum=testkit.v1.UserSortField" json:"order_by,omitempty"`
+	Descending       bool                   `protobuf:"varint,21,opt,name=descending,proto3" json:"descending,omitempty"`
+	Page             int32                  `protobuf:"varint,22,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize         int32                  `protobuf:"varint,23,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	Count            bool                   `protobuf:"varint,24,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *ListUsersPagedRequest) Reset() {
+	*x = ListUsersPagedRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUsersPagedRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUsersPagedRequest) ProtoMessage() {}
+
+func (x *ListUsersPagedRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUsersPagedRequest.ProtoReflect.Descriptor instead.
+func (*ListUsersPagedRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *ListUsersPagedRequest) GetStatus() UserStatus {
+	if x != nil {
+		return x.Status
+	}
+	return UserStatus_USER_STATUS_UNSPECIFIED
+}
+
+func (x *ListUsersPagedRequest) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *ListUsersPagedRequest) GetGender() Gender {
+	if x != nil {
+		return x.Gender
+	}
+	return Gender_GENDER_UNSPECIFIED
+}
+
+func (x *ListUsersPagedRequest) GetRegisterSource() IdentityProvider {
+	if x != nil {
+		return x.RegisterSource
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *ListUsersPagedRequest) GetRegisterDevice() DeviceType {
+	if x != nil {
+		return x.RegisterDevice
+	}
+	return DeviceType_DEVICE_TYPE_UNSPECIFIED
+}
+
+func (x *ListUsersPagedRequest) GetUserType() UserType {
+	if x != nil {
+		return x.UserType
+	}
+	return UserType_USER_TYPE_UNSPECIFIED
+}
+
+func (x *ListUsersPagedRequest) GetLocale() string {
+	if x != nil {
+		return x.Locale
+	}
+	return ""
+}
+
+func (x *ListUsersPagedRequest) GetTimezone() string {
+	if x != nil {
+		return x.Timezone
+	}
+	return ""
+}
+
+func (x *ListUsersPagedRequest) GetRegisterIp() string {
+	if x != nil {
+		return x.RegisterIp
+	}
+	return ""
+}
+
+func (x *ListUsersPagedRequest) GetLastLoginIp() string {
+	if x != nil {
+		return x.LastLoginIp
+	}
+	return ""
+}
+
+func (x *ListUsersPagedRequest) GetCreatedAtStart() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAtStart
+	}
+	return nil
+}
+
+func (x *ListUsersPagedRequest) GetCreatedAtEnd() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAtEnd
+	}
+	return nil
+}
+
+func (x *ListUsersPagedRequest) GetLastLoginAtStart() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastLoginAtStart
+	}
+	return nil
+}
+
+func (x *ListUsersPagedRequest) GetLastLoginAtEnd() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastLoginAtEnd
+	}
+	return nil
+}
+
+func (x *ListUsersPagedRequest) GetUserIds() []int64 {
+	if x != nil {
+		return x.UserIds
+	}
+	return nil
+}
+
+func (x *ListUsersPagedRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *ListUsersPagedRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *ListUsersPagedRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *ListUsersPagedRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *ListUsersPagedRequest) GetOrderBy() UserSortField {
+	if x != nil {
+		return x.OrderBy
+	}
+	return UserSortField_USER_SORT_FIELD_UNSPECIFIED
+}
+
+func (x *ListUsersPagedRequest) GetDescending() bool {
+	if x != nil {
+		return x.Descending
+	}
+	return false
+}
+
+func (x *ListUsersPagedRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListUsersPagedRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListUsersPagedRequest) GetCount() bool {
+	if x != nil {
+		return x.Count
+	}
+	return false
+}
+
+type ListUsersPagedResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Users         []*User                `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	TotalPages    int32                  `protobuf:"varint,3,opt,name=total_pages,json=totalPages,proto3" json:"total_pages,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUsersPagedResponse) Reset() {
+	*x = ListUsersPagedResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[50]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUsersPagedResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUsersPagedResponse) ProtoMessage() {}
+
+func (x *ListUsersPagedResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[50]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUsersPagedResponse.ProtoReflect.Descriptor instead.
+func (*ListUsersPagedResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *ListUsersPagedResponse) GetUsers() []*User {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+func (x *ListUsersPagedResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListUsersPagedResponse) GetTotalPages() int32 {
+	if x != nil {
+		return x.TotalPages
+	}
+	return 0
+}
+
+type GetLoginLogsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // optional filter (0 = all); kept
+	Provider      IdentityProvider       `protobuf:"varint,2,opt,name=provider,proto3,enum=testkit.v1.IdentityProvider" json:"provider,omitempty"`
+	Success       bool                   `protobuf:"varint,3,opt,name=success,proto3" json:"success,omitempty"`
+	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	Cursor        string                 `protobuf:"bytes,5,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetLoginLogsRequest) Reset() {
+	*x = GetLoginLogsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetLoginLogsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLoginLogsRequest) ProtoMessage() {}
+
+func (x *GetLoginLogsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLoginLogsRequest.ProtoReflect.Descriptor instead.
+func (*GetLoginLogsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *GetLoginLogsRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GetLoginLogsRequest) GetProvider() IdentityProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *GetLoginLogsRequest) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *GetLoginLogsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *GetLoginLogsRequest) GetCursor() string {
+	if x != nil {
+		return x.Cursor
+	}
+	return ""
+}
+
+type GetLoginLogsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Logs          []*LoginLog            `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
+	Total         int32                  `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetLoginLogsResponse) Reset() {
+	*x = GetLoginLogsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetLoginLogsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLoginLogsResponse) ProtoMessage() {}
+
+func (x *GetLoginLogsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLoginLogsResponse.ProtoReflect.Descriptor instead.
+func (*GetLoginLogsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *GetLoginLogsResponse) GetLogs() []*LoginLog {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
+func (x *GetLoginLogsResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
+}
+
+func (x *GetLoginLogsResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+// ---- RBAC-Group (P2) ----
+type CreateGroupRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	ParentId      int64                  `protobuf:"varint,3,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateGroupRequest) Reset() {
+	*x = CreateGroupRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateGroupRequest) ProtoMessage() {}
+
+func (x *CreateGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateGroupRequest.ProtoReflect.Descriptor instead.
+func (*CreateGroupRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *CreateGroupRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateGroupRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CreateGroupRequest) GetParentId() int64 {
+	if x != nil {
+		return x.ParentId
+	}
+	return 0
+}
+
+type GetGroupRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       int64                  `protobuf:"varint,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetGroupRequest) Reset() {
+	*x = GetGroupRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetGroupRequest) ProtoMessage() {}
+
+func (x *GetGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetGroupRequest.ProtoReflect.Descriptor instead.
+func (*GetGroupRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *GetGroupRequest) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+type UpdateGroupRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       int64                  `protobuf:"varint,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateGroupRequest) Reset() {
+	*x = UpdateGroupRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateGroupRequest) ProtoMessage() {}
+
+func (x *UpdateGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateGroupRequest.ProtoReflect.Descriptor instead.
+func (*UpdateGroupRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *UpdateGroupRequest) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+func (x *UpdateGroupRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UpdateGroupRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+type ListGroupsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	Cursor        string                 `protobuf:"bytes,3,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGroupsRequest) Reset() {
+	*x = ListGroupsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGroupsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGroupsRequest) ProtoMessage() {}
+
+func (x *ListGroupsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGroupsRequest.ProtoReflect.Descriptor instead.
+func (*ListGroupsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *ListGroupsRequest) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *ListGroupsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListGroupsRequest) GetCursor() string {
+	if x != nil {
+		return x.Cursor
+	}
+	return ""
+}
+
+type ListGroupsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Groups        []*Group               `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
+	Total         int32                  `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGroupsResponse) Reset() {
+	*x = ListGroupsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[57]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGroupsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGroupsResponse) ProtoMessage() {}
+
+func (x *ListGroupsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[57]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGroupsResponse.ProtoReflect.Descriptor instead.
+func (*ListGroupsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *ListGroupsResponse) GetGroups() []*Group {
+	if x != nil {
+		return x.Groups
+	}
+	return nil
+}
+
+func (x *ListGroupsResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
+}
+
+func (x *ListGroupsResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+type DeleteGroupRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       int64                  `protobuf:"varint,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteGroupRequest) Reset() {
+	*x = DeleteGroupRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[58]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteGroupRequest) ProtoMessage() {}
+
+func (x *DeleteGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[58]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteGroupRequest.ProtoReflect.Descriptor instead.
+func (*DeleteGroupRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{58}
+}
+
+func (x *DeleteGroupRequest) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+type AddGroupMemberRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       int64                  `protobuf:"varint,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // path
+	UserId        int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`    // target member (kept)
+	Role          string                 `protobuf:"bytes,3,opt,name=role,proto3" json:"role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddGroupMemberRequest) Reset() {
+	*x = AddGroupMemberRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[59]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddGroupMemberRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddGroupMemberRequest) ProtoMessage() {}
+
+func (x *AddGroupMemberRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[59]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddGroupMemberRequest.ProtoReflect.Descriptor instead.
+func (*AddGroupMemberRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *AddGroupMemberRequest) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+func (x *AddGroupMemberRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *AddGroupMemberRequest) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+type RemoveGroupMemberRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       int64                  `protobuf:"varint,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	UserId        int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RemoveGroupMemberRequest) Reset() {
+	*x = RemoveGroupMemberRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RemoveGroupMemberRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RemoveGroupMemberRequest) ProtoMessage() {}
+
+func (x *RemoveGroupMemberRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RemoveGroupMemberRequest.ProtoReflect.Descriptor instead.
+func (*RemoveGroupMemberRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *RemoveGroupMemberRequest) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+func (x *RemoveGroupMemberRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type ListGroupMembersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       int64                  `protobuf:"varint,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // path
+	Role          string                 `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`
+	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	Cursor        string                 `protobuf:"bytes,4,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGroupMembersRequest) Reset() {
+	*x = ListGroupMembersRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[61]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGroupMembersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGroupMembersRequest) ProtoMessage() {}
+
+func (x *ListGroupMembersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[61]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGroupMembersRequest.ProtoReflect.Descriptor instead.
+func (*ListGroupMembersRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{61}
+}
+
+func (x *ListGroupMembersRequest) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+func (x *ListGroupMembersRequest) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+func (x *ListGroupMembersRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListGroupMembersRequest) GetCursor() string {
+	if x != nil {
+		return x.Cursor
+	}
+	return ""
+}
+
+type ListGroupMembersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Members       []*GroupMember         `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
+	Total         int32                  `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGroupMembersResponse) Reset() {
+	*x = ListGroupMembersResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[62]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGroupMembersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGroupMembersResponse) ProtoMessage() {}
+
+func (x *ListGroupMembersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[62]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGroupMembersResponse.ProtoReflect.Descriptor instead.
+func (*ListGroupMembersResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{62}
+}
+
+func (x *ListGroupMembersResponse) GetMembers() []*GroupMember {
+	if x != nil {
+		return x.Members
+	}
+	return nil
+}
+
+func (x *ListGroupMembersResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
+}
+
+func (x *ListGroupMembersResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+type AddGroupRoleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       int64                  `protobuf:"varint,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // path
+	RoleId        int64                  `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddGroupRoleRequest) Reset() {
+	*x = AddGroupRoleRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[63]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddGroupRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddGroupRoleRequest) ProtoMessage() {}
+
+func (x *AddGroupRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[63]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddGroupRoleRequest.ProtoReflect.Descriptor instead.
+func (*AddGroupRoleRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{63}
+}
+
+func (x *AddGroupRoleRequest) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+func (x *AddGroupRoleRequest) GetRoleId() int64 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
+type RemoveGroupRoleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       int64                  `protobuf:"varint,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	RoleId        int64                  `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RemoveGroupRoleRequest) Reset() {
+	*x = RemoveGroupRoleRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[64]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RemoveGroupRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RemoveGroupRoleRequest) ProtoMessage() {}
+
+func (x *RemoveGroupRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[64]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RemoveGroupRoleRequest.ProtoReflect.Descriptor instead.
+func (*RemoveGroupRoleRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{64}
+}
+
+func (x *RemoveGroupRoleRequest) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+func (x *RemoveGroupRoleRequest) GetRoleId() int64 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
+type ListGroupRolesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       int64                  `protobuf:"varint,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGroupRolesRequest) Reset() {
+	*x = ListGroupRolesRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[65]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGroupRolesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGroupRolesRequest) ProtoMessage() {}
+
+func (x *ListGroupRolesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[65]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGroupRolesRequest.ProtoReflect.Descriptor instead.
+func (*ListGroupRolesRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{65}
+}
+
+func (x *ListGroupRolesRequest) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+type ListGroupRolesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Roles         []*Role                `protobuf:"bytes,1,rep,name=roles,proto3" json:"roles,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGroupRolesResponse) Reset() {
+	*x = ListGroupRolesResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[66]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGroupRolesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGroupRolesResponse) ProtoMessage() {}
+
+func (x *ListGroupRolesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[66]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGroupRolesResponse.ProtoReflect.Descriptor instead.
+func (*ListGroupRolesResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{66}
+}
+
+func (x *ListGroupRolesResponse) GetRoles() []*Role {
+	if x != nil {
+		return x.Roles
+	}
+	return nil
+}
+
+// ---- RBAC-Role (P2) ----
+type CreateRoleRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Name               string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description        string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	PermissionIds      []int64                `protobuf:"varint,3,rep,packed,name=permission_ids,json=permissionIds,proto3" json:"permission_ids,omitempty"`
+	PermissionGroupIds []int64                `protobuf:"varint,4,rep,packed,name=permission_group_ids,json=permissionGroupIds,proto3" json:"permission_group_ids,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *CreateRoleRequest) Reset() {
+	*x = CreateRoleRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[67]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateRoleRequest) ProtoMessage() {}
+
+func (x *CreateRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[67]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateRoleRequest.ProtoReflect.Descriptor instead.
+func (*CreateRoleRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{67}
+}
+
+func (x *CreateRoleRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateRoleRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CreateRoleRequest) GetPermissionIds() []int64 {
+	if x != nil {
+		return x.PermissionIds
+	}
+	return nil
+}
+
+func (x *CreateRoleRequest) GetPermissionGroupIds() []int64 {
+	if x != nil {
+		return x.PermissionGroupIds
+	}
+	return nil
+}
+
+type GetRoleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoleId        int64                  `protobuf:"varint,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetRoleRequest) Reset() {
+	*x = GetRoleRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[68]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRoleRequest) ProtoMessage() {}
+
+func (x *GetRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[68]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRoleRequest.ProtoReflect.Descriptor instead.
+func (*GetRoleRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{68}
+}
+
+func (x *GetRoleRequest) GetRoleId() int64 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
+type UpdateRoleRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	RoleId             int64                  `protobuf:"varint,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	Name               string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description        string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	PermissionIds      []int64                `protobuf:"varint,4,rep,packed,name=permission_ids,json=permissionIds,proto3" json:"permission_ids,omitempty"`
+	PermissionGroupIds []int64                `protobuf:"varint,5,rep,packed,name=permission_group_ids,json=permissionGroupIds,proto3" json:"permission_group_ids,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *UpdateRoleRequest) Reset() {
+	*x = UpdateRoleRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[69]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateRoleRequest) ProtoMessage() {}
+
+func (x *UpdateRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[69]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateRoleRequest.ProtoReflect.Descriptor instead.
+func (*UpdateRoleRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{69}
+}
+
+func (x *UpdateRoleRequest) GetRoleId() int64 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
+func (x *UpdateRoleRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UpdateRoleRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *UpdateRoleRequest) GetPermissionIds() []int64 {
+	if x != nil {
+		return x.PermissionIds
+	}
+	return nil
+}
+
+func (x *UpdateRoleRequest) GetPermissionGroupIds() []int64 {
+	if x != nil {
+		return x.PermissionGroupIds
+	}
+	return nil
+}
+
+type DeleteRoleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoleId        int64                  `protobuf:"varint,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteRoleRequest) Reset() {
+	*x = DeleteRoleRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[70]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteRoleRequest) ProtoMessage() {}
+
+func (x *DeleteRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[70]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteRoleRequest.ProtoReflect.Descriptor instead.
+func (*DeleteRoleRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{70}
+}
+
+func (x *DeleteRoleRequest) GetRoleId() int64 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
+type ListRolesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageSize      int32                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	Cursor        string                 `protobuf:"bytes,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListRolesRequest) Reset() {
+	*x = ListRolesRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[71]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListRolesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListRolesRequest) ProtoMessage() {}
+
+func (x *ListRolesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[71]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListRolesRequest.ProtoReflect.Descriptor instead.
+func (*ListRolesRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{71}
+}
+
+func (x *ListRolesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListRolesRequest) GetCursor() string {
+	if x != nil {
+		return x.Cursor
+	}
+	return ""
+}
+
+type ListRolesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Roles         []*Role                `protobuf:"bytes,1,rep,name=roles,proto3" json:"roles,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
+	Total         int32                  `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListRolesResponse) Reset() {
+	*x = ListRolesResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[72]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListRolesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListRolesResponse) ProtoMessage() {}
+
+func (x *ListRolesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[72]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListRolesResponse.ProtoReflect.Descriptor instead.
+func (*ListRolesResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{72}
+}
+
+func (x *ListRolesResponse) GetRoles() []*Role {
+	if x != nil {
+		return x.Roles
+	}
+	return nil
+}
+
+func (x *ListRolesResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
+}
+
+func (x *ListRolesResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+type AssignRoleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // target user (path)
+	RoleId        int64                  `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AssignRoleRequest) Reset() {
+	*x = AssignRoleRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[73]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AssignRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AssignRoleRequest) ProtoMessage() {}
+
+func (x *AssignRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[73]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AssignRoleRequest.ProtoReflect.Descriptor instead.
+func (*AssignRoleRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{73}
+}
+
+func (x *AssignRoleRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *AssignRoleRequest) GetRoleId() int64 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
+type RevokeRoleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	RoleId        int64                  `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeRoleRequest) Reset() {
+	*x = RevokeRoleRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[74]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeRoleRequest) ProtoMessage() {}
+
+func (x *RevokeRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[74]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeRoleRequest.ProtoReflect.Descriptor instead.
+func (*RevokeRoleRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{74}
+}
+
+func (x *RevokeRoleRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *RevokeRoleRequest) GetRoleId() int64 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
+type ListUserRolesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUserRolesRequest) Reset() {
+	*x = ListUserRolesRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[75]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUserRolesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUserRolesRequest) ProtoMessage() {}
+
+func (x *ListUserRolesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[75]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUserRolesRequest.ProtoReflect.Descriptor instead.
+func (*ListUserRolesRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{75}
+}
+
+func (x *ListUserRolesRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type ListUserRolesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Roles         []*UserRole            `protobuf:"bytes,1,rep,name=roles,proto3" json:"roles,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUserRolesResponse) Reset() {
+	*x = ListUserRolesResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[76]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUserRolesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUserRolesResponse) ProtoMessage() {}
+
+func (x *ListUserRolesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[76]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUserRolesResponse.ProtoReflect.Descriptor instead.
+func (*ListUserRolesResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{76}
+}
+
+func (x *ListUserRolesResponse) GetRoles() []*UserRole {
+	if x != nil {
+		return x.Roles
+	}
+	return nil
+}
+
+// ---- RBAC-Permission (P2) ----
+type ListPermissionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageSize      int32                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	Cursor        string                 `protobuf:"bytes,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPermissionsRequest) Reset() {
+	*x = ListPermissionsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[77]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPermissionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPermissionsRequest) ProtoMessage() {}
+
+func (x *ListPermissionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[77]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPermissionsRequest.ProtoReflect.Descriptor instead.
+func (*ListPermissionsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{77}
+}
+
+func (x *ListPermissionsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListPermissionsRequest) GetCursor() string {
+	if x != nil {
+		return x.Cursor
+	}
+	return ""
+}
+
+type ListPermissionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Permissions   []*Permission          `protobuf:"bytes,1,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
+	Total         int32                  `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPermissionsResponse) Reset() {
+	*x = ListPermissionsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[78]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPermissionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPermissionsResponse) ProtoMessage() {}
+
+func (x *ListPermissionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[78]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPermissionsResponse.ProtoReflect.Descriptor instead.
+func (*ListPermissionsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{78}
+}
+
+func (x *ListPermissionsResponse) GetPermissions() []*Permission {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
+func (x *ListPermissionsResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
+}
+
+func (x *ListPermissionsResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+type CreatePermissionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Resource      string                 `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
+	Action        string                 `protobuf:"bytes,2,opt,name=action,proto3" json:"action,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreatePermissionRequest) Reset() {
+	*x = CreatePermissionRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[79]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreatePermissionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreatePermissionRequest) ProtoMessage() {}
+
+func (x *CreatePermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[79]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreatePermissionRequest.ProtoReflect.Descriptor instead.
+func (*CreatePermissionRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{79}
+}
+
+func (x *CreatePermissionRequest) GetResource() string {
+	if x != nil {
+		return x.Resource
+	}
+	return ""
+}
+
+func (x *CreatePermissionRequest) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
+func (x *CreatePermissionRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+type GetPermissionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PermissionId  int64                  `protobuf:"varint,1,opt,name=permission_id,json=permissionId,proto3" json:"permission_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPermissionRequest) Reset() {
+	*x = GetPermissionRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[80]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPermissionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPermissionRequest) ProtoMessage() {}
+
+func (x *GetPermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[80]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPermissionRequest.ProtoReflect.Descriptor instead.
+func (*GetPermissionRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{80}
+}
+
+func (x *GetPermissionRequest) GetPermissionId() int64 {
+	if x != nil {
+		return x.PermissionId
+	}
+	return 0
+}
+
+type UpdatePermissionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PermissionId  int64                  `protobuf:"varint,1,opt,name=permission_id,json=permissionId,proto3" json:"permission_id,omitempty"`
+	Resource      string                 `protobuf:"bytes,2,opt,name=resource,proto3" json:"resource,omitempty"`
+	Action        string                 `protobuf:"bytes,3,opt,name=action,proto3" json:"action,omitempty"`
+	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdatePermissionRequest) Reset() {
+	*x = UpdatePermissionRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[81]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdatePermissionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdatePermissionRequest) ProtoMessage() {}
+
+func (x *UpdatePermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[81]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdatePermissionRequest.ProtoReflect.Descriptor instead.
+func (*UpdatePermissionRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{81}
+}
+
+func (x *UpdatePermissionRequest) GetPermissionId() int64 {
+	if x != nil {
+		return x.PermissionId
+	}
+	return 0
+}
+
+func (x *UpdatePermissionRequest) GetResource() string {
+	if x != nil {
+		return x.Resource
+	}
+	return ""
+}
+
+func (x *UpdatePermissionRequest) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
+func (x *UpdatePermissionRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+type DeletePermissionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PermissionId  int64                  `protobuf:"varint,1,opt,name=permission_id,json=permissionId,proto3" json:"permission_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeletePermissionRequest) Reset() {
+	*x = DeletePermissionRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[82]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeletePermissionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeletePermissionRequest) ProtoMessage() {}
+
+func (x *DeletePermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[82]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeletePermissionRequest.ProtoReflect.Descriptor instead.
+func (*DeletePermissionRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{82}
+}
+
+func (x *DeletePermissionRequest) GetPermissionId() int64 {
+	if x != nil {
+		return x.PermissionId
+	}
+	return 0
+}
+
+type CreatePermissionGroupRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	PermissionIds []int64                `protobuf:"varint,3,rep,packed,name=permission_ids,json=permissionIds,proto3" json:"permission_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreatePermissionGroupRequest) Reset() {
+	*x = CreatePermissionGroupRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[83]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreatePermissionGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreatePermissionGroupRequest) ProtoMessage() {}
+
+func (x *CreatePermissionGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[83]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreatePermissionGroupRequest.ProtoReflect.Descriptor instead.
+func (*CreatePermissionGroupRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{83}
+}
+
+func (x *CreatePermissionGroupRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreatePermissionGroupRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CreatePermissionGroupRequest) GetPermissionIds() []int64 {
+	if x != nil {
+		return x.PermissionIds
+	}
+	return nil
+}
+
+type GetPermissionGroupRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	PermissionGroupId int64                  `protobuf:"varint,1,opt,name=permission_group_id,json=permissionGroupId,proto3" json:"permission_group_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *GetPermissionGroupRequest) Reset() {
+	*x = GetPermissionGroupRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[84]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPermissionGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPermissionGroupRequest) ProtoMessage() {}
+
+func (x *GetPermissionGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[84]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPermissionGroupRequest.ProtoReflect.Descriptor instead.
+func (*GetPermissionGroupRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{84}
+}
+
+func (x *GetPermissionGroupRequest) GetPermissionGroupId() int64 {
+	if x != nil {
+		return x.PermissionGroupId
+	}
+	return 0
+}
+
+type UpdatePermissionGroupRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	PermissionGroupId int64                  `protobuf:"varint,1,opt,name=permission_group_id,json=permissionGroupId,proto3" json:"permission_group_id,omitempty"`
+	Name              string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description       string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	PermissionIds     []int64                `protobuf:"varint,4,rep,packed,name=permission_ids,json=permissionIds,proto3" json:"permission_ids,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *UpdatePermissionGroupRequest) Reset() {
+	*x = UpdatePermissionGroupRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[85]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdatePermissionGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdatePermissionGroupRequest) ProtoMessage() {}
+
+func (x *UpdatePermissionGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[85]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdatePermissionGroupRequest.ProtoReflect.Descriptor instead.
+func (*UpdatePermissionGroupRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{85}
+}
+
+func (x *UpdatePermissionGroupRequest) GetPermissionGroupId() int64 {
+	if x != nil {
+		return x.PermissionGroupId
+	}
+	return 0
+}
+
+func (x *UpdatePermissionGroupRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UpdatePermissionGroupRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *UpdatePermissionGroupRequest) GetPermissionIds() []int64 {
+	if x != nil {
+		return x.PermissionIds
+	}
+	return nil
+}
+
+type DeletePermissionGroupRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	PermissionGroupId int64                  `protobuf:"varint,1,opt,name=permission_group_id,json=permissionGroupId,proto3" json:"permission_group_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *DeletePermissionGroupRequest) Reset() {
+	*x = DeletePermissionGroupRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[86]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeletePermissionGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeletePermissionGroupRequest) ProtoMessage() {}
+
+func (x *DeletePermissionGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[86]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeletePermissionGroupRequest.ProtoReflect.Descriptor instead.
+func (*DeletePermissionGroupRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{86}
+}
+
+func (x *DeletePermissionGroupRequest) GetPermissionGroupId() int64 {
+	if x != nil {
+		return x.PermissionGroupId
+	}
+	return 0
+}
+
+type ListPermissionGroupsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageSize      int32                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	Cursor        string                 `protobuf:"bytes,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPermissionGroupsRequest) Reset() {
+	*x = ListPermissionGroupsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[87]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPermissionGroupsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPermissionGroupsRequest) ProtoMessage() {}
+
+func (x *ListPermissionGroupsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[87]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPermissionGroupsRequest.ProtoReflect.Descriptor instead.
+func (*ListPermissionGroupsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{87}
+}
+
+func (x *ListPermissionGroupsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListPermissionGroupsRequest) GetCursor() string {
+	if x != nil {
+		return x.Cursor
+	}
+	return ""
+}
+
+type ListPermissionGroupsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Groups        []*PermissionGroup     `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
+	Total         int32                  `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPermissionGroupsResponse) Reset() {
+	*x = ListPermissionGroupsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[88]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPermissionGroupsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPermissionGroupsResponse) ProtoMessage() {}
+
+func (x *ListPermissionGroupsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[88]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPermissionGroupsResponse.ProtoReflect.Descriptor instead.
+func (*ListPermissionGroupsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{88}
+}
+
+func (x *ListPermissionGroupsResponse) GetGroups() []*PermissionGroup {
+	if x != nil {
+		return x.Groups
+	}
+	return nil
+}
+
+func (x *ListPermissionGroupsResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
+}
+
+func (x *ListPermissionGroupsResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
 var File_testkit_v1_testkit_proto protoreflect.FileDescriptor
 
 const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\n" +
 	"\x18testkit/v1/testkit.proto\x12\n" +
-	"testkit.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1bbuf/validate/validate.proto\"\xff\x01\n" +
+	"testkit.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bbuf/validate/validate.proto\"\xff\x01\n" +
 	"\x04Pong\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x1d\n" +
@@ -1039,17 +6664,482 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"captcha_id\x18\x01 \x01(\tR\tcaptchaId\"@\n" +
 	"\x15RefreshSessionRequest\x12'\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\tsessionId\"\xb7\x01\n" +
+	"session_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\tsessionId\"\xe3\x05\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
-	"\busername\x18\x02 \x01(\tR\busername\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12\x14\n" +
-	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x1a\n" +
-	"\bnickname\x18\x05 \x01(\tR\bnickname\x12;\n" +
-	"\tuser_type\x18\x06 \x01(\x0e2\x14.testkit.v1.UserTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\buserType\"K\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x1a\n" +
+	"\bnickname\x18\x03 \x01(\tR\bnickname\x12\x1b\n" +
+	"\treal_name\x18\x04 \x01(\tR\brealName\x12\x1d\n" +
+	"\n" +
+	"avatar_url\x18\x05 \x01(\tR\tavatarUrl\x12\x14\n" +
+	"\x05email\x18\x06 \x01(\tR\x05email\x12\x1f\n" +
+	"\vregion_code\x18\a \x01(\tR\n" +
+	"regionCode\x12\x14\n" +
+	"\x05phone\x18\b \x01(\tR\x05phone\x124\n" +
+	"\x06gender\x18\t \x01(\x0e2\x12.testkit.v1.GenderB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06gender\x12\x1a\n" +
+	"\bbirthday\x18\n" +
+	" \x01(\tR\bbirthday\x12\x1a\n" +
+	"\btimezone\x18\v \x01(\tR\btimezone\x12\x16\n" +
+	"\x06locale\x18\f \x01(\tR\x06locale\x12\x10\n" +
+	"\x03bio\x18\r \x01(\tR\x03bio\x128\n" +
+	"\x06status\x18\x0e \x01(\x0e2\x16.testkit.v1.UserStatusB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06status\x12E\n" +
+	"\x0fregister_source\x18\x0f \x01(\x0e2\x1c.testkit.v1.IdentityProviderR\x0eregisterSource\x12;\n" +
+	"\tuser_type\x18\x10 \x01(\x0e2\x14.testkit.v1.UserTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\buserType\x12>\n" +
+	"\rlast_login_at\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\vlastLoginAt\x129\n" +
+	"\n" +
+	"created_at\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\x13 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xd8\x01\n" +
+	"\bIdentity\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12B\n" +
+	"\bprovider\x18\x02 \x01(\x0e2\x1c.testkit.v1.IdentityProviderB\b\xbaH\x05\x82\x01\x02\x10\x01R\bprovider\x12!\n" +
+	"\fprovider_uid\x18\x03 \x01(\tR\vproviderUid\x12\x1a\n" +
+	"\bverified\x18\x04 \x01(\bR\bverified\x129\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xdb\x02\n" +
+	"\aSession\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x0e\n" +
+	"\x02ip\x18\x02 \x01(\tR\x02ip\x12A\n" +
+	"\vdevice_type\x18\x03 \x01(\x0e2\x16.testkit.v1.DeviceTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
+	"deviceType\x12\x0e\n" +
+	"\x02os\x18\x04 \x01(\tR\x02os\x12\x18\n" +
+	"\abrowser\x18\x05 \x01(\tR\abrowser\x12\x18\n" +
+	"\acountry\x18\x06 \x01(\tR\acountry\x12\x12\n" +
+	"\x04city\x18\a \x01(\tR\x04city\x129\n" +
+	"\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12@\n" +
+	"\x0elast_active_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\flastActiveAt\x12\x18\n" +
+	"\acurrent\x18\n" +
+	" \x01(\bR\acurrent\"\x9b\x02\n" +
+	"\x05Group\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1b\n" +
+	"\tparent_id\x18\x04 \x01(\x03R\bparentId\x12\x16\n" +
+	"\x06status\x18\x05 \x01(\tR\x06status\x12!\n" +
+	"\fmember_count\x18\x06 \x01(\x05R\vmemberCount\x129\n" +
+	"\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xd9\x02\n" +
+	"\x04Role\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1d\n" +
+	"\n" +
+	"is_builtin\x18\x04 \x01(\bR\tisBuiltin\x128\n" +
+	"\vpermissions\x18\x05 \x03(\v2\x16.testkit.v1.PermissionR\vpermissions\x12<\n" +
+	"\vperm_groups\x18\x06 \x03(\v2\x1b.testkit.v1.PermissionGroupR\n" +
+	"permGroups\x129\n" +
+	"\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\x91\x01\n" +
+	"\n" +
+	"Permission\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
+	"\bresource\x18\x02 \x01(\tR\bresource\x12\x16\n" +
+	"\x06action\x18\x03 \x01(\tR\x06action\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x1d\n" +
+	"\n" +
+	"is_builtin\x18\x05 \x01(\bR\tisBuiltin\"\xb0\x01\n" +
+	"\x0fPermissionGroup\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x128\n" +
+	"\vpermissions\x18\x04 \x03(\v2\x16.testkit.v1.PermissionR\vpermissions\x12\x1d\n" +
+	"\n" +
+	"is_builtin\x18\x05 \x01(\bR\tisBuiltin\"\xb0\x01\n" +
+	"\vGroupMember\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x1a\n" +
+	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x1d\n" +
+	"\n" +
+	"avatar_url\x18\x03 \x01(\tR\tavatarUrl\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role\x129\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xb5\x03\n" +
+	"\bLoginLog\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x03R\x06userId\x128\n" +
+	"\bprovider\x18\x03 \x01(\x0e2\x1c.testkit.v1.IdentityProviderR\bprovider\x12/\n" +
+	"\x06action\x18\x04 \x01(\x0e2\x17.testkit.v1.LoginActionR\x06action\x12\x18\n" +
+	"\asuccess\x18\x05 \x01(\bR\asuccess\x12\x1f\n" +
+	"\vfail_reason\x18\x06 \x01(\tR\n" +
+	"failReason\x12\x0e\n" +
+	"\x02ip\x18\a \x01(\tR\x02ip\x127\n" +
+	"\vdevice_type\x18\b \x01(\x0e2\x16.testkit.v1.DeviceTypeR\n" +
+	"deviceType\x12\x0e\n" +
+	"\x02os\x18\t \x01(\tR\x02os\x12\x18\n" +
+	"\abrowser\x18\n" +
+	" \x01(\tR\abrowser\x12\x18\n" +
+	"\acountry\x18\v \x01(\tR\acountry\x12\x12\n" +
+	"\x04city\x18\f \x01(\tR\x04city\x129\n" +
+	"\n" +
+	"created_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xa3\x01\n" +
+	"\bUserRole\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
+	"\arole_id\x18\x02 \x01(\x03R\x06roleId\x12\x1b\n" +
+	"\trole_name\x18\x03 \x01(\tR\broleName\x12\x16\n" +
+	"\x06source\x18\x04 \x01(\tR\x06source\x129\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"K\n" +
 	"\rTokenResponse\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12$\n" +
-	"\x04user\x18\x02 \x01(\v2\x10.testkit.v1.UserR\x04user*\xcb\x01\n" +
+	"\x04user\x18\x02 \x01(\v2\x10.testkit.v1.UserR\x04user\"\x13\n" +
+	"\x11GetProfileRequest\"\xec\x02\n" +
+	"\x14UpdateProfileRequest\x12#\n" +
+	"\busername\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18@R\busername\x12#\n" +
+	"\bnickname\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\bnickname\x12$\n" +
+	"\treal_name\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x18@R\brealName\x12'\n" +
+	"\n" +
+	"avatar_url\x18\x04 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\tavatarUrl\x124\n" +
+	"\x06gender\x18\x05 \x01(\x0e2\x12.testkit.v1.GenderB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06gender\x12#\n" +
+	"\bbirthday\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x18\n" +
+	"R\bbirthday\x12#\n" +
+	"\btimezone\x18\a \x01(\tB\a\xbaH\x04r\x02\x18@R\btimezone\x12\x1f\n" +
+	"\x06locale\x18\b \x01(\tB\a\xbaH\x04r\x02\x18\x10R\x06locale\x12\x1a\n" +
+	"\x03bio\x18\t \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\x03bio\"u\n" +
+	"\x15ChangePasswordRequest\x12-\n" +
+	"\fold_password\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\voldPassword\x12-\n" +
+	"\fnew_password\x18\x02 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\b\x18\x80\x01R\vnewPassword\"\xb1\x03\n" +
+	"\x14ResetPasswordRequest\x12\x1e\n" +
+	"\x05email\x18\x01 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05email\x12\x1d\n" +
+	"\x04code\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18\x10R\x04code\x12-\n" +
+	"\fnew_password\x18\x03 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\b\x18\x80\x01R\vnewPassword\x122\n" +
+	"\vregion_code\x18\x04 \x01(\tB\x11\xbaH\x0er\f2\n" +
+	"^[A-Z]{2}$R\n" +
+	"regionCode\x12\x1d\n" +
+	"\x05phone\x18\x05 \x01(\tB\a\xbaH\x04r\x02\x18\x14R\x05phone:\xd7\x01\xbaH\xd3\x01\x1a\xd0\x01\n" +
+	"\x10target_exclusive\x125exactly one of email or region_code+phone must be set\x1a\x84\x01(this.email != '' && this.region_code == '' && this.phone == '') || (this.email == '' && this.region_code != '' && this.phone != '')\"\x17\n" +
+	"\x15ListIdentitiesRequest\"N\n" +
+	"\x16ListIdentitiesResponse\x124\n" +
+	"\n" +
+	"identities\x18\x01 \x03(\v2\x14.testkit.v1.IdentityR\n" +
+	"identities\"\xed\x03\n" +
+	"\x13BindIdentityRequest\x12D\n" +
+	"\bprovider\x18\x01 \x01(\x0e2\x1c.testkit.v1.IdentityProviderB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\bprovider\x12\x1e\n" +
+	"\x05email\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05email\x12\x1d\n" +
+	"\x04code\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18\x10R\x04code\x12$\n" +
+	"\bpassword\x18\x04 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\bpassword\x122\n" +
+	"\vregion_code\x18\x05 \x01(\tB\x11\xbaH\x0er\f2\n" +
+	"^[A-Z]{2}$R\n" +
+	"regionCode\x12\x1d\n" +
+	"\x05phone\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x18\x14R\x05phone:\xd7\x01\xbaH\xd3\x01\x1a\xd0\x01\n" +
+	"\x10target_exclusive\x125exactly one of email or region_code+phone must be set\x1a\x84\x01(this.email != '' && this.region_code == '' && this.phone == '') || (this.email == '' && this.region_code != '' && this.phone != '')\"\xa6\x01\n" +
+	"\x18BindOAuthIdentityRequest\x12H\n" +
+	"\bprovider\x18\x01 \x01(\x0e2\x1c.testkit.v1.IdentityProviderB\x0e\xbaH\v\x82\x01\b\x10\x01 \x00 \x01 \x02R\bprovider\x12\x1e\n" +
+	"\x04code\x18\x02 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x04R\x04code\x12 \n" +
+	"\x05state\x18\x03 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x05state\"M\n" +
+	"\x19BindOAuthIdentityResponse\x120\n" +
+	"\bidentity\x18\x01 \x01(\v2\x14.testkit.v1.IdentityR\bidentity\"`\n" +
+	"\x15UnbindIdentityRequest\x12(\n" +
+	"\videntity_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\n" +
+	"identityId\x12\x1d\n" +
+	"\x04code\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18\x10R\x04code\"\x15\n" +
+	"\x13ListSessionsRequest\"G\n" +
+	"\x14ListSessionsResponse\x12/\n" +
+	"\bsessions\x18\x01 \x03(\v2\x13.testkit.v1.SessionR\bsessions\"A\n" +
+	"\x14RevokeSessionRequest\x12)\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\tsessionId\"\x1a\n" +
+	"\x18RevokeAllSessionsRequest\">\n" +
+	"\x11GetSessionRequest\x12)\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\tsessionId\"\x9f\x02\n" +
+	"\x12GetSessionResponse\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x129\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x129\n" +
+	"\n" +
+	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x0e\n" +
+	"\x02ip\x18\x04 \x01(\tR\x02ip\x12\x1d\n" +
+	"\n" +
+	"user_agent\x18\x05 \x01(\tR\tuserAgent\x12\x0e\n" +
+	"\x02os\x18\x06 \x01(\tR\x02os\x12\x18\n" +
+	"\abrowser\x18\a \x01(\tR\abrowser\x12!\n" +
+	"\flogin_method\x18\b \x01(\tR\vloginMethod\"D\n" +
+	"\x17IssueSessionCodeRequest\x12)\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\tsessionId\".\n" +
+	"\x18IssueSessionCodeResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\"<\n" +
+	"\x1aExchangeSessionCodeRequest\x12\x1e\n" +
+	"\x04code\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x04code\"U\n" +
+	"\x1bExchangeSessionCodeResponse\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x03R\x06userId\"\xa1\x01\n" +
+	"\x12GetOAuthURLRequest\x12D\n" +
+	"\bprovider\x18\x01 \x01(\x0e2\x1c.testkit.v1.IdentityProviderB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\bprovider\x12%\n" +
+	"\treturn_to\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\breturnTo\x12\x1e\n" +
+	"\x05state\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\x05state\"=\n" +
+	"\x13GetOAuthURLResponse\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12\x14\n" +
+	"\x05state\x18\x02 \x01(\tR\x05state\"\x99\x01\n" +
+	"\x12SocialLoginRequest\x12D\n" +
+	"\bprovider\x18\x01 \x01(\x0e2\x1c.testkit.v1.IdentityProviderB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\bprovider\x12\x1b\n" +
+	"\x04code\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04code\x12 \n" +
+	"\x05state\x18\x03 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x05state\"\x84\x01\n" +
+	"\x17MiniProgramLoginRequest\x12\x1b\n" +
+	"\x04code\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04code\x12#\n" +
+	"\bnickname\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\bnickname\x12'\n" +
+	"\n" +
+	"avatar_url\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\tavatarUrl\"\xbc\x01\n" +
+	"\x1cMiniProgramPhoneLoginRequest\x12&\n" +
+	"\n" +
+	"login_code\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tloginCode\x12&\n" +
+	"\n" +
+	"phone_code\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tphoneCode\x12#\n" +
+	"\bnickname\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x18@R\bnickname\x12'\n" +
+	"\n" +
+	"avatar_url\x18\x04 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\tavatarUrl\"\x85\x01\n" +
+	"\x13SocialLoginResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12$\n" +
+	"\x04user\x18\x02 \x01(\v2\x10.testkit.v1.UserR\x04user\x12\x15\n" +
+	"\x06is_new\x18\x03 \x01(\bR\x05isNew\x12\x1b\n" +
+	"\treturn_to\x18\x04 \x01(\tR\breturnTo\"\xd9\x03\n" +
+	"\x11CreateUserRequest\x12=\n" +
+	"\tuser_type\x18\x01 \x01(\x0e2\x14.testkit.v1.UserTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\buserType\x12#\n" +
+	"\busername\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\busername\x12#\n" +
+	"\bnickname\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x18@R\bnickname\x12$\n" +
+	"\treal_name\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x18@R\brealName\x12\x1e\n" +
+	"\x05email\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05email\x122\n" +
+	"\vregion_code\x18\x06 \x01(\tB\x11\xbaH\x0er\f2\n" +
+	"^[A-Z]{2}$R\n" +
+	"regionCode\x12\x1d\n" +
+	"\x05phone\x18\a \x01(\tB\a\xbaH\x04r\x02\x18\x14R\x05phone\x12&\n" +
+	"\bpassword\x18\b \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\b\x18\x80\x01R\bpassword\x124\n" +
+	"\x06gender\x18\t \x01(\x0e2\x12.testkit.v1.GenderB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06gender\x12#\n" +
+	"\btimezone\x18\n" +
+	" \x01(\tB\a\xbaH\x04r\x02\x18@R\btimezone\x12\x1f\n" +
+	"\x06locale\x18\v \x01(\tB\a\xbaH\x04r\x02\x18\x10R\x06locale\":\n" +
+	"\x12CreateUserResponse\x12$\n" +
+	"\x04user\x18\x01 \x01(\v2\x10.testkit.v1.UserR\x04user\"2\n" +
+	"\x0eGetUserRequest\x12 \n" +
+	"\auser_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06userId\"r\n" +
+	"\x12DisableUserRequest\x12 \n" +
+	"\auser_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06userId\x12\x18\n" +
+	"\adisable\x18\x02 \x01(\bR\adisable\x12 \n" +
+	"\x06reason\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\x06reason\"\xeb\b\n" +
+	"\x10ListUsersRequest\x12.\n" +
+	"\x06status\x18\x01 \x01(\x0e2\x16.testkit.v1.UserStatusR\x06status\x12#\n" +
+	"\bnickname\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\bnickname\x12&\n" +
+	"\tpage_size\x18\x03 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01R\bpageSize\x12\x1f\n" +
+	"\x06cursor\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x18@R\x06cursor\x12*\n" +
+	"\x06gender\x18\x05 \x01(\x0e2\x12.testkit.v1.GenderR\x06gender\x12E\n" +
+	"\x0fregister_source\x18\x06 \x01(\x0e2\x1c.testkit.v1.IdentityProviderR\x0eregisterSource\x12?\n" +
+	"\x0fregister_device\x18\a \x01(\x0e2\x16.testkit.v1.DeviceTypeR\x0eregisterDevice\x12\x1f\n" +
+	"\x06locale\x18\b \x01(\tB\a\xbaH\x04r\x02\x18\x10R\x06locale\x12#\n" +
+	"\btimezone\x18\t \x01(\tB\a\xbaH\x04r\x02\x18@R\btimezone\x12(\n" +
+	"\vregister_ip\x18\n" +
+	" \x01(\tB\a\xbaH\x04r\x02\x18-R\n" +
+	"registerIp\x12+\n" +
+	"\rlast_login_ip\x18\v \x01(\tB\a\xbaH\x04r\x02\x18-R\vlastLoginIp\x12D\n" +
+	"\x10created_at_start\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\x0ecreatedAtStart\x12@\n" +
+	"\x0ecreated_at_end\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\fcreatedAtEnd\x12I\n" +
+	"\x13last_login_at_start\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\x10lastLoginAtStart\x12E\n" +
+	"\x11last_login_at_end\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\x0elastLoginAtEnd\x12\x19\n" +
+	"\buser_ids\x18\x10 \x03(\x03R\auserIds\x12\x1e\n" +
+	"\x05email\x18\x11 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05email\x122\n" +
+	"\vregion_code\x18\x12 \x01(\tB\x11\xbaH\x0er\f2\n" +
+	"^[A-Z]{2}$R\n" +
+	"regionCode\x12\x1d\n" +
+	"\x05phone\x18\x13 \x01(\tB\a\xbaH\x04r\x02\x18\x14R\x05phone\x12#\n" +
+	"\busername\x18\x14 \x01(\tB\a\xbaH\x04r\x02\x18@R\busername\x12;\n" +
+	"\tuser_type\x18\x15 \x01(\x0e2\x14.testkit.v1.UserTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\buserType\x12>\n" +
+	"\border_by\x18\x16 \x01(\x0e2\x19.testkit.v1.UserSortFieldB\b\xbaH\x05\x82\x01\x02\x10\x01R\aorderBy\x12\x1e\n" +
+	"\n" +
+	"descending\x18\x17 \x01(\bR\n" +
+	"descending\"\\\n" +
+	"\x11ListUsersResponse\x12&\n" +
+	"\x05users\x18\x01 \x03(\v2\x10.testkit.v1.UserR\x05users\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\"\xf8\b\n" +
+	"\x15ListUsersPagedRequest\x12.\n" +
+	"\x06status\x18\x01 \x01(\x0e2\x16.testkit.v1.UserStatusR\x06status\x12#\n" +
+	"\bnickname\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\bnickname\x12*\n" +
+	"\x06gender\x18\x03 \x01(\x0e2\x12.testkit.v1.GenderR\x06gender\x12E\n" +
+	"\x0fregister_source\x18\x04 \x01(\x0e2\x1c.testkit.v1.IdentityProviderR\x0eregisterSource\x12?\n" +
+	"\x0fregister_device\x18\x05 \x01(\x0e2\x16.testkit.v1.DeviceTypeR\x0eregisterDevice\x121\n" +
+	"\tuser_type\x18\x06 \x01(\x0e2\x14.testkit.v1.UserTypeR\buserType\x12\x1f\n" +
+	"\x06locale\x18\a \x01(\tB\a\xbaH\x04r\x02\x18\x10R\x06locale\x12#\n" +
+	"\btimezone\x18\b \x01(\tB\a\xbaH\x04r\x02\x18@R\btimezone\x12(\n" +
+	"\vregister_ip\x18\t \x01(\tB\a\xbaH\x04r\x02\x18-R\n" +
+	"registerIp\x12+\n" +
+	"\rlast_login_ip\x18\n" +
+	" \x01(\tB\a\xbaH\x04r\x02\x18-R\vlastLoginIp\x12D\n" +
+	"\x10created_at_start\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\x0ecreatedAtStart\x12@\n" +
+	"\x0ecreated_at_end\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\fcreatedAtEnd\x12I\n" +
+	"\x13last_login_at_start\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\x10lastLoginAtStart\x12E\n" +
+	"\x11last_login_at_end\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\x0elastLoginAtEnd\x12\x19\n" +
+	"\buser_ids\x18\x0f \x03(\x03R\auserIds\x12\x1e\n" +
+	"\x05email\x18\x10 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05email\x122\n" +
+	"\vregion_code\x18\x11 \x01(\tB\x11\xbaH\x0er\f2\n" +
+	"^[A-Z]{2}$R\n" +
+	"regionCode\x12\x1d\n" +
+	"\x05phone\x18\x12 \x01(\tB\a\xbaH\x04r\x02\x18\x14R\x05phone\x12#\n" +
+	"\busername\x18\x13 \x01(\tB\a\xbaH\x04r\x02\x18@R\busername\x12>\n" +
+	"\border_by\x18\x14 \x01(\x0e2\x19.testkit.v1.UserSortFieldB\b\xbaH\x05\x82\x01\x02\x10\x01R\aorderBy\x12\x1e\n" +
+	"\n" +
+	"descending\x18\x15 \x01(\bR\n" +
+	"descending\x12\x1b\n" +
+	"\x04page\x18\x16 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\x04page\x12&\n" +
+	"\tpage_size\x18\x17 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01R\bpageSize\x12\x14\n" +
+	"\x05count\x18\x18 \x01(\bR\x05count\"w\n" +
+	"\x16ListUsersPagedResponse\x12&\n" +
+	"\x05users\x18\x01 \x03(\v2\x10.testkit.v1.UserR\x05users\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x1f\n" +
+	"\vtotal_pages\x18\x03 \x01(\x05R\n" +
+	"totalPages\"\xcb\x01\n" +
+	"\x13GetLoginLogsRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x128\n" +
+	"\bprovider\x18\x02 \x01(\x0e2\x1c.testkit.v1.IdentityProviderR\bprovider\x12\x18\n" +
+	"\asuccess\x18\x03 \x01(\bR\asuccess\x12&\n" +
+	"\tpage_size\x18\x04 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01R\bpageSize\x12\x1f\n" +
+	"\x06cursor\x18\x05 \x01(\tB\a\xbaH\x04r\x02\x18@R\x06cursor\"w\n" +
+	"\x14GetLoginLogsResponse\x12(\n" +
+	"\x04logs\x18\x01 \x03(\v2\x14.testkit.v1.LoginLogR\x04logs\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\x12\x14\n" +
+	"\x05total\x18\x03 \x01(\x05R\x05total\"|\n" +
+	"\x12CreateGroupRequest\x12\x1d\n" +
+	"\x04name\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18@R\x04name\x12*\n" +
+	"\vdescription\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\vdescription\x12\x1b\n" +
+	"\tparent_id\x18\x03 \x01(\x03R\bparentId\"5\n" +
+	"\x0fGetGroupRequest\x12\"\n" +
+	"\bgroup_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\agroupId\"\x81\x01\n" +
+	"\x12UpdateGroupRequest\x12\"\n" +
+	"\bgroup_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\agroupId\x12\x1b\n" +
+	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\x04name\x12*\n" +
+	"\vdescription\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\vdescription\"}\n" +
+	"\x11ListGroupsRequest\x12\x1f\n" +
+	"\x06status\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18 R\x06status\x12&\n" +
+	"\tpage_size\x18\x02 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01R\bpageSize\x12\x1f\n" +
+	"\x06cursor\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x18@R\x06cursor\"v\n" +
+	"\x12ListGroupsResponse\x12)\n" +
+	"\x06groups\x18\x01 \x03(\v2\x11.testkit.v1.GroupR\x06groups\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\x12\x14\n" +
+	"\x05total\x18\x03 \x01(\x05R\x05total\"8\n" +
+	"\x12DeleteGroupRequest\x12\"\n" +
+	"\bgroup_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\agroupId\"\x8e\x01\n" +
+	"\x15AddGroupMemberRequest\x12\"\n" +
+	"\bgroup_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\agroupId\x12 \n" +
+	"\auser_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06userId\x12/\n" +
+	"\x04role\x18\x03 \x01(\tB\x1b\xbaH\x18r\x16R\x05ownerR\x05adminR\x06memberR\x04role\"`\n" +
+	"\x18RemoveGroupMemberRequest\x12\"\n" +
+	"\bgroup_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\agroupId\x12 \n" +
+	"\auser_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06userId\"\xa3\x01\n" +
+	"\x17ListGroupMembersRequest\x12\"\n" +
+	"\bgroup_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\agroupId\x12\x1b\n" +
+	"\x04role\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18 R\x04role\x12&\n" +
+	"\tpage_size\x18\x03 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01R\bpageSize\x12\x1f\n" +
+	"\x06cursor\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x18@R\x06cursor\"\x84\x01\n" +
+	"\x18ListGroupMembersResponse\x121\n" +
+	"\amembers\x18\x01 \x03(\v2\x17.testkit.v1.GroupMemberR\amembers\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\x12\x14\n" +
+	"\x05total\x18\x03 \x01(\x05R\x05total\"[\n" +
+	"\x13AddGroupRoleRequest\x12\"\n" +
+	"\bgroup_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\agroupId\x12 \n" +
+	"\arole_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06roleId\"^\n" +
+	"\x16RemoveGroupRoleRequest\x12\"\n" +
+	"\bgroup_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\agroupId\x12 \n" +
+	"\arole_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06roleId\";\n" +
+	"\x15ListGroupRolesRequest\x12\"\n" +
+	"\bgroup_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\agroupId\"@\n" +
+	"\x16ListGroupRolesResponse\x12&\n" +
+	"\x05roles\x18\x01 \x03(\v2\x10.testkit.v1.RoleR\x05roles\"\xb7\x01\n" +
+	"\x11CreateRoleRequest\x12\x1d\n" +
+	"\x04name\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18@R\x04name\x12*\n" +
+	"\vdescription\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\vdescription\x12%\n" +
+	"\x0epermission_ids\x18\x03 \x03(\x03R\rpermissionIds\x120\n" +
+	"\x14permission_group_ids\x18\x04 \x03(\x03R\x12permissionGroupIds\"2\n" +
+	"\x0eGetRoleRequest\x12 \n" +
+	"\arole_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06roleId\"\xd7\x01\n" +
+	"\x11UpdateRoleRequest\x12 \n" +
+	"\arole_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06roleId\x12\x1b\n" +
+	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\x04name\x12*\n" +
+	"\vdescription\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\vdescription\x12%\n" +
+	"\x0epermission_ids\x18\x04 \x03(\x03R\rpermissionIds\x120\n" +
+	"\x14permission_group_ids\x18\x05 \x03(\x03R\x12permissionGroupIds\"5\n" +
+	"\x11DeleteRoleRequest\x12 \n" +
+	"\arole_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06roleId\"[\n" +
+	"\x10ListRolesRequest\x12&\n" +
+	"\tpage_size\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01R\bpageSize\x12\x1f\n" +
+	"\x06cursor\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\x06cursor\"r\n" +
+	"\x11ListRolesResponse\x12&\n" +
+	"\x05roles\x18\x01 \x03(\v2\x10.testkit.v1.RoleR\x05roles\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\x12\x14\n" +
+	"\x05total\x18\x03 \x01(\x05R\x05total\"W\n" +
+	"\x11AssignRoleRequest\x12 \n" +
+	"\auser_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06userId\x12 \n" +
+	"\arole_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06roleId\"W\n" +
+	"\x11RevokeRoleRequest\x12 \n" +
+	"\auser_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06userId\x12 \n" +
+	"\arole_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06roleId\"8\n" +
+	"\x14ListUserRolesRequest\x12 \n" +
+	"\auser_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06userId\"C\n" +
+	"\x15ListUserRolesResponse\x12*\n" +
+	"\x05roles\x18\x01 \x03(\v2\x14.testkit.v1.UserRoleR\x05roles\"a\n" +
+	"\x16ListPermissionsRequest\x12&\n" +
+	"\tpage_size\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01R\bpageSize\x12\x1f\n" +
+	"\x06cursor\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\x06cursor\"\x8a\x01\n" +
+	"\x17ListPermissionsResponse\x128\n" +
+	"\vpermissions\x18\x01 \x03(\v2\x16.testkit.v1.PermissionR\vpermissions\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\x12\x14\n" +
+	"\x05total\x18\x03 \x01(\x05R\x05total\"\x8f\x01\n" +
+	"\x17CreatePermissionRequest\x12%\n" +
+	"\bresource\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18@R\bresource\x12!\n" +
+	"\x06action\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18 R\x06action\x12*\n" +
+	"\vdescription\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\vdescription\"D\n" +
+	"\x14GetPermissionRequest\x12,\n" +
+	"\rpermission_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\fpermissionId\"\xb9\x01\n" +
+	"\x17UpdatePermissionRequest\x12,\n" +
+	"\rpermission_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\fpermissionId\x12#\n" +
+	"\bresource\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\bresource\x12\x1f\n" +
+	"\x06action\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x18 R\x06action\x12*\n" +
+	"\vdescription\x18\x04 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\vdescription\"G\n" +
+	"\x17DeletePermissionRequest\x12,\n" +
+	"\rpermission_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\fpermissionId\"\x90\x01\n" +
+	"\x1cCreatePermissionGroupRequest\x12\x1d\n" +
+	"\x04name\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18@R\x04name\x12*\n" +
+	"\vdescription\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\vdescription\x12%\n" +
+	"\x0epermission_ids\x18\x03 \x03(\x03R\rpermissionIds\"T\n" +
+	"\x19GetPermissionGroupRequest\x127\n" +
+	"\x13permission_group_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x11permissionGroupId\"\xc7\x01\n" +
+	"\x1cUpdatePermissionGroupRequest\x127\n" +
+	"\x13permission_group_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x11permissionGroupId\x12\x1b\n" +
+	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\x04name\x12*\n" +
+	"\vdescription\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x04R\vdescription\x12%\n" +
+	"\x0epermission_ids\x18\x04 \x03(\x03R\rpermissionIds\"W\n" +
+	"\x1cDeletePermissionGroupRequest\x127\n" +
+	"\x13permission_group_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x11permissionGroupId\"f\n" +
+	"\x1bListPermissionGroupsRequest\x12&\n" +
+	"\tpage_size\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01R\bpageSize\x12\x1f\n" +
+	"\x06cursor\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18@R\x06cursor\"\x8a\x01\n" +
+	"\x1cListPermissionGroupsResponse\x123\n" +
+	"\x06groups\x18\x01 \x03(\v2\x1b.testkit.v1.PermissionGroupR\x06groups\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\x12\x14\n" +
+	"\x05total\x18\x03 \x01(\x05R\x05total*\xcb\x01\n" +
 	"\vLoginMethod\x12\x1c\n" +
 	"\x18LOGIN_METHOD_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bLOGIN_METHOD_EMAIL_PASSWORD\x10\x01\x12\x1f\n" +
@@ -1082,14 +7172,109 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\bUserType\x12\x19\n" +
 	"\x15USER_TYPE_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10USER_TYPE_NORMAL\x10\x01\x12\x16\n" +
-	"\x12USER_TYPE_INTERNAL\x10\x022\xe9\x04\n" +
+	"\x12USER_TYPE_INTERNAL\x10\x02*{\n" +
+	"\n" +
+	"UserStatus\x12\x1b\n" +
+	"\x17USER_STATUS_UNSPECIFIED\x10\x00\x12\x16\n" +
+	"\x12USER_STATUS_ACTIVE\x10\x01\x12\x18\n" +
+	"\x14USER_STATUS_DISABLED\x10\x02\x12\x1e\n" +
+	"\x1aUSER_STATUS_PENDING_REVIEW\x10\x03*j\n" +
+	"\x06Gender\x12\x16\n" +
+	"\x12GENDER_UNSPECIFIED\x10\x00\x12\x0f\n" +
+	"\vGENDER_MALE\x10\x01\x12\x11\n" +
+	"\rGENDER_FEMALE\x10\x02\x12\x10\n" +
+	"\fGENDER_OTHER\x10\x03\x12\x12\n" +
+	"\x0eGENDER_UNKNOWN\x10\x04*\x81\x01\n" +
+	"\n" +
+	"DeviceType\x12\x1b\n" +
+	"\x17DEVICE_TYPE_UNSPECIFIED\x10\x00\x12\x13\n" +
+	"\x0fDEVICE_TYPE_WEB\x10\x01\x12\x13\n" +
+	"\x0fDEVICE_TYPE_IOS\x10\x02\x12\x17\n" +
+	"\x13DEVICE_TYPE_ANDROID\x10\x03\x12\x13\n" +
+	"\x0fDEVICE_TYPE_API\x10\x04*\xcf\x01\n" +
+	"\vLoginAction\x12\x1c\n" +
+	"\x18LOGIN_ACTION_UNSPECIFIED\x10\x00\x12\x16\n" +
+	"\x12LOGIN_ACTION_LOGIN\x10\x01\x12\x19\n" +
+	"\x15LOGIN_ACTION_REGISTER\x10\x02\x12\x1d\n" +
+	"\x19LOGIN_ACTION_SOCIAL_LOGIN\x10\x03\x12 \n" +
+	"\x1cLOGIN_ACTION_SOCIAL_REGISTER\x10\x04\x12\x15\n" +
+	"\x11LOGIN_ACTION_BIND\x10\x05\x12\x17\n" +
+	"\x13LOGIN_ACTION_UNBIND\x10\x06*\xab\x01\n" +
+	"\rUserSortField\x12\x1f\n" +
+	"\x1bUSER_SORT_FIELD_UNSPECIFIED\x10\x00\x12\x16\n" +
+	"\x12USER_SORT_FIELD_ID\x10\x01\x12\x1e\n" +
+	"\x1aUSER_SORT_FIELD_CREATED_AT\x10\x02\x12\x1e\n" +
+	"\x1aUSER_SORT_FIELD_UPDATED_AT\x10\x03\x12!\n" +
+	"\x1dUSER_SORT_FIELD_LAST_LOGIN_AT\x10\x042\xcc6\n" +
 	"\x0eTestkitService\x12?\n" +
 	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x10.testkit.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/ping\x12[\n" +
 	"\x05Login\x12\x18.testkit.v1.LoginRequest\x1a\x19.testkit.v1.TokenResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/auth/login\x12d\n" +
 	"\bRegister\x12\x1b.testkit.v1.RegisterRequest\x1a\x19.testkit.v1.TokenResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/v1/auth/register\x12\x8a\x01\n" +
 	"\x14SendVerificationCode\x12'.testkit.v1.SendVerificationCodeRequest\x1a(.testkit.v1.SendVerificationCodeResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/captcha/send\x12U\n" +
 	"\x06Logout\x12\x16.google.protobuf.Empty\x1a\x16.google.protobuf.Empty\"\x1b\x82\xd3\xe4\x93\x02\x15\"\x13/api/v1/auth/logout\x12o\n" +
-	"\x0eRefreshSession\x12!.testkit.v1.RefreshSessionRequest\x1a\x19.testkit.v1.TokenResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/auth/refreshB\xa5\x01\n" +
+	"\x0eRefreshSession\x12!.testkit.v1.RefreshSessionRequest\x1a\x19.testkit.v1.TokenResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/auth/refresh\x12V\n" +
+	"\n" +
+	"GetProfile\x12\x1d.testkit.v1.GetProfileRequest\x1a\x10.testkit.v1.User\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/api/v1/profile\x12_\n" +
+	"\rUpdateProfile\x12 .testkit.v1.UpdateProfileRequest\x1a\x10.testkit.v1.User\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\x1a\x0f/api/v1/profile\x12p\n" +
+	"\x0eChangePassword\x12!.testkit.v1.ChangePasswordRequest\x1a\x16.google.protobuf.Empty\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/profile/password\x12q\n" +
+	"\rResetPassword\x12 .testkit.v1.ResetPasswordRequest\x1a\x16.google.protobuf.Empty\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/v1/auth/password-reset\x12s\n" +
+	"\x0eListIdentities\x12!.testkit.v1.ListIdentitiesRequest\x1a\".testkit.v1.ListIdentitiesResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/identities\x12d\n" +
+	"\fBindIdentity\x12\x1f.testkit.v1.BindIdentityRequest\x1a\x14.testkit.v1.Identity\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/identities\x12\x85\x01\n" +
+	"\x11BindOAuthIdentity\x12$.testkit.v1.BindOAuthIdentityRequest\x1a%.testkit.v1.BindOAuthIdentityResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/identities/oauth\x12u\n" +
+	"\x0eUnbindIdentity\x12!.testkit.v1.UnbindIdentityRequest\x1a\x16.google.protobuf.Empty\"(\x82\xd3\xe4\x93\x02\"* /api/v1/identities/{identity_id}\x12k\n" +
+	"\fListSessions\x12\x1f.testkit.v1.ListSessionsRequest\x1a .testkit.v1.ListSessionsResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/sessions\x12w\n" +
+	"\rRevokeSession\x12 .testkit.v1.RevokeSessionRequest\x1a\x16.google.protobuf.Empty\",\x82\xd3\xe4\x93\x02&\"$/api/v1/sessions/{session_id}/revoke\x12v\n" +
+	"\x11RevokeAllSessions\x12$.testkit.v1.RevokeAllSessionsRequest\x1a\x16.google.protobuf.Empty\"#\x82\xd3\xe4\x93\x02\x1d\"\x1b/api/v1/sessions/revoke-all\x12r\n" +
+	"\n" +
+	"GetSession\x12\x1d.testkit.v1.GetSessionRequest\x1a\x1e.testkit.v1.GetSessionResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/sessions/{session_id}\x12\x85\x01\n" +
+	"\x10IssueSessionCode\x12#.testkit.v1.IssueSessionCodeRequest\x1a$.testkit.v1.IssueSessionCodeResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/v1/sessions/issue-code\x12\x8c\x01\n" +
+	"\x13ExchangeSessionCode\x12&.testkit.v1.ExchangeSessionCodeRequest\x1a'.testkit.v1.ExchangeSessionCodeResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/v1/sessions/exchange\x12u\n" +
+	"\vGetOAuthURL\x12\x1e.testkit.v1.GetOAuthURLRequest\x1a\x1f.testkit.v1.GetOAuthURLResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/social/{provider}/url\x12o\n" +
+	"\vSocialLogin\x12\x1e.testkit.v1.SocialLoginRequest\x1a\x1f.testkit.v1.SocialLoginResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/social/login\x12\x7f\n" +
+	"\x10MiniProgramLogin\x12#.testkit.v1.MiniProgramLoginRequest\x1a\x1f.testkit.v1.SocialLoginResponse\"%\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/v1/social/miniprogram\x12\x8f\x01\n" +
+	"\x15MiniProgramPhoneLogin\x12(.testkit.v1.MiniProgramPhoneLoginRequest\x1a\x1f.testkit.v1.SocialLoginResponse\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/v1/social/miniprogram/phone\x12e\n" +
+	"\n" +
+	"CreateUser\x12\x1d.testkit.v1.CreateUserRequest\x1a\x1e.testkit.v1.CreateUserResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/users\x12X\n" +
+	"\aGetUser\x12\x1a.testkit.v1.GetUserRequest\x1a\x10.testkit.v1.User\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/api/v1/users/{user_id}\x12_\n" +
+	"\tListUsers\x12\x1c.testkit.v1.ListUsersRequest\x1a\x1d.testkit.v1.ListUsersResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/api/v1/users\x12t\n" +
+	"\x0eListUsersPaged\x12!.testkit.v1.ListUsersPagedRequest\x1a\".testkit.v1.ListUsersPagedResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/users/paged\x12k\n" +
+	"\vDisableUser\x12\x1e.testkit.v1.DisableUserRequest\x1a\x10.testkit.v1.User\"*\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/api/v1/users/{user_id}/disable\x12s\n" +
+	"\fGetLoginLogs\x12\x1f.testkit.v1.GetLoginLogsRequest\x1a .testkit.v1.GetLoginLogsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/users/login-logs\x12`\n" +
+	"\vCreateGroup\x12\x1e.testkit.v1.CreateGroupRequest\x1a\x11.testkit.v1.Group\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/v1/rbac/groups\x12b\n" +
+	"\bGetGroup\x12\x1b.testkit.v1.GetGroupRequest\x1a\x11.testkit.v1.Group\"&\x82\xd3\xe4\x93\x02 \x12\x1e/api/v1/rbac/groups/{group_id}\x12k\n" +
+	"\vUpdateGroup\x12\x1e.testkit.v1.UpdateGroupRequest\x1a\x11.testkit.v1.Group\")\x82\xd3\xe4\x93\x02#:\x01*\x1a\x1e/api/v1/rbac/groups/{group_id}\x12h\n" +
+	"\n" +
+	"ListGroups\x12\x1d.testkit.v1.ListGroupsRequest\x1a\x1e.testkit.v1.ListGroupsResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/rbac/groups\x12m\n" +
+	"\vDeleteGroup\x12\x1e.testkit.v1.DeleteGroupRequest\x1a\x16.google.protobuf.Empty\"&\x82\xd3\xe4\x93\x02 *\x1e/api/v1/rbac/groups/{group_id}\x12~\n" +
+	"\x0eAddGroupMember\x12!.testkit.v1.AddGroupMemberRequest\x1a\x16.google.protobuf.Empty\"1\x82\xd3\xe4\x93\x02+:\x01*\"&/api/v1/rbac/groups/{group_id}/members\x12\x8b\x01\n" +
+	"\x11RemoveGroupMember\x12$.testkit.v1.RemoveGroupMemberRequest\x1a\x16.google.protobuf.Empty\"8\x82\xd3\xe4\x93\x022*0/api/v1/rbac/groups/{group_id}/members/{user_id}\x12\x8d\x01\n" +
+	"\x10ListGroupMembers\x12#.testkit.v1.ListGroupMembersRequest\x1a$.testkit.v1.ListGroupMembersResponse\".\x82\xd3\xe4\x93\x02(\x12&/api/v1/rbac/groups/{group_id}/members\x12x\n" +
+	"\fAddGroupRole\x12\x1f.testkit.v1.AddGroupRoleRequest\x1a\x16.google.protobuf.Empty\"/\x82\xd3\xe4\x93\x02):\x01*\"$/api/v1/rbac/groups/{group_id}/roles\x12\x85\x01\n" +
+	"\x0fRemoveGroupRole\x12\".testkit.v1.RemoveGroupRoleRequest\x1a\x16.google.protobuf.Empty\"6\x82\xd3\xe4\x93\x020*./api/v1/rbac/groups/{group_id}/roles/{role_id}\x12\x85\x01\n" +
+	"\x0eListGroupRoles\x12!.testkit.v1.ListGroupRolesRequest\x1a\".testkit.v1.ListGroupRolesResponse\",\x82\xd3\xe4\x93\x02&\x12$/api/v1/rbac/groups/{group_id}/roles\x12\\\n" +
+	"\n" +
+	"CreateRole\x12\x1d.testkit.v1.CreateRoleRequest\x1a\x10.testkit.v1.Role\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/rbac/roles\x12]\n" +
+	"\aGetRole\x12\x1a.testkit.v1.GetRoleRequest\x1a\x10.testkit.v1.Role\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/api/v1/rbac/roles/{role_id}\x12f\n" +
+	"\n" +
+	"UpdateRole\x12\x1d.testkit.v1.UpdateRoleRequest\x1a\x10.testkit.v1.Role\"'\x82\xd3\xe4\x93\x02!:\x01*\x1a\x1c/api/v1/rbac/roles/{role_id}\x12i\n" +
+	"\n" +
+	"DeleteRole\x12\x1d.testkit.v1.DeleteRoleRequest\x1a\x16.google.protobuf.Empty\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/api/v1/rbac/roles/{role_id}\x12d\n" +
+	"\tListRoles\x12\x1c.testkit.v1.ListRolesRequest\x1a\x1d.testkit.v1.ListRolesResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/rbac/roles\x12r\n" +
+	"\n" +
+	"AssignRole\x12\x1d.testkit.v1.AssignRoleRequest\x1a\x16.google.protobuf.Empty\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/v1/rbac/users/{user_id}/roles\x12y\n" +
+	"\n" +
+	"RevokeRole\x12\x1d.testkit.v1.RevokeRoleRequest\x1a\x16.google.protobuf.Empty\"4\x82\xd3\xe4\x93\x02.*,/api/v1/rbac/users/{user_id}/roles/{role_id}\x12\x80\x01\n" +
+	"\rListUserRoles\x12 .testkit.v1.ListUserRolesRequest\x1a!.testkit.v1.ListUserRolesResponse\"*\x82\xd3\xe4\x93\x02$\x12\"/api/v1/rbac/users/{user_id}/roles\x12|\n" +
+	"\x0fListPermissions\x12\".testkit.v1.ListPermissionsRequest\x1a#.testkit.v1.ListPermissionsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/rbac/permissions\x12t\n" +
+	"\x10CreatePermission\x12#.testkit.v1.CreatePermissionRequest\x1a\x16.testkit.v1.Permission\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/rbac/permissions\x12{\n" +
+	"\rGetPermission\x12 .testkit.v1.GetPermissionRequest\x1a\x16.testkit.v1.Permission\"0\x82\xd3\xe4\x93\x02*\x12(/api/v1/rbac/permissions/{permission_id}\x12\x84\x01\n" +
+	"\x10UpdatePermission\x12#.testkit.v1.UpdatePermissionRequest\x1a\x16.testkit.v1.Permission\"3\x82\xd3\xe4\x93\x02-:\x01*\x1a(/api/v1/rbac/permissions/{permission_id}\x12\x81\x01\n" +
+	"\x10DeletePermission\x12#.testkit.v1.DeletePermissionRequest\x1a\x16.google.protobuf.Empty\"0\x82\xd3\xe4\x93\x02**(/api/v1/rbac/permissions/{permission_id}\x12\x89\x01\n" +
+	"\x15CreatePermissionGroup\x12(.testkit.v1.CreatePermissionGroupRequest\x1a\x1b.testkit.v1.PermissionGroup\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/v1/rbac/permission-groups\x12\x96\x01\n" +
+	"\x12GetPermissionGroup\x12%.testkit.v1.GetPermissionGroupRequest\x1a\x1b.testkit.v1.PermissionGroup\"<\x82\xd3\xe4\x93\x026\x124/api/v1/rbac/permission-groups/{permission_group_id}\x12\x9f\x01\n" +
+	"\x15UpdatePermissionGroup\x12(.testkit.v1.UpdatePermissionGroupRequest\x1a\x1b.testkit.v1.PermissionGroup\"?\x82\xd3\xe4\x93\x029:\x01*\x1a4/api/v1/rbac/permission-groups/{permission_group_id}\x12\x97\x01\n" +
+	"\x15DeletePermissionGroup\x12(.testkit.v1.DeletePermissionGroupRequest\x1a\x16.google.protobuf.Empty\"<\x82\xd3\xe4\x93\x026*4/api/v1/rbac/permission-groups/{permission_group_id}\x12\x91\x01\n" +
+	"\x14ListPermissionGroups\x12'.testkit.v1.ListPermissionGroupsRequest\x1a(.testkit.v1.ListPermissionGroupsResponse\"&\x82\xd3\xe4\x93\x02 \x12\x1e/api/v1/rbac/permission-groupsB\xa5\x01\n" +
 	"\x0ecom.testkit.v1B\fTestkitProtoP\x01Z<github.com/servekit/testkit-service/gen/testkit/v1;testkitv1\xa2\x02\x03TXX\xaa\x02\n" +
 	"Testkit.V1\xca\x02\n" +
 	"Testkit\\V1\xe2\x02\x16Testkit\\V1\\GPBMetadata\xea\x02\vTestkit::V1b\x06proto3"
@@ -1106,48 +7291,310 @@ func file_testkit_v1_testkit_proto_rawDescGZIP() []byte {
 	return file_testkit_v1_testkit_proto_rawDescData
 }
 
-var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 10)
+var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 89)
 var file_testkit_v1_testkit_proto_goTypes = []any{
 	(LoginMethod)(0),                     // 0: testkit.v1.LoginMethod
 	(IdentityProvider)(0),                // 1: testkit.v1.IdentityProvider
 	(VerificationChannel)(0),             // 2: testkit.v1.VerificationChannel
 	(VerificationPurpose)(0),             // 3: testkit.v1.VerificationPurpose
 	(UserType)(0),                        // 4: testkit.v1.UserType
-	(*Pong)(nil),                         // 5: testkit.v1.Pong
-	(*LoginRequest)(nil),                 // 6: testkit.v1.LoginRequest
-	(*RegisterRequest)(nil),              // 7: testkit.v1.RegisterRequest
-	(*SendVerificationCodeRequest)(nil),  // 8: testkit.v1.SendVerificationCodeRequest
-	(*SendVerificationCodeResponse)(nil), // 9: testkit.v1.SendVerificationCodeResponse
-	(*RefreshSessionRequest)(nil),        // 10: testkit.v1.RefreshSessionRequest
-	(*User)(nil),                         // 11: testkit.v1.User
-	(*TokenResponse)(nil),                // 12: testkit.v1.TokenResponse
-	(*emptypb.Empty)(nil),                // 13: google.protobuf.Empty
+	(UserStatus)(0),                      // 5: testkit.v1.UserStatus
+	(Gender)(0),                          // 6: testkit.v1.Gender
+	(DeviceType)(0),                      // 7: testkit.v1.DeviceType
+	(LoginAction)(0),                     // 8: testkit.v1.LoginAction
+	(UserSortField)(0),                   // 9: testkit.v1.UserSortField
+	(*Pong)(nil),                         // 10: testkit.v1.Pong
+	(*LoginRequest)(nil),                 // 11: testkit.v1.LoginRequest
+	(*RegisterRequest)(nil),              // 12: testkit.v1.RegisterRequest
+	(*SendVerificationCodeRequest)(nil),  // 13: testkit.v1.SendVerificationCodeRequest
+	(*SendVerificationCodeResponse)(nil), // 14: testkit.v1.SendVerificationCodeResponse
+	(*RefreshSessionRequest)(nil),        // 15: testkit.v1.RefreshSessionRequest
+	(*User)(nil),                         // 16: testkit.v1.User
+	(*Identity)(nil),                     // 17: testkit.v1.Identity
+	(*Session)(nil),                      // 18: testkit.v1.Session
+	(*Group)(nil),                        // 19: testkit.v1.Group
+	(*Role)(nil),                         // 20: testkit.v1.Role
+	(*Permission)(nil),                   // 21: testkit.v1.Permission
+	(*PermissionGroup)(nil),              // 22: testkit.v1.PermissionGroup
+	(*GroupMember)(nil),                  // 23: testkit.v1.GroupMember
+	(*LoginLog)(nil),                     // 24: testkit.v1.LoginLog
+	(*UserRole)(nil),                     // 25: testkit.v1.UserRole
+	(*TokenResponse)(nil),                // 26: testkit.v1.TokenResponse
+	(*GetProfileRequest)(nil),            // 27: testkit.v1.GetProfileRequest
+	(*UpdateProfileRequest)(nil),         // 28: testkit.v1.UpdateProfileRequest
+	(*ChangePasswordRequest)(nil),        // 29: testkit.v1.ChangePasswordRequest
+	(*ResetPasswordRequest)(nil),         // 30: testkit.v1.ResetPasswordRequest
+	(*ListIdentitiesRequest)(nil),        // 31: testkit.v1.ListIdentitiesRequest
+	(*ListIdentitiesResponse)(nil),       // 32: testkit.v1.ListIdentitiesResponse
+	(*BindIdentityRequest)(nil),          // 33: testkit.v1.BindIdentityRequest
+	(*BindOAuthIdentityRequest)(nil),     // 34: testkit.v1.BindOAuthIdentityRequest
+	(*BindOAuthIdentityResponse)(nil),    // 35: testkit.v1.BindOAuthIdentityResponse
+	(*UnbindIdentityRequest)(nil),        // 36: testkit.v1.UnbindIdentityRequest
+	(*ListSessionsRequest)(nil),          // 37: testkit.v1.ListSessionsRequest
+	(*ListSessionsResponse)(nil),         // 38: testkit.v1.ListSessionsResponse
+	(*RevokeSessionRequest)(nil),         // 39: testkit.v1.RevokeSessionRequest
+	(*RevokeAllSessionsRequest)(nil),     // 40: testkit.v1.RevokeAllSessionsRequest
+	(*GetSessionRequest)(nil),            // 41: testkit.v1.GetSessionRequest
+	(*GetSessionResponse)(nil),           // 42: testkit.v1.GetSessionResponse
+	(*IssueSessionCodeRequest)(nil),      // 43: testkit.v1.IssueSessionCodeRequest
+	(*IssueSessionCodeResponse)(nil),     // 44: testkit.v1.IssueSessionCodeResponse
+	(*ExchangeSessionCodeRequest)(nil),   // 45: testkit.v1.ExchangeSessionCodeRequest
+	(*ExchangeSessionCodeResponse)(nil),  // 46: testkit.v1.ExchangeSessionCodeResponse
+	(*GetOAuthURLRequest)(nil),           // 47: testkit.v1.GetOAuthURLRequest
+	(*GetOAuthURLResponse)(nil),          // 48: testkit.v1.GetOAuthURLResponse
+	(*SocialLoginRequest)(nil),           // 49: testkit.v1.SocialLoginRequest
+	(*MiniProgramLoginRequest)(nil),      // 50: testkit.v1.MiniProgramLoginRequest
+	(*MiniProgramPhoneLoginRequest)(nil), // 51: testkit.v1.MiniProgramPhoneLoginRequest
+	(*SocialLoginResponse)(nil),          // 52: testkit.v1.SocialLoginResponse
+	(*CreateUserRequest)(nil),            // 53: testkit.v1.CreateUserRequest
+	(*CreateUserResponse)(nil),           // 54: testkit.v1.CreateUserResponse
+	(*GetUserRequest)(nil),               // 55: testkit.v1.GetUserRequest
+	(*DisableUserRequest)(nil),           // 56: testkit.v1.DisableUserRequest
+	(*ListUsersRequest)(nil),             // 57: testkit.v1.ListUsersRequest
+	(*ListUsersResponse)(nil),            // 58: testkit.v1.ListUsersResponse
+	(*ListUsersPagedRequest)(nil),        // 59: testkit.v1.ListUsersPagedRequest
+	(*ListUsersPagedResponse)(nil),       // 60: testkit.v1.ListUsersPagedResponse
+	(*GetLoginLogsRequest)(nil),          // 61: testkit.v1.GetLoginLogsRequest
+	(*GetLoginLogsResponse)(nil),         // 62: testkit.v1.GetLoginLogsResponse
+	(*CreateGroupRequest)(nil),           // 63: testkit.v1.CreateGroupRequest
+	(*GetGroupRequest)(nil),              // 64: testkit.v1.GetGroupRequest
+	(*UpdateGroupRequest)(nil),           // 65: testkit.v1.UpdateGroupRequest
+	(*ListGroupsRequest)(nil),            // 66: testkit.v1.ListGroupsRequest
+	(*ListGroupsResponse)(nil),           // 67: testkit.v1.ListGroupsResponse
+	(*DeleteGroupRequest)(nil),           // 68: testkit.v1.DeleteGroupRequest
+	(*AddGroupMemberRequest)(nil),        // 69: testkit.v1.AddGroupMemberRequest
+	(*RemoveGroupMemberRequest)(nil),     // 70: testkit.v1.RemoveGroupMemberRequest
+	(*ListGroupMembersRequest)(nil),      // 71: testkit.v1.ListGroupMembersRequest
+	(*ListGroupMembersResponse)(nil),     // 72: testkit.v1.ListGroupMembersResponse
+	(*AddGroupRoleRequest)(nil),          // 73: testkit.v1.AddGroupRoleRequest
+	(*RemoveGroupRoleRequest)(nil),       // 74: testkit.v1.RemoveGroupRoleRequest
+	(*ListGroupRolesRequest)(nil),        // 75: testkit.v1.ListGroupRolesRequest
+	(*ListGroupRolesResponse)(nil),       // 76: testkit.v1.ListGroupRolesResponse
+	(*CreateRoleRequest)(nil),            // 77: testkit.v1.CreateRoleRequest
+	(*GetRoleRequest)(nil),               // 78: testkit.v1.GetRoleRequest
+	(*UpdateRoleRequest)(nil),            // 79: testkit.v1.UpdateRoleRequest
+	(*DeleteRoleRequest)(nil),            // 80: testkit.v1.DeleteRoleRequest
+	(*ListRolesRequest)(nil),             // 81: testkit.v1.ListRolesRequest
+	(*ListRolesResponse)(nil),            // 82: testkit.v1.ListRolesResponse
+	(*AssignRoleRequest)(nil),            // 83: testkit.v1.AssignRoleRequest
+	(*RevokeRoleRequest)(nil),            // 84: testkit.v1.RevokeRoleRequest
+	(*ListUserRolesRequest)(nil),         // 85: testkit.v1.ListUserRolesRequest
+	(*ListUserRolesResponse)(nil),        // 86: testkit.v1.ListUserRolesResponse
+	(*ListPermissionsRequest)(nil),       // 87: testkit.v1.ListPermissionsRequest
+	(*ListPermissionsResponse)(nil),      // 88: testkit.v1.ListPermissionsResponse
+	(*CreatePermissionRequest)(nil),      // 89: testkit.v1.CreatePermissionRequest
+	(*GetPermissionRequest)(nil),         // 90: testkit.v1.GetPermissionRequest
+	(*UpdatePermissionRequest)(nil),      // 91: testkit.v1.UpdatePermissionRequest
+	(*DeletePermissionRequest)(nil),      // 92: testkit.v1.DeletePermissionRequest
+	(*CreatePermissionGroupRequest)(nil), // 93: testkit.v1.CreatePermissionGroupRequest
+	(*GetPermissionGroupRequest)(nil),    // 94: testkit.v1.GetPermissionGroupRequest
+	(*UpdatePermissionGroupRequest)(nil), // 95: testkit.v1.UpdatePermissionGroupRequest
+	(*DeletePermissionGroupRequest)(nil), // 96: testkit.v1.DeletePermissionGroupRequest
+	(*ListPermissionGroupsRequest)(nil),  // 97: testkit.v1.ListPermissionGroupsRequest
+	(*ListPermissionGroupsResponse)(nil), // 98: testkit.v1.ListPermissionGroupsResponse
+	(*timestamppb.Timestamp)(nil),        // 99: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),                // 100: google.protobuf.Empty
 }
 var file_testkit_v1_testkit_proto_depIdxs = []int32{
-	0,  // 0: testkit.v1.LoginRequest.method:type_name -> testkit.v1.LoginMethod
-	1,  // 1: testkit.v1.RegisterRequest.provider:type_name -> testkit.v1.IdentityProvider
-	2,  // 2: testkit.v1.SendVerificationCodeRequest.channel:type_name -> testkit.v1.VerificationChannel
-	3,  // 3: testkit.v1.SendVerificationCodeRequest.purpose:type_name -> testkit.v1.VerificationPurpose
-	4,  // 4: testkit.v1.User.user_type:type_name -> testkit.v1.UserType
-	11, // 5: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
-	13, // 6: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
-	6,  // 7: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
-	7,  // 8: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
-	8,  // 9: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
-	13, // 10: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
-	10, // 11: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
-	5,  // 12: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
-	12, // 13: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
-	12, // 14: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
-	9,  // 15: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
-	13, // 16: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
-	12, // 17: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
-	12, // [12:18] is the sub-list for method output_type
-	6,  // [6:12] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	0,   // 0: testkit.v1.LoginRequest.method:type_name -> testkit.v1.LoginMethod
+	1,   // 1: testkit.v1.RegisterRequest.provider:type_name -> testkit.v1.IdentityProvider
+	2,   // 2: testkit.v1.SendVerificationCodeRequest.channel:type_name -> testkit.v1.VerificationChannel
+	3,   // 3: testkit.v1.SendVerificationCodeRequest.purpose:type_name -> testkit.v1.VerificationPurpose
+	6,   // 4: testkit.v1.User.gender:type_name -> testkit.v1.Gender
+	5,   // 5: testkit.v1.User.status:type_name -> testkit.v1.UserStatus
+	1,   // 6: testkit.v1.User.register_source:type_name -> testkit.v1.IdentityProvider
+	4,   // 7: testkit.v1.User.user_type:type_name -> testkit.v1.UserType
+	99,  // 8: testkit.v1.User.last_login_at:type_name -> google.protobuf.Timestamp
+	99,  // 9: testkit.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	99,  // 10: testkit.v1.User.updated_at:type_name -> google.protobuf.Timestamp
+	1,   // 11: testkit.v1.Identity.provider:type_name -> testkit.v1.IdentityProvider
+	99,  // 12: testkit.v1.Identity.created_at:type_name -> google.protobuf.Timestamp
+	7,   // 13: testkit.v1.Session.device_type:type_name -> testkit.v1.DeviceType
+	99,  // 14: testkit.v1.Session.created_at:type_name -> google.protobuf.Timestamp
+	99,  // 15: testkit.v1.Session.last_active_at:type_name -> google.protobuf.Timestamp
+	99,  // 16: testkit.v1.Group.created_at:type_name -> google.protobuf.Timestamp
+	99,  // 17: testkit.v1.Group.updated_at:type_name -> google.protobuf.Timestamp
+	21,  // 18: testkit.v1.Role.permissions:type_name -> testkit.v1.Permission
+	22,  // 19: testkit.v1.Role.perm_groups:type_name -> testkit.v1.PermissionGroup
+	99,  // 20: testkit.v1.Role.created_at:type_name -> google.protobuf.Timestamp
+	99,  // 21: testkit.v1.Role.updated_at:type_name -> google.protobuf.Timestamp
+	21,  // 22: testkit.v1.PermissionGroup.permissions:type_name -> testkit.v1.Permission
+	99,  // 23: testkit.v1.GroupMember.created_at:type_name -> google.protobuf.Timestamp
+	1,   // 24: testkit.v1.LoginLog.provider:type_name -> testkit.v1.IdentityProvider
+	8,   // 25: testkit.v1.LoginLog.action:type_name -> testkit.v1.LoginAction
+	7,   // 26: testkit.v1.LoginLog.device_type:type_name -> testkit.v1.DeviceType
+	99,  // 27: testkit.v1.LoginLog.created_at:type_name -> google.protobuf.Timestamp
+	99,  // 28: testkit.v1.UserRole.created_at:type_name -> google.protobuf.Timestamp
+	16,  // 29: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
+	6,   // 30: testkit.v1.UpdateProfileRequest.gender:type_name -> testkit.v1.Gender
+	17,  // 31: testkit.v1.ListIdentitiesResponse.identities:type_name -> testkit.v1.Identity
+	1,   // 32: testkit.v1.BindIdentityRequest.provider:type_name -> testkit.v1.IdentityProvider
+	1,   // 33: testkit.v1.BindOAuthIdentityRequest.provider:type_name -> testkit.v1.IdentityProvider
+	17,  // 34: testkit.v1.BindOAuthIdentityResponse.identity:type_name -> testkit.v1.Identity
+	18,  // 35: testkit.v1.ListSessionsResponse.sessions:type_name -> testkit.v1.Session
+	99,  // 36: testkit.v1.GetSessionResponse.expires_at:type_name -> google.protobuf.Timestamp
+	99,  // 37: testkit.v1.GetSessionResponse.created_at:type_name -> google.protobuf.Timestamp
+	1,   // 38: testkit.v1.GetOAuthURLRequest.provider:type_name -> testkit.v1.IdentityProvider
+	1,   // 39: testkit.v1.SocialLoginRequest.provider:type_name -> testkit.v1.IdentityProvider
+	16,  // 40: testkit.v1.SocialLoginResponse.user:type_name -> testkit.v1.User
+	4,   // 41: testkit.v1.CreateUserRequest.user_type:type_name -> testkit.v1.UserType
+	6,   // 42: testkit.v1.CreateUserRequest.gender:type_name -> testkit.v1.Gender
+	16,  // 43: testkit.v1.CreateUserResponse.user:type_name -> testkit.v1.User
+	5,   // 44: testkit.v1.ListUsersRequest.status:type_name -> testkit.v1.UserStatus
+	6,   // 45: testkit.v1.ListUsersRequest.gender:type_name -> testkit.v1.Gender
+	1,   // 46: testkit.v1.ListUsersRequest.register_source:type_name -> testkit.v1.IdentityProvider
+	7,   // 47: testkit.v1.ListUsersRequest.register_device:type_name -> testkit.v1.DeviceType
+	99,  // 48: testkit.v1.ListUsersRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	99,  // 49: testkit.v1.ListUsersRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	99,  // 50: testkit.v1.ListUsersRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	99,  // 51: testkit.v1.ListUsersRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	4,   // 52: testkit.v1.ListUsersRequest.user_type:type_name -> testkit.v1.UserType
+	9,   // 53: testkit.v1.ListUsersRequest.order_by:type_name -> testkit.v1.UserSortField
+	16,  // 54: testkit.v1.ListUsersResponse.users:type_name -> testkit.v1.User
+	5,   // 55: testkit.v1.ListUsersPagedRequest.status:type_name -> testkit.v1.UserStatus
+	6,   // 56: testkit.v1.ListUsersPagedRequest.gender:type_name -> testkit.v1.Gender
+	1,   // 57: testkit.v1.ListUsersPagedRequest.register_source:type_name -> testkit.v1.IdentityProvider
+	7,   // 58: testkit.v1.ListUsersPagedRequest.register_device:type_name -> testkit.v1.DeviceType
+	4,   // 59: testkit.v1.ListUsersPagedRequest.user_type:type_name -> testkit.v1.UserType
+	99,  // 60: testkit.v1.ListUsersPagedRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	99,  // 61: testkit.v1.ListUsersPagedRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	99,  // 62: testkit.v1.ListUsersPagedRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	99,  // 63: testkit.v1.ListUsersPagedRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	9,   // 64: testkit.v1.ListUsersPagedRequest.order_by:type_name -> testkit.v1.UserSortField
+	16,  // 65: testkit.v1.ListUsersPagedResponse.users:type_name -> testkit.v1.User
+	1,   // 66: testkit.v1.GetLoginLogsRequest.provider:type_name -> testkit.v1.IdentityProvider
+	24,  // 67: testkit.v1.GetLoginLogsResponse.logs:type_name -> testkit.v1.LoginLog
+	19,  // 68: testkit.v1.ListGroupsResponse.groups:type_name -> testkit.v1.Group
+	23,  // 69: testkit.v1.ListGroupMembersResponse.members:type_name -> testkit.v1.GroupMember
+	20,  // 70: testkit.v1.ListGroupRolesResponse.roles:type_name -> testkit.v1.Role
+	20,  // 71: testkit.v1.ListRolesResponse.roles:type_name -> testkit.v1.Role
+	25,  // 72: testkit.v1.ListUserRolesResponse.roles:type_name -> testkit.v1.UserRole
+	21,  // 73: testkit.v1.ListPermissionsResponse.permissions:type_name -> testkit.v1.Permission
+	22,  // 74: testkit.v1.ListPermissionGroupsResponse.groups:type_name -> testkit.v1.PermissionGroup
+	100, // 75: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
+	11,  // 76: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
+	12,  // 77: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
+	13,  // 78: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
+	100, // 79: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
+	15,  // 80: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
+	27,  // 81: testkit.v1.TestkitService.GetProfile:input_type -> testkit.v1.GetProfileRequest
+	28,  // 82: testkit.v1.TestkitService.UpdateProfile:input_type -> testkit.v1.UpdateProfileRequest
+	29,  // 83: testkit.v1.TestkitService.ChangePassword:input_type -> testkit.v1.ChangePasswordRequest
+	30,  // 84: testkit.v1.TestkitService.ResetPassword:input_type -> testkit.v1.ResetPasswordRequest
+	31,  // 85: testkit.v1.TestkitService.ListIdentities:input_type -> testkit.v1.ListIdentitiesRequest
+	33,  // 86: testkit.v1.TestkitService.BindIdentity:input_type -> testkit.v1.BindIdentityRequest
+	34,  // 87: testkit.v1.TestkitService.BindOAuthIdentity:input_type -> testkit.v1.BindOAuthIdentityRequest
+	36,  // 88: testkit.v1.TestkitService.UnbindIdentity:input_type -> testkit.v1.UnbindIdentityRequest
+	37,  // 89: testkit.v1.TestkitService.ListSessions:input_type -> testkit.v1.ListSessionsRequest
+	39,  // 90: testkit.v1.TestkitService.RevokeSession:input_type -> testkit.v1.RevokeSessionRequest
+	40,  // 91: testkit.v1.TestkitService.RevokeAllSessions:input_type -> testkit.v1.RevokeAllSessionsRequest
+	41,  // 92: testkit.v1.TestkitService.GetSession:input_type -> testkit.v1.GetSessionRequest
+	43,  // 93: testkit.v1.TestkitService.IssueSessionCode:input_type -> testkit.v1.IssueSessionCodeRequest
+	45,  // 94: testkit.v1.TestkitService.ExchangeSessionCode:input_type -> testkit.v1.ExchangeSessionCodeRequest
+	47,  // 95: testkit.v1.TestkitService.GetOAuthURL:input_type -> testkit.v1.GetOAuthURLRequest
+	49,  // 96: testkit.v1.TestkitService.SocialLogin:input_type -> testkit.v1.SocialLoginRequest
+	50,  // 97: testkit.v1.TestkitService.MiniProgramLogin:input_type -> testkit.v1.MiniProgramLoginRequest
+	51,  // 98: testkit.v1.TestkitService.MiniProgramPhoneLogin:input_type -> testkit.v1.MiniProgramPhoneLoginRequest
+	53,  // 99: testkit.v1.TestkitService.CreateUser:input_type -> testkit.v1.CreateUserRequest
+	55,  // 100: testkit.v1.TestkitService.GetUser:input_type -> testkit.v1.GetUserRequest
+	57,  // 101: testkit.v1.TestkitService.ListUsers:input_type -> testkit.v1.ListUsersRequest
+	59,  // 102: testkit.v1.TestkitService.ListUsersPaged:input_type -> testkit.v1.ListUsersPagedRequest
+	56,  // 103: testkit.v1.TestkitService.DisableUser:input_type -> testkit.v1.DisableUserRequest
+	61,  // 104: testkit.v1.TestkitService.GetLoginLogs:input_type -> testkit.v1.GetLoginLogsRequest
+	63,  // 105: testkit.v1.TestkitService.CreateGroup:input_type -> testkit.v1.CreateGroupRequest
+	64,  // 106: testkit.v1.TestkitService.GetGroup:input_type -> testkit.v1.GetGroupRequest
+	65,  // 107: testkit.v1.TestkitService.UpdateGroup:input_type -> testkit.v1.UpdateGroupRequest
+	66,  // 108: testkit.v1.TestkitService.ListGroups:input_type -> testkit.v1.ListGroupsRequest
+	68,  // 109: testkit.v1.TestkitService.DeleteGroup:input_type -> testkit.v1.DeleteGroupRequest
+	69,  // 110: testkit.v1.TestkitService.AddGroupMember:input_type -> testkit.v1.AddGroupMemberRequest
+	70,  // 111: testkit.v1.TestkitService.RemoveGroupMember:input_type -> testkit.v1.RemoveGroupMemberRequest
+	71,  // 112: testkit.v1.TestkitService.ListGroupMembers:input_type -> testkit.v1.ListGroupMembersRequest
+	73,  // 113: testkit.v1.TestkitService.AddGroupRole:input_type -> testkit.v1.AddGroupRoleRequest
+	74,  // 114: testkit.v1.TestkitService.RemoveGroupRole:input_type -> testkit.v1.RemoveGroupRoleRequest
+	75,  // 115: testkit.v1.TestkitService.ListGroupRoles:input_type -> testkit.v1.ListGroupRolesRequest
+	77,  // 116: testkit.v1.TestkitService.CreateRole:input_type -> testkit.v1.CreateRoleRequest
+	78,  // 117: testkit.v1.TestkitService.GetRole:input_type -> testkit.v1.GetRoleRequest
+	79,  // 118: testkit.v1.TestkitService.UpdateRole:input_type -> testkit.v1.UpdateRoleRequest
+	80,  // 119: testkit.v1.TestkitService.DeleteRole:input_type -> testkit.v1.DeleteRoleRequest
+	81,  // 120: testkit.v1.TestkitService.ListRoles:input_type -> testkit.v1.ListRolesRequest
+	83,  // 121: testkit.v1.TestkitService.AssignRole:input_type -> testkit.v1.AssignRoleRequest
+	84,  // 122: testkit.v1.TestkitService.RevokeRole:input_type -> testkit.v1.RevokeRoleRequest
+	85,  // 123: testkit.v1.TestkitService.ListUserRoles:input_type -> testkit.v1.ListUserRolesRequest
+	87,  // 124: testkit.v1.TestkitService.ListPermissions:input_type -> testkit.v1.ListPermissionsRequest
+	89,  // 125: testkit.v1.TestkitService.CreatePermission:input_type -> testkit.v1.CreatePermissionRequest
+	90,  // 126: testkit.v1.TestkitService.GetPermission:input_type -> testkit.v1.GetPermissionRequest
+	91,  // 127: testkit.v1.TestkitService.UpdatePermission:input_type -> testkit.v1.UpdatePermissionRequest
+	92,  // 128: testkit.v1.TestkitService.DeletePermission:input_type -> testkit.v1.DeletePermissionRequest
+	93,  // 129: testkit.v1.TestkitService.CreatePermissionGroup:input_type -> testkit.v1.CreatePermissionGroupRequest
+	94,  // 130: testkit.v1.TestkitService.GetPermissionGroup:input_type -> testkit.v1.GetPermissionGroupRequest
+	95,  // 131: testkit.v1.TestkitService.UpdatePermissionGroup:input_type -> testkit.v1.UpdatePermissionGroupRequest
+	96,  // 132: testkit.v1.TestkitService.DeletePermissionGroup:input_type -> testkit.v1.DeletePermissionGroupRequest
+	97,  // 133: testkit.v1.TestkitService.ListPermissionGroups:input_type -> testkit.v1.ListPermissionGroupsRequest
+	10,  // 134: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
+	26,  // 135: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
+	26,  // 136: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
+	14,  // 137: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
+	100, // 138: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
+	26,  // 139: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
+	16,  // 140: testkit.v1.TestkitService.GetProfile:output_type -> testkit.v1.User
+	16,  // 141: testkit.v1.TestkitService.UpdateProfile:output_type -> testkit.v1.User
+	100, // 142: testkit.v1.TestkitService.ChangePassword:output_type -> google.protobuf.Empty
+	100, // 143: testkit.v1.TestkitService.ResetPassword:output_type -> google.protobuf.Empty
+	32,  // 144: testkit.v1.TestkitService.ListIdentities:output_type -> testkit.v1.ListIdentitiesResponse
+	17,  // 145: testkit.v1.TestkitService.BindIdentity:output_type -> testkit.v1.Identity
+	35,  // 146: testkit.v1.TestkitService.BindOAuthIdentity:output_type -> testkit.v1.BindOAuthIdentityResponse
+	100, // 147: testkit.v1.TestkitService.UnbindIdentity:output_type -> google.protobuf.Empty
+	38,  // 148: testkit.v1.TestkitService.ListSessions:output_type -> testkit.v1.ListSessionsResponse
+	100, // 149: testkit.v1.TestkitService.RevokeSession:output_type -> google.protobuf.Empty
+	100, // 150: testkit.v1.TestkitService.RevokeAllSessions:output_type -> google.protobuf.Empty
+	42,  // 151: testkit.v1.TestkitService.GetSession:output_type -> testkit.v1.GetSessionResponse
+	44,  // 152: testkit.v1.TestkitService.IssueSessionCode:output_type -> testkit.v1.IssueSessionCodeResponse
+	46,  // 153: testkit.v1.TestkitService.ExchangeSessionCode:output_type -> testkit.v1.ExchangeSessionCodeResponse
+	48,  // 154: testkit.v1.TestkitService.GetOAuthURL:output_type -> testkit.v1.GetOAuthURLResponse
+	52,  // 155: testkit.v1.TestkitService.SocialLogin:output_type -> testkit.v1.SocialLoginResponse
+	52,  // 156: testkit.v1.TestkitService.MiniProgramLogin:output_type -> testkit.v1.SocialLoginResponse
+	52,  // 157: testkit.v1.TestkitService.MiniProgramPhoneLogin:output_type -> testkit.v1.SocialLoginResponse
+	54,  // 158: testkit.v1.TestkitService.CreateUser:output_type -> testkit.v1.CreateUserResponse
+	16,  // 159: testkit.v1.TestkitService.GetUser:output_type -> testkit.v1.User
+	58,  // 160: testkit.v1.TestkitService.ListUsers:output_type -> testkit.v1.ListUsersResponse
+	60,  // 161: testkit.v1.TestkitService.ListUsersPaged:output_type -> testkit.v1.ListUsersPagedResponse
+	16,  // 162: testkit.v1.TestkitService.DisableUser:output_type -> testkit.v1.User
+	62,  // 163: testkit.v1.TestkitService.GetLoginLogs:output_type -> testkit.v1.GetLoginLogsResponse
+	19,  // 164: testkit.v1.TestkitService.CreateGroup:output_type -> testkit.v1.Group
+	19,  // 165: testkit.v1.TestkitService.GetGroup:output_type -> testkit.v1.Group
+	19,  // 166: testkit.v1.TestkitService.UpdateGroup:output_type -> testkit.v1.Group
+	67,  // 167: testkit.v1.TestkitService.ListGroups:output_type -> testkit.v1.ListGroupsResponse
+	100, // 168: testkit.v1.TestkitService.DeleteGroup:output_type -> google.protobuf.Empty
+	100, // 169: testkit.v1.TestkitService.AddGroupMember:output_type -> google.protobuf.Empty
+	100, // 170: testkit.v1.TestkitService.RemoveGroupMember:output_type -> google.protobuf.Empty
+	72,  // 171: testkit.v1.TestkitService.ListGroupMembers:output_type -> testkit.v1.ListGroupMembersResponse
+	100, // 172: testkit.v1.TestkitService.AddGroupRole:output_type -> google.protobuf.Empty
+	100, // 173: testkit.v1.TestkitService.RemoveGroupRole:output_type -> google.protobuf.Empty
+	76,  // 174: testkit.v1.TestkitService.ListGroupRoles:output_type -> testkit.v1.ListGroupRolesResponse
+	20,  // 175: testkit.v1.TestkitService.CreateRole:output_type -> testkit.v1.Role
+	20,  // 176: testkit.v1.TestkitService.GetRole:output_type -> testkit.v1.Role
+	20,  // 177: testkit.v1.TestkitService.UpdateRole:output_type -> testkit.v1.Role
+	100, // 178: testkit.v1.TestkitService.DeleteRole:output_type -> google.protobuf.Empty
+	82,  // 179: testkit.v1.TestkitService.ListRoles:output_type -> testkit.v1.ListRolesResponse
+	100, // 180: testkit.v1.TestkitService.AssignRole:output_type -> google.protobuf.Empty
+	100, // 181: testkit.v1.TestkitService.RevokeRole:output_type -> google.protobuf.Empty
+	86,  // 182: testkit.v1.TestkitService.ListUserRoles:output_type -> testkit.v1.ListUserRolesResponse
+	88,  // 183: testkit.v1.TestkitService.ListPermissions:output_type -> testkit.v1.ListPermissionsResponse
+	21,  // 184: testkit.v1.TestkitService.CreatePermission:output_type -> testkit.v1.Permission
+	21,  // 185: testkit.v1.TestkitService.GetPermission:output_type -> testkit.v1.Permission
+	21,  // 186: testkit.v1.TestkitService.UpdatePermission:output_type -> testkit.v1.Permission
+	100, // 187: testkit.v1.TestkitService.DeletePermission:output_type -> google.protobuf.Empty
+	22,  // 188: testkit.v1.TestkitService.CreatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	22,  // 189: testkit.v1.TestkitService.GetPermissionGroup:output_type -> testkit.v1.PermissionGroup
+	22,  // 190: testkit.v1.TestkitService.UpdatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	100, // 191: testkit.v1.TestkitService.DeletePermissionGroup:output_type -> google.protobuf.Empty
+	98,  // 192: testkit.v1.TestkitService.ListPermissionGroups:output_type -> testkit.v1.ListPermissionGroupsResponse
+	134, // [134:193] is the sub-list for method output_type
+	75,  // [75:134] is the sub-list for method input_type
+	75,  // [75:75] is the sub-list for extension type_name
+	75,  // [75:75] is the sub-list for extension extendee
+	0,   // [0:75] is the sub-list for field type_name
 }
 
 func init() { file_testkit_v1_testkit_proto_init() }
@@ -1160,8 +7607,8 @@ func file_testkit_v1_testkit_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_testkit_v1_testkit_proto_rawDesc), len(file_testkit_v1_testkit_proto_rawDesc)),
-			NumEnums:      5,
-			NumMessages:   8,
+			NumEnums:      10,
+			NumMessages:   89,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

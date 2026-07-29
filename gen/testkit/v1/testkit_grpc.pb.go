@@ -20,12 +20,65 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	TestkitService_Ping_FullMethodName                 = "/testkit.v1.TestkitService/Ping"
-	TestkitService_Login_FullMethodName                = "/testkit.v1.TestkitService/Login"
-	TestkitService_Register_FullMethodName             = "/testkit.v1.TestkitService/Register"
-	TestkitService_SendVerificationCode_FullMethodName = "/testkit.v1.TestkitService/SendVerificationCode"
-	TestkitService_Logout_FullMethodName               = "/testkit.v1.TestkitService/Logout"
-	TestkitService_RefreshSession_FullMethodName       = "/testkit.v1.TestkitService/RefreshSession"
+	TestkitService_Ping_FullMethodName                  = "/testkit.v1.TestkitService/Ping"
+	TestkitService_Login_FullMethodName                 = "/testkit.v1.TestkitService/Login"
+	TestkitService_Register_FullMethodName              = "/testkit.v1.TestkitService/Register"
+	TestkitService_SendVerificationCode_FullMethodName  = "/testkit.v1.TestkitService/SendVerificationCode"
+	TestkitService_Logout_FullMethodName                = "/testkit.v1.TestkitService/Logout"
+	TestkitService_RefreshSession_FullMethodName        = "/testkit.v1.TestkitService/RefreshSession"
+	TestkitService_GetProfile_FullMethodName            = "/testkit.v1.TestkitService/GetProfile"
+	TestkitService_UpdateProfile_FullMethodName         = "/testkit.v1.TestkitService/UpdateProfile"
+	TestkitService_ChangePassword_FullMethodName        = "/testkit.v1.TestkitService/ChangePassword"
+	TestkitService_ResetPassword_FullMethodName         = "/testkit.v1.TestkitService/ResetPassword"
+	TestkitService_ListIdentities_FullMethodName        = "/testkit.v1.TestkitService/ListIdentities"
+	TestkitService_BindIdentity_FullMethodName          = "/testkit.v1.TestkitService/BindIdentity"
+	TestkitService_BindOAuthIdentity_FullMethodName     = "/testkit.v1.TestkitService/BindOAuthIdentity"
+	TestkitService_UnbindIdentity_FullMethodName        = "/testkit.v1.TestkitService/UnbindIdentity"
+	TestkitService_ListSessions_FullMethodName          = "/testkit.v1.TestkitService/ListSessions"
+	TestkitService_RevokeSession_FullMethodName         = "/testkit.v1.TestkitService/RevokeSession"
+	TestkitService_RevokeAllSessions_FullMethodName     = "/testkit.v1.TestkitService/RevokeAllSessions"
+	TestkitService_GetSession_FullMethodName            = "/testkit.v1.TestkitService/GetSession"
+	TestkitService_IssueSessionCode_FullMethodName      = "/testkit.v1.TestkitService/IssueSessionCode"
+	TestkitService_ExchangeSessionCode_FullMethodName   = "/testkit.v1.TestkitService/ExchangeSessionCode"
+	TestkitService_GetOAuthURL_FullMethodName           = "/testkit.v1.TestkitService/GetOAuthURL"
+	TestkitService_SocialLogin_FullMethodName           = "/testkit.v1.TestkitService/SocialLogin"
+	TestkitService_MiniProgramLogin_FullMethodName      = "/testkit.v1.TestkitService/MiniProgramLogin"
+	TestkitService_MiniProgramPhoneLogin_FullMethodName = "/testkit.v1.TestkitService/MiniProgramPhoneLogin"
+	TestkitService_CreateUser_FullMethodName            = "/testkit.v1.TestkitService/CreateUser"
+	TestkitService_GetUser_FullMethodName               = "/testkit.v1.TestkitService/GetUser"
+	TestkitService_ListUsers_FullMethodName             = "/testkit.v1.TestkitService/ListUsers"
+	TestkitService_ListUsersPaged_FullMethodName        = "/testkit.v1.TestkitService/ListUsersPaged"
+	TestkitService_DisableUser_FullMethodName           = "/testkit.v1.TestkitService/DisableUser"
+	TestkitService_GetLoginLogs_FullMethodName          = "/testkit.v1.TestkitService/GetLoginLogs"
+	TestkitService_CreateGroup_FullMethodName           = "/testkit.v1.TestkitService/CreateGroup"
+	TestkitService_GetGroup_FullMethodName              = "/testkit.v1.TestkitService/GetGroup"
+	TestkitService_UpdateGroup_FullMethodName           = "/testkit.v1.TestkitService/UpdateGroup"
+	TestkitService_ListGroups_FullMethodName            = "/testkit.v1.TestkitService/ListGroups"
+	TestkitService_DeleteGroup_FullMethodName           = "/testkit.v1.TestkitService/DeleteGroup"
+	TestkitService_AddGroupMember_FullMethodName        = "/testkit.v1.TestkitService/AddGroupMember"
+	TestkitService_RemoveGroupMember_FullMethodName     = "/testkit.v1.TestkitService/RemoveGroupMember"
+	TestkitService_ListGroupMembers_FullMethodName      = "/testkit.v1.TestkitService/ListGroupMembers"
+	TestkitService_AddGroupRole_FullMethodName          = "/testkit.v1.TestkitService/AddGroupRole"
+	TestkitService_RemoveGroupRole_FullMethodName       = "/testkit.v1.TestkitService/RemoveGroupRole"
+	TestkitService_ListGroupRoles_FullMethodName        = "/testkit.v1.TestkitService/ListGroupRoles"
+	TestkitService_CreateRole_FullMethodName            = "/testkit.v1.TestkitService/CreateRole"
+	TestkitService_GetRole_FullMethodName               = "/testkit.v1.TestkitService/GetRole"
+	TestkitService_UpdateRole_FullMethodName            = "/testkit.v1.TestkitService/UpdateRole"
+	TestkitService_DeleteRole_FullMethodName            = "/testkit.v1.TestkitService/DeleteRole"
+	TestkitService_ListRoles_FullMethodName             = "/testkit.v1.TestkitService/ListRoles"
+	TestkitService_AssignRole_FullMethodName            = "/testkit.v1.TestkitService/AssignRole"
+	TestkitService_RevokeRole_FullMethodName            = "/testkit.v1.TestkitService/RevokeRole"
+	TestkitService_ListUserRoles_FullMethodName         = "/testkit.v1.TestkitService/ListUserRoles"
+	TestkitService_ListPermissions_FullMethodName       = "/testkit.v1.TestkitService/ListPermissions"
+	TestkitService_CreatePermission_FullMethodName      = "/testkit.v1.TestkitService/CreatePermission"
+	TestkitService_GetPermission_FullMethodName         = "/testkit.v1.TestkitService/GetPermission"
+	TestkitService_UpdatePermission_FullMethodName      = "/testkit.v1.TestkitService/UpdatePermission"
+	TestkitService_DeletePermission_FullMethodName      = "/testkit.v1.TestkitService/DeletePermission"
+	TestkitService_CreatePermissionGroup_FullMethodName = "/testkit.v1.TestkitService/CreatePermissionGroup"
+	TestkitService_GetPermissionGroup_FullMethodName    = "/testkit.v1.TestkitService/GetPermissionGroup"
+	TestkitService_UpdatePermissionGroup_FullMethodName = "/testkit.v1.TestkitService/UpdatePermissionGroup"
+	TestkitService_DeletePermissionGroup_FullMethodName = "/testkit.v1.TestkitService/DeletePermissionGroup"
+	TestkitService_ListPermissionGroups_FullMethodName  = "/testkit.v1.TestkitService/ListPermissionGroups"
 )
 
 // TestkitServiceClient is the client API for TestkitService service.
@@ -41,6 +94,67 @@ type TestkitServiceClient interface {
 	// interceptor from the JWT).
 	Logout(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	RefreshSession(ctx context.Context, in *RefreshSessionRequest, opts ...grpc.CallOption) (*TokenResponse, error)
+	// ---- Profile (P2) ----
+	GetProfile(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*User, error)
+	UpdateProfile(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*User, error)
+	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// ---- Identity (P2) ----
+	ListIdentities(ctx context.Context, in *ListIdentitiesRequest, opts ...grpc.CallOption) (*ListIdentitiesResponse, error)
+	BindIdentity(ctx context.Context, in *BindIdentityRequest, opts ...grpc.CallOption) (*Identity, error)
+	BindOAuthIdentity(ctx context.Context, in *BindOAuthIdentityRequest, opts ...grpc.CallOption) (*BindOAuthIdentityResponse, error)
+	UnbindIdentity(ctx context.Context, in *UnbindIdentityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// ---- Session (P2) ----
+	ListSessions(ctx context.Context, in *ListSessionsRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error)
+	RevokeSession(ctx context.Context, in *RevokeSessionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	RevokeAllSessions(ctx context.Context, in *RevokeAllSessionsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error)
+	IssueSessionCode(ctx context.Context, in *IssueSessionCodeRequest, opts ...grpc.CallOption) (*IssueSessionCodeResponse, error)
+	ExchangeSessionCode(ctx context.Context, in *ExchangeSessionCodeRequest, opts ...grpc.CallOption) (*ExchangeSessionCodeResponse, error)
+	// ---- Social (P2) ----
+	GetOAuthURL(ctx context.Context, in *GetOAuthURLRequest, opts ...grpc.CallOption) (*GetOAuthURLResponse, error)
+	SocialLogin(ctx context.Context, in *SocialLoginRequest, opts ...grpc.CallOption) (*SocialLoginResponse, error)
+	MiniProgramLogin(ctx context.Context, in *MiniProgramLoginRequest, opts ...grpc.CallOption) (*SocialLoginResponse, error)
+	MiniProgramPhoneLogin(ctx context.Context, in *MiniProgramPhoneLoginRequest, opts ...grpc.CallOption) (*SocialLoginResponse, error)
+	// ---- Admin-Users (P2) ----
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error)
+	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
+	ListUsersPaged(ctx context.Context, in *ListUsersPagedRequest, opts ...grpc.CallOption) (*ListUsersPagedResponse, error)
+	DisableUser(ctx context.Context, in *DisableUserRequest, opts ...grpc.CallOption) (*User, error)
+	GetLoginLogs(ctx context.Context, in *GetLoginLogsRequest, opts ...grpc.CallOption) (*GetLoginLogsResponse, error)
+	// ---- RBAC-Group (P2) ----
+	CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*Group, error)
+	GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*Group, error)
+	UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*Group, error)
+	ListGroups(ctx context.Context, in *ListGroupsRequest, opts ...grpc.CallOption) (*ListGroupsResponse, error)
+	DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	AddGroupMember(ctx context.Context, in *AddGroupMemberRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	RemoveGroupMember(ctx context.Context, in *RemoveGroupMemberRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListGroupMembers(ctx context.Context, in *ListGroupMembersRequest, opts ...grpc.CallOption) (*ListGroupMembersResponse, error)
+	AddGroupRole(ctx context.Context, in *AddGroupRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	RemoveGroupRole(ctx context.Context, in *RemoveGroupRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListGroupRoles(ctx context.Context, in *ListGroupRolesRequest, opts ...grpc.CallOption) (*ListGroupRolesResponse, error)
+	// ---- RBAC-Role (P2) ----
+	CreateRole(ctx context.Context, in *CreateRoleRequest, opts ...grpc.CallOption) (*Role, error)
+	GetRole(ctx context.Context, in *GetRoleRequest, opts ...grpc.CallOption) (*Role, error)
+	UpdateRole(ctx context.Context, in *UpdateRoleRequest, opts ...grpc.CallOption) (*Role, error)
+	DeleteRole(ctx context.Context, in *DeleteRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListRoles(ctx context.Context, in *ListRolesRequest, opts ...grpc.CallOption) (*ListRolesResponse, error)
+	AssignRole(ctx context.Context, in *AssignRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	RevokeRole(ctx context.Context, in *RevokeRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListUserRoles(ctx context.Context, in *ListUserRolesRequest, opts ...grpc.CallOption) (*ListUserRolesResponse, error)
+	// ---- RBAC-Permission (P2) ----
+	ListPermissions(ctx context.Context, in *ListPermissionsRequest, opts ...grpc.CallOption) (*ListPermissionsResponse, error)
+	CreatePermission(ctx context.Context, in *CreatePermissionRequest, opts ...grpc.CallOption) (*Permission, error)
+	GetPermission(ctx context.Context, in *GetPermissionRequest, opts ...grpc.CallOption) (*Permission, error)
+	UpdatePermission(ctx context.Context, in *UpdatePermissionRequest, opts ...grpc.CallOption) (*Permission, error)
+	DeletePermission(ctx context.Context, in *DeletePermissionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreatePermissionGroup(ctx context.Context, in *CreatePermissionGroupRequest, opts ...grpc.CallOption) (*PermissionGroup, error)
+	GetPermissionGroup(ctx context.Context, in *GetPermissionGroupRequest, opts ...grpc.CallOption) (*PermissionGroup, error)
+	UpdatePermissionGroup(ctx context.Context, in *UpdatePermissionGroupRequest, opts ...grpc.CallOption) (*PermissionGroup, error)
+	DeletePermissionGroup(ctx context.Context, in *DeletePermissionGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListPermissionGroups(ctx context.Context, in *ListPermissionGroupsRequest, opts ...grpc.CallOption) (*ListPermissionGroupsResponse, error)
 }
 
 type testkitServiceClient struct {
@@ -111,6 +225,536 @@ func (c *testkitServiceClient) RefreshSession(ctx context.Context, in *RefreshSe
 	return out, nil
 }
 
+func (c *testkitServiceClient) GetProfile(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*User, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(User)
+	err := c.cc.Invoke(ctx, TestkitService_GetProfile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UpdateProfile(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*User, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(User)
+	err := c.cc.Invoke(ctx, TestkitService_UpdateProfile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_ChangePassword_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_ResetPassword_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListIdentities(ctx context.Context, in *ListIdentitiesRequest, opts ...grpc.CallOption) (*ListIdentitiesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListIdentitiesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListIdentities_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) BindIdentity(ctx context.Context, in *BindIdentityRequest, opts ...grpc.CallOption) (*Identity, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Identity)
+	err := c.cc.Invoke(ctx, TestkitService_BindIdentity_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) BindOAuthIdentity(ctx context.Context, in *BindOAuthIdentityRequest, opts ...grpc.CallOption) (*BindOAuthIdentityResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BindOAuthIdentityResponse)
+	err := c.cc.Invoke(ctx, TestkitService_BindOAuthIdentity_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UnbindIdentity(ctx context.Context, in *UnbindIdentityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_UnbindIdentity_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListSessions(ctx context.Context, in *ListSessionsRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListSessionsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListSessions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RevokeSession(ctx context.Context, in *RevokeSessionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_RevokeSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RevokeAllSessions(ctx context.Context, in *RevokeAllSessionsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_RevokeAllSessions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSessionResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) IssueSessionCode(ctx context.Context, in *IssueSessionCodeRequest, opts ...grpc.CallOption) (*IssueSessionCodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(IssueSessionCodeResponse)
+	err := c.cc.Invoke(ctx, TestkitService_IssueSessionCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ExchangeSessionCode(ctx context.Context, in *ExchangeSessionCodeRequest, opts ...grpc.CallOption) (*ExchangeSessionCodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExchangeSessionCodeResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ExchangeSessionCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetOAuthURL(ctx context.Context, in *GetOAuthURLRequest, opts ...grpc.CallOption) (*GetOAuthURLResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetOAuthURLResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetOAuthURL_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) SocialLogin(ctx context.Context, in *SocialLoginRequest, opts ...grpc.CallOption) (*SocialLoginResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SocialLoginResponse)
+	err := c.cc.Invoke(ctx, TestkitService_SocialLogin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) MiniProgramLogin(ctx context.Context, in *MiniProgramLoginRequest, opts ...grpc.CallOption) (*SocialLoginResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SocialLoginResponse)
+	err := c.cc.Invoke(ctx, TestkitService_MiniProgramLogin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) MiniProgramPhoneLogin(ctx context.Context, in *MiniProgramPhoneLoginRequest, opts ...grpc.CallOption) (*SocialLoginResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SocialLoginResponse)
+	err := c.cc.Invoke(ctx, TestkitService_MiniProgramPhoneLogin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateUserResponse)
+	err := c.cc.Invoke(ctx, TestkitService_CreateUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(User)
+	err := c.cc.Invoke(ctx, TestkitService_GetUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListUsersResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListUsers_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListUsersPaged(ctx context.Context, in *ListUsersPagedRequest, opts ...grpc.CallOption) (*ListUsersPagedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListUsersPagedResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListUsersPaged_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) DisableUser(ctx context.Context, in *DisableUserRequest, opts ...grpc.CallOption) (*User, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(User)
+	err := c.cc.Invoke(ctx, TestkitService_DisableUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetLoginLogs(ctx context.Context, in *GetLoginLogsRequest, opts ...grpc.CallOption) (*GetLoginLogsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetLoginLogsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetLoginLogs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*Group, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Group)
+	err := c.cc.Invoke(ctx, TestkitService_CreateGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*Group, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Group)
+	err := c.cc.Invoke(ctx, TestkitService_GetGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*Group, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Group)
+	err := c.cc.Invoke(ctx, TestkitService_UpdateGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListGroups(ctx context.Context, in *ListGroupsRequest, opts ...grpc.CallOption) (*ListGroupsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListGroupsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListGroups_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_DeleteGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AddGroupMember(ctx context.Context, in *AddGroupMemberRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_AddGroupMember_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RemoveGroupMember(ctx context.Context, in *RemoveGroupMemberRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_RemoveGroupMember_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListGroupMembers(ctx context.Context, in *ListGroupMembersRequest, opts ...grpc.CallOption) (*ListGroupMembersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListGroupMembersResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListGroupMembers_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AddGroupRole(ctx context.Context, in *AddGroupRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_AddGroupRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RemoveGroupRole(ctx context.Context, in *RemoveGroupRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_RemoveGroupRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListGroupRoles(ctx context.Context, in *ListGroupRolesRequest, opts ...grpc.CallOption) (*ListGroupRolesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListGroupRolesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListGroupRoles_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) CreateRole(ctx context.Context, in *CreateRoleRequest, opts ...grpc.CallOption) (*Role, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Role)
+	err := c.cc.Invoke(ctx, TestkitService_CreateRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetRole(ctx context.Context, in *GetRoleRequest, opts ...grpc.CallOption) (*Role, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Role)
+	err := c.cc.Invoke(ctx, TestkitService_GetRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UpdateRole(ctx context.Context, in *UpdateRoleRequest, opts ...grpc.CallOption) (*Role, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Role)
+	err := c.cc.Invoke(ctx, TestkitService_UpdateRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) DeleteRole(ctx context.Context, in *DeleteRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_DeleteRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListRoles(ctx context.Context, in *ListRolesRequest, opts ...grpc.CallOption) (*ListRolesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListRolesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListRoles_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) AssignRole(ctx context.Context, in *AssignRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_AssignRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RevokeRole(ctx context.Context, in *RevokeRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_RevokeRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListUserRoles(ctx context.Context, in *ListUserRolesRequest, opts ...grpc.CallOption) (*ListUserRolesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListUserRolesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListUserRoles_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListPermissions(ctx context.Context, in *ListPermissionsRequest, opts ...grpc.CallOption) (*ListPermissionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPermissionsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListPermissions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) CreatePermission(ctx context.Context, in *CreatePermissionRequest, opts ...grpc.CallOption) (*Permission, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Permission)
+	err := c.cc.Invoke(ctx, TestkitService_CreatePermission_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetPermission(ctx context.Context, in *GetPermissionRequest, opts ...grpc.CallOption) (*Permission, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Permission)
+	err := c.cc.Invoke(ctx, TestkitService_GetPermission_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UpdatePermission(ctx context.Context, in *UpdatePermissionRequest, opts ...grpc.CallOption) (*Permission, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Permission)
+	err := c.cc.Invoke(ctx, TestkitService_UpdatePermission_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) DeletePermission(ctx context.Context, in *DeletePermissionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_DeletePermission_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) CreatePermissionGroup(ctx context.Context, in *CreatePermissionGroupRequest, opts ...grpc.CallOption) (*PermissionGroup, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PermissionGroup)
+	err := c.cc.Invoke(ctx, TestkitService_CreatePermissionGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetPermissionGroup(ctx context.Context, in *GetPermissionGroupRequest, opts ...grpc.CallOption) (*PermissionGroup, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PermissionGroup)
+	err := c.cc.Invoke(ctx, TestkitService_GetPermissionGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UpdatePermissionGroup(ctx context.Context, in *UpdatePermissionGroupRequest, opts ...grpc.CallOption) (*PermissionGroup, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PermissionGroup)
+	err := c.cc.Invoke(ctx, TestkitService_UpdatePermissionGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) DeletePermissionGroup(ctx context.Context, in *DeletePermissionGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_DeletePermissionGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListPermissionGroups(ctx context.Context, in *ListPermissionGroupsRequest, opts ...grpc.CallOption) (*ListPermissionGroupsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPermissionGroupsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListPermissionGroups_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TestkitServiceServer is the server API for TestkitService service.
 // All implementations must embed UnimplementedTestkitServiceServer
 // for forward compatibility.
@@ -124,6 +768,67 @@ type TestkitServiceServer interface {
 	// interceptor from the JWT).
 	Logout(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	RefreshSession(context.Context, *RefreshSessionRequest) (*TokenResponse, error)
+	// ---- Profile (P2) ----
+	GetProfile(context.Context, *GetProfileRequest) (*User, error)
+	UpdateProfile(context.Context, *UpdateProfileRequest) (*User, error)
+	ChangePassword(context.Context, *ChangePasswordRequest) (*emptypb.Empty, error)
+	ResetPassword(context.Context, *ResetPasswordRequest) (*emptypb.Empty, error)
+	// ---- Identity (P2) ----
+	ListIdentities(context.Context, *ListIdentitiesRequest) (*ListIdentitiesResponse, error)
+	BindIdentity(context.Context, *BindIdentityRequest) (*Identity, error)
+	BindOAuthIdentity(context.Context, *BindOAuthIdentityRequest) (*BindOAuthIdentityResponse, error)
+	UnbindIdentity(context.Context, *UnbindIdentityRequest) (*emptypb.Empty, error)
+	// ---- Session (P2) ----
+	ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error)
+	RevokeSession(context.Context, *RevokeSessionRequest) (*emptypb.Empty, error)
+	RevokeAllSessions(context.Context, *RevokeAllSessionsRequest) (*emptypb.Empty, error)
+	GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error)
+	IssueSessionCode(context.Context, *IssueSessionCodeRequest) (*IssueSessionCodeResponse, error)
+	ExchangeSessionCode(context.Context, *ExchangeSessionCodeRequest) (*ExchangeSessionCodeResponse, error)
+	// ---- Social (P2) ----
+	GetOAuthURL(context.Context, *GetOAuthURLRequest) (*GetOAuthURLResponse, error)
+	SocialLogin(context.Context, *SocialLoginRequest) (*SocialLoginResponse, error)
+	MiniProgramLogin(context.Context, *MiniProgramLoginRequest) (*SocialLoginResponse, error)
+	MiniProgramPhoneLogin(context.Context, *MiniProgramPhoneLoginRequest) (*SocialLoginResponse, error)
+	// ---- Admin-Users (P2) ----
+	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
+	GetUser(context.Context, *GetUserRequest) (*User, error)
+	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
+	ListUsersPaged(context.Context, *ListUsersPagedRequest) (*ListUsersPagedResponse, error)
+	DisableUser(context.Context, *DisableUserRequest) (*User, error)
+	GetLoginLogs(context.Context, *GetLoginLogsRequest) (*GetLoginLogsResponse, error)
+	// ---- RBAC-Group (P2) ----
+	CreateGroup(context.Context, *CreateGroupRequest) (*Group, error)
+	GetGroup(context.Context, *GetGroupRequest) (*Group, error)
+	UpdateGroup(context.Context, *UpdateGroupRequest) (*Group, error)
+	ListGroups(context.Context, *ListGroupsRequest) (*ListGroupsResponse, error)
+	DeleteGroup(context.Context, *DeleteGroupRequest) (*emptypb.Empty, error)
+	AddGroupMember(context.Context, *AddGroupMemberRequest) (*emptypb.Empty, error)
+	RemoveGroupMember(context.Context, *RemoveGroupMemberRequest) (*emptypb.Empty, error)
+	ListGroupMembers(context.Context, *ListGroupMembersRequest) (*ListGroupMembersResponse, error)
+	AddGroupRole(context.Context, *AddGroupRoleRequest) (*emptypb.Empty, error)
+	RemoveGroupRole(context.Context, *RemoveGroupRoleRequest) (*emptypb.Empty, error)
+	ListGroupRoles(context.Context, *ListGroupRolesRequest) (*ListGroupRolesResponse, error)
+	// ---- RBAC-Role (P2) ----
+	CreateRole(context.Context, *CreateRoleRequest) (*Role, error)
+	GetRole(context.Context, *GetRoleRequest) (*Role, error)
+	UpdateRole(context.Context, *UpdateRoleRequest) (*Role, error)
+	DeleteRole(context.Context, *DeleteRoleRequest) (*emptypb.Empty, error)
+	ListRoles(context.Context, *ListRolesRequest) (*ListRolesResponse, error)
+	AssignRole(context.Context, *AssignRoleRequest) (*emptypb.Empty, error)
+	RevokeRole(context.Context, *RevokeRoleRequest) (*emptypb.Empty, error)
+	ListUserRoles(context.Context, *ListUserRolesRequest) (*ListUserRolesResponse, error)
+	// ---- RBAC-Permission (P2) ----
+	ListPermissions(context.Context, *ListPermissionsRequest) (*ListPermissionsResponse, error)
+	CreatePermission(context.Context, *CreatePermissionRequest) (*Permission, error)
+	GetPermission(context.Context, *GetPermissionRequest) (*Permission, error)
+	UpdatePermission(context.Context, *UpdatePermissionRequest) (*Permission, error)
+	DeletePermission(context.Context, *DeletePermissionRequest) (*emptypb.Empty, error)
+	CreatePermissionGroup(context.Context, *CreatePermissionGroupRequest) (*PermissionGroup, error)
+	GetPermissionGroup(context.Context, *GetPermissionGroupRequest) (*PermissionGroup, error)
+	UpdatePermissionGroup(context.Context, *UpdatePermissionGroupRequest) (*PermissionGroup, error)
+	DeletePermissionGroup(context.Context, *DeletePermissionGroupRequest) (*emptypb.Empty, error)
+	ListPermissionGroups(context.Context, *ListPermissionGroupsRequest) (*ListPermissionGroupsResponse, error)
 	mustEmbedUnimplementedTestkitServiceServer()
 }
 
@@ -151,6 +856,165 @@ func (UnimplementedTestkitServiceServer) Logout(context.Context, *emptypb.Empty)
 }
 func (UnimplementedTestkitServiceServer) RefreshSession(context.Context, *RefreshSessionRequest) (*TokenResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RefreshSession not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetProfile(context.Context, *GetProfileRequest) (*User, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetProfile not implemented")
+}
+func (UnimplementedTestkitServiceServer) UpdateProfile(context.Context, *UpdateProfileRequest) (*User, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateProfile not implemented")
+}
+func (UnimplementedTestkitServiceServer) ChangePassword(context.Context, *ChangePasswordRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method ChangePassword not implemented")
+}
+func (UnimplementedTestkitServiceServer) ResetPassword(context.Context, *ResetPasswordRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method ResetPassword not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListIdentities(context.Context, *ListIdentitiesRequest) (*ListIdentitiesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListIdentities not implemented")
+}
+func (UnimplementedTestkitServiceServer) BindIdentity(context.Context, *BindIdentityRequest) (*Identity, error) {
+	return nil, status.Error(codes.Unimplemented, "method BindIdentity not implemented")
+}
+func (UnimplementedTestkitServiceServer) BindOAuthIdentity(context.Context, *BindOAuthIdentityRequest) (*BindOAuthIdentityResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method BindOAuthIdentity not implemented")
+}
+func (UnimplementedTestkitServiceServer) UnbindIdentity(context.Context, *UnbindIdentityRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UnbindIdentity not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListSessions not implemented")
+}
+func (UnimplementedTestkitServiceServer) RevokeSession(context.Context, *RevokeSessionRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeSession not implemented")
+}
+func (UnimplementedTestkitServiceServer) RevokeAllSessions(context.Context, *RevokeAllSessionsRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeAllSessions not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSession not implemented")
+}
+func (UnimplementedTestkitServiceServer) IssueSessionCode(context.Context, *IssueSessionCodeRequest) (*IssueSessionCodeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method IssueSessionCode not implemented")
+}
+func (UnimplementedTestkitServiceServer) ExchangeSessionCode(context.Context, *ExchangeSessionCodeRequest) (*ExchangeSessionCodeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ExchangeSessionCode not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetOAuthURL(context.Context, *GetOAuthURLRequest) (*GetOAuthURLResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetOAuthURL not implemented")
+}
+func (UnimplementedTestkitServiceServer) SocialLogin(context.Context, *SocialLoginRequest) (*SocialLoginResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SocialLogin not implemented")
+}
+func (UnimplementedTestkitServiceServer) MiniProgramLogin(context.Context, *MiniProgramLoginRequest) (*SocialLoginResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method MiniProgramLogin not implemented")
+}
+func (UnimplementedTestkitServiceServer) MiniProgramPhoneLogin(context.Context, *MiniProgramPhoneLoginRequest) (*SocialLoginResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method MiniProgramPhoneLogin not implemented")
+}
+func (UnimplementedTestkitServiceServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetUser(context.Context, *GetUserRequest) (*User, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListUsers not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListUsersPaged(context.Context, *ListUsersPagedRequest) (*ListUsersPagedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListUsersPaged not implemented")
+}
+func (UnimplementedTestkitServiceServer) DisableUser(context.Context, *DisableUserRequest) (*User, error) {
+	return nil, status.Error(codes.Unimplemented, "method DisableUser not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetLoginLogs(context.Context, *GetLoginLogsRequest) (*GetLoginLogsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetLoginLogs not implemented")
+}
+func (UnimplementedTestkitServiceServer) CreateGroup(context.Context, *CreateGroupRequest) (*Group, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateGroup not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetGroup(context.Context, *GetGroupRequest) (*Group, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetGroup not implemented")
+}
+func (UnimplementedTestkitServiceServer) UpdateGroup(context.Context, *UpdateGroupRequest) (*Group, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateGroup not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListGroups(context.Context, *ListGroupsRequest) (*ListGroupsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListGroups not implemented")
+}
+func (UnimplementedTestkitServiceServer) DeleteGroup(context.Context, *DeleteGroupRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteGroup not implemented")
+}
+func (UnimplementedTestkitServiceServer) AddGroupMember(context.Context, *AddGroupMemberRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method AddGroupMember not implemented")
+}
+func (UnimplementedTestkitServiceServer) RemoveGroupMember(context.Context, *RemoveGroupMemberRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveGroupMember not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListGroupMembers(context.Context, *ListGroupMembersRequest) (*ListGroupMembersResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListGroupMembers not implemented")
+}
+func (UnimplementedTestkitServiceServer) AddGroupRole(context.Context, *AddGroupRoleRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method AddGroupRole not implemented")
+}
+func (UnimplementedTestkitServiceServer) RemoveGroupRole(context.Context, *RemoveGroupRoleRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveGroupRole not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListGroupRoles(context.Context, *ListGroupRolesRequest) (*ListGroupRolesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListGroupRoles not implemented")
+}
+func (UnimplementedTestkitServiceServer) CreateRole(context.Context, *CreateRoleRequest) (*Role, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateRole not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetRole(context.Context, *GetRoleRequest) (*Role, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetRole not implemented")
+}
+func (UnimplementedTestkitServiceServer) UpdateRole(context.Context, *UpdateRoleRequest) (*Role, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateRole not implemented")
+}
+func (UnimplementedTestkitServiceServer) DeleteRole(context.Context, *DeleteRoleRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteRole not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListRoles(context.Context, *ListRolesRequest) (*ListRolesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListRoles not implemented")
+}
+func (UnimplementedTestkitServiceServer) AssignRole(context.Context, *AssignRoleRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignRole not implemented")
+}
+func (UnimplementedTestkitServiceServer) RevokeRole(context.Context, *RevokeRoleRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeRole not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListUserRoles(context.Context, *ListUserRolesRequest) (*ListUserRolesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListUserRoles not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListPermissions(context.Context, *ListPermissionsRequest) (*ListPermissionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListPermissions not implemented")
+}
+func (UnimplementedTestkitServiceServer) CreatePermission(context.Context, *CreatePermissionRequest) (*Permission, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreatePermission not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetPermission(context.Context, *GetPermissionRequest) (*Permission, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPermission not implemented")
+}
+func (UnimplementedTestkitServiceServer) UpdatePermission(context.Context, *UpdatePermissionRequest) (*Permission, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdatePermission not implemented")
+}
+func (UnimplementedTestkitServiceServer) DeletePermission(context.Context, *DeletePermissionRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeletePermission not implemented")
+}
+func (UnimplementedTestkitServiceServer) CreatePermissionGroup(context.Context, *CreatePermissionGroupRequest) (*PermissionGroup, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreatePermissionGroup not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetPermissionGroup(context.Context, *GetPermissionGroupRequest) (*PermissionGroup, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPermissionGroup not implemented")
+}
+func (UnimplementedTestkitServiceServer) UpdatePermissionGroup(context.Context, *UpdatePermissionGroupRequest) (*PermissionGroup, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdatePermissionGroup not implemented")
+}
+func (UnimplementedTestkitServiceServer) DeletePermissionGroup(context.Context, *DeletePermissionGroupRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeletePermissionGroup not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListPermissionGroups(context.Context, *ListPermissionGroupsRequest) (*ListPermissionGroupsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListPermissionGroups not implemented")
 }
 func (UnimplementedTestkitServiceServer) mustEmbedUnimplementedTestkitServiceServer() {}
 func (UnimplementedTestkitServiceServer) testEmbeddedByValue()                        {}
@@ -281,6 +1145,960 @@ func _TestkitService_RefreshSession_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestkitService_GetProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetProfile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetProfile(ctx, req.(*GetProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UpdateProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UpdateProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UpdateProfile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UpdateProfile(ctx, req.(*UpdateProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ChangePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangePasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ChangePassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ChangePassword_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ChangePassword(ctx, req.(*ChangePasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ResetPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResetPasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ResetPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ResetPassword_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ResetPassword(ctx, req.(*ResetPasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListIdentities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListIdentitiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListIdentities(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListIdentities_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListIdentities(ctx, req.(*ListIdentitiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_BindIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BindIdentityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).BindIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_BindIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).BindIdentity(ctx, req.(*BindIdentityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_BindOAuthIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BindOAuthIdentityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).BindOAuthIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_BindOAuthIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).BindOAuthIdentity(ctx, req.(*BindOAuthIdentityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UnbindIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnbindIdentityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UnbindIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UnbindIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UnbindIdentity(ctx, req.(*UnbindIdentityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListSessions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSessionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListSessions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListSessions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListSessions(ctx, req.(*ListSessionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RevokeSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RevokeSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RevokeSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RevokeSession(ctx, req.(*RevokeSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RevokeAllSessions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeAllSessionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RevokeAllSessions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RevokeAllSessions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RevokeAllSessions(ctx, req.(*RevokeAllSessionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetSession(ctx, req.(*GetSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_IssueSessionCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IssueSessionCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).IssueSessionCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_IssueSessionCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).IssueSessionCode(ctx, req.(*IssueSessionCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ExchangeSessionCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExchangeSessionCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ExchangeSessionCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ExchangeSessionCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ExchangeSessionCode(ctx, req.(*ExchangeSessionCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetOAuthURL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOAuthURLRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetOAuthURL(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetOAuthURL_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetOAuthURL(ctx, req.(*GetOAuthURLRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_SocialLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SocialLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).SocialLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_SocialLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).SocialLogin(ctx, req.(*SocialLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_MiniProgramLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MiniProgramLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).MiniProgramLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_MiniProgramLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).MiniProgramLogin(ctx, req.(*MiniProgramLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_MiniProgramPhoneLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MiniProgramPhoneLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).MiniProgramPhoneLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_MiniProgramPhoneLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).MiniProgramPhoneLogin(ctx, req.(*MiniProgramPhoneLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CreateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CreateUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CreateUser(ctx, req.(*CreateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetUser(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUsersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListUsers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListUsers(ctx, req.(*ListUsersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListUsersPaged_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUsersPagedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListUsersPaged(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListUsersPaged_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListUsersPaged(ctx, req.(*ListUsersPagedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_DisableUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DisableUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).DisableUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_DisableUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).DisableUser(ctx, req.(*DisableUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetLoginLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLoginLogsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetLoginLogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetLoginLogs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetLoginLogs(ctx, req.(*GetLoginLogsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_CreateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CreateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CreateGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CreateGroup(ctx, req.(*CreateGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetGroup(ctx, req.(*GetGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UpdateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UpdateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UpdateGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UpdateGroup(ctx, req.(*UpdateGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListGroups_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListGroups(ctx, req.(*ListGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_DeleteGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).DeleteGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_DeleteGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).DeleteGroup(ctx, req.(*DeleteGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AddGroupMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddGroupMemberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AddGroupMember(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AddGroupMember_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AddGroupMember(ctx, req.(*AddGroupMemberRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RemoveGroupMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveGroupMemberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RemoveGroupMember(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RemoveGroupMember_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RemoveGroupMember(ctx, req.(*RemoveGroupMemberRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListGroupMembers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGroupMembersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListGroupMembers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListGroupMembers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListGroupMembers(ctx, req.(*ListGroupMembersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AddGroupRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddGroupRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AddGroupRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AddGroupRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AddGroupRole(ctx, req.(*AddGroupRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RemoveGroupRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveGroupRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RemoveGroupRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RemoveGroupRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RemoveGroupRole(ctx, req.(*RemoveGroupRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListGroupRoles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGroupRolesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListGroupRoles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListGroupRoles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListGroupRoles(ctx, req.(*ListGroupRolesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_CreateRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CreateRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CreateRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CreateRole(ctx, req.(*CreateRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetRole(ctx, req.(*GetRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UpdateRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UpdateRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UpdateRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UpdateRole(ctx, req.(*UpdateRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_DeleteRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).DeleteRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_DeleteRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).DeleteRole(ctx, req.(*DeleteRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListRoles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRolesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListRoles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListRoles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListRoles(ctx, req.(*ListRolesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_AssignRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).AssignRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_AssignRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).AssignRole(ctx, req.(*AssignRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RevokeRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RevokeRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RevokeRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RevokeRole(ctx, req.(*RevokeRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListUserRoles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserRolesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListUserRoles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListUserRoles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListUserRoles(ctx, req.(*ListUserRolesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListPermissions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListPermissions(ctx, req.(*ListPermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_CreatePermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePermissionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CreatePermission(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CreatePermission_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CreatePermission(ctx, req.(*CreatePermissionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetPermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPermissionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetPermission(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetPermission_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetPermission(ctx, req.(*GetPermissionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UpdatePermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePermissionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UpdatePermission(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UpdatePermission_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UpdatePermission(ctx, req.(*UpdatePermissionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_DeletePermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePermissionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).DeletePermission(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_DeletePermission_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).DeletePermission(ctx, req.(*DeletePermissionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_CreatePermissionGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePermissionGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CreatePermissionGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CreatePermissionGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CreatePermissionGroup(ctx, req.(*CreatePermissionGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetPermissionGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPermissionGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetPermissionGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetPermissionGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetPermissionGroup(ctx, req.(*GetPermissionGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UpdatePermissionGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePermissionGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UpdatePermissionGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UpdatePermissionGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UpdatePermissionGroup(ctx, req.(*UpdatePermissionGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_DeletePermissionGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePermissionGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).DeletePermissionGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_DeletePermissionGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).DeletePermissionGroup(ctx, req.(*DeletePermissionGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListPermissionGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPermissionGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListPermissionGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListPermissionGroups_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListPermissionGroups(ctx, req.(*ListPermissionGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TestkitService_ServiceDesc is the grpc.ServiceDesc for TestkitService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -311,6 +2129,218 @@ var TestkitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RefreshSession",
 			Handler:    _TestkitService_RefreshSession_Handler,
+		},
+		{
+			MethodName: "GetProfile",
+			Handler:    _TestkitService_GetProfile_Handler,
+		},
+		{
+			MethodName: "UpdateProfile",
+			Handler:    _TestkitService_UpdateProfile_Handler,
+		},
+		{
+			MethodName: "ChangePassword",
+			Handler:    _TestkitService_ChangePassword_Handler,
+		},
+		{
+			MethodName: "ResetPassword",
+			Handler:    _TestkitService_ResetPassword_Handler,
+		},
+		{
+			MethodName: "ListIdentities",
+			Handler:    _TestkitService_ListIdentities_Handler,
+		},
+		{
+			MethodName: "BindIdentity",
+			Handler:    _TestkitService_BindIdentity_Handler,
+		},
+		{
+			MethodName: "BindOAuthIdentity",
+			Handler:    _TestkitService_BindOAuthIdentity_Handler,
+		},
+		{
+			MethodName: "UnbindIdentity",
+			Handler:    _TestkitService_UnbindIdentity_Handler,
+		},
+		{
+			MethodName: "ListSessions",
+			Handler:    _TestkitService_ListSessions_Handler,
+		},
+		{
+			MethodName: "RevokeSession",
+			Handler:    _TestkitService_RevokeSession_Handler,
+		},
+		{
+			MethodName: "RevokeAllSessions",
+			Handler:    _TestkitService_RevokeAllSessions_Handler,
+		},
+		{
+			MethodName: "GetSession",
+			Handler:    _TestkitService_GetSession_Handler,
+		},
+		{
+			MethodName: "IssueSessionCode",
+			Handler:    _TestkitService_IssueSessionCode_Handler,
+		},
+		{
+			MethodName: "ExchangeSessionCode",
+			Handler:    _TestkitService_ExchangeSessionCode_Handler,
+		},
+		{
+			MethodName: "GetOAuthURL",
+			Handler:    _TestkitService_GetOAuthURL_Handler,
+		},
+		{
+			MethodName: "SocialLogin",
+			Handler:    _TestkitService_SocialLogin_Handler,
+		},
+		{
+			MethodName: "MiniProgramLogin",
+			Handler:    _TestkitService_MiniProgramLogin_Handler,
+		},
+		{
+			MethodName: "MiniProgramPhoneLogin",
+			Handler:    _TestkitService_MiniProgramPhoneLogin_Handler,
+		},
+		{
+			MethodName: "CreateUser",
+			Handler:    _TestkitService_CreateUser_Handler,
+		},
+		{
+			MethodName: "GetUser",
+			Handler:    _TestkitService_GetUser_Handler,
+		},
+		{
+			MethodName: "ListUsers",
+			Handler:    _TestkitService_ListUsers_Handler,
+		},
+		{
+			MethodName: "ListUsersPaged",
+			Handler:    _TestkitService_ListUsersPaged_Handler,
+		},
+		{
+			MethodName: "DisableUser",
+			Handler:    _TestkitService_DisableUser_Handler,
+		},
+		{
+			MethodName: "GetLoginLogs",
+			Handler:    _TestkitService_GetLoginLogs_Handler,
+		},
+		{
+			MethodName: "CreateGroup",
+			Handler:    _TestkitService_CreateGroup_Handler,
+		},
+		{
+			MethodName: "GetGroup",
+			Handler:    _TestkitService_GetGroup_Handler,
+		},
+		{
+			MethodName: "UpdateGroup",
+			Handler:    _TestkitService_UpdateGroup_Handler,
+		},
+		{
+			MethodName: "ListGroups",
+			Handler:    _TestkitService_ListGroups_Handler,
+		},
+		{
+			MethodName: "DeleteGroup",
+			Handler:    _TestkitService_DeleteGroup_Handler,
+		},
+		{
+			MethodName: "AddGroupMember",
+			Handler:    _TestkitService_AddGroupMember_Handler,
+		},
+		{
+			MethodName: "RemoveGroupMember",
+			Handler:    _TestkitService_RemoveGroupMember_Handler,
+		},
+		{
+			MethodName: "ListGroupMembers",
+			Handler:    _TestkitService_ListGroupMembers_Handler,
+		},
+		{
+			MethodName: "AddGroupRole",
+			Handler:    _TestkitService_AddGroupRole_Handler,
+		},
+		{
+			MethodName: "RemoveGroupRole",
+			Handler:    _TestkitService_RemoveGroupRole_Handler,
+		},
+		{
+			MethodName: "ListGroupRoles",
+			Handler:    _TestkitService_ListGroupRoles_Handler,
+		},
+		{
+			MethodName: "CreateRole",
+			Handler:    _TestkitService_CreateRole_Handler,
+		},
+		{
+			MethodName: "GetRole",
+			Handler:    _TestkitService_GetRole_Handler,
+		},
+		{
+			MethodName: "UpdateRole",
+			Handler:    _TestkitService_UpdateRole_Handler,
+		},
+		{
+			MethodName: "DeleteRole",
+			Handler:    _TestkitService_DeleteRole_Handler,
+		},
+		{
+			MethodName: "ListRoles",
+			Handler:    _TestkitService_ListRoles_Handler,
+		},
+		{
+			MethodName: "AssignRole",
+			Handler:    _TestkitService_AssignRole_Handler,
+		},
+		{
+			MethodName: "RevokeRole",
+			Handler:    _TestkitService_RevokeRole_Handler,
+		},
+		{
+			MethodName: "ListUserRoles",
+			Handler:    _TestkitService_ListUserRoles_Handler,
+		},
+		{
+			MethodName: "ListPermissions",
+			Handler:    _TestkitService_ListPermissions_Handler,
+		},
+		{
+			MethodName: "CreatePermission",
+			Handler:    _TestkitService_CreatePermission_Handler,
+		},
+		{
+			MethodName: "GetPermission",
+			Handler:    _TestkitService_GetPermission_Handler,
+		},
+		{
+			MethodName: "UpdatePermission",
+			Handler:    _TestkitService_UpdatePermission_Handler,
+		},
+		{
+			MethodName: "DeletePermission",
+			Handler:    _TestkitService_DeletePermission_Handler,
+		},
+		{
+			MethodName: "CreatePermissionGroup",
+			Handler:    _TestkitService_CreatePermissionGroup_Handler,
+		},
+		{
+			MethodName: "GetPermissionGroup",
+			Handler:    _TestkitService_GetPermissionGroup_Handler,
+		},
+		{
+			MethodName: "UpdatePermissionGroup",
+			Handler:    _TestkitService_UpdatePermissionGroup_Handler,
+		},
+		{
+			MethodName: "DeletePermissionGroup",
+			Handler:    _TestkitService_DeletePermissionGroup_Handler,
+		},
+		{
+			MethodName: "ListPermissionGroups",
+			Handler:    _TestkitService_ListPermissionGroups_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
