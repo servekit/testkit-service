@@ -12,8 +12,8 @@
 #         service path prefix relative to build context, or empty
 #   ./cmd/server         main package passed to go build
 #   testkit-service        output binary name
-#   9000        grpcx gRPC listen port
-#   8080          optional grpc-gateway listen port
+#   19095        grpcx gRPC listen port
+#   18085          optional grpc-gateway listen port
 #   config.example.yaml      non-secret config template copied as /app/config.yaml
 
 ARG GO_VERSION=1.26.1
@@ -74,6 +74,6 @@ COPY --from=grpc-health-probe /ko-app/grpc-health-probe /usr/local/bin/grpc_heal
 COPY config.example.yaml /app/config.yaml
 
 USER appuser
-EXPOSE 9000
-EXPOSE 8080
+EXPOSE 19095
+EXPOSE 18085
 ENTRYPOINT ["/app/testkit-service"]

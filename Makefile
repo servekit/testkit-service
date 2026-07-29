@@ -100,6 +100,6 @@ docker-logs:
 
 ## docker-health: Query grpcx health from inside the app container
 docker-health:
-	$(DOCKER_COMPOSE) exec -T testkit-service grpc_health_probe -addr=127.0.0.1:9000
+	$(DOCKER_COMPOSE) exec -T testkit-service grpc_health_probe -addr=127.0.0.1:19095
 
 # END golang-service-docker
