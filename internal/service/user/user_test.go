@@ -37,6 +37,19 @@ type stubUserClient struct {
 	gotSocialLogin    *userv1.SocialLoginRequest
 	gotGetOAuthURL    *userv1.GetOAuthURLRequest
 
+	// admin / RBAC captured downstream requests
+	gotGetUser          *userv1.GetUserRequest
+	gotDisableUser      *userv1.DisableUserRequest
+	gotCreateRole       *userv1.CreateRoleRequest
+	gotListRoles        *userv1.ListRolesRequest
+	gotListUsersPaged   *userv1.ListUsersPagedRequest
+	gotCreateUser       *userv1.CreateUserRequest
+	gotListUsers        *userv1.ListUsersRequest
+	gotGetLoginLogs     *userv1.GetLoginLogsRequest
+	gotCreateGroup      *userv1.CreateGroupRequest
+	gotListGroupMembers *userv1.ListGroupMembersRequest
+	gotAssignRole       *userv1.AssignRoleRequest
+
 	// configured responses
 	profileUser    *userv1.User
 	identities     []*userv1.Identity
@@ -47,6 +60,17 @@ type stubUserClient struct {
 	socialReturnTo string
 	oauthURL       string
 	oauthState     string
+
+	// admin / RBAC configured responses
+	adminUser       *userv1.User // returned by GetUser / DisableUser / CreateUser
+	pagedUsers      []*userv1.User
+	pagedTotal      int64
+	pagedTotalPages int32
+	createdRole     *userv1.Role
+	listedRoles     []*userv1.Role
+	rolesCursor     string
+	rolesTotal      int32
+	loginLogs       []*userv1.LoginLog
 
 	// per-RPC error injection
 	socialErr error
