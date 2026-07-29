@@ -86,6 +86,12 @@ third_party:
     # config: DB/Redis injected via option; gid/message via adapters. OAuth
     #   providers are optional (empty credentials = disabled).
 
+# Message-domain settings (P4). testkit injects sender_id into downstream
+# SendEmail/SendSMS requests; it is a service label (not a user id). Override
+# per ingress point (e.g. "testkit-ops") without touching code.
+message:
+  sender_id: ${TESTKIT_SERVICE_MESSAGE_SENDER_ID}
+
 # Cron scheduler settings. jobs.Scheduler is wired but registers no jobs in P1.
 cron:
   timezone: ${TESTKIT_SERVICE_CRON_TIMEZONE}

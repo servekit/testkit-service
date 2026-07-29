@@ -52,6 +52,26 @@ log:
 	require.NotNil(t, cfg.ThirdParty.User)
 	// The generic module-mode payload (T = *<svc>config.Config) is allocated too.
 	require.NotNil(t, cfg.ThirdParty.GID.Config)
+
+	// Message (P4): pointer sub-config allocated by viper; SenderID defaults to
+	// "testkit-service" via the struct default tag when no value is provided.
+	require.NotNil(t, cfg.Message)
+	require.Equal(t, "testkit-service", cfg.Message.SenderID)
+}
+
+// TestLoad_MessageSenderIDDefault verifies the P4 sender_id default is applied
+// even with no message block in the file — the BFF injects this value into
+// downstream message Send requests (plan decision 1).
+func TestLoad_MessageSenderIDDefault(t *testing.T) {
+	writeConfig(t, `
+log:
+  level: info
+`)
+
+	cfg, err := config.Load()
+	require.NoError(t, err)
+	require.NotNil(t, cfg.Message)
+	require.Equal(t, "testkit-service", cfg.Message.SenderID)
 }
 
 // TestLoad_ThirdPartyDownstreamConfigs verifies the four RemoteServiceConfig

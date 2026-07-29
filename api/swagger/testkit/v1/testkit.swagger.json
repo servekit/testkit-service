@@ -741,6 +741,385 @@
         ]
       }
     },
+    "/api/v1/emails": {
+      "get": {
+        "operationId": "ListEmails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListEmailsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "EMAIL_VENDOR_UNSPECIFIED",
+              "EMAIL_VENDOR_ALIYUN",
+              "EMAIL_VENDOR_TENCENT",
+              "EMAIL_VENDOR_NETEASE"
+            ],
+            "default": "EMAIL_VENDOR_UNSPECIFIED"
+          },
+          {
+            "name": "scene",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "EMAIL_SCENE_UNSPECIFIED",
+              "EMAIL_SCENE_LOGIN_CODE",
+              "EMAIL_SCENE_FORGOT_PASSWORD",
+              "EMAIL_SCENE_REGISTER",
+              "EMAIL_SCENE_CHANGE_PASSWORD",
+              "EMAIL_SCENE_BIND_ACCOUNT",
+              "EMAIL_SCENE_NOTIFICATION",
+              "EMAIL_SCENE_VERIFY_EMAIL"
+            ],
+            "default": "EMAIL_SCENE_UNSPECIFIED"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "MESSAGE_STATUS_UNSPECIFIED",
+              "MESSAGE_STATUS_PENDING",
+              "MESSAGE_STATUS_SENT",
+              "MESSAGE_STATUS_FAILED"
+            ],
+            "default": "MESSAGE_STATUS_UNSPECIFIED"
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SORT_FIELD_UNSPECIFIED",
+              "SORT_FIELD_CREATED_AT",
+              "SORT_FIELD_FILENAME",
+              "SORT_FIELD_SIZE"
+            ],
+            "default": "SORT_FIELD_UNSPECIFIED"
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SORT_DIRECTION_UNSPECIFIED",
+              "SORT_DIRECTION_ASC",
+              "SORT_DIRECTION_DESC"
+            ],
+            "default": "SORT_DIRECTION_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/emails/{id}": {
+      "get": {
+        "summary": "Email records.",
+        "operationId": "GetEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1EmailRecord"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/emails:cursor": {
+      "get": {
+        "operationId": "ListEmailsByCursor",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListEmailsByCursorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "EMAIL_VENDOR_UNSPECIFIED",
+              "EMAIL_VENDOR_ALIYUN",
+              "EMAIL_VENDOR_TENCENT",
+              "EMAIL_VENDOR_NETEASE"
+            ],
+            "default": "EMAIL_VENDOR_UNSPECIFIED"
+          },
+          {
+            "name": "scene",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "EMAIL_SCENE_UNSPECIFIED",
+              "EMAIL_SCENE_LOGIN_CODE",
+              "EMAIL_SCENE_FORGOT_PASSWORD",
+              "EMAIL_SCENE_REGISTER",
+              "EMAIL_SCENE_CHANGE_PASSWORD",
+              "EMAIL_SCENE_BIND_ACCOUNT",
+              "EMAIL_SCENE_NOTIFICATION",
+              "EMAIL_SCENE_VERIFY_EMAIL"
+            ],
+            "default": "EMAIL_SCENE_UNSPECIFIED"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "MESSAGE_STATUS_UNSPECIFIED",
+              "MESSAGE_STATUS_PENDING",
+              "MESSAGE_STATUS_SENT",
+              "MESSAGE_STATUS_FAILED"
+            ],
+            "default": "MESSAGE_STATUS_UNSPECIFIED"
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SORT_FIELD_UNSPECIFIED",
+              "SORT_FIELD_CREATED_AT",
+              "SORT_FIELD_FILENAME",
+              "SORT_FIELD_SIZE"
+            ],
+            "default": "SORT_FIELD_UNSPECIFIED"
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SORT_DIRECTION_UNSPECIFIED",
+              "SORT_DIRECTION_ASC",
+              "SORT_DIRECTION_DESC"
+            ],
+            "default": "SORT_DIRECTION_UNSPECIFIED"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageToken",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "includeTotal",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/emails:senders": {
+      "get": {
+        "operationId": "ListEmailSenders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListEmailSendersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/emails:stats": {
+      "get": {
+        "operationId": "GetEmailStats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1EmailStatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "EMAIL_VENDOR_UNSPECIFIED",
+              "EMAIL_VENDOR_ALIYUN",
+              "EMAIL_VENDOR_TENCENT",
+              "EMAIL_VENDOR_NETEASE"
+            ],
+            "default": "EMAIL_VENDOR_UNSPECIFIED"
+          },
+          {
+            "name": "scene",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "EMAIL_SCENE_UNSPECIFIED",
+              "EMAIL_SCENE_LOGIN_CODE",
+              "EMAIL_SCENE_FORGOT_PASSWORD",
+              "EMAIL_SCENE_REGISTER",
+              "EMAIL_SCENE_CHANGE_PASSWORD",
+              "EMAIL_SCENE_BIND_ACCOUNT",
+              "EMAIL_SCENE_NOTIFICATION",
+              "EMAIL_SCENE_VERIFY_EMAIL"
+            ],
+            "default": "EMAIL_SCENE_UNSPECIFIED"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
     "/api/v1/files": {
       "get": {
         "summary": "---- My Files (owner from ctx) ----",
@@ -1419,6 +1798,71 @@
             "in": "query",
             "required": false,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/messages:email": {
+      "post": {
+        "summary": "Send (sender_id injected from config).",
+        "operationId": "SendEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SendResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SendEmailRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/messages:sms": {
+      "post": {
+        "operationId": "SendSMS",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SendResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SendSMSRequest"
+            }
           }
         ],
         "tags": [
@@ -2692,6 +3136,422 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sms": {
+      "get": {
+        "operationId": "ListSMS",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListSMSResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SMS_VENDOR_UNSPECIFIED",
+              "SMS_VENDOR_ALIYUN",
+              "SMS_VENDOR_TENCENT",
+              "SMS_VENDOR_VOLCENGINE",
+              "SMS_VENDOR_BYTEPLUS",
+              "SMS_VENDOR_HUAWEI"
+            ],
+            "default": "SMS_VENDOR_UNSPECIFIED"
+          },
+          {
+            "name": "scene",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SMS_SCENE_UNSPECIFIED",
+              "SMS_SCENE_LOGIN_CODE",
+              "SMS_SCENE_FORGOT_PASSWORD",
+              "SMS_SCENE_REGISTER",
+              "SMS_SCENE_CHANGE_PASSWORD",
+              "SMS_SCENE_BIND_ACCOUNT",
+              "SMS_SCENE_VERIFY_PHONE"
+            ],
+            "default": "SMS_SCENE_UNSPECIFIED"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "MESSAGE_STATUS_UNSPECIFIED",
+              "MESSAGE_STATUS_PENDING",
+              "MESSAGE_STATUS_SENT",
+              "MESSAGE_STATUS_FAILED"
+            ],
+            "default": "MESSAGE_STATUS_UNSPECIFIED"
+          },
+          {
+            "name": "regionCode",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SORT_FIELD_UNSPECIFIED",
+              "SORT_FIELD_CREATED_AT",
+              "SORT_FIELD_FILENAME",
+              "SORT_FIELD_SIZE"
+            ],
+            "default": "SORT_FIELD_UNSPECIFIED"
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SORT_DIRECTION_UNSPECIFIED",
+              "SORT_DIRECTION_ASC",
+              "SORT_DIRECTION_DESC"
+            ],
+            "default": "SORT_DIRECTION_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sms/{id}": {
+      "get": {
+        "summary": "SMS records.",
+        "operationId": "GetSMS",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SMSRecord"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sms:cursor": {
+      "get": {
+        "operationId": "ListSMSByCursor",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListSMSByCursorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SMS_VENDOR_UNSPECIFIED",
+              "SMS_VENDOR_ALIYUN",
+              "SMS_VENDOR_TENCENT",
+              "SMS_VENDOR_VOLCENGINE",
+              "SMS_VENDOR_BYTEPLUS",
+              "SMS_VENDOR_HUAWEI"
+            ],
+            "default": "SMS_VENDOR_UNSPECIFIED"
+          },
+          {
+            "name": "scene",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SMS_SCENE_UNSPECIFIED",
+              "SMS_SCENE_LOGIN_CODE",
+              "SMS_SCENE_FORGOT_PASSWORD",
+              "SMS_SCENE_REGISTER",
+              "SMS_SCENE_CHANGE_PASSWORD",
+              "SMS_SCENE_BIND_ACCOUNT",
+              "SMS_SCENE_VERIFY_PHONE"
+            ],
+            "default": "SMS_SCENE_UNSPECIFIED"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "MESSAGE_STATUS_UNSPECIFIED",
+              "MESSAGE_STATUS_PENDING",
+              "MESSAGE_STATUS_SENT",
+              "MESSAGE_STATUS_FAILED"
+            ],
+            "default": "MESSAGE_STATUS_UNSPECIFIED"
+          },
+          {
+            "name": "regionCode",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SORT_FIELD_UNSPECIFIED",
+              "SORT_FIELD_CREATED_AT",
+              "SORT_FIELD_FILENAME",
+              "SORT_FIELD_SIZE"
+            ],
+            "default": "SORT_FIELD_UNSPECIFIED"
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SORT_DIRECTION_UNSPECIFIED",
+              "SORT_DIRECTION_ASC",
+              "SORT_DIRECTION_DESC"
+            ],
+            "default": "SORT_DIRECTION_UNSPECIFIED"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageToken",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "includeTotal",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sms:regions": {
+      "get": {
+        "operationId": "ListSMSRegions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListSMSRegionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sms:senders": {
+      "get": {
+        "operationId": "ListSMSSenders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListSMSSendersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/sms:stats": {
+      "get": {
+        "operationId": "GetSMSStats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SMSStatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SMS_VENDOR_UNSPECIFIED",
+              "SMS_VENDOR_ALIYUN",
+              "SMS_VENDOR_TENCENT",
+              "SMS_VENDOR_VOLCENGINE",
+              "SMS_VENDOR_BYTEPLUS",
+              "SMS_VENDOR_HUAWEI"
+            ],
+            "default": "SMS_VENDOR_UNSPECIFIED"
+          },
+          {
+            "name": "scene",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SMS_SCENE_UNSPECIFIED",
+              "SMS_SCENE_LOGIN_CODE",
+              "SMS_SCENE_FORGOT_PASSWORD",
+              "SMS_SCENE_REGISTER",
+              "SMS_SCENE_CHANGE_PASSWORD",
+              "SMS_SCENE_BIND_ACCOUNT",
+              "SMS_SCENE_VERIFY_PHONE"
+            ],
+            "default": "SMS_SCENE_UNSPECIFIED"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -4594,6 +5454,207 @@
       "default": "DEVICE_TYPE_UNSPECIFIED",
       "description": "DeviceType categorizes the client device for session/audit metadata. Mirrors\nuser-service same-name/same-number."
     },
+    "v1EmailAddress": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        }
+      },
+      "description": "EmailAddress mirrors the downstream message (email + display_name)."
+    },
+    "v1EmailAttachment": {
+      "type": "object",
+      "properties": {
+        "filename": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string",
+          "format": "byte"
+        },
+        "inline": {
+          "type": "boolean"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "sizeBytes": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "description": "EmailAttachment drops the downstream `reserved` placeholders and renumbers\ncleanly. url/content are XOR (enforced downstream); DB stores metadata only\n(content is not persisted, so record echoes have it empty)."
+    },
+    "v1EmailRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "vendor": {
+          "$ref": "#/definitions/v1EmailVendor"
+        },
+        "account": {
+          "type": "string"
+        },
+        "scene": {
+          "$ref": "#/definitions/v1EmailScene"
+        },
+        "status": {
+          "$ref": "#/definitions/v1MessageStatus"
+        },
+        "target": {
+          "$ref": "#/definitions/v1EmailAddress"
+        },
+        "senderId": {
+          "type": "string",
+          "title": "read-only echo (testkit's sends echo cfg.Message.SenderID)"
+        },
+        "cc": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailAddress"
+          }
+        },
+        "bcc": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailAddress"
+          }
+        },
+        "subject": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "htmlBody": {
+          "type": "string"
+        },
+        "replyTo": {
+          "$ref": "#/definitions/v1EmailAddress"
+        },
+        "templateId": {
+          "type": "string"
+        },
+        "templateParams": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "errorMessage": {
+          "type": "string"
+        },
+        "attempts": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sentAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailAttachment"
+          }
+        }
+      }
+    },
+    "v1EmailScene": {
+      "type": "string",
+      "enum": [
+        "EMAIL_SCENE_UNSPECIFIED",
+        "EMAIL_SCENE_LOGIN_CODE",
+        "EMAIL_SCENE_FORGOT_PASSWORD",
+        "EMAIL_SCENE_REGISTER",
+        "EMAIL_SCENE_CHANGE_PASSWORD",
+        "EMAIL_SCENE_BIND_ACCOUNT",
+        "EMAIL_SCENE_NOTIFICATION",
+        "EMAIL_SCENE_VERIFY_EMAIL"
+      ],
+      "default": "EMAIL_SCENE_UNSPECIFIED"
+    },
+    "v1EmailStatsResponse": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "failed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "successRate": {
+          "type": "number",
+          "format": "double",
+          "title": "[0,100]; -1 = no data"
+        },
+        "vendors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailVendorStats"
+          }
+        }
+      }
+    },
+    "v1EmailVendor": {
+      "type": "string",
+      "enum": [
+        "EMAIL_VENDOR_UNSPECIFIED",
+        "EMAIL_VENDOR_ALIYUN",
+        "EMAIL_VENDOR_TENCENT",
+        "EMAIL_VENDOR_NETEASE"
+      ],
+      "default": "EMAIL_VENDOR_UNSPECIFIED"
+    },
+    "v1EmailVendorStats": {
+      "type": "object",
+      "properties": {
+        "vendor": {
+          "$ref": "#/definitions/v1EmailVendor"
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "failed": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "description": "EmailVendorStats / SmsVendorStats mirror the downstream per-vendor breakdown."
+    },
     "v1ExchangeSessionCodeRequest": {
       "type": "object",
       "properties": {
@@ -5129,6 +6190,59 @@
       },
       "description": "ItemError is a per-file failure inside a batch upload-credential response."
     },
+    "v1ListEmailSendersResponse": {
+      "type": "object",
+      "properties": {
+        "senderIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v1ListEmailsByCursorResponse": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailRecord"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nextPageToken": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListEmailsResponse": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailRecord"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hasMore": {
+          "type": "boolean"
+        }
+      }
+    },
     "v1ListGroupMembersResponse": {
       "type": "object",
       "properties": {
@@ -5309,6 +6423,70 @@
         }
       }
     },
+    "v1ListSMSByCursorResponse": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SMSRecord"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nextPageToken": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListSMSRegionsResponse": {
+      "type": "object",
+      "properties": {
+        "regionCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v1ListSMSResponse": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SMSRecord"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hasMore": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1ListSMSSendersResponse": {
+      "type": "object",
+      "properties": {
+        "senderIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "v1ListSessionsResponse": {
       "type": "object",
       "properties": {
@@ -5473,6 +6651,16 @@
         }
       },
       "description": "LoginRequest is the curated frontend DTO for login. Field names line up 1:1\nwith user-service LoginRequest; the auth mapping layer int-casts the enums."
+    },
+    "v1MessageStatus": {
+      "type": "string",
+      "enum": [
+        "MESSAGE_STATUS_UNSPECIFIED",
+        "MESSAGE_STATUS_PENDING",
+        "MESSAGE_STATUS_SENT",
+        "MESSAGE_STATUS_FAILED"
+      ],
+      "default": "MESSAGE_STATUS_UNSPECIFIED"
     },
     "v1MiniProgramLoginRequest": {
       "type": "object",
@@ -5787,6 +6975,223 @@
       },
       "description": "Role is a named bundle of permissions assignable to users or groups."
     },
+    "v1SMSRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "vendor": {
+          "$ref": "#/definitions/v1SmsVendor"
+        },
+        "account": {
+          "type": "string"
+        },
+        "scene": {
+          "$ref": "#/definitions/v1SmsScene"
+        },
+        "status": {
+          "$ref": "#/definitions/v1MessageStatus"
+        },
+        "regionCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "senderId": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "templateId": {
+          "type": "string"
+        },
+        "templateParams": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "errorMessage": {
+          "type": "string"
+        },
+        "attempts": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sentAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1SMSStatsResponse": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "failed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "successRate": {
+          "type": "number",
+          "format": "double"
+        },
+        "vendors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SmsVendorStats"
+          }
+        }
+      }
+    },
+    "v1SendEmailRequest": {
+      "type": "object",
+      "properties": {
+        "to": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailAddress"
+          }
+        },
+        "cc": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailAddress"
+          }
+        },
+        "bcc": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailAddress"
+          }
+        },
+        "subject": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "htmlBody": {
+          "type": "string"
+        },
+        "replyTo": {
+          "$ref": "#/definitions/v1EmailAddress"
+        },
+        "vendor": {
+          "$ref": "#/definitions/v1EmailVendor"
+        },
+        "account": {
+          "type": "string"
+        },
+        "templateId": {
+          "type": "string"
+        },
+        "templateParams": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "scene": {
+          "$ref": "#/definitions/v1EmailScene"
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "description": "sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1)."
+        },
+        "from": {
+          "$ref": "#/definitions/v1EmailAddress"
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailAttachment"
+          }
+        }
+      }
+    },
+    "v1SendResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "status": {
+          "$ref": "#/definitions/v1MessageStatus"
+        },
+        "emailVendor": {
+          "$ref": "#/definitions/v1EmailVendor"
+        },
+        "smsVendor": {
+          "$ref": "#/definitions/v1SmsVendor"
+        }
+      },
+      "description": "SendResponse splits the downstream oneof vendor into two optional fields\n(decision 6): exactly one of email_vendor / sms_vendor is non-zero."
+    },
+    "v1SendSMSRequest": {
+      "type": "object",
+      "properties": {
+        "regionCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "templateId": {
+          "type": "string"
+        },
+        "templateParams": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "vendor": {
+          "$ref": "#/definitions/v1SmsVendor"
+        },
+        "account": {
+          "type": "string"
+        },
+        "scene": {
+          "$ref": "#/definitions/v1SmsScene"
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "description": "sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1)."
+        },
+        "signName": {
+          "type": "string"
+        }
+      }
+    },
     "v1SendVerificationCodeRequest": {
       "type": "object",
       "properties": {
@@ -5875,6 +7280,51 @@
         }
       }
     },
+    "v1SmsScene": {
+      "type": "string",
+      "enum": [
+        "SMS_SCENE_UNSPECIFIED",
+        "SMS_SCENE_LOGIN_CODE",
+        "SMS_SCENE_FORGOT_PASSWORD",
+        "SMS_SCENE_REGISTER",
+        "SMS_SCENE_CHANGE_PASSWORD",
+        "SMS_SCENE_BIND_ACCOUNT",
+        "SMS_SCENE_VERIFY_PHONE"
+      ],
+      "default": "SMS_SCENE_UNSPECIFIED"
+    },
+    "v1SmsVendor": {
+      "type": "string",
+      "enum": [
+        "SMS_VENDOR_UNSPECIFIED",
+        "SMS_VENDOR_ALIYUN",
+        "SMS_VENDOR_TENCENT",
+        "SMS_VENDOR_VOLCENGINE",
+        "SMS_VENDOR_BYTEPLUS",
+        "SMS_VENDOR_HUAWEI"
+      ],
+      "default": "SMS_VENDOR_UNSPECIFIED"
+    },
+    "v1SmsVendorStats": {
+      "type": "object",
+      "properties": {
+        "vendor": {
+          "$ref": "#/definitions/v1SmsVendor"
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "failed": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1SocialLoginRequest": {
       "type": "object",
       "properties": {
@@ -5907,6 +7357,16 @@
         }
       },
       "description": "SocialLoginResponse is the shared response for all social-login RPCs.\ntoken = testkit-issued JWT (consumes the downstream session_id); session_id\nitself is NOT returned to the frontend."
+    },
+    "v1SortDirection": {
+      "type": "string",
+      "enum": [
+        "SORT_DIRECTION_UNSPECIFIED",
+        "SORT_DIRECTION_ASC",
+        "SORT_DIRECTION_DESC"
+      ],
+      "default": "SORT_DIRECTION_UNSPECIFIED",
+      "description": "SortDirection selects ascending or descending order for message lists.\nMirrors message-service name-for-name and number-for-number."
     },
     "v1SortField": {
       "type": "string",

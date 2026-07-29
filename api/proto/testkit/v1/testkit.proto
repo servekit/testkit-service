@@ -1425,6 +1425,372 @@ message AdminListAuditLogsResponse {
   string next_page_token = 3;
 }
 
+// ==================== Message (P4) ====================
+//
+// testkit.proto is self-contained (design spec v2 §3.1): it imports NO
+// downstream proto. The message enums/messages below mirror message-service
+// (api/proto/message/v1/message.proto) name-for-name and number-for-number, so
+// every testkit↔messagev1 conversion in internal/service/message is a plain int
+// cast (messagev1.EmailScene(req.GetScene())) — no string table. Re-defining
+// them here (rather than importing) keeps the proto self-contained and gives
+// the frontend real enum types in the generated swagger.
+//
+// Curation (plan §3.2 + P4 decisions):
+//   - sender_id is a SERVICE LABEL (the calling business service, e.g.
+//     "testkit-service"), NOT a user id. It never appears on a testkit Send
+//     request — the BFF injects it from cfg.Message.SenderID (decision 1).
+//   - List/Stats requests expose no sender_id filter either way (decision 2):
+//     the ops console sees all records across senders.
+//   - Get keeps the resource id (operation target — decision 3).
+//   - SendResponse splits the downstream oneof vendor into two optional fields
+//     (decision 6): email_vendor / sms_vendor (only one is non-zero at a time).
+//   - EmailRecord/SMSRecord keep full fidelity for ops triage (decision 7);
+//     sender_id is a read-only echo of what the caller injected.
+
+// SortField is shared with the storage domain (defined above, P3). The message
+// UI only offers CREATED_AT; the storage-only FILENAME/SIZE values are never
+// sent for message lists. The int cast to messagev1.SortField is unaffected
+// (message-service defines only UNSPECIFIED + CREATED_AT).
+
+// SortDirection selects ascending or descending order for message lists.
+// Mirrors message-service name-for-name and number-for-number.
+enum SortDirection {
+  SORT_DIRECTION_UNSPECIFIED = 0;
+  SORT_DIRECTION_ASC = 1;
+  SORT_DIRECTION_DESC = 2;
+}
+
+enum MessageStatus {
+  MESSAGE_STATUS_UNSPECIFIED = 0;
+  MESSAGE_STATUS_PENDING = 1;
+  MESSAGE_STATUS_SENT = 2;
+  MESSAGE_STATUS_FAILED = 3;
+}
+
+enum EmailVendor {
+  EMAIL_VENDOR_UNSPECIFIED = 0;
+  EMAIL_VENDOR_ALIYUN = 1;
+  EMAIL_VENDOR_TENCENT = 2;
+  EMAIL_VENDOR_NETEASE = 3;
+}
+
+enum SmsVendor {
+  SMS_VENDOR_UNSPECIFIED = 0;
+  SMS_VENDOR_ALIYUN = 1;
+  SMS_VENDOR_TENCENT = 2;
+  SMS_VENDOR_VOLCENGINE = 3;
+  SMS_VENDOR_BYTEPLUS = 4;
+  SMS_VENDOR_HUAWEI = 5;
+}
+
+enum EmailScene {
+  EMAIL_SCENE_UNSPECIFIED = 0;
+  EMAIL_SCENE_LOGIN_CODE = 1;
+  EMAIL_SCENE_FORGOT_PASSWORD = 2;
+  EMAIL_SCENE_REGISTER = 3;
+  EMAIL_SCENE_CHANGE_PASSWORD = 4;
+  EMAIL_SCENE_BIND_ACCOUNT = 5;
+  EMAIL_SCENE_NOTIFICATION = 6;
+  EMAIL_SCENE_VERIFY_EMAIL = 7;
+}
+
+enum SmsScene {
+  SMS_SCENE_UNSPECIFIED = 0;
+  SMS_SCENE_LOGIN_CODE = 1;
+  SMS_SCENE_FORGOT_PASSWORD = 2;
+  SMS_SCENE_REGISTER = 3;
+  SMS_SCENE_CHANGE_PASSWORD = 4;
+  SMS_SCENE_BIND_ACCOUNT = 5;
+  SMS_SCENE_VERIFY_PHONE = 6;
+}
+
+// ---- Message shared entities (P4) ----
+// Nested messages are redefined in testkit (decision 5), not imported.
+
+// EmailAddress mirrors the downstream message (email + display_name).
+message EmailAddress {
+  string email = 1 [(buf.validate.field).string.email = true];
+  string display_name = 2;
+}
+
+// EmailAttachment drops the downstream `reserved` placeholders and renumbers
+// cleanly. url/content are XOR (enforced downstream); DB stores metadata only
+// (content is not persisted, so record echoes have it empty).
+message EmailAttachment {
+  string filename = 1 [(buf.validate.field).string.min_len = 1];
+  string url = 2;
+  bytes content = 3;
+  bool inline = 4;
+  string mime_type = 5;
+  int64 size_bytes = 6;
+}
+
+// EmailVendorStats / SmsVendorStats mirror the downstream per-vendor breakdown.
+message EmailVendorStats {
+  EmailVendor vendor = 1;
+  int64 total = 2;
+  int64 sent = 3;
+  int64 failed = 4;
+}
+message SmsVendorStats {
+  SmsVendor vendor = 1;
+  int64 total = 2;
+  int64 sent = 3;
+  int64 failed = 4;
+}
+
+// ---- Send (sender_id dropped — BFF fills from cfg.Message.SenderID) ----
+
+message SendEmailRequest {
+  repeated EmailAddress to = 1 [(buf.validate.field).repeated.min_items = 1];
+  repeated EmailAddress cc = 2;
+  repeated EmailAddress bcc = 3;
+  string subject = 4 [(buf.validate.field).string.min_len = 1];
+  string body = 5;
+  string html_body = 6;
+  EmailAddress reply_to = 7;
+  EmailVendor vendor = 8;
+  string account = 9;
+  string template_id = 10;
+  map<string, string> template_params = 11;
+  EmailScene scene = 12;
+  // sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1).
+  string idempotency_key = 13 [(buf.validate.field).string.max_len = 64];
+  EmailAddress from = 14;
+  repeated EmailAttachment attachments = 15;
+
+  option (buf.validate.message).cel = {
+    id: "vendor_account_pair"
+    message: "vendor and account must both be set or both be empty"
+    expression: "(this.vendor == 0 && this.account == '') || (this.vendor != 0 && this.account != '')"
+  };
+  option (buf.validate.message).cel = {
+    id: "scene_required"
+    message: "scene is required"
+    expression: "this.scene != 0"
+  };
+}
+
+message SendSMSRequest {
+  string region_code = 1 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string phone = 2 [(buf.validate.field).string.min_len = 1];
+  string content = 3;
+  string template_id = 4;
+  map<string, string> template_params = 5;
+  SmsVendor vendor = 6;
+  string account = 7;
+  SmsScene scene = 8;
+  // sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1).
+  string idempotency_key = 9 [(buf.validate.field).string.max_len = 64];
+  string sign_name = 10 [(buf.validate.field).string.max_len = 64];
+
+  option (buf.validate.message).cel = {
+    id: "vendor_account_pair"
+    message: "vendor and account must both be set or both be empty"
+    expression: "(this.vendor == 0 && this.account == '') || (this.vendor != 0 && this.account != '')"
+  };
+  option (buf.validate.message).cel = {
+    id: "scene_required"
+    message: "scene is required"
+    expression: "this.scene != 0"
+  };
+  option (buf.validate.message).cel = {
+    id: "phone_no_plus"
+    message: "phone must not start with '+'"
+    expression: "!this.phone.startsWith('+')"
+  };
+}
+
+// SendResponse splits the downstream oneof vendor into two optional fields
+// (decision 6): exactly one of email_vendor / sms_vendor is non-zero.
+message SendResponse {
+  int64 id = 1;
+  MessageStatus status = 2;
+  EmailVendor email_vendor = 3;
+  SmsVendor sms_vendor = 4;
+}
+
+// ---- Records (full fidelity for ops triage — decision 7) ----
+
+message EmailRecord {
+  int64 id = 1;
+  EmailVendor vendor = 2;
+  string account = 3;
+  EmailScene scene = 4;
+  MessageStatus status = 5;
+  EmailAddress target = 6;
+  string sender_id = 7;  // read-only echo (testkit's sends echo cfg.Message.SenderID)
+  repeated EmailAddress cc = 8;
+  repeated EmailAddress bcc = 9;
+  string subject = 10;
+  string content = 11;
+  string html_body = 12;
+  EmailAddress reply_to = 13;
+  string template_id = 14;
+  map<string, string> template_params = 15;
+  string error_message = 16;
+  int32 attempts = 17;
+  int64 sent_at = 18;
+  int64 created_at = 19;
+  int64 updated_at = 20;
+  repeated EmailAttachment attachments = 21;
+}
+
+message SMSRecord {
+  int64 id = 1;
+  SmsVendor vendor = 2;
+  string account = 3;
+  SmsScene scene = 4;
+  MessageStatus status = 5;
+  string region_code = 6;
+  string phone = 7;
+  string sender_id = 8;
+  string content = 9;
+  string template_id = 10;
+  map<string, string> template_params = 11;
+  string error_message = 12;
+  int32 attempts = 13;
+  int64 sent_at = 14;
+  int64 created_at = 15;
+  int64 updated_at = 16;
+}
+
+// ---- Get (resource id kept — decision 3) ----
+
+message GetEmailRequest {
+  int64 id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message GetSMSRequest {
+  int64 id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+// ---- List paged (sender_id filter dropped — decision 2) ----
+
+message ListEmailsRequest {
+  EmailVendor vendor = 1;
+  EmailScene scene = 2;
+  MessageStatus status = 3;
+  string target = 4;
+  int64 start_time = 5;
+  int64 end_time = 6;
+  int32 page = 7;
+  int32 page_size = 8;
+  SortField sort_field = 9;
+  SortDirection sort_direction = 10;
+}
+message ListEmailsResponse {
+  repeated EmailRecord records = 1;
+  int32 total = 2;
+  int32 total_pages = 3;
+  bool has_more = 4;
+}
+
+message ListSMSRequest {
+  SmsVendor vendor = 1;
+  SmsScene scene = 2;
+  MessageStatus status = 3;
+  string region_code = 4;
+  string phone = 5;
+  int64 start_time = 6;
+  int64 end_time = 7;
+  int32 page = 8;
+  int32 page_size = 9;
+  SortField sort_field = 10;
+  SortDirection sort_direction = 11;
+}
+message ListSMSResponse {
+  repeated SMSRecord records = 1;
+  int32 total = 2;
+  int32 total_pages = 3;
+  bool has_more = 4;
+}
+
+// ---- List cursor (sender_id filter dropped) ----
+
+message ListEmailsByCursorRequest {
+  EmailVendor vendor = 1;
+  EmailScene scene = 2;
+  MessageStatus status = 3;
+  string target = 4;
+  int64 start_time = 5;
+  int64 end_time = 6;
+  SortField sort_field = 7;
+  SortDirection sort_direction = 8;
+  int32 page_size = 9;
+  string page_token = 10;
+  bool include_total = 11;
+}
+message ListEmailsByCursorResponse {
+  repeated EmailRecord records = 1;
+  int32 total = 2;
+  string next_page_token = 3;
+}
+
+message ListSMSByCursorRequest {
+  SmsVendor vendor = 1;
+  SmsScene scene = 2;
+  MessageStatus status = 3;
+  string region_code = 4;
+  string phone = 5;
+  int64 start_time = 6;
+  int64 end_time = 7;
+  SortField sort_field = 8;
+  SortDirection sort_direction = 9;
+  int32 page_size = 10;
+  string page_token = 11;
+  bool include_total = 12;
+}
+message ListSMSByCursorResponse {
+  repeated SMSRecord records = 1;
+  int32 total = 2;
+  string next_page_token = 3;
+}
+
+// ---- Stats (sender_id filter dropped) ----
+
+message GetEmailStatsRequest {
+  EmailVendor vendor = 1;
+  EmailScene scene = 2;
+  int64 start_time = 3;
+  int64 end_time = 4;
+}
+message EmailStatsResponse {
+  int64 total = 1;
+  int64 sent = 2;
+  int64 failed = 3;
+  double success_rate = 4;  // [0,100]; -1 = no data
+  repeated EmailVendorStats vendors = 5;
+}
+
+message GetSMSStatsRequest {
+  SmsVendor vendor = 1;
+  SmsScene scene = 2;
+  int64 start_time = 3;
+  int64 end_time = 4;
+}
+message SMSStatsResponse {
+  int64 total = 1;
+  int64 sent = 2;
+  int64 failed = 3;
+  double success_rate = 4;
+  repeated SmsVendorStats vendors = 5;
+}
+
+// ---- Lookups (dropdown sources) ----
+
+message ListEmailSendersRequest {}
+message ListEmailSendersResponse {
+  repeated string sender_ids = 1;
+}
+message ListSMSSendersRequest {}
+message ListSMSSendersResponse {
+  repeated string sender_ids = 1;
+}
+message ListSMSRegionsRequest {}
+message ListSMSRegionsResponse {
+  repeated string region_codes = 1;
+}
+
 service TestkitService {
   rpc Ping(google.protobuf.Empty) returns (Pong) {
     option (google.api.http) = { get: "/ping" };
@@ -1792,5 +2158,62 @@ service TestkitService {
   }
   rpc AdminListAuditLogs(AdminListAuditLogsRequest) returns (AdminListAuditLogsResponse) {
     option (google.api.http) = { get: "/api/v1/admin/audit-logs" };
+  }
+
+  // ---- Message (P4) ----
+  //
+  // sender_id (a service label, not a user id) is injected by the BFF from
+  // cfg.Message.SenderID on the Send RPCs; List/Stats forward no sender_id
+  // filter (ops console sees all records).
+
+  // Send (sender_id injected from config).
+  rpc SendEmail(SendEmailRequest) returns (SendResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/messages:email"
+      body: "*"
+    };
+  }
+  rpc SendSMS(SendSMSRequest) returns (SendResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/messages:sms"
+      body: "*"
+    };
+  }
+
+  // Email records.
+  rpc GetEmail(GetEmailRequest) returns (EmailRecord) {
+    option (google.api.http) = { get: "/api/v1/emails/{id}" };
+  }
+  rpc ListEmails(ListEmailsRequest) returns (ListEmailsResponse) {
+    option (google.api.http) = { get: "/api/v1/emails" };
+  }
+  rpc ListEmailsByCursor(ListEmailsByCursorRequest) returns (ListEmailsByCursorResponse) {
+    option (google.api.http) = { get: "/api/v1/emails:cursor" };
+  }
+  rpc GetEmailStats(GetEmailStatsRequest) returns (EmailStatsResponse) {
+    option (google.api.http) = { get: "/api/v1/emails:stats" };
+  }
+  rpc ListEmailSenders(ListEmailSendersRequest) returns (ListEmailSendersResponse) {
+    option (google.api.http) = { get: "/api/v1/emails:senders" };
+  }
+
+  // SMS records.
+  rpc GetSMS(GetSMSRequest) returns (SMSRecord) {
+    option (google.api.http) = { get: "/api/v1/sms/{id}" };
+  }
+  rpc ListSMS(ListSMSRequest) returns (ListSMSResponse) {
+    option (google.api.http) = { get: "/api/v1/sms" };
+  }
+  rpc ListSMSByCursor(ListSMSByCursorRequest) returns (ListSMSByCursorResponse) {
+    option (google.api.http) = { get: "/api/v1/sms:cursor" };
+  }
+  rpc GetSMSStats(GetSMSStatsRequest) returns (SMSStatsResponse) {
+    option (google.api.http) = { get: "/api/v1/sms:stats" };
+  }
+  rpc ListSMSRegions(ListSMSRegionsRequest) returns (ListSMSRegionsResponse) {
+    option (google.api.http) = { get: "/api/v1/sms:regions" };
+  }
+  rpc ListSMSSenders(ListSMSSendersRequest) returns (ListSMSSendersResponse) {
+    option (google.api.http) = { get: "/api/v1/sms:senders" };
   }
 }

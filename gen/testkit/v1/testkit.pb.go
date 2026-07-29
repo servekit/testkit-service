@@ -1324,6 +1324,344 @@ func (ImageProcessType) EnumDescriptor() ([]byte, []int) {
 	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{21}
 }
 
+// SortDirection selects ascending or descending order for message lists.
+// Mirrors message-service name-for-name and number-for-number.
+type SortDirection int32
+
+const (
+	SortDirection_SORT_DIRECTION_UNSPECIFIED SortDirection = 0
+	SortDirection_SORT_DIRECTION_ASC         SortDirection = 1
+	SortDirection_SORT_DIRECTION_DESC        SortDirection = 2
+)
+
+// Enum value maps for SortDirection.
+var (
+	SortDirection_name = map[int32]string{
+		0: "SORT_DIRECTION_UNSPECIFIED",
+		1: "SORT_DIRECTION_ASC",
+		2: "SORT_DIRECTION_DESC",
+	}
+	SortDirection_value = map[string]int32{
+		"SORT_DIRECTION_UNSPECIFIED": 0,
+		"SORT_DIRECTION_ASC":         1,
+		"SORT_DIRECTION_DESC":        2,
+	}
+)
+
+func (x SortDirection) Enum() *SortDirection {
+	p := new(SortDirection)
+	*p = x
+	return p
+}
+
+func (x SortDirection) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SortDirection) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[22].Descriptor()
+}
+
+func (SortDirection) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[22]
+}
+
+func (x SortDirection) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SortDirection.Descriptor instead.
+func (SortDirection) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{22}
+}
+
+type MessageStatus int32
+
+const (
+	MessageStatus_MESSAGE_STATUS_UNSPECIFIED MessageStatus = 0
+	MessageStatus_MESSAGE_STATUS_PENDING     MessageStatus = 1
+	MessageStatus_MESSAGE_STATUS_SENT        MessageStatus = 2
+	MessageStatus_MESSAGE_STATUS_FAILED      MessageStatus = 3
+)
+
+// Enum value maps for MessageStatus.
+var (
+	MessageStatus_name = map[int32]string{
+		0: "MESSAGE_STATUS_UNSPECIFIED",
+		1: "MESSAGE_STATUS_PENDING",
+		2: "MESSAGE_STATUS_SENT",
+		3: "MESSAGE_STATUS_FAILED",
+	}
+	MessageStatus_value = map[string]int32{
+		"MESSAGE_STATUS_UNSPECIFIED": 0,
+		"MESSAGE_STATUS_PENDING":     1,
+		"MESSAGE_STATUS_SENT":        2,
+		"MESSAGE_STATUS_FAILED":      3,
+	}
+)
+
+func (x MessageStatus) Enum() *MessageStatus {
+	p := new(MessageStatus)
+	*p = x
+	return p
+}
+
+func (x MessageStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (MessageStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[23].Descriptor()
+}
+
+func (MessageStatus) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[23]
+}
+
+func (x MessageStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use MessageStatus.Descriptor instead.
+func (MessageStatus) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{23}
+}
+
+type EmailVendor int32
+
+const (
+	EmailVendor_EMAIL_VENDOR_UNSPECIFIED EmailVendor = 0
+	EmailVendor_EMAIL_VENDOR_ALIYUN      EmailVendor = 1
+	EmailVendor_EMAIL_VENDOR_TENCENT     EmailVendor = 2
+	EmailVendor_EMAIL_VENDOR_NETEASE     EmailVendor = 3
+)
+
+// Enum value maps for EmailVendor.
+var (
+	EmailVendor_name = map[int32]string{
+		0: "EMAIL_VENDOR_UNSPECIFIED",
+		1: "EMAIL_VENDOR_ALIYUN",
+		2: "EMAIL_VENDOR_TENCENT",
+		3: "EMAIL_VENDOR_NETEASE",
+	}
+	EmailVendor_value = map[string]int32{
+		"EMAIL_VENDOR_UNSPECIFIED": 0,
+		"EMAIL_VENDOR_ALIYUN":      1,
+		"EMAIL_VENDOR_TENCENT":     2,
+		"EMAIL_VENDOR_NETEASE":     3,
+	}
+)
+
+func (x EmailVendor) Enum() *EmailVendor {
+	p := new(EmailVendor)
+	*p = x
+	return p
+}
+
+func (x EmailVendor) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EmailVendor) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[24].Descriptor()
+}
+
+func (EmailVendor) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[24]
+}
+
+func (x EmailVendor) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use EmailVendor.Descriptor instead.
+func (EmailVendor) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{24}
+}
+
+type SmsVendor int32
+
+const (
+	SmsVendor_SMS_VENDOR_UNSPECIFIED SmsVendor = 0
+	SmsVendor_SMS_VENDOR_ALIYUN      SmsVendor = 1
+	SmsVendor_SMS_VENDOR_TENCENT     SmsVendor = 2
+	SmsVendor_SMS_VENDOR_VOLCENGINE  SmsVendor = 3
+	SmsVendor_SMS_VENDOR_BYTEPLUS    SmsVendor = 4
+	SmsVendor_SMS_VENDOR_HUAWEI      SmsVendor = 5
+)
+
+// Enum value maps for SmsVendor.
+var (
+	SmsVendor_name = map[int32]string{
+		0: "SMS_VENDOR_UNSPECIFIED",
+		1: "SMS_VENDOR_ALIYUN",
+		2: "SMS_VENDOR_TENCENT",
+		3: "SMS_VENDOR_VOLCENGINE",
+		4: "SMS_VENDOR_BYTEPLUS",
+		5: "SMS_VENDOR_HUAWEI",
+	}
+	SmsVendor_value = map[string]int32{
+		"SMS_VENDOR_UNSPECIFIED": 0,
+		"SMS_VENDOR_ALIYUN":      1,
+		"SMS_VENDOR_TENCENT":     2,
+		"SMS_VENDOR_VOLCENGINE":  3,
+		"SMS_VENDOR_BYTEPLUS":    4,
+		"SMS_VENDOR_HUAWEI":      5,
+	}
+)
+
+func (x SmsVendor) Enum() *SmsVendor {
+	p := new(SmsVendor)
+	*p = x
+	return p
+}
+
+func (x SmsVendor) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SmsVendor) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[25].Descriptor()
+}
+
+func (SmsVendor) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[25]
+}
+
+func (x SmsVendor) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SmsVendor.Descriptor instead.
+func (SmsVendor) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{25}
+}
+
+type EmailScene int32
+
+const (
+	EmailScene_EMAIL_SCENE_UNSPECIFIED     EmailScene = 0
+	EmailScene_EMAIL_SCENE_LOGIN_CODE      EmailScene = 1
+	EmailScene_EMAIL_SCENE_FORGOT_PASSWORD EmailScene = 2
+	EmailScene_EMAIL_SCENE_REGISTER        EmailScene = 3
+	EmailScene_EMAIL_SCENE_CHANGE_PASSWORD EmailScene = 4
+	EmailScene_EMAIL_SCENE_BIND_ACCOUNT    EmailScene = 5
+	EmailScene_EMAIL_SCENE_NOTIFICATION    EmailScene = 6
+	EmailScene_EMAIL_SCENE_VERIFY_EMAIL    EmailScene = 7
+)
+
+// Enum value maps for EmailScene.
+var (
+	EmailScene_name = map[int32]string{
+		0: "EMAIL_SCENE_UNSPECIFIED",
+		1: "EMAIL_SCENE_LOGIN_CODE",
+		2: "EMAIL_SCENE_FORGOT_PASSWORD",
+		3: "EMAIL_SCENE_REGISTER",
+		4: "EMAIL_SCENE_CHANGE_PASSWORD",
+		5: "EMAIL_SCENE_BIND_ACCOUNT",
+		6: "EMAIL_SCENE_NOTIFICATION",
+		7: "EMAIL_SCENE_VERIFY_EMAIL",
+	}
+	EmailScene_value = map[string]int32{
+		"EMAIL_SCENE_UNSPECIFIED":     0,
+		"EMAIL_SCENE_LOGIN_CODE":      1,
+		"EMAIL_SCENE_FORGOT_PASSWORD": 2,
+		"EMAIL_SCENE_REGISTER":        3,
+		"EMAIL_SCENE_CHANGE_PASSWORD": 4,
+		"EMAIL_SCENE_BIND_ACCOUNT":    5,
+		"EMAIL_SCENE_NOTIFICATION":    6,
+		"EMAIL_SCENE_VERIFY_EMAIL":    7,
+	}
+)
+
+func (x EmailScene) Enum() *EmailScene {
+	p := new(EmailScene)
+	*p = x
+	return p
+}
+
+func (x EmailScene) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EmailScene) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[26].Descriptor()
+}
+
+func (EmailScene) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[26]
+}
+
+func (x EmailScene) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use EmailScene.Descriptor instead.
+func (EmailScene) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{26}
+}
+
+type SmsScene int32
+
+const (
+	SmsScene_SMS_SCENE_UNSPECIFIED     SmsScene = 0
+	SmsScene_SMS_SCENE_LOGIN_CODE      SmsScene = 1
+	SmsScene_SMS_SCENE_FORGOT_PASSWORD SmsScene = 2
+	SmsScene_SMS_SCENE_REGISTER        SmsScene = 3
+	SmsScene_SMS_SCENE_CHANGE_PASSWORD SmsScene = 4
+	SmsScene_SMS_SCENE_BIND_ACCOUNT    SmsScene = 5
+	SmsScene_SMS_SCENE_VERIFY_PHONE    SmsScene = 6
+)
+
+// Enum value maps for SmsScene.
+var (
+	SmsScene_name = map[int32]string{
+		0: "SMS_SCENE_UNSPECIFIED",
+		1: "SMS_SCENE_LOGIN_CODE",
+		2: "SMS_SCENE_FORGOT_PASSWORD",
+		3: "SMS_SCENE_REGISTER",
+		4: "SMS_SCENE_CHANGE_PASSWORD",
+		5: "SMS_SCENE_BIND_ACCOUNT",
+		6: "SMS_SCENE_VERIFY_PHONE",
+	}
+	SmsScene_value = map[string]int32{
+		"SMS_SCENE_UNSPECIFIED":     0,
+		"SMS_SCENE_LOGIN_CODE":      1,
+		"SMS_SCENE_FORGOT_PASSWORD": 2,
+		"SMS_SCENE_REGISTER":        3,
+		"SMS_SCENE_CHANGE_PASSWORD": 4,
+		"SMS_SCENE_BIND_ACCOUNT":    5,
+		"SMS_SCENE_VERIFY_PHONE":    6,
+	}
+)
+
+func (x SmsScene) Enum() *SmsScene {
+	p := new(SmsScene)
+	*p = x
+	return p
+}
+
+func (x SmsScene) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SmsScene) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[27].Descriptor()
+}
+
+func (SmsScene) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[27]
+}
+
+func (x SmsScene) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SmsScene.Descriptor instead.
+func (SmsScene) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{27}
+}
+
 // Pong is the health-check response — only public, non-sensitive info
 // (service name, build version, status, timestamps). Never include internal
 // addresses, IPs, env vars, secrets, or dependency topology here.
@@ -11543,6 +11881,2363 @@ func (x *AdminListAuditLogsResponse) GetNextPageToken() string {
 	return ""
 }
 
+// EmailAddress mirrors the downstream message (email + display_name).
+type EmailAddress struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	DisplayName   string                 `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmailAddress) Reset() {
+	*x = EmailAddress{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[147]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmailAddress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmailAddress) ProtoMessage() {}
+
+func (x *EmailAddress) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[147]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmailAddress.ProtoReflect.Descriptor instead.
+func (*EmailAddress) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{147}
+}
+
+func (x *EmailAddress) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *EmailAddress) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+// EmailAttachment drops the downstream `reserved` placeholders and renumbers
+// cleanly. url/content are XOR (enforced downstream); DB stores metadata only
+// (content is not persisted, so record echoes have it empty).
+type EmailAttachment struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filename      string                 `protobuf:"bytes,1,opt,name=filename,proto3" json:"filename,omitempty"`
+	Url           string                 `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
+	Content       []byte                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
+	Inline        bool                   `protobuf:"varint,4,opt,name=inline,proto3" json:"inline,omitempty"`
+	MimeType      string                 `protobuf:"bytes,5,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
+	SizeBytes     int64                  `protobuf:"varint,6,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmailAttachment) Reset() {
+	*x = EmailAttachment{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[148]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmailAttachment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmailAttachment) ProtoMessage() {}
+
+func (x *EmailAttachment) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[148]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmailAttachment.ProtoReflect.Descriptor instead.
+func (*EmailAttachment) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{148}
+}
+
+func (x *EmailAttachment) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *EmailAttachment) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *EmailAttachment) GetContent() []byte {
+	if x != nil {
+		return x.Content
+	}
+	return nil
+}
+
+func (x *EmailAttachment) GetInline() bool {
+	if x != nil {
+		return x.Inline
+	}
+	return false
+}
+
+func (x *EmailAttachment) GetMimeType() string {
+	if x != nil {
+		return x.MimeType
+	}
+	return ""
+}
+
+func (x *EmailAttachment) GetSizeBytes() int64 {
+	if x != nil {
+		return x.SizeBytes
+	}
+	return 0
+}
+
+// EmailVendorStats / SmsVendorStats mirror the downstream per-vendor breakdown.
+type EmailVendorStats struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vendor        EmailVendor            `protobuf:"varint,1,opt,name=vendor,proto3,enum=testkit.v1.EmailVendor" json:"vendor,omitempty"`
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Sent          int64                  `protobuf:"varint,3,opt,name=sent,proto3" json:"sent,omitempty"`
+	Failed        int64                  `protobuf:"varint,4,opt,name=failed,proto3" json:"failed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmailVendorStats) Reset() {
+	*x = EmailVendorStats{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[149]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmailVendorStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmailVendorStats) ProtoMessage() {}
+
+func (x *EmailVendorStats) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[149]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmailVendorStats.ProtoReflect.Descriptor instead.
+func (*EmailVendorStats) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{149}
+}
+
+func (x *EmailVendorStats) GetVendor() EmailVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return EmailVendor_EMAIL_VENDOR_UNSPECIFIED
+}
+
+func (x *EmailVendorStats) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *EmailVendorStats) GetSent() int64 {
+	if x != nil {
+		return x.Sent
+	}
+	return 0
+}
+
+func (x *EmailVendorStats) GetFailed() int64 {
+	if x != nil {
+		return x.Failed
+	}
+	return 0
+}
+
+type SmsVendorStats struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vendor        SmsVendor              `protobuf:"varint,1,opt,name=vendor,proto3,enum=testkit.v1.SmsVendor" json:"vendor,omitempty"`
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Sent          int64                  `protobuf:"varint,3,opt,name=sent,proto3" json:"sent,omitempty"`
+	Failed        int64                  `protobuf:"varint,4,opt,name=failed,proto3" json:"failed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SmsVendorStats) Reset() {
+	*x = SmsVendorStats{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[150]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SmsVendorStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SmsVendorStats) ProtoMessage() {}
+
+func (x *SmsVendorStats) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[150]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SmsVendorStats.ProtoReflect.Descriptor instead.
+func (*SmsVendorStats) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{150}
+}
+
+func (x *SmsVendorStats) GetVendor() SmsVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return SmsVendor_SMS_VENDOR_UNSPECIFIED
+}
+
+func (x *SmsVendorStats) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *SmsVendorStats) GetSent() int64 {
+	if x != nil {
+		return x.Sent
+	}
+	return 0
+}
+
+func (x *SmsVendorStats) GetFailed() int64 {
+	if x != nil {
+		return x.Failed
+	}
+	return 0
+}
+
+type SendEmailRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	To             []*EmailAddress        `protobuf:"bytes,1,rep,name=to,proto3" json:"to,omitempty"`
+	Cc             []*EmailAddress        `protobuf:"bytes,2,rep,name=cc,proto3" json:"cc,omitempty"`
+	Bcc            []*EmailAddress        `protobuf:"bytes,3,rep,name=bcc,proto3" json:"bcc,omitempty"`
+	Subject        string                 `protobuf:"bytes,4,opt,name=subject,proto3" json:"subject,omitempty"`
+	Body           string                 `protobuf:"bytes,5,opt,name=body,proto3" json:"body,omitempty"`
+	HtmlBody       string                 `protobuf:"bytes,6,opt,name=html_body,json=htmlBody,proto3" json:"html_body,omitempty"`
+	ReplyTo        *EmailAddress          `protobuf:"bytes,7,opt,name=reply_to,json=replyTo,proto3" json:"reply_to,omitempty"`
+	Vendor         EmailVendor            `protobuf:"varint,8,opt,name=vendor,proto3,enum=testkit.v1.EmailVendor" json:"vendor,omitempty"`
+	Account        string                 `protobuf:"bytes,9,opt,name=account,proto3" json:"account,omitempty"`
+	TemplateId     string                 `protobuf:"bytes,10,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	TemplateParams map[string]string      `protobuf:"bytes,11,rep,name=template_params,json=templateParams,proto3" json:"template_params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Scene          EmailScene             `protobuf:"varint,12,opt,name=scene,proto3,enum=testkit.v1.EmailScene" json:"scene,omitempty"`
+	// sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1).
+	IdempotencyKey string             `protobuf:"bytes,13,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
+	From           *EmailAddress      `protobuf:"bytes,14,opt,name=from,proto3" json:"from,omitempty"`
+	Attachments    []*EmailAttachment `protobuf:"bytes,15,rep,name=attachments,proto3" json:"attachments,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *SendEmailRequest) Reset() {
+	*x = SendEmailRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[151]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendEmailRequest) ProtoMessage() {}
+
+func (x *SendEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[151]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendEmailRequest.ProtoReflect.Descriptor instead.
+func (*SendEmailRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{151}
+}
+
+func (x *SendEmailRequest) GetTo() []*EmailAddress {
+	if x != nil {
+		return x.To
+	}
+	return nil
+}
+
+func (x *SendEmailRequest) GetCc() []*EmailAddress {
+	if x != nil {
+		return x.Cc
+	}
+	return nil
+}
+
+func (x *SendEmailRequest) GetBcc() []*EmailAddress {
+	if x != nil {
+		return x.Bcc
+	}
+	return nil
+}
+
+func (x *SendEmailRequest) GetSubject() string {
+	if x != nil {
+		return x.Subject
+	}
+	return ""
+}
+
+func (x *SendEmailRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *SendEmailRequest) GetHtmlBody() string {
+	if x != nil {
+		return x.HtmlBody
+	}
+	return ""
+}
+
+func (x *SendEmailRequest) GetReplyTo() *EmailAddress {
+	if x != nil {
+		return x.ReplyTo
+	}
+	return nil
+}
+
+func (x *SendEmailRequest) GetVendor() EmailVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return EmailVendor_EMAIL_VENDOR_UNSPECIFIED
+}
+
+func (x *SendEmailRequest) GetAccount() string {
+	if x != nil {
+		return x.Account
+	}
+	return ""
+}
+
+func (x *SendEmailRequest) GetTemplateId() string {
+	if x != nil {
+		return x.TemplateId
+	}
+	return ""
+}
+
+func (x *SendEmailRequest) GetTemplateParams() map[string]string {
+	if x != nil {
+		return x.TemplateParams
+	}
+	return nil
+}
+
+func (x *SendEmailRequest) GetScene() EmailScene {
+	if x != nil {
+		return x.Scene
+	}
+	return EmailScene_EMAIL_SCENE_UNSPECIFIED
+}
+
+func (x *SendEmailRequest) GetIdempotencyKey() string {
+	if x != nil {
+		return x.IdempotencyKey
+	}
+	return ""
+}
+
+func (x *SendEmailRequest) GetFrom() *EmailAddress {
+	if x != nil {
+		return x.From
+	}
+	return nil
+}
+
+func (x *SendEmailRequest) GetAttachments() []*EmailAttachment {
+	if x != nil {
+		return x.Attachments
+	}
+	return nil
+}
+
+type SendSMSRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	RegionCode     string                 `protobuf:"bytes,1,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone          string                 `protobuf:"bytes,2,opt,name=phone,proto3" json:"phone,omitempty"`
+	Content        string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
+	TemplateId     string                 `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	TemplateParams map[string]string      `protobuf:"bytes,5,rep,name=template_params,json=templateParams,proto3" json:"template_params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Vendor         SmsVendor              `protobuf:"varint,6,opt,name=vendor,proto3,enum=testkit.v1.SmsVendor" json:"vendor,omitempty"`
+	Account        string                 `protobuf:"bytes,7,opt,name=account,proto3" json:"account,omitempty"`
+	Scene          SmsScene               `protobuf:"varint,8,opt,name=scene,proto3,enum=testkit.v1.SmsScene" json:"scene,omitempty"`
+	// sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1).
+	IdempotencyKey string `protobuf:"bytes,9,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
+	SignName       string `protobuf:"bytes,10,opt,name=sign_name,json=signName,proto3" json:"sign_name,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *SendSMSRequest) Reset() {
+	*x = SendSMSRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[152]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendSMSRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendSMSRequest) ProtoMessage() {}
+
+func (x *SendSMSRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[152]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendSMSRequest.ProtoReflect.Descriptor instead.
+func (*SendSMSRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{152}
+}
+
+func (x *SendSMSRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *SendSMSRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *SendSMSRequest) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *SendSMSRequest) GetTemplateId() string {
+	if x != nil {
+		return x.TemplateId
+	}
+	return ""
+}
+
+func (x *SendSMSRequest) GetTemplateParams() map[string]string {
+	if x != nil {
+		return x.TemplateParams
+	}
+	return nil
+}
+
+func (x *SendSMSRequest) GetVendor() SmsVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return SmsVendor_SMS_VENDOR_UNSPECIFIED
+}
+
+func (x *SendSMSRequest) GetAccount() string {
+	if x != nil {
+		return x.Account
+	}
+	return ""
+}
+
+func (x *SendSMSRequest) GetScene() SmsScene {
+	if x != nil {
+		return x.Scene
+	}
+	return SmsScene_SMS_SCENE_UNSPECIFIED
+}
+
+func (x *SendSMSRequest) GetIdempotencyKey() string {
+	if x != nil {
+		return x.IdempotencyKey
+	}
+	return ""
+}
+
+func (x *SendSMSRequest) GetSignName() string {
+	if x != nil {
+		return x.SignName
+	}
+	return ""
+}
+
+// SendResponse splits the downstream oneof vendor into two optional fields
+// (decision 6): exactly one of email_vendor / sms_vendor is non-zero.
+type SendResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Status        MessageStatus          `protobuf:"varint,2,opt,name=status,proto3,enum=testkit.v1.MessageStatus" json:"status,omitempty"`
+	EmailVendor   EmailVendor            `protobuf:"varint,3,opt,name=email_vendor,json=emailVendor,proto3,enum=testkit.v1.EmailVendor" json:"email_vendor,omitempty"`
+	SmsVendor     SmsVendor              `protobuf:"varint,4,opt,name=sms_vendor,json=smsVendor,proto3,enum=testkit.v1.SmsVendor" json:"sms_vendor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendResponse) Reset() {
+	*x = SendResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[153]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendResponse) ProtoMessage() {}
+
+func (x *SendResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[153]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendResponse.ProtoReflect.Descriptor instead.
+func (*SendResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{153}
+}
+
+func (x *SendResponse) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *SendResponse) GetStatus() MessageStatus {
+	if x != nil {
+		return x.Status
+	}
+	return MessageStatus_MESSAGE_STATUS_UNSPECIFIED
+}
+
+func (x *SendResponse) GetEmailVendor() EmailVendor {
+	if x != nil {
+		return x.EmailVendor
+	}
+	return EmailVendor_EMAIL_VENDOR_UNSPECIFIED
+}
+
+func (x *SendResponse) GetSmsVendor() SmsVendor {
+	if x != nil {
+		return x.SmsVendor
+	}
+	return SmsVendor_SMS_VENDOR_UNSPECIFIED
+}
+
+type EmailRecord struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Vendor         EmailVendor            `protobuf:"varint,2,opt,name=vendor,proto3,enum=testkit.v1.EmailVendor" json:"vendor,omitempty"`
+	Account        string                 `protobuf:"bytes,3,opt,name=account,proto3" json:"account,omitempty"`
+	Scene          EmailScene             `protobuf:"varint,4,opt,name=scene,proto3,enum=testkit.v1.EmailScene" json:"scene,omitempty"`
+	Status         MessageStatus          `protobuf:"varint,5,opt,name=status,proto3,enum=testkit.v1.MessageStatus" json:"status,omitempty"`
+	Target         *EmailAddress          `protobuf:"bytes,6,opt,name=target,proto3" json:"target,omitempty"`
+	SenderId       string                 `protobuf:"bytes,7,opt,name=sender_id,json=senderId,proto3" json:"sender_id,omitempty"` // read-only echo (testkit's sends echo cfg.Message.SenderID)
+	Cc             []*EmailAddress        `protobuf:"bytes,8,rep,name=cc,proto3" json:"cc,omitempty"`
+	Bcc            []*EmailAddress        `protobuf:"bytes,9,rep,name=bcc,proto3" json:"bcc,omitempty"`
+	Subject        string                 `protobuf:"bytes,10,opt,name=subject,proto3" json:"subject,omitempty"`
+	Content        string                 `protobuf:"bytes,11,opt,name=content,proto3" json:"content,omitempty"`
+	HtmlBody       string                 `protobuf:"bytes,12,opt,name=html_body,json=htmlBody,proto3" json:"html_body,omitempty"`
+	ReplyTo        *EmailAddress          `protobuf:"bytes,13,opt,name=reply_to,json=replyTo,proto3" json:"reply_to,omitempty"`
+	TemplateId     string                 `protobuf:"bytes,14,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	TemplateParams map[string]string      `protobuf:"bytes,15,rep,name=template_params,json=templateParams,proto3" json:"template_params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ErrorMessage   string                 `protobuf:"bytes,16,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	Attempts       int32                  `protobuf:"varint,17,opt,name=attempts,proto3" json:"attempts,omitempty"`
+	SentAt         int64                  `protobuf:"varint,18,opt,name=sent_at,json=sentAt,proto3" json:"sent_at,omitempty"`
+	CreatedAt      int64                  `protobuf:"varint,19,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      int64                  `protobuf:"varint,20,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Attachments    []*EmailAttachment     `protobuf:"bytes,21,rep,name=attachments,proto3" json:"attachments,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *EmailRecord) Reset() {
+	*x = EmailRecord{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[154]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmailRecord) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmailRecord) ProtoMessage() {}
+
+func (x *EmailRecord) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[154]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmailRecord.ProtoReflect.Descriptor instead.
+func (*EmailRecord) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{154}
+}
+
+func (x *EmailRecord) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *EmailRecord) GetVendor() EmailVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return EmailVendor_EMAIL_VENDOR_UNSPECIFIED
+}
+
+func (x *EmailRecord) GetAccount() string {
+	if x != nil {
+		return x.Account
+	}
+	return ""
+}
+
+func (x *EmailRecord) GetScene() EmailScene {
+	if x != nil {
+		return x.Scene
+	}
+	return EmailScene_EMAIL_SCENE_UNSPECIFIED
+}
+
+func (x *EmailRecord) GetStatus() MessageStatus {
+	if x != nil {
+		return x.Status
+	}
+	return MessageStatus_MESSAGE_STATUS_UNSPECIFIED
+}
+
+func (x *EmailRecord) GetTarget() *EmailAddress {
+	if x != nil {
+		return x.Target
+	}
+	return nil
+}
+
+func (x *EmailRecord) GetSenderId() string {
+	if x != nil {
+		return x.SenderId
+	}
+	return ""
+}
+
+func (x *EmailRecord) GetCc() []*EmailAddress {
+	if x != nil {
+		return x.Cc
+	}
+	return nil
+}
+
+func (x *EmailRecord) GetBcc() []*EmailAddress {
+	if x != nil {
+		return x.Bcc
+	}
+	return nil
+}
+
+func (x *EmailRecord) GetSubject() string {
+	if x != nil {
+		return x.Subject
+	}
+	return ""
+}
+
+func (x *EmailRecord) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *EmailRecord) GetHtmlBody() string {
+	if x != nil {
+		return x.HtmlBody
+	}
+	return ""
+}
+
+func (x *EmailRecord) GetReplyTo() *EmailAddress {
+	if x != nil {
+		return x.ReplyTo
+	}
+	return nil
+}
+
+func (x *EmailRecord) GetTemplateId() string {
+	if x != nil {
+		return x.TemplateId
+	}
+	return ""
+}
+
+func (x *EmailRecord) GetTemplateParams() map[string]string {
+	if x != nil {
+		return x.TemplateParams
+	}
+	return nil
+}
+
+func (x *EmailRecord) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *EmailRecord) GetAttempts() int32 {
+	if x != nil {
+		return x.Attempts
+	}
+	return 0
+}
+
+func (x *EmailRecord) GetSentAt() int64 {
+	if x != nil {
+		return x.SentAt
+	}
+	return 0
+}
+
+func (x *EmailRecord) GetCreatedAt() int64 {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return 0
+}
+
+func (x *EmailRecord) GetUpdatedAt() int64 {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return 0
+}
+
+func (x *EmailRecord) GetAttachments() []*EmailAttachment {
+	if x != nil {
+		return x.Attachments
+	}
+	return nil
+}
+
+type SMSRecord struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Vendor         SmsVendor              `protobuf:"varint,2,opt,name=vendor,proto3,enum=testkit.v1.SmsVendor" json:"vendor,omitempty"`
+	Account        string                 `protobuf:"bytes,3,opt,name=account,proto3" json:"account,omitempty"`
+	Scene          SmsScene               `protobuf:"varint,4,opt,name=scene,proto3,enum=testkit.v1.SmsScene" json:"scene,omitempty"`
+	Status         MessageStatus          `protobuf:"varint,5,opt,name=status,proto3,enum=testkit.v1.MessageStatus" json:"status,omitempty"`
+	RegionCode     string                 `protobuf:"bytes,6,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone          string                 `protobuf:"bytes,7,opt,name=phone,proto3" json:"phone,omitempty"`
+	SenderId       string                 `protobuf:"bytes,8,opt,name=sender_id,json=senderId,proto3" json:"sender_id,omitempty"`
+	Content        string                 `protobuf:"bytes,9,opt,name=content,proto3" json:"content,omitempty"`
+	TemplateId     string                 `protobuf:"bytes,10,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	TemplateParams map[string]string      `protobuf:"bytes,11,rep,name=template_params,json=templateParams,proto3" json:"template_params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ErrorMessage   string                 `protobuf:"bytes,12,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	Attempts       int32                  `protobuf:"varint,13,opt,name=attempts,proto3" json:"attempts,omitempty"`
+	SentAt         int64                  `protobuf:"varint,14,opt,name=sent_at,json=sentAt,proto3" json:"sent_at,omitempty"`
+	CreatedAt      int64                  `protobuf:"varint,15,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      int64                  `protobuf:"varint,16,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *SMSRecord) Reset() {
+	*x = SMSRecord{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[155]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SMSRecord) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SMSRecord) ProtoMessage() {}
+
+func (x *SMSRecord) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[155]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SMSRecord.ProtoReflect.Descriptor instead.
+func (*SMSRecord) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{155}
+}
+
+func (x *SMSRecord) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *SMSRecord) GetVendor() SmsVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return SmsVendor_SMS_VENDOR_UNSPECIFIED
+}
+
+func (x *SMSRecord) GetAccount() string {
+	if x != nil {
+		return x.Account
+	}
+	return ""
+}
+
+func (x *SMSRecord) GetScene() SmsScene {
+	if x != nil {
+		return x.Scene
+	}
+	return SmsScene_SMS_SCENE_UNSPECIFIED
+}
+
+func (x *SMSRecord) GetStatus() MessageStatus {
+	if x != nil {
+		return x.Status
+	}
+	return MessageStatus_MESSAGE_STATUS_UNSPECIFIED
+}
+
+func (x *SMSRecord) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *SMSRecord) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *SMSRecord) GetSenderId() string {
+	if x != nil {
+		return x.SenderId
+	}
+	return ""
+}
+
+func (x *SMSRecord) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *SMSRecord) GetTemplateId() string {
+	if x != nil {
+		return x.TemplateId
+	}
+	return ""
+}
+
+func (x *SMSRecord) GetTemplateParams() map[string]string {
+	if x != nil {
+		return x.TemplateParams
+	}
+	return nil
+}
+
+func (x *SMSRecord) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *SMSRecord) GetAttempts() int32 {
+	if x != nil {
+		return x.Attempts
+	}
+	return 0
+}
+
+func (x *SMSRecord) GetSentAt() int64 {
+	if x != nil {
+		return x.SentAt
+	}
+	return 0
+}
+
+func (x *SMSRecord) GetCreatedAt() int64 {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return 0
+}
+
+func (x *SMSRecord) GetUpdatedAt() int64 {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return 0
+}
+
+type GetEmailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetEmailRequest) Reset() {
+	*x = GetEmailRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[156]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetEmailRequest) ProtoMessage() {}
+
+func (x *GetEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[156]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetEmailRequest.ProtoReflect.Descriptor instead.
+func (*GetEmailRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{156}
+}
+
+func (x *GetEmailRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type GetSMSRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSMSRequest) Reset() {
+	*x = GetSMSRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[157]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSMSRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSMSRequest) ProtoMessage() {}
+
+func (x *GetSMSRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[157]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSMSRequest.ProtoReflect.Descriptor instead.
+func (*GetSMSRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{157}
+}
+
+func (x *GetSMSRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type ListEmailsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vendor        EmailVendor            `protobuf:"varint,1,opt,name=vendor,proto3,enum=testkit.v1.EmailVendor" json:"vendor,omitempty"`
+	Scene         EmailScene             `protobuf:"varint,2,opt,name=scene,proto3,enum=testkit.v1.EmailScene" json:"scene,omitempty"`
+	Status        MessageStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=testkit.v1.MessageStatus" json:"status,omitempty"`
+	Target        string                 `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	StartTime     int64                  `protobuf:"varint,5,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime       int64                  `protobuf:"varint,6,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	Page          int32                  `protobuf:"varint,7,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize      int32                  `protobuf:"varint,8,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	SortField     SortField              `protobuf:"varint,9,opt,name=sort_field,json=sortField,proto3,enum=testkit.v1.SortField" json:"sort_field,omitempty"`
+	SortDirection SortDirection          `protobuf:"varint,10,opt,name=sort_direction,json=sortDirection,proto3,enum=testkit.v1.SortDirection" json:"sort_direction,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListEmailsRequest) Reset() {
+	*x = ListEmailsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[158]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListEmailsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListEmailsRequest) ProtoMessage() {}
+
+func (x *ListEmailsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[158]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListEmailsRequest.ProtoReflect.Descriptor instead.
+func (*ListEmailsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{158}
+}
+
+func (x *ListEmailsRequest) GetVendor() EmailVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return EmailVendor_EMAIL_VENDOR_UNSPECIFIED
+}
+
+func (x *ListEmailsRequest) GetScene() EmailScene {
+	if x != nil {
+		return x.Scene
+	}
+	return EmailScene_EMAIL_SCENE_UNSPECIFIED
+}
+
+func (x *ListEmailsRequest) GetStatus() MessageStatus {
+	if x != nil {
+		return x.Status
+	}
+	return MessageStatus_MESSAGE_STATUS_UNSPECIFIED
+}
+
+func (x *ListEmailsRequest) GetTarget() string {
+	if x != nil {
+		return x.Target
+	}
+	return ""
+}
+
+func (x *ListEmailsRequest) GetStartTime() int64 {
+	if x != nil {
+		return x.StartTime
+	}
+	return 0
+}
+
+func (x *ListEmailsRequest) GetEndTime() int64 {
+	if x != nil {
+		return x.EndTime
+	}
+	return 0
+}
+
+func (x *ListEmailsRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListEmailsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListEmailsRequest) GetSortField() SortField {
+	if x != nil {
+		return x.SortField
+	}
+	return SortField_SORT_FIELD_UNSPECIFIED
+}
+
+func (x *ListEmailsRequest) GetSortDirection() SortDirection {
+	if x != nil {
+		return x.SortDirection
+	}
+	return SortDirection_SORT_DIRECTION_UNSPECIFIED
+}
+
+type ListEmailsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Records       []*EmailRecord         `protobuf:"bytes,1,rep,name=records,proto3" json:"records,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	TotalPages    int32                  `protobuf:"varint,3,opt,name=total_pages,json=totalPages,proto3" json:"total_pages,omitempty"`
+	HasMore       bool                   `protobuf:"varint,4,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListEmailsResponse) Reset() {
+	*x = ListEmailsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[159]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListEmailsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListEmailsResponse) ProtoMessage() {}
+
+func (x *ListEmailsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[159]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListEmailsResponse.ProtoReflect.Descriptor instead.
+func (*ListEmailsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{159}
+}
+
+func (x *ListEmailsResponse) GetRecords() []*EmailRecord {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+func (x *ListEmailsResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListEmailsResponse) GetTotalPages() int32 {
+	if x != nil {
+		return x.TotalPages
+	}
+	return 0
+}
+
+func (x *ListEmailsResponse) GetHasMore() bool {
+	if x != nil {
+		return x.HasMore
+	}
+	return false
+}
+
+type ListSMSRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vendor        SmsVendor              `protobuf:"varint,1,opt,name=vendor,proto3,enum=testkit.v1.SmsVendor" json:"vendor,omitempty"`
+	Scene         SmsScene               `protobuf:"varint,2,opt,name=scene,proto3,enum=testkit.v1.SmsScene" json:"scene,omitempty"`
+	Status        MessageStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=testkit.v1.MessageStatus" json:"status,omitempty"`
+	RegionCode    string                 `protobuf:"bytes,4,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone         string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
+	StartTime     int64                  `protobuf:"varint,6,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime       int64                  `protobuf:"varint,7,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	Page          int32                  `protobuf:"varint,8,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize      int32                  `protobuf:"varint,9,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	SortField     SortField              `protobuf:"varint,10,opt,name=sort_field,json=sortField,proto3,enum=testkit.v1.SortField" json:"sort_field,omitempty"`
+	SortDirection SortDirection          `protobuf:"varint,11,opt,name=sort_direction,json=sortDirection,proto3,enum=testkit.v1.SortDirection" json:"sort_direction,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSRequest) Reset() {
+	*x = ListSMSRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[160]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSRequest) ProtoMessage() {}
+
+func (x *ListSMSRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[160]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSRequest.ProtoReflect.Descriptor instead.
+func (*ListSMSRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{160}
+}
+
+func (x *ListSMSRequest) GetVendor() SmsVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return SmsVendor_SMS_VENDOR_UNSPECIFIED
+}
+
+func (x *ListSMSRequest) GetScene() SmsScene {
+	if x != nil {
+		return x.Scene
+	}
+	return SmsScene_SMS_SCENE_UNSPECIFIED
+}
+
+func (x *ListSMSRequest) GetStatus() MessageStatus {
+	if x != nil {
+		return x.Status
+	}
+	return MessageStatus_MESSAGE_STATUS_UNSPECIFIED
+}
+
+func (x *ListSMSRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *ListSMSRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *ListSMSRequest) GetStartTime() int64 {
+	if x != nil {
+		return x.StartTime
+	}
+	return 0
+}
+
+func (x *ListSMSRequest) GetEndTime() int64 {
+	if x != nil {
+		return x.EndTime
+	}
+	return 0
+}
+
+func (x *ListSMSRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListSMSRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListSMSRequest) GetSortField() SortField {
+	if x != nil {
+		return x.SortField
+	}
+	return SortField_SORT_FIELD_UNSPECIFIED
+}
+
+func (x *ListSMSRequest) GetSortDirection() SortDirection {
+	if x != nil {
+		return x.SortDirection
+	}
+	return SortDirection_SORT_DIRECTION_UNSPECIFIED
+}
+
+type ListSMSResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Records       []*SMSRecord           `protobuf:"bytes,1,rep,name=records,proto3" json:"records,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	TotalPages    int32                  `protobuf:"varint,3,opt,name=total_pages,json=totalPages,proto3" json:"total_pages,omitempty"`
+	HasMore       bool                   `protobuf:"varint,4,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSResponse) Reset() {
+	*x = ListSMSResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[161]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSResponse) ProtoMessage() {}
+
+func (x *ListSMSResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[161]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSResponse.ProtoReflect.Descriptor instead.
+func (*ListSMSResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{161}
+}
+
+func (x *ListSMSResponse) GetRecords() []*SMSRecord {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+func (x *ListSMSResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListSMSResponse) GetTotalPages() int32 {
+	if x != nil {
+		return x.TotalPages
+	}
+	return 0
+}
+
+func (x *ListSMSResponse) GetHasMore() bool {
+	if x != nil {
+		return x.HasMore
+	}
+	return false
+}
+
+type ListEmailsByCursorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vendor        EmailVendor            `protobuf:"varint,1,opt,name=vendor,proto3,enum=testkit.v1.EmailVendor" json:"vendor,omitempty"`
+	Scene         EmailScene             `protobuf:"varint,2,opt,name=scene,proto3,enum=testkit.v1.EmailScene" json:"scene,omitempty"`
+	Status        MessageStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=testkit.v1.MessageStatus" json:"status,omitempty"`
+	Target        string                 `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	StartTime     int64                  `protobuf:"varint,5,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime       int64                  `protobuf:"varint,6,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	SortField     SortField              `protobuf:"varint,7,opt,name=sort_field,json=sortField,proto3,enum=testkit.v1.SortField" json:"sort_field,omitempty"`
+	SortDirection SortDirection          `protobuf:"varint,8,opt,name=sort_direction,json=sortDirection,proto3,enum=testkit.v1.SortDirection" json:"sort_direction,omitempty"`
+	PageSize      int32                  `protobuf:"varint,9,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,10,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	IncludeTotal  bool                   `protobuf:"varint,11,opt,name=include_total,json=includeTotal,proto3" json:"include_total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListEmailsByCursorRequest) Reset() {
+	*x = ListEmailsByCursorRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[162]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListEmailsByCursorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListEmailsByCursorRequest) ProtoMessage() {}
+
+func (x *ListEmailsByCursorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[162]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListEmailsByCursorRequest.ProtoReflect.Descriptor instead.
+func (*ListEmailsByCursorRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{162}
+}
+
+func (x *ListEmailsByCursorRequest) GetVendor() EmailVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return EmailVendor_EMAIL_VENDOR_UNSPECIFIED
+}
+
+func (x *ListEmailsByCursorRequest) GetScene() EmailScene {
+	if x != nil {
+		return x.Scene
+	}
+	return EmailScene_EMAIL_SCENE_UNSPECIFIED
+}
+
+func (x *ListEmailsByCursorRequest) GetStatus() MessageStatus {
+	if x != nil {
+		return x.Status
+	}
+	return MessageStatus_MESSAGE_STATUS_UNSPECIFIED
+}
+
+func (x *ListEmailsByCursorRequest) GetTarget() string {
+	if x != nil {
+		return x.Target
+	}
+	return ""
+}
+
+func (x *ListEmailsByCursorRequest) GetStartTime() int64 {
+	if x != nil {
+		return x.StartTime
+	}
+	return 0
+}
+
+func (x *ListEmailsByCursorRequest) GetEndTime() int64 {
+	if x != nil {
+		return x.EndTime
+	}
+	return 0
+}
+
+func (x *ListEmailsByCursorRequest) GetSortField() SortField {
+	if x != nil {
+		return x.SortField
+	}
+	return SortField_SORT_FIELD_UNSPECIFIED
+}
+
+func (x *ListEmailsByCursorRequest) GetSortDirection() SortDirection {
+	if x != nil {
+		return x.SortDirection
+	}
+	return SortDirection_SORT_DIRECTION_UNSPECIFIED
+}
+
+func (x *ListEmailsByCursorRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListEmailsByCursorRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListEmailsByCursorRequest) GetIncludeTotal() bool {
+	if x != nil {
+		return x.IncludeTotal
+	}
+	return false
+}
+
+type ListEmailsByCursorResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Records       []*EmailRecord         `protobuf:"bytes,1,rep,name=records,proto3" json:"records,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListEmailsByCursorResponse) Reset() {
+	*x = ListEmailsByCursorResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[163]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListEmailsByCursorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListEmailsByCursorResponse) ProtoMessage() {}
+
+func (x *ListEmailsByCursorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[163]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListEmailsByCursorResponse.ProtoReflect.Descriptor instead.
+func (*ListEmailsByCursorResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{163}
+}
+
+func (x *ListEmailsByCursorResponse) GetRecords() []*EmailRecord {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+func (x *ListEmailsByCursorResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListEmailsByCursorResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type ListSMSByCursorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vendor        SmsVendor              `protobuf:"varint,1,opt,name=vendor,proto3,enum=testkit.v1.SmsVendor" json:"vendor,omitempty"`
+	Scene         SmsScene               `protobuf:"varint,2,opt,name=scene,proto3,enum=testkit.v1.SmsScene" json:"scene,omitempty"`
+	Status        MessageStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=testkit.v1.MessageStatus" json:"status,omitempty"`
+	RegionCode    string                 `protobuf:"bytes,4,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone         string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
+	StartTime     int64                  `protobuf:"varint,6,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime       int64                  `protobuf:"varint,7,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	SortField     SortField              `protobuf:"varint,8,opt,name=sort_field,json=sortField,proto3,enum=testkit.v1.SortField" json:"sort_field,omitempty"`
+	SortDirection SortDirection          `protobuf:"varint,9,opt,name=sort_direction,json=sortDirection,proto3,enum=testkit.v1.SortDirection" json:"sort_direction,omitempty"`
+	PageSize      int32                  `protobuf:"varint,10,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,11,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	IncludeTotal  bool                   `protobuf:"varint,12,opt,name=include_total,json=includeTotal,proto3" json:"include_total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSByCursorRequest) Reset() {
+	*x = ListSMSByCursorRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[164]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSByCursorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSByCursorRequest) ProtoMessage() {}
+
+func (x *ListSMSByCursorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[164]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSByCursorRequest.ProtoReflect.Descriptor instead.
+func (*ListSMSByCursorRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{164}
+}
+
+func (x *ListSMSByCursorRequest) GetVendor() SmsVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return SmsVendor_SMS_VENDOR_UNSPECIFIED
+}
+
+func (x *ListSMSByCursorRequest) GetScene() SmsScene {
+	if x != nil {
+		return x.Scene
+	}
+	return SmsScene_SMS_SCENE_UNSPECIFIED
+}
+
+func (x *ListSMSByCursorRequest) GetStatus() MessageStatus {
+	if x != nil {
+		return x.Status
+	}
+	return MessageStatus_MESSAGE_STATUS_UNSPECIFIED
+}
+
+func (x *ListSMSByCursorRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *ListSMSByCursorRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *ListSMSByCursorRequest) GetStartTime() int64 {
+	if x != nil {
+		return x.StartTime
+	}
+	return 0
+}
+
+func (x *ListSMSByCursorRequest) GetEndTime() int64 {
+	if x != nil {
+		return x.EndTime
+	}
+	return 0
+}
+
+func (x *ListSMSByCursorRequest) GetSortField() SortField {
+	if x != nil {
+		return x.SortField
+	}
+	return SortField_SORT_FIELD_UNSPECIFIED
+}
+
+func (x *ListSMSByCursorRequest) GetSortDirection() SortDirection {
+	if x != nil {
+		return x.SortDirection
+	}
+	return SortDirection_SORT_DIRECTION_UNSPECIFIED
+}
+
+func (x *ListSMSByCursorRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListSMSByCursorRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListSMSByCursorRequest) GetIncludeTotal() bool {
+	if x != nil {
+		return x.IncludeTotal
+	}
+	return false
+}
+
+type ListSMSByCursorResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Records       []*SMSRecord           `protobuf:"bytes,1,rep,name=records,proto3" json:"records,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSByCursorResponse) Reset() {
+	*x = ListSMSByCursorResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[165]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSByCursorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSByCursorResponse) ProtoMessage() {}
+
+func (x *ListSMSByCursorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[165]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSByCursorResponse.ProtoReflect.Descriptor instead.
+func (*ListSMSByCursorResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{165}
+}
+
+func (x *ListSMSByCursorResponse) GetRecords() []*SMSRecord {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+func (x *ListSMSByCursorResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListSMSByCursorResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type GetEmailStatsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vendor        EmailVendor            `protobuf:"varint,1,opt,name=vendor,proto3,enum=testkit.v1.EmailVendor" json:"vendor,omitempty"`
+	Scene         EmailScene             `protobuf:"varint,2,opt,name=scene,proto3,enum=testkit.v1.EmailScene" json:"scene,omitempty"`
+	StartTime     int64                  `protobuf:"varint,3,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime       int64                  `protobuf:"varint,4,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetEmailStatsRequest) Reset() {
+	*x = GetEmailStatsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[166]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetEmailStatsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetEmailStatsRequest) ProtoMessage() {}
+
+func (x *GetEmailStatsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[166]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetEmailStatsRequest.ProtoReflect.Descriptor instead.
+func (*GetEmailStatsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{166}
+}
+
+func (x *GetEmailStatsRequest) GetVendor() EmailVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return EmailVendor_EMAIL_VENDOR_UNSPECIFIED
+}
+
+func (x *GetEmailStatsRequest) GetScene() EmailScene {
+	if x != nil {
+		return x.Scene
+	}
+	return EmailScene_EMAIL_SCENE_UNSPECIFIED
+}
+
+func (x *GetEmailStatsRequest) GetStartTime() int64 {
+	if x != nil {
+		return x.StartTime
+	}
+	return 0
+}
+
+func (x *GetEmailStatsRequest) GetEndTime() int64 {
+	if x != nil {
+		return x.EndTime
+	}
+	return 0
+}
+
+type EmailStatsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Total         int64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	Sent          int64                  `protobuf:"varint,2,opt,name=sent,proto3" json:"sent,omitempty"`
+	Failed        int64                  `protobuf:"varint,3,opt,name=failed,proto3" json:"failed,omitempty"`
+	SuccessRate   float64                `protobuf:"fixed64,4,opt,name=success_rate,json=successRate,proto3" json:"success_rate,omitempty"` // [0,100]; -1 = no data
+	Vendors       []*EmailVendorStats    `protobuf:"bytes,5,rep,name=vendors,proto3" json:"vendors,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmailStatsResponse) Reset() {
+	*x = EmailStatsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[167]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmailStatsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmailStatsResponse) ProtoMessage() {}
+
+func (x *EmailStatsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[167]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmailStatsResponse.ProtoReflect.Descriptor instead.
+func (*EmailStatsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{167}
+}
+
+func (x *EmailStatsResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *EmailStatsResponse) GetSent() int64 {
+	if x != nil {
+		return x.Sent
+	}
+	return 0
+}
+
+func (x *EmailStatsResponse) GetFailed() int64 {
+	if x != nil {
+		return x.Failed
+	}
+	return 0
+}
+
+func (x *EmailStatsResponse) GetSuccessRate() float64 {
+	if x != nil {
+		return x.SuccessRate
+	}
+	return 0
+}
+
+func (x *EmailStatsResponse) GetVendors() []*EmailVendorStats {
+	if x != nil {
+		return x.Vendors
+	}
+	return nil
+}
+
+type GetSMSStatsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vendor        SmsVendor              `protobuf:"varint,1,opt,name=vendor,proto3,enum=testkit.v1.SmsVendor" json:"vendor,omitempty"`
+	Scene         SmsScene               `protobuf:"varint,2,opt,name=scene,proto3,enum=testkit.v1.SmsScene" json:"scene,omitempty"`
+	StartTime     int64                  `protobuf:"varint,3,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime       int64                  `protobuf:"varint,4,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSMSStatsRequest) Reset() {
+	*x = GetSMSStatsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[168]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSMSStatsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSMSStatsRequest) ProtoMessage() {}
+
+func (x *GetSMSStatsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[168]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSMSStatsRequest.ProtoReflect.Descriptor instead.
+func (*GetSMSStatsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{168}
+}
+
+func (x *GetSMSStatsRequest) GetVendor() SmsVendor {
+	if x != nil {
+		return x.Vendor
+	}
+	return SmsVendor_SMS_VENDOR_UNSPECIFIED
+}
+
+func (x *GetSMSStatsRequest) GetScene() SmsScene {
+	if x != nil {
+		return x.Scene
+	}
+	return SmsScene_SMS_SCENE_UNSPECIFIED
+}
+
+func (x *GetSMSStatsRequest) GetStartTime() int64 {
+	if x != nil {
+		return x.StartTime
+	}
+	return 0
+}
+
+func (x *GetSMSStatsRequest) GetEndTime() int64 {
+	if x != nil {
+		return x.EndTime
+	}
+	return 0
+}
+
+type SMSStatsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Total         int64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	Sent          int64                  `protobuf:"varint,2,opt,name=sent,proto3" json:"sent,omitempty"`
+	Failed        int64                  `protobuf:"varint,3,opt,name=failed,proto3" json:"failed,omitempty"`
+	SuccessRate   float64                `protobuf:"fixed64,4,opt,name=success_rate,json=successRate,proto3" json:"success_rate,omitempty"`
+	Vendors       []*SmsVendorStats      `protobuf:"bytes,5,rep,name=vendors,proto3" json:"vendors,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SMSStatsResponse) Reset() {
+	*x = SMSStatsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[169]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SMSStatsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SMSStatsResponse) ProtoMessage() {}
+
+func (x *SMSStatsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[169]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SMSStatsResponse.ProtoReflect.Descriptor instead.
+func (*SMSStatsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{169}
+}
+
+func (x *SMSStatsResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *SMSStatsResponse) GetSent() int64 {
+	if x != nil {
+		return x.Sent
+	}
+	return 0
+}
+
+func (x *SMSStatsResponse) GetFailed() int64 {
+	if x != nil {
+		return x.Failed
+	}
+	return 0
+}
+
+func (x *SMSStatsResponse) GetSuccessRate() float64 {
+	if x != nil {
+		return x.SuccessRate
+	}
+	return 0
+}
+
+func (x *SMSStatsResponse) GetVendors() []*SmsVendorStats {
+	if x != nil {
+		return x.Vendors
+	}
+	return nil
+}
+
+type ListEmailSendersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListEmailSendersRequest) Reset() {
+	*x = ListEmailSendersRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[170]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListEmailSendersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListEmailSendersRequest) ProtoMessage() {}
+
+func (x *ListEmailSendersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[170]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListEmailSendersRequest.ProtoReflect.Descriptor instead.
+func (*ListEmailSendersRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{170}
+}
+
+type ListEmailSendersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SenderIds     []string               `protobuf:"bytes,1,rep,name=sender_ids,json=senderIds,proto3" json:"sender_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListEmailSendersResponse) Reset() {
+	*x = ListEmailSendersResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[171]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListEmailSendersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListEmailSendersResponse) ProtoMessage() {}
+
+func (x *ListEmailSendersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[171]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListEmailSendersResponse.ProtoReflect.Descriptor instead.
+func (*ListEmailSendersResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{171}
+}
+
+func (x *ListEmailSendersResponse) GetSenderIds() []string {
+	if x != nil {
+		return x.SenderIds
+	}
+	return nil
+}
+
+type ListSMSSendersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSSendersRequest) Reset() {
+	*x = ListSMSSendersRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[172]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSSendersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSSendersRequest) ProtoMessage() {}
+
+func (x *ListSMSSendersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[172]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSSendersRequest.ProtoReflect.Descriptor instead.
+func (*ListSMSSendersRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{172}
+}
+
+type ListSMSSendersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SenderIds     []string               `protobuf:"bytes,1,rep,name=sender_ids,json=senderIds,proto3" json:"sender_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSSendersResponse) Reset() {
+	*x = ListSMSSendersResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[173]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSSendersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSSendersResponse) ProtoMessage() {}
+
+func (x *ListSMSSendersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[173]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSSendersResponse.ProtoReflect.Descriptor instead.
+func (*ListSMSSendersResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{173}
+}
+
+func (x *ListSMSSendersResponse) GetSenderIds() []string {
+	if x != nil {
+		return x.SenderIds
+	}
+	return nil
+}
+
+type ListSMSRegionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSRegionsRequest) Reset() {
+	*x = ListSMSRegionsRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[174]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSRegionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSRegionsRequest) ProtoMessage() {}
+
+func (x *ListSMSRegionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[174]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSRegionsRequest.ProtoReflect.Descriptor instead.
+func (*ListSMSRegionsRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{174}
+}
+
+type ListSMSRegionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RegionCodes   []string               `protobuf:"bytes,1,rep,name=region_codes,json=regionCodes,proto3" json:"region_codes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSRegionsResponse) Reset() {
+	*x = ListSMSRegionsResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[175]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSRegionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSRegionsResponse) ProtoMessage() {}
+
+func (x *ListSMSRegionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[175]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSRegionsResponse.ProtoReflect.Descriptor instead.
+func (*ListSMSRegionsResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{175}
+}
+
+func (x *ListSMSRegionsResponse) GetRegionCodes() []string {
+	if x != nil {
+		return x.RegionCodes
+	}
+	return nil
+}
+
 var File_testkit_v1_testkit_proto protoreflect.FileDescriptor
 
 const file_testkit_v1_testkit_proto_rawDesc = "" +
@@ -12529,7 +15224,255 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x04logs\x18\x01 \x03(\v2\x19.testkit.v1.AuditLogEntryR\x04logs\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12&\n" +
-	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken*\xcb\x01\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"P\n" +
+	"\fEmailAddress\x12\x1d\n" +
+	"\x05email\x18\x01 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12!\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\"\xb6\x01\n" +
+	"\x0fEmailAttachment\x12#\n" +
+	"\bfilename\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bfilename\x12\x10\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url\x12\x18\n" +
+	"\acontent\x18\x03 \x01(\fR\acontent\x12\x16\n" +
+	"\x06inline\x18\x04 \x01(\bR\x06inline\x12\x1b\n" +
+	"\tmime_type\x18\x05 \x01(\tR\bmimeType\x12\x1d\n" +
+	"\n" +
+	"size_bytes\x18\x06 \x01(\x03R\tsizeBytes\"\x85\x01\n" +
+	"\x10EmailVendorStats\x12/\n" +
+	"\x06vendor\x18\x01 \x01(\x0e2\x17.testkit.v1.EmailVendorR\x06vendor\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x12\n" +
+	"\x04sent\x18\x03 \x01(\x03R\x04sent\x12\x16\n" +
+	"\x06failed\x18\x04 \x01(\x03R\x06failed\"\x81\x01\n" +
+	"\x0eSmsVendorStats\x12-\n" +
+	"\x06vendor\x18\x01 \x01(\x0e2\x15.testkit.v1.SmsVendorR\x06vendor\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x12\n" +
+	"\x04sent\x18\x03 \x01(\x03R\x04sent\x12\x16\n" +
+	"\x06failed\x18\x04 \x01(\x03R\x06failed\"\xdd\a\n" +
+	"\x10SendEmailRequest\x122\n" +
+	"\x02to\x18\x01 \x03(\v2\x18.testkit.v1.EmailAddressB\b\xbaH\x05\x92\x01\x02\b\x01R\x02to\x12(\n" +
+	"\x02cc\x18\x02 \x03(\v2\x18.testkit.v1.EmailAddressR\x02cc\x12*\n" +
+	"\x03bcc\x18\x03 \x03(\v2\x18.testkit.v1.EmailAddressR\x03bcc\x12!\n" +
+	"\asubject\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\asubject\x12\x12\n" +
+	"\x04body\x18\x05 \x01(\tR\x04body\x12\x1b\n" +
+	"\thtml_body\x18\x06 \x01(\tR\bhtmlBody\x123\n" +
+	"\breply_to\x18\a \x01(\v2\x18.testkit.v1.EmailAddressR\areplyTo\x12/\n" +
+	"\x06vendor\x18\b \x01(\x0e2\x17.testkit.v1.EmailVendorR\x06vendor\x12\x18\n" +
+	"\aaccount\x18\t \x01(\tR\aaccount\x12\x1f\n" +
+	"\vtemplate_id\x18\n" +
+	" \x01(\tR\n" +
+	"templateId\x12Y\n" +
+	"\x0ftemplate_params\x18\v \x03(\v20.testkit.v1.SendEmailRequest.TemplateParamsEntryR\x0etemplateParams\x12,\n" +
+	"\x05scene\x18\f \x01(\x0e2\x16.testkit.v1.EmailSceneR\x05scene\x120\n" +
+	"\x0fidempotency_key\x18\r \x01(\tB\a\xbaH\x04r\x02\x18@R\x0eidempotencyKey\x12,\n" +
+	"\x04from\x18\x0e \x01(\v2\x18.testkit.v1.EmailAddressR\x04from\x12=\n" +
+	"\vattachments\x18\x0f \x03(\v2\x1b.testkit.v1.EmailAttachmentR\vattachments\x1aA\n" +
+	"\x13TemplateParamsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xde\x01\xbaH\xda\x01\x1a\xa1\x01\n" +
+	"\x13vendor_account_pair\x124vendor and account must both be set or both be empty\x1aT(this.vendor == 0 && this.account == '') || (this.vendor != 0 && this.account != '')\x1a4\n" +
+	"\x0escene_required\x12\x11scene is required\x1a\x0fthis.scene != 0\"\xb5\x06\n" +
+	"\x0eSendSMSRequest\x122\n" +
+	"\vregion_code\x18\x01 \x01(\tB\x11\xbaH\x0er\f2\n" +
+	"^[A-Z]{2}$R\n" +
+	"regionCode\x12\x1d\n" +
+	"\x05phone\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x05phone\x12\x18\n" +
+	"\acontent\x18\x03 \x01(\tR\acontent\x12\x1f\n" +
+	"\vtemplate_id\x18\x04 \x01(\tR\n" +
+	"templateId\x12W\n" +
+	"\x0ftemplate_params\x18\x05 \x03(\v2..testkit.v1.SendSMSRequest.TemplateParamsEntryR\x0etemplateParams\x12-\n" +
+	"\x06vendor\x18\x06 \x01(\x0e2\x15.testkit.v1.SmsVendorR\x06vendor\x12\x18\n" +
+	"\aaccount\x18\a \x01(\tR\aaccount\x12*\n" +
+	"\x05scene\x18\b \x01(\x0e2\x14.testkit.v1.SmsSceneR\x05scene\x120\n" +
+	"\x0fidempotency_key\x18\t \x01(\tB\a\xbaH\x04r\x02\x18@R\x0eidempotencyKey\x12$\n" +
+	"\tsign_name\x18\n" +
+	" \x01(\tB\a\xbaH\x04r\x02\x18@R\bsignName\x1aA\n" +
+	"\x13TemplateParamsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xab\x02\xbaH\xa7\x02\x1a\xa1\x01\n" +
+	"\x13vendor_account_pair\x124vendor and account must both be set or both be empty\x1aT(this.vendor == 0 && this.account == '') || (this.vendor != 0 && this.account != '')\x1a4\n" +
+	"\x0escene_required\x12\x11scene is required\x1a\x0fthis.scene != 0\x1aK\n" +
+	"\rphone_no_plus\x12\x1dphone must not start with '+'\x1a\x1b!this.phone.startsWith('+')\"\xc3\x01\n" +
+	"\fSendResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x121\n" +
+	"\x06status\x18\x02 \x01(\x0e2\x19.testkit.v1.MessageStatusR\x06status\x12:\n" +
+	"\femail_vendor\x18\x03 \x01(\x0e2\x17.testkit.v1.EmailVendorR\vemailVendor\x124\n" +
+	"\n" +
+	"sms_vendor\x18\x04 \x01(\x0e2\x15.testkit.v1.SmsVendorR\tsmsVendor\"\x85\a\n" +
+	"\vEmailRecord\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12/\n" +
+	"\x06vendor\x18\x02 \x01(\x0e2\x17.testkit.v1.EmailVendorR\x06vendor\x12\x18\n" +
+	"\aaccount\x18\x03 \x01(\tR\aaccount\x12,\n" +
+	"\x05scene\x18\x04 \x01(\x0e2\x16.testkit.v1.EmailSceneR\x05scene\x121\n" +
+	"\x06status\x18\x05 \x01(\x0e2\x19.testkit.v1.MessageStatusR\x06status\x120\n" +
+	"\x06target\x18\x06 \x01(\v2\x18.testkit.v1.EmailAddressR\x06target\x12\x1b\n" +
+	"\tsender_id\x18\a \x01(\tR\bsenderId\x12(\n" +
+	"\x02cc\x18\b \x03(\v2\x18.testkit.v1.EmailAddressR\x02cc\x12*\n" +
+	"\x03bcc\x18\t \x03(\v2\x18.testkit.v1.EmailAddressR\x03bcc\x12\x18\n" +
+	"\asubject\x18\n" +
+	" \x01(\tR\asubject\x12\x18\n" +
+	"\acontent\x18\v \x01(\tR\acontent\x12\x1b\n" +
+	"\thtml_body\x18\f \x01(\tR\bhtmlBody\x123\n" +
+	"\breply_to\x18\r \x01(\v2\x18.testkit.v1.EmailAddressR\areplyTo\x12\x1f\n" +
+	"\vtemplate_id\x18\x0e \x01(\tR\n" +
+	"templateId\x12T\n" +
+	"\x0ftemplate_params\x18\x0f \x03(\v2+.testkit.v1.EmailRecord.TemplateParamsEntryR\x0etemplateParams\x12#\n" +
+	"\rerror_message\x18\x10 \x01(\tR\ferrorMessage\x12\x1a\n" +
+	"\battempts\x18\x11 \x01(\x05R\battempts\x12\x17\n" +
+	"\asent_at\x18\x12 \x01(\x03R\x06sentAt\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x13 \x01(\x03R\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x14 \x01(\x03R\tupdatedAt\x12=\n" +
+	"\vattachments\x18\x15 \x03(\v2\x1b.testkit.v1.EmailAttachmentR\vattachments\x1aA\n" +
+	"\x13TemplateParamsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x81\x05\n" +
+	"\tSMSRecord\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12-\n" +
+	"\x06vendor\x18\x02 \x01(\x0e2\x15.testkit.v1.SmsVendorR\x06vendor\x12\x18\n" +
+	"\aaccount\x18\x03 \x01(\tR\aaccount\x12*\n" +
+	"\x05scene\x18\x04 \x01(\x0e2\x14.testkit.v1.SmsSceneR\x05scene\x121\n" +
+	"\x06status\x18\x05 \x01(\x0e2\x19.testkit.v1.MessageStatusR\x06status\x12\x1f\n" +
+	"\vregion_code\x18\x06 \x01(\tR\n" +
+	"regionCode\x12\x14\n" +
+	"\x05phone\x18\a \x01(\tR\x05phone\x12\x1b\n" +
+	"\tsender_id\x18\b \x01(\tR\bsenderId\x12\x18\n" +
+	"\acontent\x18\t \x01(\tR\acontent\x12\x1f\n" +
+	"\vtemplate_id\x18\n" +
+	" \x01(\tR\n" +
+	"templateId\x12R\n" +
+	"\x0ftemplate_params\x18\v \x03(\v2).testkit.v1.SMSRecord.TemplateParamsEntryR\x0etemplateParams\x12#\n" +
+	"\rerror_message\x18\f \x01(\tR\ferrorMessage\x12\x1a\n" +
+	"\battempts\x18\r \x01(\x05R\battempts\x12\x17\n" +
+	"\asent_at\x18\x0e \x01(\x03R\x06sentAt\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x0f \x01(\x03R\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x10 \x01(\x03R\tupdatedAt\x1aA\n" +
+	"\x13TemplateParamsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"*\n" +
+	"\x0fGetEmailRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"(\n" +
+	"\rGetSMSRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"\xa0\x03\n" +
+	"\x11ListEmailsRequest\x12/\n" +
+	"\x06vendor\x18\x01 \x01(\x0e2\x17.testkit.v1.EmailVendorR\x06vendor\x12,\n" +
+	"\x05scene\x18\x02 \x01(\x0e2\x16.testkit.v1.EmailSceneR\x05scene\x121\n" +
+	"\x06status\x18\x03 \x01(\x0e2\x19.testkit.v1.MessageStatusR\x06status\x12\x16\n" +
+	"\x06target\x18\x04 \x01(\tR\x06target\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\x05 \x01(\x03R\tstartTime\x12\x19\n" +
+	"\bend_time\x18\x06 \x01(\x03R\aendTime\x12\x12\n" +
+	"\x04page\x18\a \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\b \x01(\x05R\bpageSize\x124\n" +
+	"\n" +
+	"sort_field\x18\t \x01(\x0e2\x15.testkit.v1.SortFieldR\tsortField\x12@\n" +
+	"\x0esort_direction\x18\n" +
+	" \x01(\x0e2\x19.testkit.v1.SortDirectionR\rsortDirection\"\x99\x01\n" +
+	"\x12ListEmailsResponse\x121\n" +
+	"\arecords\x18\x01 \x03(\v2\x17.testkit.v1.EmailRecordR\arecords\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x1f\n" +
+	"\vtotal_pages\x18\x03 \x01(\x05R\n" +
+	"totalPages\x12\x19\n" +
+	"\bhas_more\x18\x04 \x01(\bR\ahasMore\"\xb8\x03\n" +
+	"\x0eListSMSRequest\x12-\n" +
+	"\x06vendor\x18\x01 \x01(\x0e2\x15.testkit.v1.SmsVendorR\x06vendor\x12*\n" +
+	"\x05scene\x18\x02 \x01(\x0e2\x14.testkit.v1.SmsSceneR\x05scene\x121\n" +
+	"\x06status\x18\x03 \x01(\x0e2\x19.testkit.v1.MessageStatusR\x06status\x12\x1f\n" +
+	"\vregion_code\x18\x04 \x01(\tR\n" +
+	"regionCode\x12\x14\n" +
+	"\x05phone\x18\x05 \x01(\tR\x05phone\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\x06 \x01(\x03R\tstartTime\x12\x19\n" +
+	"\bend_time\x18\a \x01(\x03R\aendTime\x12\x12\n" +
+	"\x04page\x18\b \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\t \x01(\x05R\bpageSize\x124\n" +
+	"\n" +
+	"sort_field\x18\n" +
+	" \x01(\x0e2\x15.testkit.v1.SortFieldR\tsortField\x12@\n" +
+	"\x0esort_direction\x18\v \x01(\x0e2\x19.testkit.v1.SortDirectionR\rsortDirection\"\x94\x01\n" +
+	"\x0fListSMSResponse\x12/\n" +
+	"\arecords\x18\x01 \x03(\v2\x15.testkit.v1.SMSRecordR\arecords\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x1f\n" +
+	"\vtotal_pages\x18\x03 \x01(\x05R\n" +
+	"totalPages\x12\x19\n" +
+	"\bhas_more\x18\x04 \x01(\bR\ahasMore\"\xd8\x03\n" +
+	"\x19ListEmailsByCursorRequest\x12/\n" +
+	"\x06vendor\x18\x01 \x01(\x0e2\x17.testkit.v1.EmailVendorR\x06vendor\x12,\n" +
+	"\x05scene\x18\x02 \x01(\x0e2\x16.testkit.v1.EmailSceneR\x05scene\x121\n" +
+	"\x06status\x18\x03 \x01(\x0e2\x19.testkit.v1.MessageStatusR\x06status\x12\x16\n" +
+	"\x06target\x18\x04 \x01(\tR\x06target\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\x05 \x01(\x03R\tstartTime\x12\x19\n" +
+	"\bend_time\x18\x06 \x01(\x03R\aendTime\x124\n" +
+	"\n" +
+	"sort_field\x18\a \x01(\x0e2\x15.testkit.v1.SortFieldR\tsortField\x12@\n" +
+	"\x0esort_direction\x18\b \x01(\x0e2\x19.testkit.v1.SortDirectionR\rsortDirection\x12\x1b\n" +
+	"\tpage_size\x18\t \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\n" +
+	" \x01(\tR\tpageToken\x12#\n" +
+	"\rinclude_total\x18\v \x01(\bR\fincludeTotal\"\x8d\x01\n" +
+	"\x1aListEmailsByCursorResponse\x121\n" +
+	"\arecords\x18\x01 \x03(\v2\x17.testkit.v1.EmailRecordR\arecords\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12&\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"\xf0\x03\n" +
+	"\x16ListSMSByCursorRequest\x12-\n" +
+	"\x06vendor\x18\x01 \x01(\x0e2\x15.testkit.v1.SmsVendorR\x06vendor\x12*\n" +
+	"\x05scene\x18\x02 \x01(\x0e2\x14.testkit.v1.SmsSceneR\x05scene\x121\n" +
+	"\x06status\x18\x03 \x01(\x0e2\x19.testkit.v1.MessageStatusR\x06status\x12\x1f\n" +
+	"\vregion_code\x18\x04 \x01(\tR\n" +
+	"regionCode\x12\x14\n" +
+	"\x05phone\x18\x05 \x01(\tR\x05phone\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\x06 \x01(\x03R\tstartTime\x12\x19\n" +
+	"\bend_time\x18\a \x01(\x03R\aendTime\x124\n" +
+	"\n" +
+	"sort_field\x18\b \x01(\x0e2\x15.testkit.v1.SortFieldR\tsortField\x12@\n" +
+	"\x0esort_direction\x18\t \x01(\x0e2\x19.testkit.v1.SortDirectionR\rsortDirection\x12\x1b\n" +
+	"\tpage_size\x18\n" +
+	" \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\v \x01(\tR\tpageToken\x12#\n" +
+	"\rinclude_total\x18\f \x01(\bR\fincludeTotal\"\x88\x01\n" +
+	"\x17ListSMSByCursorResponse\x12/\n" +
+	"\arecords\x18\x01 \x03(\v2\x15.testkit.v1.SMSRecordR\arecords\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12&\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"\xaf\x01\n" +
+	"\x14GetEmailStatsRequest\x12/\n" +
+	"\x06vendor\x18\x01 \x01(\x0e2\x17.testkit.v1.EmailVendorR\x06vendor\x12,\n" +
+	"\x05scene\x18\x02 \x01(\x0e2\x16.testkit.v1.EmailSceneR\x05scene\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\x03 \x01(\x03R\tstartTime\x12\x19\n" +
+	"\bend_time\x18\x04 \x01(\x03R\aendTime\"\xb1\x01\n" +
+	"\x12EmailStatsResponse\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\x12\x12\n" +
+	"\x04sent\x18\x02 \x01(\x03R\x04sent\x12\x16\n" +
+	"\x06failed\x18\x03 \x01(\x03R\x06failed\x12!\n" +
+	"\fsuccess_rate\x18\x04 \x01(\x01R\vsuccessRate\x126\n" +
+	"\avendors\x18\x05 \x03(\v2\x1c.testkit.v1.EmailVendorStatsR\avendors\"\xa9\x01\n" +
+	"\x12GetSMSStatsRequest\x12-\n" +
+	"\x06vendor\x18\x01 \x01(\x0e2\x15.testkit.v1.SmsVendorR\x06vendor\x12*\n" +
+	"\x05scene\x18\x02 \x01(\x0e2\x14.testkit.v1.SmsSceneR\x05scene\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\x03 \x01(\x03R\tstartTime\x12\x19\n" +
+	"\bend_time\x18\x04 \x01(\x03R\aendTime\"\xad\x01\n" +
+	"\x10SMSStatsResponse\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\x12\x12\n" +
+	"\x04sent\x18\x02 \x01(\x03R\x04sent\x12\x16\n" +
+	"\x06failed\x18\x03 \x01(\x03R\x06failed\x12!\n" +
+	"\fsuccess_rate\x18\x04 \x01(\x01R\vsuccessRate\x124\n" +
+	"\avendors\x18\x05 \x03(\v2\x1a.testkit.v1.SmsVendorStatsR\avendors\"\x19\n" +
+	"\x17ListEmailSendersRequest\"9\n" +
+	"\x18ListEmailSendersResponse\x12\x1d\n" +
+	"\n" +
+	"sender_ids\x18\x01 \x03(\tR\tsenderIds\"\x17\n" +
+	"\x15ListSMSSendersRequest\"7\n" +
+	"\x16ListSMSSendersResponse\x12\x1d\n" +
+	"\n" +
+	"sender_ids\x18\x01 \x03(\tR\tsenderIds\"\x17\n" +
+	"\x15ListSMSRegionsRequest\";\n" +
+	"\x16ListSMSRegionsResponse\x12!\n" +
+	"\fregion_codes\x18\x01 \x03(\tR\vregionCodes*\xcb\x01\n" +
 	"\vLoginMethod\x12\x1c\n" +
 	"\x18LOGIN_METHOD_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bLOGIN_METHOD_EMAIL_PASSWORD\x10\x01\x12\x1f\n" +
@@ -12680,7 +15623,46 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x1aIMAGE_PROCESS_TYPE_QUALITY\x10\x03\x12\x1d\n" +
 	"\x19IMAGE_PROCESS_TYPE_FORMAT\x10\x04\x12 \n" +
 	"\x1cIMAGE_PROCESS_TYPE_WATERMARK\x10\x05\x12\x1d\n" +
-	"\x19IMAGE_PROCESS_TYPE_ROTATE\x10\x062\xf0R\n" +
+	"\x19IMAGE_PROCESS_TYPE_ROTATE\x10\x06*`\n" +
+	"\rSortDirection\x12\x1e\n" +
+	"\x1aSORT_DIRECTION_UNSPECIFIED\x10\x00\x12\x16\n" +
+	"\x12SORT_DIRECTION_ASC\x10\x01\x12\x17\n" +
+	"\x13SORT_DIRECTION_DESC\x10\x02*\x7f\n" +
+	"\rMessageStatus\x12\x1e\n" +
+	"\x1aMESSAGE_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16MESSAGE_STATUS_PENDING\x10\x01\x12\x17\n" +
+	"\x13MESSAGE_STATUS_SENT\x10\x02\x12\x19\n" +
+	"\x15MESSAGE_STATUS_FAILED\x10\x03*x\n" +
+	"\vEmailVendor\x12\x1c\n" +
+	"\x18EMAIL_VENDOR_UNSPECIFIED\x10\x00\x12\x17\n" +
+	"\x13EMAIL_VENDOR_ALIYUN\x10\x01\x12\x18\n" +
+	"\x14EMAIL_VENDOR_TENCENT\x10\x02\x12\x18\n" +
+	"\x14EMAIL_VENDOR_NETEASE\x10\x03*\xa1\x01\n" +
+	"\tSmsVendor\x12\x1a\n" +
+	"\x16SMS_VENDOR_UNSPECIFIED\x10\x00\x12\x15\n" +
+	"\x11SMS_VENDOR_ALIYUN\x10\x01\x12\x16\n" +
+	"\x12SMS_VENDOR_TENCENT\x10\x02\x12\x19\n" +
+	"\x15SMS_VENDOR_VOLCENGINE\x10\x03\x12\x17\n" +
+	"\x13SMS_VENDOR_BYTEPLUS\x10\x04\x12\x15\n" +
+	"\x11SMS_VENDOR_HUAWEI\x10\x05*\xfb\x01\n" +
+	"\n" +
+	"EmailScene\x12\x1b\n" +
+	"\x17EMAIL_SCENE_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16EMAIL_SCENE_LOGIN_CODE\x10\x01\x12\x1f\n" +
+	"\x1bEMAIL_SCENE_FORGOT_PASSWORD\x10\x02\x12\x18\n" +
+	"\x14EMAIL_SCENE_REGISTER\x10\x03\x12\x1f\n" +
+	"\x1bEMAIL_SCENE_CHANGE_PASSWORD\x10\x04\x12\x1c\n" +
+	"\x18EMAIL_SCENE_BIND_ACCOUNT\x10\x05\x12\x1c\n" +
+	"\x18EMAIL_SCENE_NOTIFICATION\x10\x06\x12\x1c\n" +
+	"\x18EMAIL_SCENE_VERIFY_EMAIL\x10\a*\xcd\x01\n" +
+	"\bSmsScene\x12\x19\n" +
+	"\x15SMS_SCENE_UNSPECIFIED\x10\x00\x12\x18\n" +
+	"\x14SMS_SCENE_LOGIN_CODE\x10\x01\x12\x1d\n" +
+	"\x19SMS_SCENE_FORGOT_PASSWORD\x10\x02\x12\x16\n" +
+	"\x12SMS_SCENE_REGISTER\x10\x03\x12\x1d\n" +
+	"\x19SMS_SCENE_CHANGE_PASSWORD\x10\x04\x12\x1a\n" +
+	"\x16SMS_SCENE_BIND_ACCOUNT\x10\x05\x12\x1a\n" +
+	"\x16SMS_SCENE_VERIFY_PHONE\x10\x062\xee]\n" +
 	"\x0eTestkitService\x12?\n" +
 	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x10.testkit.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/ping\x12[\n" +
 	"\x05Login\x12\x18.testkit.v1.LoginRequest\x1a\x19.testkit.v1.TokenResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/auth/login\x12d\n" +
@@ -12779,7 +15761,21 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x10AdminListBuckets\x12\x16.google.protobuf.Empty\x1a$.testkit.v1.AdminListBucketsResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/admin/storage/buckets\x12\xb1\x01\n" +
 	"\x19AdminSoftDeleteOwnerFiles\x12,.testkit.v1.AdminSoftDeleteOwnerFilesRequest\x1a-.testkit.v1.AdminSoftDeleteOwnerFilesResponse\"7\x82\xd3\xe4\x93\x021:\x01*\",/api/v1/admin/storage/owners:softDeleteFiles\x12\x8d\x01\n" +
 	"\x10AdminDeleteOwner\x12#.testkit.v1.AdminDeleteOwnerRequest\x1a$.testkit.v1.AdminDeleteOwnerResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/api/v1/admin/storage/owners:delete\x12\x85\x01\n" +
-	"\x12AdminListAuditLogs\x12%.testkit.v1.AdminListAuditLogsRequest\x1a&.testkit.v1.AdminListAuditLogsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/admin/audit-logsB\xa5\x01\n" +
+	"\x12AdminListAuditLogs\x12%.testkit.v1.AdminListAuditLogsRequest\x1a&.testkit.v1.AdminListAuditLogsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/admin/audit-logs\x12f\n" +
+	"\tSendEmail\x12\x1c.testkit.v1.SendEmailRequest\x1a\x18.testkit.v1.SendResponse\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/api/v1/messages:email\x12`\n" +
+	"\aSendSMS\x12\x1a.testkit.v1.SendSMSRequest\x1a\x18.testkit.v1.SendResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/messages:sms\x12]\n" +
+	"\bGetEmail\x12\x1b.testkit.v1.GetEmailRequest\x1a\x17.testkit.v1.EmailRecord\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/emails/{id}\x12c\n" +
+	"\n" +
+	"ListEmails\x12\x1d.testkit.v1.ListEmailsRequest\x1a\x1e.testkit.v1.ListEmailsResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/api/v1/emails\x12\x82\x01\n" +
+	"\x12ListEmailsByCursor\x12%.testkit.v1.ListEmailsByCursorRequest\x1a&.testkit.v1.ListEmailsByCursorResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/api/v1/emails:cursor\x12o\n" +
+	"\rGetEmailStats\x12 .testkit.v1.GetEmailStatsRequest\x1a\x1e.testkit.v1.EmailStatsResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/v1/emails:stats\x12}\n" +
+	"\x10ListEmailSenders\x12#.testkit.v1.ListEmailSendersRequest\x1a$.testkit.v1.ListEmailSendersResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/api/v1/emails:senders\x12T\n" +
+	"\x06GetSMS\x12\x19.testkit.v1.GetSMSRequest\x1a\x15.testkit.v1.SMSRecord\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/sms/{id}\x12W\n" +
+	"\aListSMS\x12\x1a.testkit.v1.ListSMSRequest\x1a\x1b.testkit.v1.ListSMSResponse\"\x13\x82\xd3\xe4\x93\x02\r\x12\v/api/v1/sms\x12v\n" +
+	"\x0fListSMSByCursor\x12\".testkit.v1.ListSMSByCursorRequest\x1a#.testkit.v1.ListSMSByCursorResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/sms:cursor\x12f\n" +
+	"\vGetSMSStats\x12\x1e.testkit.v1.GetSMSStatsRequest\x1a\x1c.testkit.v1.SMSStatsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/api/v1/sms:stats\x12t\n" +
+	"\x0eListSMSRegions\x12!.testkit.v1.ListSMSRegionsRequest\x1a\".testkit.v1.ListSMSRegionsResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/sms:regions\x12t\n" +
+	"\x0eListSMSSenders\x12!.testkit.v1.ListSMSSendersRequest\x1a\".testkit.v1.ListSMSSendersResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/sms:sendersB\xa5\x01\n" +
 	"\x0ecom.testkit.v1B\fTestkitProtoP\x01Z<github.com/servekit/testkit-service/gen/testkit/v1;testkitv1\xa2\x02\x03TXX\xaa\x02\n" +
 	"Testkit.V1\xca\x02\n" +
 	"Testkit\\V1\xe2\x02\x16Testkit\\V1\\GPBMetadata\xea\x02\vTestkit::V1b\x06proto3"
@@ -12796,8 +15792,8 @@ func file_testkit_v1_testkit_proto_rawDescGZIP() []byte {
 	return file_testkit_v1_testkit_proto_rawDescData
 }
 
-var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 22)
-var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 154)
+var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 28)
+var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 187)
 var file_testkit_v1_testkit_proto_goTypes = []any{
 	(LoginMethod)(0),                          // 0: testkit.v1.LoginMethod
 	(IdentityProvider)(0),                     // 1: testkit.v1.IdentityProvider
@@ -12821,164 +15817,203 @@ var file_testkit_v1_testkit_proto_goTypes = []any{
 	(AuditLogStatus)(0),                       // 19: testkit.v1.AuditLogStatus
 	(AuditLogTargetType)(0),                   // 20: testkit.v1.AuditLogTargetType
 	(ImageProcessType)(0),                     // 21: testkit.v1.ImageProcessType
-	(*Pong)(nil),                              // 22: testkit.v1.Pong
-	(*LoginRequest)(nil),                      // 23: testkit.v1.LoginRequest
-	(*RegisterRequest)(nil),                   // 24: testkit.v1.RegisterRequest
-	(*SendVerificationCodeRequest)(nil),       // 25: testkit.v1.SendVerificationCodeRequest
-	(*SendVerificationCodeResponse)(nil),      // 26: testkit.v1.SendVerificationCodeResponse
-	(*RefreshSessionRequest)(nil),             // 27: testkit.v1.RefreshSessionRequest
-	(*User)(nil),                              // 28: testkit.v1.User
-	(*Identity)(nil),                          // 29: testkit.v1.Identity
-	(*Session)(nil),                           // 30: testkit.v1.Session
-	(*Group)(nil),                             // 31: testkit.v1.Group
-	(*Role)(nil),                              // 32: testkit.v1.Role
-	(*Permission)(nil),                        // 33: testkit.v1.Permission
-	(*PermissionGroup)(nil),                   // 34: testkit.v1.PermissionGroup
-	(*GroupMember)(nil),                       // 35: testkit.v1.GroupMember
-	(*LoginLog)(nil),                          // 36: testkit.v1.LoginLog
-	(*UserRole)(nil),                          // 37: testkit.v1.UserRole
-	(*TokenResponse)(nil),                     // 38: testkit.v1.TokenResponse
-	(*GetProfileRequest)(nil),                 // 39: testkit.v1.GetProfileRequest
-	(*UpdateProfileRequest)(nil),              // 40: testkit.v1.UpdateProfileRequest
-	(*ChangePasswordRequest)(nil),             // 41: testkit.v1.ChangePasswordRequest
-	(*ResetPasswordRequest)(nil),              // 42: testkit.v1.ResetPasswordRequest
-	(*ListIdentitiesRequest)(nil),             // 43: testkit.v1.ListIdentitiesRequest
-	(*ListIdentitiesResponse)(nil),            // 44: testkit.v1.ListIdentitiesResponse
-	(*BindIdentityRequest)(nil),               // 45: testkit.v1.BindIdentityRequest
-	(*BindOAuthIdentityRequest)(nil),          // 46: testkit.v1.BindOAuthIdentityRequest
-	(*BindOAuthIdentityResponse)(nil),         // 47: testkit.v1.BindOAuthIdentityResponse
-	(*UnbindIdentityRequest)(nil),             // 48: testkit.v1.UnbindIdentityRequest
-	(*ListSessionsRequest)(nil),               // 49: testkit.v1.ListSessionsRequest
-	(*ListSessionsResponse)(nil),              // 50: testkit.v1.ListSessionsResponse
-	(*RevokeSessionRequest)(nil),              // 51: testkit.v1.RevokeSessionRequest
-	(*RevokeAllSessionsRequest)(nil),          // 52: testkit.v1.RevokeAllSessionsRequest
-	(*GetSessionRequest)(nil),                 // 53: testkit.v1.GetSessionRequest
-	(*GetSessionResponse)(nil),                // 54: testkit.v1.GetSessionResponse
-	(*IssueSessionCodeRequest)(nil),           // 55: testkit.v1.IssueSessionCodeRequest
-	(*IssueSessionCodeResponse)(nil),          // 56: testkit.v1.IssueSessionCodeResponse
-	(*ExchangeSessionCodeRequest)(nil),        // 57: testkit.v1.ExchangeSessionCodeRequest
-	(*ExchangeSessionCodeResponse)(nil),       // 58: testkit.v1.ExchangeSessionCodeResponse
-	(*GetOAuthURLRequest)(nil),                // 59: testkit.v1.GetOAuthURLRequest
-	(*GetOAuthURLResponse)(nil),               // 60: testkit.v1.GetOAuthURLResponse
-	(*SocialLoginRequest)(nil),                // 61: testkit.v1.SocialLoginRequest
-	(*MiniProgramLoginRequest)(nil),           // 62: testkit.v1.MiniProgramLoginRequest
-	(*MiniProgramPhoneLoginRequest)(nil),      // 63: testkit.v1.MiniProgramPhoneLoginRequest
-	(*SocialLoginResponse)(nil),               // 64: testkit.v1.SocialLoginResponse
-	(*CreateUserRequest)(nil),                 // 65: testkit.v1.CreateUserRequest
-	(*CreateUserResponse)(nil),                // 66: testkit.v1.CreateUserResponse
-	(*GetUserRequest)(nil),                    // 67: testkit.v1.GetUserRequest
-	(*DisableUserRequest)(nil),                // 68: testkit.v1.DisableUserRequest
-	(*ListUsersRequest)(nil),                  // 69: testkit.v1.ListUsersRequest
-	(*ListUsersResponse)(nil),                 // 70: testkit.v1.ListUsersResponse
-	(*ListUsersPagedRequest)(nil),             // 71: testkit.v1.ListUsersPagedRequest
-	(*ListUsersPagedResponse)(nil),            // 72: testkit.v1.ListUsersPagedResponse
-	(*GetLoginLogsRequest)(nil),               // 73: testkit.v1.GetLoginLogsRequest
-	(*GetLoginLogsResponse)(nil),              // 74: testkit.v1.GetLoginLogsResponse
-	(*CreateGroupRequest)(nil),                // 75: testkit.v1.CreateGroupRequest
-	(*GetGroupRequest)(nil),                   // 76: testkit.v1.GetGroupRequest
-	(*UpdateGroupRequest)(nil),                // 77: testkit.v1.UpdateGroupRequest
-	(*ListGroupsRequest)(nil),                 // 78: testkit.v1.ListGroupsRequest
-	(*ListGroupsResponse)(nil),                // 79: testkit.v1.ListGroupsResponse
-	(*DeleteGroupRequest)(nil),                // 80: testkit.v1.DeleteGroupRequest
-	(*AddGroupMemberRequest)(nil),             // 81: testkit.v1.AddGroupMemberRequest
-	(*RemoveGroupMemberRequest)(nil),          // 82: testkit.v1.RemoveGroupMemberRequest
-	(*ListGroupMembersRequest)(nil),           // 83: testkit.v1.ListGroupMembersRequest
-	(*ListGroupMembersResponse)(nil),          // 84: testkit.v1.ListGroupMembersResponse
-	(*AddGroupRoleRequest)(nil),               // 85: testkit.v1.AddGroupRoleRequest
-	(*RemoveGroupRoleRequest)(nil),            // 86: testkit.v1.RemoveGroupRoleRequest
-	(*ListGroupRolesRequest)(nil),             // 87: testkit.v1.ListGroupRolesRequest
-	(*ListGroupRolesResponse)(nil),            // 88: testkit.v1.ListGroupRolesResponse
-	(*CreateRoleRequest)(nil),                 // 89: testkit.v1.CreateRoleRequest
-	(*GetRoleRequest)(nil),                    // 90: testkit.v1.GetRoleRequest
-	(*UpdateRoleRequest)(nil),                 // 91: testkit.v1.UpdateRoleRequest
-	(*DeleteRoleRequest)(nil),                 // 92: testkit.v1.DeleteRoleRequest
-	(*ListRolesRequest)(nil),                  // 93: testkit.v1.ListRolesRequest
-	(*ListRolesResponse)(nil),                 // 94: testkit.v1.ListRolesResponse
-	(*AssignRoleRequest)(nil),                 // 95: testkit.v1.AssignRoleRequest
-	(*RevokeRoleRequest)(nil),                 // 96: testkit.v1.RevokeRoleRequest
-	(*ListUserRolesRequest)(nil),              // 97: testkit.v1.ListUserRolesRequest
-	(*ListUserRolesResponse)(nil),             // 98: testkit.v1.ListUserRolesResponse
-	(*ListPermissionsRequest)(nil),            // 99: testkit.v1.ListPermissionsRequest
-	(*ListPermissionsResponse)(nil),           // 100: testkit.v1.ListPermissionsResponse
-	(*CreatePermissionRequest)(nil),           // 101: testkit.v1.CreatePermissionRequest
-	(*GetPermissionRequest)(nil),              // 102: testkit.v1.GetPermissionRequest
-	(*UpdatePermissionRequest)(nil),           // 103: testkit.v1.UpdatePermissionRequest
-	(*DeletePermissionRequest)(nil),           // 104: testkit.v1.DeletePermissionRequest
-	(*CreatePermissionGroupRequest)(nil),      // 105: testkit.v1.CreatePermissionGroupRequest
-	(*GetPermissionGroupRequest)(nil),         // 106: testkit.v1.GetPermissionGroupRequest
-	(*UpdatePermissionGroupRequest)(nil),      // 107: testkit.v1.UpdatePermissionGroupRequest
-	(*DeletePermissionGroupRequest)(nil),      // 108: testkit.v1.DeletePermissionGroupRequest
-	(*ListPermissionGroupsRequest)(nil),       // 109: testkit.v1.ListPermissionGroupsRequest
-	(*ListPermissionGroupsResponse)(nil),      // 110: testkit.v1.ListPermissionGroupsResponse
-	(*FileInfo)(nil),                          // 111: testkit.v1.FileInfo
-	(*AdminFileInfo)(nil),                     // 112: testkit.v1.AdminFileInfo
-	(*QuotaInfo)(nil),                         // 113: testkit.v1.QuotaInfo
-	(*ImageProcessOp)(nil),                    // 114: testkit.v1.ImageProcessOp
-	(*UploadFileMeta)(nil),                    // 115: testkit.v1.UploadFileMeta
-	(*UploadTokenInfo)(nil),                   // 116: testkit.v1.UploadTokenInfo
-	(*ItemError)(nil),                         // 117: testkit.v1.ItemError
-	(*UploadCredentialItem)(nil),              // 118: testkit.v1.UploadCredentialItem
-	(*AuditLogEntry)(nil),                     // 119: testkit.v1.AuditLogEntry
-	(*OwnerStats)(nil),                        // 120: testkit.v1.OwnerStats
-	(*ProviderStats)(nil),                     // 121: testkit.v1.ProviderStats
-	(*BucketStats)(nil),                       // 122: testkit.v1.BucketStats
-	(*ProviderInfo)(nil),                      // 123: testkit.v1.ProviderInfo
-	(*BucketInfo)(nil),                        // 124: testkit.v1.BucketInfo
-	(*GenerateUploadURLRequest)(nil),          // 125: testkit.v1.GenerateUploadURLRequest
-	(*GenerateUploadURLResponse)(nil),         // 126: testkit.v1.GenerateUploadURLResponse
-	(*GetSTSCredentialRequest)(nil),           // 127: testkit.v1.GetSTSCredentialRequest
-	(*GetSTSCredentialResponse)(nil),          // 128: testkit.v1.GetSTSCredentialResponse
-	(*BatchGetSTSCredentialRequest)(nil),      // 129: testkit.v1.BatchGetSTSCredentialRequest
-	(*BatchGetSTSCredentialResponse)(nil),     // 130: testkit.v1.BatchGetSTSCredentialResponse
-	(*ConfirmUploadRequest)(nil),              // 131: testkit.v1.ConfirmUploadRequest
-	(*ConfirmUploadResponse)(nil),             // 132: testkit.v1.ConfirmUploadResponse
-	(*CancelUploadRequest)(nil),               // 133: testkit.v1.CancelUploadRequest
-	(*GenerateDownloadURLRequest)(nil),        // 134: testkit.v1.GenerateDownloadURLRequest
-	(*GenerateDownloadURLResponse)(nil),       // 135: testkit.v1.GenerateDownloadURLResponse
-	(*GenerateProcessURLRequest)(nil),         // 136: testkit.v1.GenerateProcessURLRequest
-	(*GenerateProcessURLResponse)(nil),        // 137: testkit.v1.GenerateProcessURLResponse
-	(*GenerateCDNURLRequest)(nil),             // 138: testkit.v1.GenerateCDNURLRequest
-	(*GenerateCDNURLResponse)(nil),            // 139: testkit.v1.GenerateCDNURLResponse
-	(*ListMyFilesRequest)(nil),                // 140: testkit.v1.ListMyFilesRequest
-	(*ListMyFilesResponse)(nil),               // 141: testkit.v1.ListMyFilesResponse
-	(*ListMyFilesPagedRequest)(nil),           // 142: testkit.v1.ListMyFilesPagedRequest
-	(*ListMyFilesPagedResponse)(nil),          // 143: testkit.v1.ListMyFilesPagedResponse
-	(*GetMyFileRequest)(nil),                  // 144: testkit.v1.GetMyFileRequest
-	(*UpdateMyFileRequest)(nil),               // 145: testkit.v1.UpdateMyFileRequest
-	(*DeleteMyFileRequest)(nil),               // 146: testkit.v1.DeleteMyFileRequest
-	(*BatchDeleteMyFilesRequest)(nil),         // 147: testkit.v1.BatchDeleteMyFilesRequest
-	(*BatchDeleteMyFilesResponse)(nil),        // 148: testkit.v1.BatchDeleteMyFilesResponse
-	(*ListMyAuditLogsRequest)(nil),            // 149: testkit.v1.ListMyAuditLogsRequest
-	(*ListMyAuditLogsResponse)(nil),           // 150: testkit.v1.ListMyAuditLogsResponse
-	(*SetOwnerQuotaRequest)(nil),              // 151: testkit.v1.SetOwnerQuotaRequest
-	(*AddOwnerQuotaRequest)(nil),              // 152: testkit.v1.AddOwnerQuotaRequest
-	(*AdminListFilesRequest)(nil),             // 153: testkit.v1.AdminListFilesRequest
-	(*AdminListFilesResponse)(nil),            // 154: testkit.v1.AdminListFilesResponse
-	(*AdminGetFileRequest)(nil),               // 155: testkit.v1.AdminGetFileRequest
-	(*AdminDeleteFileRequest)(nil),            // 156: testkit.v1.AdminDeleteFileRequest
-	(*AdminGetQuotaRequest)(nil),              // 157: testkit.v1.AdminGetQuotaRequest
-	(*AdminSetQuotaRequest)(nil),              // 158: testkit.v1.AdminSetQuotaRequest
-	(*AdminGetStatsRequest)(nil),              // 159: testkit.v1.AdminGetStatsRequest
-	(*AdminGetStatsResponse)(nil),             // 160: testkit.v1.AdminGetStatsResponse
-	(*AdminListProvidersResponse)(nil),        // 161: testkit.v1.AdminListProvidersResponse
-	(*AdminListBucketsResponse)(nil),          // 162: testkit.v1.AdminListBucketsResponse
-	(*AdminSoftDeleteOwnerFilesRequest)(nil),  // 163: testkit.v1.AdminSoftDeleteOwnerFilesRequest
-	(*AdminSoftDeleteOwnerFilesResponse)(nil), // 164: testkit.v1.AdminSoftDeleteOwnerFilesResponse
-	(*AdminDeleteOwnerRequest)(nil),           // 165: testkit.v1.AdminDeleteOwnerRequest
-	(*AdminDeleteOwnerResponse)(nil),          // 166: testkit.v1.AdminDeleteOwnerResponse
-	(*AdminListAuditLogsRequest)(nil),         // 167: testkit.v1.AdminListAuditLogsRequest
-	(*AdminListAuditLogsResponse)(nil),        // 168: testkit.v1.AdminListAuditLogsResponse
-	nil,                                       // 169: testkit.v1.FileInfo.MetadataEntry
-	nil,                                       // 170: testkit.v1.AdminFileInfo.MetadataEntry
-	nil,                                       // 171: testkit.v1.UploadFileMeta.MetadataEntry
-	nil,                                       // 172: testkit.v1.GenerateUploadURLRequest.MetadataEntry
-	nil,                                       // 173: testkit.v1.GenerateUploadURLResponse.HeadersEntry
-	nil,                                       // 174: testkit.v1.GetSTSCredentialRequest.MetadataEntry
-	nil,                                       // 175: testkit.v1.UpdateMyFileRequest.MetadataEntry
-	(*timestamppb.Timestamp)(nil),             // 176: google.protobuf.Timestamp
-	(*structpb.Struct)(nil),                   // 177: google.protobuf.Struct
-	(*durationpb.Duration)(nil),               // 178: google.protobuf.Duration
-	(*emptypb.Empty)(nil),                     // 179: google.protobuf.Empty
+	(SortDirection)(0),                        // 22: testkit.v1.SortDirection
+	(MessageStatus)(0),                        // 23: testkit.v1.MessageStatus
+	(EmailVendor)(0),                          // 24: testkit.v1.EmailVendor
+	(SmsVendor)(0),                            // 25: testkit.v1.SmsVendor
+	(EmailScene)(0),                           // 26: testkit.v1.EmailScene
+	(SmsScene)(0),                             // 27: testkit.v1.SmsScene
+	(*Pong)(nil),                              // 28: testkit.v1.Pong
+	(*LoginRequest)(nil),                      // 29: testkit.v1.LoginRequest
+	(*RegisterRequest)(nil),                   // 30: testkit.v1.RegisterRequest
+	(*SendVerificationCodeRequest)(nil),       // 31: testkit.v1.SendVerificationCodeRequest
+	(*SendVerificationCodeResponse)(nil),      // 32: testkit.v1.SendVerificationCodeResponse
+	(*RefreshSessionRequest)(nil),             // 33: testkit.v1.RefreshSessionRequest
+	(*User)(nil),                              // 34: testkit.v1.User
+	(*Identity)(nil),                          // 35: testkit.v1.Identity
+	(*Session)(nil),                           // 36: testkit.v1.Session
+	(*Group)(nil),                             // 37: testkit.v1.Group
+	(*Role)(nil),                              // 38: testkit.v1.Role
+	(*Permission)(nil),                        // 39: testkit.v1.Permission
+	(*PermissionGroup)(nil),                   // 40: testkit.v1.PermissionGroup
+	(*GroupMember)(nil),                       // 41: testkit.v1.GroupMember
+	(*LoginLog)(nil),                          // 42: testkit.v1.LoginLog
+	(*UserRole)(nil),                          // 43: testkit.v1.UserRole
+	(*TokenResponse)(nil),                     // 44: testkit.v1.TokenResponse
+	(*GetProfileRequest)(nil),                 // 45: testkit.v1.GetProfileRequest
+	(*UpdateProfileRequest)(nil),              // 46: testkit.v1.UpdateProfileRequest
+	(*ChangePasswordRequest)(nil),             // 47: testkit.v1.ChangePasswordRequest
+	(*ResetPasswordRequest)(nil),              // 48: testkit.v1.ResetPasswordRequest
+	(*ListIdentitiesRequest)(nil),             // 49: testkit.v1.ListIdentitiesRequest
+	(*ListIdentitiesResponse)(nil),            // 50: testkit.v1.ListIdentitiesResponse
+	(*BindIdentityRequest)(nil),               // 51: testkit.v1.BindIdentityRequest
+	(*BindOAuthIdentityRequest)(nil),          // 52: testkit.v1.BindOAuthIdentityRequest
+	(*BindOAuthIdentityResponse)(nil),         // 53: testkit.v1.BindOAuthIdentityResponse
+	(*UnbindIdentityRequest)(nil),             // 54: testkit.v1.UnbindIdentityRequest
+	(*ListSessionsRequest)(nil),               // 55: testkit.v1.ListSessionsRequest
+	(*ListSessionsResponse)(nil),              // 56: testkit.v1.ListSessionsResponse
+	(*RevokeSessionRequest)(nil),              // 57: testkit.v1.RevokeSessionRequest
+	(*RevokeAllSessionsRequest)(nil),          // 58: testkit.v1.RevokeAllSessionsRequest
+	(*GetSessionRequest)(nil),                 // 59: testkit.v1.GetSessionRequest
+	(*GetSessionResponse)(nil),                // 60: testkit.v1.GetSessionResponse
+	(*IssueSessionCodeRequest)(nil),           // 61: testkit.v1.IssueSessionCodeRequest
+	(*IssueSessionCodeResponse)(nil),          // 62: testkit.v1.IssueSessionCodeResponse
+	(*ExchangeSessionCodeRequest)(nil),        // 63: testkit.v1.ExchangeSessionCodeRequest
+	(*ExchangeSessionCodeResponse)(nil),       // 64: testkit.v1.ExchangeSessionCodeResponse
+	(*GetOAuthURLRequest)(nil),                // 65: testkit.v1.GetOAuthURLRequest
+	(*GetOAuthURLResponse)(nil),               // 66: testkit.v1.GetOAuthURLResponse
+	(*SocialLoginRequest)(nil),                // 67: testkit.v1.SocialLoginRequest
+	(*MiniProgramLoginRequest)(nil),           // 68: testkit.v1.MiniProgramLoginRequest
+	(*MiniProgramPhoneLoginRequest)(nil),      // 69: testkit.v1.MiniProgramPhoneLoginRequest
+	(*SocialLoginResponse)(nil),               // 70: testkit.v1.SocialLoginResponse
+	(*CreateUserRequest)(nil),                 // 71: testkit.v1.CreateUserRequest
+	(*CreateUserResponse)(nil),                // 72: testkit.v1.CreateUserResponse
+	(*GetUserRequest)(nil),                    // 73: testkit.v1.GetUserRequest
+	(*DisableUserRequest)(nil),                // 74: testkit.v1.DisableUserRequest
+	(*ListUsersRequest)(nil),                  // 75: testkit.v1.ListUsersRequest
+	(*ListUsersResponse)(nil),                 // 76: testkit.v1.ListUsersResponse
+	(*ListUsersPagedRequest)(nil),             // 77: testkit.v1.ListUsersPagedRequest
+	(*ListUsersPagedResponse)(nil),            // 78: testkit.v1.ListUsersPagedResponse
+	(*GetLoginLogsRequest)(nil),               // 79: testkit.v1.GetLoginLogsRequest
+	(*GetLoginLogsResponse)(nil),              // 80: testkit.v1.GetLoginLogsResponse
+	(*CreateGroupRequest)(nil),                // 81: testkit.v1.CreateGroupRequest
+	(*GetGroupRequest)(nil),                   // 82: testkit.v1.GetGroupRequest
+	(*UpdateGroupRequest)(nil),                // 83: testkit.v1.UpdateGroupRequest
+	(*ListGroupsRequest)(nil),                 // 84: testkit.v1.ListGroupsRequest
+	(*ListGroupsResponse)(nil),                // 85: testkit.v1.ListGroupsResponse
+	(*DeleteGroupRequest)(nil),                // 86: testkit.v1.DeleteGroupRequest
+	(*AddGroupMemberRequest)(nil),             // 87: testkit.v1.AddGroupMemberRequest
+	(*RemoveGroupMemberRequest)(nil),          // 88: testkit.v1.RemoveGroupMemberRequest
+	(*ListGroupMembersRequest)(nil),           // 89: testkit.v1.ListGroupMembersRequest
+	(*ListGroupMembersResponse)(nil),          // 90: testkit.v1.ListGroupMembersResponse
+	(*AddGroupRoleRequest)(nil),               // 91: testkit.v1.AddGroupRoleRequest
+	(*RemoveGroupRoleRequest)(nil),            // 92: testkit.v1.RemoveGroupRoleRequest
+	(*ListGroupRolesRequest)(nil),             // 93: testkit.v1.ListGroupRolesRequest
+	(*ListGroupRolesResponse)(nil),            // 94: testkit.v1.ListGroupRolesResponse
+	(*CreateRoleRequest)(nil),                 // 95: testkit.v1.CreateRoleRequest
+	(*GetRoleRequest)(nil),                    // 96: testkit.v1.GetRoleRequest
+	(*UpdateRoleRequest)(nil),                 // 97: testkit.v1.UpdateRoleRequest
+	(*DeleteRoleRequest)(nil),                 // 98: testkit.v1.DeleteRoleRequest
+	(*ListRolesRequest)(nil),                  // 99: testkit.v1.ListRolesRequest
+	(*ListRolesResponse)(nil),                 // 100: testkit.v1.ListRolesResponse
+	(*AssignRoleRequest)(nil),                 // 101: testkit.v1.AssignRoleRequest
+	(*RevokeRoleRequest)(nil),                 // 102: testkit.v1.RevokeRoleRequest
+	(*ListUserRolesRequest)(nil),              // 103: testkit.v1.ListUserRolesRequest
+	(*ListUserRolesResponse)(nil),             // 104: testkit.v1.ListUserRolesResponse
+	(*ListPermissionsRequest)(nil),            // 105: testkit.v1.ListPermissionsRequest
+	(*ListPermissionsResponse)(nil),           // 106: testkit.v1.ListPermissionsResponse
+	(*CreatePermissionRequest)(nil),           // 107: testkit.v1.CreatePermissionRequest
+	(*GetPermissionRequest)(nil),              // 108: testkit.v1.GetPermissionRequest
+	(*UpdatePermissionRequest)(nil),           // 109: testkit.v1.UpdatePermissionRequest
+	(*DeletePermissionRequest)(nil),           // 110: testkit.v1.DeletePermissionRequest
+	(*CreatePermissionGroupRequest)(nil),      // 111: testkit.v1.CreatePermissionGroupRequest
+	(*GetPermissionGroupRequest)(nil),         // 112: testkit.v1.GetPermissionGroupRequest
+	(*UpdatePermissionGroupRequest)(nil),      // 113: testkit.v1.UpdatePermissionGroupRequest
+	(*DeletePermissionGroupRequest)(nil),      // 114: testkit.v1.DeletePermissionGroupRequest
+	(*ListPermissionGroupsRequest)(nil),       // 115: testkit.v1.ListPermissionGroupsRequest
+	(*ListPermissionGroupsResponse)(nil),      // 116: testkit.v1.ListPermissionGroupsResponse
+	(*FileInfo)(nil),                          // 117: testkit.v1.FileInfo
+	(*AdminFileInfo)(nil),                     // 118: testkit.v1.AdminFileInfo
+	(*QuotaInfo)(nil),                         // 119: testkit.v1.QuotaInfo
+	(*ImageProcessOp)(nil),                    // 120: testkit.v1.ImageProcessOp
+	(*UploadFileMeta)(nil),                    // 121: testkit.v1.UploadFileMeta
+	(*UploadTokenInfo)(nil),                   // 122: testkit.v1.UploadTokenInfo
+	(*ItemError)(nil),                         // 123: testkit.v1.ItemError
+	(*UploadCredentialItem)(nil),              // 124: testkit.v1.UploadCredentialItem
+	(*AuditLogEntry)(nil),                     // 125: testkit.v1.AuditLogEntry
+	(*OwnerStats)(nil),                        // 126: testkit.v1.OwnerStats
+	(*ProviderStats)(nil),                     // 127: testkit.v1.ProviderStats
+	(*BucketStats)(nil),                       // 128: testkit.v1.BucketStats
+	(*ProviderInfo)(nil),                      // 129: testkit.v1.ProviderInfo
+	(*BucketInfo)(nil),                        // 130: testkit.v1.BucketInfo
+	(*GenerateUploadURLRequest)(nil),          // 131: testkit.v1.GenerateUploadURLRequest
+	(*GenerateUploadURLResponse)(nil),         // 132: testkit.v1.GenerateUploadURLResponse
+	(*GetSTSCredentialRequest)(nil),           // 133: testkit.v1.GetSTSCredentialRequest
+	(*GetSTSCredentialResponse)(nil),          // 134: testkit.v1.GetSTSCredentialResponse
+	(*BatchGetSTSCredentialRequest)(nil),      // 135: testkit.v1.BatchGetSTSCredentialRequest
+	(*BatchGetSTSCredentialResponse)(nil),     // 136: testkit.v1.BatchGetSTSCredentialResponse
+	(*ConfirmUploadRequest)(nil),              // 137: testkit.v1.ConfirmUploadRequest
+	(*ConfirmUploadResponse)(nil),             // 138: testkit.v1.ConfirmUploadResponse
+	(*CancelUploadRequest)(nil),               // 139: testkit.v1.CancelUploadRequest
+	(*GenerateDownloadURLRequest)(nil),        // 140: testkit.v1.GenerateDownloadURLRequest
+	(*GenerateDownloadURLResponse)(nil),       // 141: testkit.v1.GenerateDownloadURLResponse
+	(*GenerateProcessURLRequest)(nil),         // 142: testkit.v1.GenerateProcessURLRequest
+	(*GenerateProcessURLResponse)(nil),        // 143: testkit.v1.GenerateProcessURLResponse
+	(*GenerateCDNURLRequest)(nil),             // 144: testkit.v1.GenerateCDNURLRequest
+	(*GenerateCDNURLResponse)(nil),            // 145: testkit.v1.GenerateCDNURLResponse
+	(*ListMyFilesRequest)(nil),                // 146: testkit.v1.ListMyFilesRequest
+	(*ListMyFilesResponse)(nil),               // 147: testkit.v1.ListMyFilesResponse
+	(*ListMyFilesPagedRequest)(nil),           // 148: testkit.v1.ListMyFilesPagedRequest
+	(*ListMyFilesPagedResponse)(nil),          // 149: testkit.v1.ListMyFilesPagedResponse
+	(*GetMyFileRequest)(nil),                  // 150: testkit.v1.GetMyFileRequest
+	(*UpdateMyFileRequest)(nil),               // 151: testkit.v1.UpdateMyFileRequest
+	(*DeleteMyFileRequest)(nil),               // 152: testkit.v1.DeleteMyFileRequest
+	(*BatchDeleteMyFilesRequest)(nil),         // 153: testkit.v1.BatchDeleteMyFilesRequest
+	(*BatchDeleteMyFilesResponse)(nil),        // 154: testkit.v1.BatchDeleteMyFilesResponse
+	(*ListMyAuditLogsRequest)(nil),            // 155: testkit.v1.ListMyAuditLogsRequest
+	(*ListMyAuditLogsResponse)(nil),           // 156: testkit.v1.ListMyAuditLogsResponse
+	(*SetOwnerQuotaRequest)(nil),              // 157: testkit.v1.SetOwnerQuotaRequest
+	(*AddOwnerQuotaRequest)(nil),              // 158: testkit.v1.AddOwnerQuotaRequest
+	(*AdminListFilesRequest)(nil),             // 159: testkit.v1.AdminListFilesRequest
+	(*AdminListFilesResponse)(nil),            // 160: testkit.v1.AdminListFilesResponse
+	(*AdminGetFileRequest)(nil),               // 161: testkit.v1.AdminGetFileRequest
+	(*AdminDeleteFileRequest)(nil),            // 162: testkit.v1.AdminDeleteFileRequest
+	(*AdminGetQuotaRequest)(nil),              // 163: testkit.v1.AdminGetQuotaRequest
+	(*AdminSetQuotaRequest)(nil),              // 164: testkit.v1.AdminSetQuotaRequest
+	(*AdminGetStatsRequest)(nil),              // 165: testkit.v1.AdminGetStatsRequest
+	(*AdminGetStatsResponse)(nil),             // 166: testkit.v1.AdminGetStatsResponse
+	(*AdminListProvidersResponse)(nil),        // 167: testkit.v1.AdminListProvidersResponse
+	(*AdminListBucketsResponse)(nil),          // 168: testkit.v1.AdminListBucketsResponse
+	(*AdminSoftDeleteOwnerFilesRequest)(nil),  // 169: testkit.v1.AdminSoftDeleteOwnerFilesRequest
+	(*AdminSoftDeleteOwnerFilesResponse)(nil), // 170: testkit.v1.AdminSoftDeleteOwnerFilesResponse
+	(*AdminDeleteOwnerRequest)(nil),           // 171: testkit.v1.AdminDeleteOwnerRequest
+	(*AdminDeleteOwnerResponse)(nil),          // 172: testkit.v1.AdminDeleteOwnerResponse
+	(*AdminListAuditLogsRequest)(nil),         // 173: testkit.v1.AdminListAuditLogsRequest
+	(*AdminListAuditLogsResponse)(nil),        // 174: testkit.v1.AdminListAuditLogsResponse
+	(*EmailAddress)(nil),                      // 175: testkit.v1.EmailAddress
+	(*EmailAttachment)(nil),                   // 176: testkit.v1.EmailAttachment
+	(*EmailVendorStats)(nil),                  // 177: testkit.v1.EmailVendorStats
+	(*SmsVendorStats)(nil),                    // 178: testkit.v1.SmsVendorStats
+	(*SendEmailRequest)(nil),                  // 179: testkit.v1.SendEmailRequest
+	(*SendSMSRequest)(nil),                    // 180: testkit.v1.SendSMSRequest
+	(*SendResponse)(nil),                      // 181: testkit.v1.SendResponse
+	(*EmailRecord)(nil),                       // 182: testkit.v1.EmailRecord
+	(*SMSRecord)(nil),                         // 183: testkit.v1.SMSRecord
+	(*GetEmailRequest)(nil),                   // 184: testkit.v1.GetEmailRequest
+	(*GetSMSRequest)(nil),                     // 185: testkit.v1.GetSMSRequest
+	(*ListEmailsRequest)(nil),                 // 186: testkit.v1.ListEmailsRequest
+	(*ListEmailsResponse)(nil),                // 187: testkit.v1.ListEmailsResponse
+	(*ListSMSRequest)(nil),                    // 188: testkit.v1.ListSMSRequest
+	(*ListSMSResponse)(nil),                   // 189: testkit.v1.ListSMSResponse
+	(*ListEmailsByCursorRequest)(nil),         // 190: testkit.v1.ListEmailsByCursorRequest
+	(*ListEmailsByCursorResponse)(nil),        // 191: testkit.v1.ListEmailsByCursorResponse
+	(*ListSMSByCursorRequest)(nil),            // 192: testkit.v1.ListSMSByCursorRequest
+	(*ListSMSByCursorResponse)(nil),           // 193: testkit.v1.ListSMSByCursorResponse
+	(*GetEmailStatsRequest)(nil),              // 194: testkit.v1.GetEmailStatsRequest
+	(*EmailStatsResponse)(nil),                // 195: testkit.v1.EmailStatsResponse
+	(*GetSMSStatsRequest)(nil),                // 196: testkit.v1.GetSMSStatsRequest
+	(*SMSStatsResponse)(nil),                  // 197: testkit.v1.SMSStatsResponse
+	(*ListEmailSendersRequest)(nil),           // 198: testkit.v1.ListEmailSendersRequest
+	(*ListEmailSendersResponse)(nil),          // 199: testkit.v1.ListEmailSendersResponse
+	(*ListSMSSendersRequest)(nil),             // 200: testkit.v1.ListSMSSendersRequest
+	(*ListSMSSendersResponse)(nil),            // 201: testkit.v1.ListSMSSendersResponse
+	(*ListSMSRegionsRequest)(nil),             // 202: testkit.v1.ListSMSRegionsRequest
+	(*ListSMSRegionsResponse)(nil),            // 203: testkit.v1.ListSMSRegionsResponse
+	nil,                                       // 204: testkit.v1.FileInfo.MetadataEntry
+	nil,                                       // 205: testkit.v1.AdminFileInfo.MetadataEntry
+	nil,                                       // 206: testkit.v1.UploadFileMeta.MetadataEntry
+	nil,                                       // 207: testkit.v1.GenerateUploadURLRequest.MetadataEntry
+	nil,                                       // 208: testkit.v1.GenerateUploadURLResponse.HeadersEntry
+	nil,                                       // 209: testkit.v1.GetSTSCredentialRequest.MetadataEntry
+	nil,                                       // 210: testkit.v1.UpdateMyFileRequest.MetadataEntry
+	nil,                                       // 211: testkit.v1.SendEmailRequest.TemplateParamsEntry
+	nil,                                       // 212: testkit.v1.SendSMSRequest.TemplateParamsEntry
+	nil,                                       // 213: testkit.v1.EmailRecord.TemplateParamsEntry
+	nil,                                       // 214: testkit.v1.SMSRecord.TemplateParamsEntry
+	(*timestamppb.Timestamp)(nil),             // 215: google.protobuf.Timestamp
+	(*structpb.Struct)(nil),                   // 216: google.protobuf.Struct
+	(*durationpb.Duration)(nil),               // 217: google.protobuf.Duration
+	(*emptypb.Empty)(nil),                     // 218: google.protobuf.Empty
 }
 var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	0,   // 0: testkit.v1.LoginRequest.method:type_name -> testkit.v1.LoginMethod
@@ -12989,317 +16024,403 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	5,   // 5: testkit.v1.User.status:type_name -> testkit.v1.UserStatus
 	1,   // 6: testkit.v1.User.register_source:type_name -> testkit.v1.IdentityProvider
 	4,   // 7: testkit.v1.User.user_type:type_name -> testkit.v1.UserType
-	176, // 8: testkit.v1.User.last_login_at:type_name -> google.protobuf.Timestamp
-	176, // 9: testkit.v1.User.created_at:type_name -> google.protobuf.Timestamp
-	176, // 10: testkit.v1.User.updated_at:type_name -> google.protobuf.Timestamp
+	215, // 8: testkit.v1.User.last_login_at:type_name -> google.protobuf.Timestamp
+	215, // 9: testkit.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	215, // 10: testkit.v1.User.updated_at:type_name -> google.protobuf.Timestamp
 	1,   // 11: testkit.v1.Identity.provider:type_name -> testkit.v1.IdentityProvider
-	176, // 12: testkit.v1.Identity.created_at:type_name -> google.protobuf.Timestamp
+	215, // 12: testkit.v1.Identity.created_at:type_name -> google.protobuf.Timestamp
 	7,   // 13: testkit.v1.Session.device_type:type_name -> testkit.v1.DeviceType
-	176, // 14: testkit.v1.Session.created_at:type_name -> google.protobuf.Timestamp
-	176, // 15: testkit.v1.Session.last_active_at:type_name -> google.protobuf.Timestamp
-	176, // 16: testkit.v1.Group.created_at:type_name -> google.protobuf.Timestamp
-	176, // 17: testkit.v1.Group.updated_at:type_name -> google.protobuf.Timestamp
-	33,  // 18: testkit.v1.Role.permissions:type_name -> testkit.v1.Permission
-	34,  // 19: testkit.v1.Role.perm_groups:type_name -> testkit.v1.PermissionGroup
-	176, // 20: testkit.v1.Role.created_at:type_name -> google.protobuf.Timestamp
-	176, // 21: testkit.v1.Role.updated_at:type_name -> google.protobuf.Timestamp
-	33,  // 22: testkit.v1.PermissionGroup.permissions:type_name -> testkit.v1.Permission
-	176, // 23: testkit.v1.GroupMember.created_at:type_name -> google.protobuf.Timestamp
+	215, // 14: testkit.v1.Session.created_at:type_name -> google.protobuf.Timestamp
+	215, // 15: testkit.v1.Session.last_active_at:type_name -> google.protobuf.Timestamp
+	215, // 16: testkit.v1.Group.created_at:type_name -> google.protobuf.Timestamp
+	215, // 17: testkit.v1.Group.updated_at:type_name -> google.protobuf.Timestamp
+	39,  // 18: testkit.v1.Role.permissions:type_name -> testkit.v1.Permission
+	40,  // 19: testkit.v1.Role.perm_groups:type_name -> testkit.v1.PermissionGroup
+	215, // 20: testkit.v1.Role.created_at:type_name -> google.protobuf.Timestamp
+	215, // 21: testkit.v1.Role.updated_at:type_name -> google.protobuf.Timestamp
+	39,  // 22: testkit.v1.PermissionGroup.permissions:type_name -> testkit.v1.Permission
+	215, // 23: testkit.v1.GroupMember.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 24: testkit.v1.LoginLog.provider:type_name -> testkit.v1.IdentityProvider
 	8,   // 25: testkit.v1.LoginLog.action:type_name -> testkit.v1.LoginAction
 	7,   // 26: testkit.v1.LoginLog.device_type:type_name -> testkit.v1.DeviceType
-	176, // 27: testkit.v1.LoginLog.created_at:type_name -> google.protobuf.Timestamp
-	176, // 28: testkit.v1.UserRole.created_at:type_name -> google.protobuf.Timestamp
-	28,  // 29: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
+	215, // 27: testkit.v1.LoginLog.created_at:type_name -> google.protobuf.Timestamp
+	215, // 28: testkit.v1.UserRole.created_at:type_name -> google.protobuf.Timestamp
+	34,  // 29: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
 	6,   // 30: testkit.v1.UpdateProfileRequest.gender:type_name -> testkit.v1.Gender
-	29,  // 31: testkit.v1.ListIdentitiesResponse.identities:type_name -> testkit.v1.Identity
+	35,  // 31: testkit.v1.ListIdentitiesResponse.identities:type_name -> testkit.v1.Identity
 	1,   // 32: testkit.v1.BindIdentityRequest.provider:type_name -> testkit.v1.IdentityProvider
 	1,   // 33: testkit.v1.BindOAuthIdentityRequest.provider:type_name -> testkit.v1.IdentityProvider
-	29,  // 34: testkit.v1.BindOAuthIdentityResponse.identity:type_name -> testkit.v1.Identity
-	30,  // 35: testkit.v1.ListSessionsResponse.sessions:type_name -> testkit.v1.Session
-	176, // 36: testkit.v1.GetSessionResponse.expires_at:type_name -> google.protobuf.Timestamp
-	176, // 37: testkit.v1.GetSessionResponse.created_at:type_name -> google.protobuf.Timestamp
+	35,  // 34: testkit.v1.BindOAuthIdentityResponse.identity:type_name -> testkit.v1.Identity
+	36,  // 35: testkit.v1.ListSessionsResponse.sessions:type_name -> testkit.v1.Session
+	215, // 36: testkit.v1.GetSessionResponse.expires_at:type_name -> google.protobuf.Timestamp
+	215, // 37: testkit.v1.GetSessionResponse.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 38: testkit.v1.GetOAuthURLRequest.provider:type_name -> testkit.v1.IdentityProvider
 	1,   // 39: testkit.v1.SocialLoginRequest.provider:type_name -> testkit.v1.IdentityProvider
-	28,  // 40: testkit.v1.SocialLoginResponse.user:type_name -> testkit.v1.User
+	34,  // 40: testkit.v1.SocialLoginResponse.user:type_name -> testkit.v1.User
 	4,   // 41: testkit.v1.CreateUserRequest.user_type:type_name -> testkit.v1.UserType
 	6,   // 42: testkit.v1.CreateUserRequest.gender:type_name -> testkit.v1.Gender
-	28,  // 43: testkit.v1.CreateUserResponse.user:type_name -> testkit.v1.User
+	34,  // 43: testkit.v1.CreateUserResponse.user:type_name -> testkit.v1.User
 	5,   // 44: testkit.v1.ListUsersRequest.status:type_name -> testkit.v1.UserStatus
 	6,   // 45: testkit.v1.ListUsersRequest.gender:type_name -> testkit.v1.Gender
 	1,   // 46: testkit.v1.ListUsersRequest.register_source:type_name -> testkit.v1.IdentityProvider
 	7,   // 47: testkit.v1.ListUsersRequest.register_device:type_name -> testkit.v1.DeviceType
-	176, // 48: testkit.v1.ListUsersRequest.created_at_start:type_name -> google.protobuf.Timestamp
-	176, // 49: testkit.v1.ListUsersRequest.created_at_end:type_name -> google.protobuf.Timestamp
-	176, // 50: testkit.v1.ListUsersRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
-	176, // 51: testkit.v1.ListUsersRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	215, // 48: testkit.v1.ListUsersRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	215, // 49: testkit.v1.ListUsersRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	215, // 50: testkit.v1.ListUsersRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	215, // 51: testkit.v1.ListUsersRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
 	4,   // 52: testkit.v1.ListUsersRequest.user_type:type_name -> testkit.v1.UserType
 	9,   // 53: testkit.v1.ListUsersRequest.order_by:type_name -> testkit.v1.UserSortField
-	28,  // 54: testkit.v1.ListUsersResponse.users:type_name -> testkit.v1.User
+	34,  // 54: testkit.v1.ListUsersResponse.users:type_name -> testkit.v1.User
 	5,   // 55: testkit.v1.ListUsersPagedRequest.status:type_name -> testkit.v1.UserStatus
 	6,   // 56: testkit.v1.ListUsersPagedRequest.gender:type_name -> testkit.v1.Gender
 	1,   // 57: testkit.v1.ListUsersPagedRequest.register_source:type_name -> testkit.v1.IdentityProvider
 	7,   // 58: testkit.v1.ListUsersPagedRequest.register_device:type_name -> testkit.v1.DeviceType
 	4,   // 59: testkit.v1.ListUsersPagedRequest.user_type:type_name -> testkit.v1.UserType
-	176, // 60: testkit.v1.ListUsersPagedRequest.created_at_start:type_name -> google.protobuf.Timestamp
-	176, // 61: testkit.v1.ListUsersPagedRequest.created_at_end:type_name -> google.protobuf.Timestamp
-	176, // 62: testkit.v1.ListUsersPagedRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
-	176, // 63: testkit.v1.ListUsersPagedRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	215, // 60: testkit.v1.ListUsersPagedRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	215, // 61: testkit.v1.ListUsersPagedRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	215, // 62: testkit.v1.ListUsersPagedRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	215, // 63: testkit.v1.ListUsersPagedRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
 	9,   // 64: testkit.v1.ListUsersPagedRequest.order_by:type_name -> testkit.v1.UserSortField
-	28,  // 65: testkit.v1.ListUsersPagedResponse.users:type_name -> testkit.v1.User
+	34,  // 65: testkit.v1.ListUsersPagedResponse.users:type_name -> testkit.v1.User
 	1,   // 66: testkit.v1.GetLoginLogsRequest.provider:type_name -> testkit.v1.IdentityProvider
-	36,  // 67: testkit.v1.GetLoginLogsResponse.logs:type_name -> testkit.v1.LoginLog
-	31,  // 68: testkit.v1.ListGroupsResponse.groups:type_name -> testkit.v1.Group
-	35,  // 69: testkit.v1.ListGroupMembersResponse.members:type_name -> testkit.v1.GroupMember
-	32,  // 70: testkit.v1.ListGroupRolesResponse.roles:type_name -> testkit.v1.Role
-	32,  // 71: testkit.v1.ListRolesResponse.roles:type_name -> testkit.v1.Role
-	37,  // 72: testkit.v1.ListUserRolesResponse.roles:type_name -> testkit.v1.UserRole
-	33,  // 73: testkit.v1.ListPermissionsResponse.permissions:type_name -> testkit.v1.Permission
-	34,  // 74: testkit.v1.ListPermissionGroupsResponse.groups:type_name -> testkit.v1.PermissionGroup
-	169, // 75: testkit.v1.FileInfo.metadata:type_name -> testkit.v1.FileInfo.MetadataEntry
+	42,  // 67: testkit.v1.GetLoginLogsResponse.logs:type_name -> testkit.v1.LoginLog
+	37,  // 68: testkit.v1.ListGroupsResponse.groups:type_name -> testkit.v1.Group
+	41,  // 69: testkit.v1.ListGroupMembersResponse.members:type_name -> testkit.v1.GroupMember
+	38,  // 70: testkit.v1.ListGroupRolesResponse.roles:type_name -> testkit.v1.Role
+	38,  // 71: testkit.v1.ListRolesResponse.roles:type_name -> testkit.v1.Role
+	43,  // 72: testkit.v1.ListUserRolesResponse.roles:type_name -> testkit.v1.UserRole
+	39,  // 73: testkit.v1.ListPermissionsResponse.permissions:type_name -> testkit.v1.Permission
+	40,  // 74: testkit.v1.ListPermissionGroupsResponse.groups:type_name -> testkit.v1.PermissionGroup
+	204, // 75: testkit.v1.FileInfo.metadata:type_name -> testkit.v1.FileInfo.MetadataEntry
 	10,  // 76: testkit.v1.FileInfo.owner_type:type_name -> testkit.v1.OwnerType
 	10,  // 77: testkit.v1.AdminFileInfo.owner_type:type_name -> testkit.v1.OwnerType
-	170, // 78: testkit.v1.AdminFileInfo.metadata:type_name -> testkit.v1.AdminFileInfo.MetadataEntry
+	205, // 78: testkit.v1.AdminFileInfo.metadata:type_name -> testkit.v1.AdminFileInfo.MetadataEntry
 	21,  // 79: testkit.v1.ImageProcessOp.type:type_name -> testkit.v1.ImageProcessType
 	15,  // 80: testkit.v1.ImageProcessOp.format:type_name -> testkit.v1.ImageFormat
 	14,  // 81: testkit.v1.ImageProcessOp.resize_mode:type_name -> testkit.v1.ImageResizeMode
-	171, // 82: testkit.v1.UploadFileMeta.metadata:type_name -> testkit.v1.UploadFileMeta.MetadataEntry
-	116, // 83: testkit.v1.UploadCredentialItem.token:type_name -> testkit.v1.UploadTokenInfo
-	117, // 84: testkit.v1.UploadCredentialItem.error:type_name -> testkit.v1.ItemError
+	206, // 82: testkit.v1.UploadFileMeta.metadata:type_name -> testkit.v1.UploadFileMeta.MetadataEntry
+	122, // 83: testkit.v1.UploadCredentialItem.token:type_name -> testkit.v1.UploadTokenInfo
+	123, // 84: testkit.v1.UploadCredentialItem.error:type_name -> testkit.v1.ItemError
 	17,  // 85: testkit.v1.AuditLogEntry.action:type_name -> testkit.v1.AuditAction
 	10,  // 86: testkit.v1.AuditLogEntry.owner_type:type_name -> testkit.v1.OwnerType
 	20,  // 87: testkit.v1.AuditLogEntry.target_type:type_name -> testkit.v1.AuditLogTargetType
-	177, // 88: testkit.v1.AuditLogEntry.before:type_name -> google.protobuf.Struct
-	177, // 89: testkit.v1.AuditLogEntry.after:type_name -> google.protobuf.Struct
+	216, // 88: testkit.v1.AuditLogEntry.before:type_name -> google.protobuf.Struct
+	216, // 89: testkit.v1.AuditLogEntry.after:type_name -> google.protobuf.Struct
 	19,  // 90: testkit.v1.AuditLogEntry.status:type_name -> testkit.v1.AuditLogStatus
 	10,  // 91: testkit.v1.OwnerStats.owner_type:type_name -> testkit.v1.OwnerType
 	11,  // 92: testkit.v1.ProviderInfo.vendor:type_name -> testkit.v1.Vendor
 	13,  // 93: testkit.v1.BucketInfo.acl:type_name -> testkit.v1.BucketACL
 	11,  // 94: testkit.v1.BucketInfo.vendor:type_name -> testkit.v1.Vendor
-	172, // 95: testkit.v1.GenerateUploadURLRequest.metadata:type_name -> testkit.v1.GenerateUploadURLRequest.MetadataEntry
+	207, // 95: testkit.v1.GenerateUploadURLRequest.metadata:type_name -> testkit.v1.GenerateUploadURLRequest.MetadataEntry
 	11,  // 96: testkit.v1.GenerateUploadURLRequest.vendor:type_name -> testkit.v1.Vendor
-	111, // 97: testkit.v1.GenerateUploadURLResponse.file_info:type_name -> testkit.v1.FileInfo
-	173, // 98: testkit.v1.GenerateUploadURLResponse.headers:type_name -> testkit.v1.GenerateUploadURLResponse.HeadersEntry
-	174, // 99: testkit.v1.GetSTSCredentialRequest.metadata:type_name -> testkit.v1.GetSTSCredentialRequest.MetadataEntry
+	117, // 97: testkit.v1.GenerateUploadURLResponse.file_info:type_name -> testkit.v1.FileInfo
+	208, // 98: testkit.v1.GenerateUploadURLResponse.headers:type_name -> testkit.v1.GenerateUploadURLResponse.HeadersEntry
+	209, // 99: testkit.v1.GetSTSCredentialRequest.metadata:type_name -> testkit.v1.GetSTSCredentialRequest.MetadataEntry
 	11,  // 100: testkit.v1.GetSTSCredentialRequest.vendor:type_name -> testkit.v1.Vendor
-	178, // 101: testkit.v1.GetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
-	111, // 102: testkit.v1.GetSTSCredentialResponse.file_info:type_name -> testkit.v1.FileInfo
-	115, // 103: testkit.v1.BatchGetSTSCredentialRequest.files:type_name -> testkit.v1.UploadFileMeta
-	178, // 104: testkit.v1.BatchGetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
-	118, // 105: testkit.v1.BatchGetSTSCredentialResponse.items:type_name -> testkit.v1.UploadCredentialItem
-	111, // 106: testkit.v1.ConfirmUploadResponse.file_info:type_name -> testkit.v1.FileInfo
-	114, // 107: testkit.v1.GenerateProcessURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
-	114, // 108: testkit.v1.GenerateCDNURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
-	178, // 109: testkit.v1.GenerateCDNURLRequest.ttl:type_name -> google.protobuf.Duration
+	217, // 101: testkit.v1.GetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
+	117, // 102: testkit.v1.GetSTSCredentialResponse.file_info:type_name -> testkit.v1.FileInfo
+	121, // 103: testkit.v1.BatchGetSTSCredentialRequest.files:type_name -> testkit.v1.UploadFileMeta
+	217, // 104: testkit.v1.BatchGetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
+	124, // 105: testkit.v1.BatchGetSTSCredentialResponse.items:type_name -> testkit.v1.UploadCredentialItem
+	117, // 106: testkit.v1.ConfirmUploadResponse.file_info:type_name -> testkit.v1.FileInfo
+	120, // 107: testkit.v1.GenerateProcessURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
+	120, // 108: testkit.v1.GenerateCDNURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
+	217, // 109: testkit.v1.GenerateCDNURLRequest.ttl:type_name -> google.protobuf.Duration
 	16,  // 110: testkit.v1.ListMyFilesRequest.order_by:type_name -> testkit.v1.SortField
-	111, // 111: testkit.v1.ListMyFilesResponse.files:type_name -> testkit.v1.FileInfo
+	117, // 111: testkit.v1.ListMyFilesResponse.files:type_name -> testkit.v1.FileInfo
 	16,  // 112: testkit.v1.ListMyFilesPagedRequest.order_by:type_name -> testkit.v1.SortField
-	111, // 113: testkit.v1.ListMyFilesPagedResponse.files:type_name -> testkit.v1.FileInfo
-	175, // 114: testkit.v1.UpdateMyFileRequest.metadata:type_name -> testkit.v1.UpdateMyFileRequest.MetadataEntry
+	117, // 113: testkit.v1.ListMyFilesPagedResponse.files:type_name -> testkit.v1.FileInfo
+	210, // 114: testkit.v1.UpdateMyFileRequest.metadata:type_name -> testkit.v1.UpdateMyFileRequest.MetadataEntry
 	17,  // 115: testkit.v1.ListMyAuditLogsRequest.action:type_name -> testkit.v1.AuditAction
 	20,  // 116: testkit.v1.ListMyAuditLogsRequest.target_type:type_name -> testkit.v1.AuditLogTargetType
-	119, // 117: testkit.v1.ListMyAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
+	125, // 117: testkit.v1.ListMyAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
 	10,  // 118: testkit.v1.SetOwnerQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
 	10,  // 119: testkit.v1.AddOwnerQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
 	10,  // 120: testkit.v1.AdminListFilesRequest.owner_type:type_name -> testkit.v1.OwnerType
 	16,  // 121: testkit.v1.AdminListFilesRequest.order_by:type_name -> testkit.v1.SortField
-	112, // 122: testkit.v1.AdminListFilesResponse.files:type_name -> testkit.v1.AdminFileInfo
+	118, // 122: testkit.v1.AdminListFilesResponse.files:type_name -> testkit.v1.AdminFileInfo
 	10,  // 123: testkit.v1.AdminGetQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
 	10,  // 124: testkit.v1.AdminSetQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
 	10,  // 125: testkit.v1.AdminGetStatsRequest.owner_type:type_name -> testkit.v1.OwnerType
-	120, // 126: testkit.v1.AdminGetStatsResponse.owner_stats:type_name -> testkit.v1.OwnerStats
-	121, // 127: testkit.v1.AdminGetStatsResponse.provider_stats:type_name -> testkit.v1.ProviderStats
-	122, // 128: testkit.v1.AdminGetStatsResponse.bucket_stats:type_name -> testkit.v1.BucketStats
-	123, // 129: testkit.v1.AdminListProvidersResponse.providers:type_name -> testkit.v1.ProviderInfo
-	124, // 130: testkit.v1.AdminListBucketsResponse.buckets:type_name -> testkit.v1.BucketInfo
+	126, // 126: testkit.v1.AdminGetStatsResponse.owner_stats:type_name -> testkit.v1.OwnerStats
+	127, // 127: testkit.v1.AdminGetStatsResponse.provider_stats:type_name -> testkit.v1.ProviderStats
+	128, // 128: testkit.v1.AdminGetStatsResponse.bucket_stats:type_name -> testkit.v1.BucketStats
+	129, // 129: testkit.v1.AdminListProvidersResponse.providers:type_name -> testkit.v1.ProviderInfo
+	130, // 130: testkit.v1.AdminListBucketsResponse.buckets:type_name -> testkit.v1.BucketInfo
 	10,  // 131: testkit.v1.AdminSoftDeleteOwnerFilesRequest.owner_type:type_name -> testkit.v1.OwnerType
 	10,  // 132: testkit.v1.AdminDeleteOwnerRequest.owner_type:type_name -> testkit.v1.OwnerType
 	17,  // 133: testkit.v1.AdminListAuditLogsRequest.action:type_name -> testkit.v1.AuditAction
 	20,  // 134: testkit.v1.AdminListAuditLogsRequest.target_type:type_name -> testkit.v1.AuditLogTargetType
 	19,  // 135: testkit.v1.AdminListAuditLogsRequest.status:type_name -> testkit.v1.AuditLogStatus
 	10,  // 136: testkit.v1.AdminListAuditLogsRequest.owner_type:type_name -> testkit.v1.OwnerType
-	119, // 137: testkit.v1.AdminListAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
-	179, // 138: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
-	23,  // 139: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
-	24,  // 140: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
-	25,  // 141: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
-	179, // 142: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
-	27,  // 143: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
-	39,  // 144: testkit.v1.TestkitService.GetProfile:input_type -> testkit.v1.GetProfileRequest
-	40,  // 145: testkit.v1.TestkitService.UpdateProfile:input_type -> testkit.v1.UpdateProfileRequest
-	41,  // 146: testkit.v1.TestkitService.ChangePassword:input_type -> testkit.v1.ChangePasswordRequest
-	42,  // 147: testkit.v1.TestkitService.ResetPassword:input_type -> testkit.v1.ResetPasswordRequest
-	43,  // 148: testkit.v1.TestkitService.ListIdentities:input_type -> testkit.v1.ListIdentitiesRequest
-	45,  // 149: testkit.v1.TestkitService.BindIdentity:input_type -> testkit.v1.BindIdentityRequest
-	46,  // 150: testkit.v1.TestkitService.BindOAuthIdentity:input_type -> testkit.v1.BindOAuthIdentityRequest
-	48,  // 151: testkit.v1.TestkitService.UnbindIdentity:input_type -> testkit.v1.UnbindIdentityRequest
-	49,  // 152: testkit.v1.TestkitService.ListSessions:input_type -> testkit.v1.ListSessionsRequest
-	51,  // 153: testkit.v1.TestkitService.RevokeSession:input_type -> testkit.v1.RevokeSessionRequest
-	52,  // 154: testkit.v1.TestkitService.RevokeAllSessions:input_type -> testkit.v1.RevokeAllSessionsRequest
-	53,  // 155: testkit.v1.TestkitService.GetSession:input_type -> testkit.v1.GetSessionRequest
-	55,  // 156: testkit.v1.TestkitService.IssueSessionCode:input_type -> testkit.v1.IssueSessionCodeRequest
-	57,  // 157: testkit.v1.TestkitService.ExchangeSessionCode:input_type -> testkit.v1.ExchangeSessionCodeRequest
-	59,  // 158: testkit.v1.TestkitService.GetOAuthURL:input_type -> testkit.v1.GetOAuthURLRequest
-	61,  // 159: testkit.v1.TestkitService.SocialLogin:input_type -> testkit.v1.SocialLoginRequest
-	62,  // 160: testkit.v1.TestkitService.MiniProgramLogin:input_type -> testkit.v1.MiniProgramLoginRequest
-	63,  // 161: testkit.v1.TestkitService.MiniProgramPhoneLogin:input_type -> testkit.v1.MiniProgramPhoneLoginRequest
-	65,  // 162: testkit.v1.TestkitService.CreateUser:input_type -> testkit.v1.CreateUserRequest
-	67,  // 163: testkit.v1.TestkitService.GetUser:input_type -> testkit.v1.GetUserRequest
-	69,  // 164: testkit.v1.TestkitService.ListUsers:input_type -> testkit.v1.ListUsersRequest
-	71,  // 165: testkit.v1.TestkitService.ListUsersPaged:input_type -> testkit.v1.ListUsersPagedRequest
-	68,  // 166: testkit.v1.TestkitService.DisableUser:input_type -> testkit.v1.DisableUserRequest
-	73,  // 167: testkit.v1.TestkitService.GetLoginLogs:input_type -> testkit.v1.GetLoginLogsRequest
-	75,  // 168: testkit.v1.TestkitService.CreateGroup:input_type -> testkit.v1.CreateGroupRequest
-	76,  // 169: testkit.v1.TestkitService.GetGroup:input_type -> testkit.v1.GetGroupRequest
-	77,  // 170: testkit.v1.TestkitService.UpdateGroup:input_type -> testkit.v1.UpdateGroupRequest
-	78,  // 171: testkit.v1.TestkitService.ListGroups:input_type -> testkit.v1.ListGroupsRequest
-	80,  // 172: testkit.v1.TestkitService.DeleteGroup:input_type -> testkit.v1.DeleteGroupRequest
-	81,  // 173: testkit.v1.TestkitService.AddGroupMember:input_type -> testkit.v1.AddGroupMemberRequest
-	82,  // 174: testkit.v1.TestkitService.RemoveGroupMember:input_type -> testkit.v1.RemoveGroupMemberRequest
-	83,  // 175: testkit.v1.TestkitService.ListGroupMembers:input_type -> testkit.v1.ListGroupMembersRequest
-	85,  // 176: testkit.v1.TestkitService.AddGroupRole:input_type -> testkit.v1.AddGroupRoleRequest
-	86,  // 177: testkit.v1.TestkitService.RemoveGroupRole:input_type -> testkit.v1.RemoveGroupRoleRequest
-	87,  // 178: testkit.v1.TestkitService.ListGroupRoles:input_type -> testkit.v1.ListGroupRolesRequest
-	89,  // 179: testkit.v1.TestkitService.CreateRole:input_type -> testkit.v1.CreateRoleRequest
-	90,  // 180: testkit.v1.TestkitService.GetRole:input_type -> testkit.v1.GetRoleRequest
-	91,  // 181: testkit.v1.TestkitService.UpdateRole:input_type -> testkit.v1.UpdateRoleRequest
-	92,  // 182: testkit.v1.TestkitService.DeleteRole:input_type -> testkit.v1.DeleteRoleRequest
-	93,  // 183: testkit.v1.TestkitService.ListRoles:input_type -> testkit.v1.ListRolesRequest
-	95,  // 184: testkit.v1.TestkitService.AssignRole:input_type -> testkit.v1.AssignRoleRequest
-	96,  // 185: testkit.v1.TestkitService.RevokeRole:input_type -> testkit.v1.RevokeRoleRequest
-	97,  // 186: testkit.v1.TestkitService.ListUserRoles:input_type -> testkit.v1.ListUserRolesRequest
-	99,  // 187: testkit.v1.TestkitService.ListPermissions:input_type -> testkit.v1.ListPermissionsRequest
-	101, // 188: testkit.v1.TestkitService.CreatePermission:input_type -> testkit.v1.CreatePermissionRequest
-	102, // 189: testkit.v1.TestkitService.GetPermission:input_type -> testkit.v1.GetPermissionRequest
-	103, // 190: testkit.v1.TestkitService.UpdatePermission:input_type -> testkit.v1.UpdatePermissionRequest
-	104, // 191: testkit.v1.TestkitService.DeletePermission:input_type -> testkit.v1.DeletePermissionRequest
-	105, // 192: testkit.v1.TestkitService.CreatePermissionGroup:input_type -> testkit.v1.CreatePermissionGroupRequest
-	106, // 193: testkit.v1.TestkitService.GetPermissionGroup:input_type -> testkit.v1.GetPermissionGroupRequest
-	107, // 194: testkit.v1.TestkitService.UpdatePermissionGroup:input_type -> testkit.v1.UpdatePermissionGroupRequest
-	108, // 195: testkit.v1.TestkitService.DeletePermissionGroup:input_type -> testkit.v1.DeletePermissionGroupRequest
-	109, // 196: testkit.v1.TestkitService.ListPermissionGroups:input_type -> testkit.v1.ListPermissionGroupsRequest
-	125, // 197: testkit.v1.TestkitService.GenerateUploadURL:input_type -> testkit.v1.GenerateUploadURLRequest
-	127, // 198: testkit.v1.TestkitService.GetSTSCredential:input_type -> testkit.v1.GetSTSCredentialRequest
-	129, // 199: testkit.v1.TestkitService.BatchGetSTSCredential:input_type -> testkit.v1.BatchGetSTSCredentialRequest
-	131, // 200: testkit.v1.TestkitService.ConfirmUpload:input_type -> testkit.v1.ConfirmUploadRequest
-	133, // 201: testkit.v1.TestkitService.CancelUpload:input_type -> testkit.v1.CancelUploadRequest
-	134, // 202: testkit.v1.TestkitService.GenerateDownloadURL:input_type -> testkit.v1.GenerateDownloadURLRequest
-	136, // 203: testkit.v1.TestkitService.GenerateProcessURL:input_type -> testkit.v1.GenerateProcessURLRequest
-	138, // 204: testkit.v1.TestkitService.GenerateCDNURL:input_type -> testkit.v1.GenerateCDNURLRequest
-	140, // 205: testkit.v1.TestkitService.ListMyFiles:input_type -> testkit.v1.ListMyFilesRequest
-	142, // 206: testkit.v1.TestkitService.ListMyFilesPaged:input_type -> testkit.v1.ListMyFilesPagedRequest
-	144, // 207: testkit.v1.TestkitService.GetMyFile:input_type -> testkit.v1.GetMyFileRequest
-	145, // 208: testkit.v1.TestkitService.UpdateMyFile:input_type -> testkit.v1.UpdateMyFileRequest
-	146, // 209: testkit.v1.TestkitService.DeleteMyFile:input_type -> testkit.v1.DeleteMyFileRequest
-	147, // 210: testkit.v1.TestkitService.BatchDeleteMyFiles:input_type -> testkit.v1.BatchDeleteMyFilesRequest
-	179, // 211: testkit.v1.TestkitService.GetMyQuota:input_type -> google.protobuf.Empty
-	149, // 212: testkit.v1.TestkitService.ListMyAuditLogs:input_type -> testkit.v1.ListMyAuditLogsRequest
-	151, // 213: testkit.v1.TestkitService.SetOwnerQuota:input_type -> testkit.v1.SetOwnerQuotaRequest
-	152, // 214: testkit.v1.TestkitService.AddOwnerQuota:input_type -> testkit.v1.AddOwnerQuotaRequest
-	153, // 215: testkit.v1.TestkitService.AdminListFiles:input_type -> testkit.v1.AdminListFilesRequest
-	155, // 216: testkit.v1.TestkitService.AdminGetFile:input_type -> testkit.v1.AdminGetFileRequest
-	156, // 217: testkit.v1.TestkitService.AdminDeleteFile:input_type -> testkit.v1.AdminDeleteFileRequest
-	157, // 218: testkit.v1.TestkitService.AdminGetQuota:input_type -> testkit.v1.AdminGetQuotaRequest
-	158, // 219: testkit.v1.TestkitService.AdminSetQuota:input_type -> testkit.v1.AdminSetQuotaRequest
-	159, // 220: testkit.v1.TestkitService.AdminGetStats:input_type -> testkit.v1.AdminGetStatsRequest
-	179, // 221: testkit.v1.TestkitService.AdminListProviders:input_type -> google.protobuf.Empty
-	179, // 222: testkit.v1.TestkitService.AdminListBuckets:input_type -> google.protobuf.Empty
-	163, // 223: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:input_type -> testkit.v1.AdminSoftDeleteOwnerFilesRequest
-	165, // 224: testkit.v1.TestkitService.AdminDeleteOwner:input_type -> testkit.v1.AdminDeleteOwnerRequest
-	167, // 225: testkit.v1.TestkitService.AdminListAuditLogs:input_type -> testkit.v1.AdminListAuditLogsRequest
-	22,  // 226: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
-	38,  // 227: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
-	38,  // 228: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
-	26,  // 229: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
-	179, // 230: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
-	38,  // 231: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
-	28,  // 232: testkit.v1.TestkitService.GetProfile:output_type -> testkit.v1.User
-	28,  // 233: testkit.v1.TestkitService.UpdateProfile:output_type -> testkit.v1.User
-	179, // 234: testkit.v1.TestkitService.ChangePassword:output_type -> google.protobuf.Empty
-	179, // 235: testkit.v1.TestkitService.ResetPassword:output_type -> google.protobuf.Empty
-	44,  // 236: testkit.v1.TestkitService.ListIdentities:output_type -> testkit.v1.ListIdentitiesResponse
-	29,  // 237: testkit.v1.TestkitService.BindIdentity:output_type -> testkit.v1.Identity
-	47,  // 238: testkit.v1.TestkitService.BindOAuthIdentity:output_type -> testkit.v1.BindOAuthIdentityResponse
-	179, // 239: testkit.v1.TestkitService.UnbindIdentity:output_type -> google.protobuf.Empty
-	50,  // 240: testkit.v1.TestkitService.ListSessions:output_type -> testkit.v1.ListSessionsResponse
-	179, // 241: testkit.v1.TestkitService.RevokeSession:output_type -> google.protobuf.Empty
-	179, // 242: testkit.v1.TestkitService.RevokeAllSessions:output_type -> google.protobuf.Empty
-	54,  // 243: testkit.v1.TestkitService.GetSession:output_type -> testkit.v1.GetSessionResponse
-	56,  // 244: testkit.v1.TestkitService.IssueSessionCode:output_type -> testkit.v1.IssueSessionCodeResponse
-	58,  // 245: testkit.v1.TestkitService.ExchangeSessionCode:output_type -> testkit.v1.ExchangeSessionCodeResponse
-	60,  // 246: testkit.v1.TestkitService.GetOAuthURL:output_type -> testkit.v1.GetOAuthURLResponse
-	64,  // 247: testkit.v1.TestkitService.SocialLogin:output_type -> testkit.v1.SocialLoginResponse
-	64,  // 248: testkit.v1.TestkitService.MiniProgramLogin:output_type -> testkit.v1.SocialLoginResponse
-	64,  // 249: testkit.v1.TestkitService.MiniProgramPhoneLogin:output_type -> testkit.v1.SocialLoginResponse
-	66,  // 250: testkit.v1.TestkitService.CreateUser:output_type -> testkit.v1.CreateUserResponse
-	28,  // 251: testkit.v1.TestkitService.GetUser:output_type -> testkit.v1.User
-	70,  // 252: testkit.v1.TestkitService.ListUsers:output_type -> testkit.v1.ListUsersResponse
-	72,  // 253: testkit.v1.TestkitService.ListUsersPaged:output_type -> testkit.v1.ListUsersPagedResponse
-	28,  // 254: testkit.v1.TestkitService.DisableUser:output_type -> testkit.v1.User
-	74,  // 255: testkit.v1.TestkitService.GetLoginLogs:output_type -> testkit.v1.GetLoginLogsResponse
-	31,  // 256: testkit.v1.TestkitService.CreateGroup:output_type -> testkit.v1.Group
-	31,  // 257: testkit.v1.TestkitService.GetGroup:output_type -> testkit.v1.Group
-	31,  // 258: testkit.v1.TestkitService.UpdateGroup:output_type -> testkit.v1.Group
-	79,  // 259: testkit.v1.TestkitService.ListGroups:output_type -> testkit.v1.ListGroupsResponse
-	179, // 260: testkit.v1.TestkitService.DeleteGroup:output_type -> google.protobuf.Empty
-	179, // 261: testkit.v1.TestkitService.AddGroupMember:output_type -> google.protobuf.Empty
-	179, // 262: testkit.v1.TestkitService.RemoveGroupMember:output_type -> google.protobuf.Empty
-	84,  // 263: testkit.v1.TestkitService.ListGroupMembers:output_type -> testkit.v1.ListGroupMembersResponse
-	179, // 264: testkit.v1.TestkitService.AddGroupRole:output_type -> google.protobuf.Empty
-	179, // 265: testkit.v1.TestkitService.RemoveGroupRole:output_type -> google.protobuf.Empty
-	88,  // 266: testkit.v1.TestkitService.ListGroupRoles:output_type -> testkit.v1.ListGroupRolesResponse
-	32,  // 267: testkit.v1.TestkitService.CreateRole:output_type -> testkit.v1.Role
-	32,  // 268: testkit.v1.TestkitService.GetRole:output_type -> testkit.v1.Role
-	32,  // 269: testkit.v1.TestkitService.UpdateRole:output_type -> testkit.v1.Role
-	179, // 270: testkit.v1.TestkitService.DeleteRole:output_type -> google.protobuf.Empty
-	94,  // 271: testkit.v1.TestkitService.ListRoles:output_type -> testkit.v1.ListRolesResponse
-	179, // 272: testkit.v1.TestkitService.AssignRole:output_type -> google.protobuf.Empty
-	179, // 273: testkit.v1.TestkitService.RevokeRole:output_type -> google.protobuf.Empty
-	98,  // 274: testkit.v1.TestkitService.ListUserRoles:output_type -> testkit.v1.ListUserRolesResponse
-	100, // 275: testkit.v1.TestkitService.ListPermissions:output_type -> testkit.v1.ListPermissionsResponse
-	33,  // 276: testkit.v1.TestkitService.CreatePermission:output_type -> testkit.v1.Permission
-	33,  // 277: testkit.v1.TestkitService.GetPermission:output_type -> testkit.v1.Permission
-	33,  // 278: testkit.v1.TestkitService.UpdatePermission:output_type -> testkit.v1.Permission
-	179, // 279: testkit.v1.TestkitService.DeletePermission:output_type -> google.protobuf.Empty
-	34,  // 280: testkit.v1.TestkitService.CreatePermissionGroup:output_type -> testkit.v1.PermissionGroup
-	34,  // 281: testkit.v1.TestkitService.GetPermissionGroup:output_type -> testkit.v1.PermissionGroup
-	34,  // 282: testkit.v1.TestkitService.UpdatePermissionGroup:output_type -> testkit.v1.PermissionGroup
-	179, // 283: testkit.v1.TestkitService.DeletePermissionGroup:output_type -> google.protobuf.Empty
-	110, // 284: testkit.v1.TestkitService.ListPermissionGroups:output_type -> testkit.v1.ListPermissionGroupsResponse
-	126, // 285: testkit.v1.TestkitService.GenerateUploadURL:output_type -> testkit.v1.GenerateUploadURLResponse
-	128, // 286: testkit.v1.TestkitService.GetSTSCredential:output_type -> testkit.v1.GetSTSCredentialResponse
-	130, // 287: testkit.v1.TestkitService.BatchGetSTSCredential:output_type -> testkit.v1.BatchGetSTSCredentialResponse
-	132, // 288: testkit.v1.TestkitService.ConfirmUpload:output_type -> testkit.v1.ConfirmUploadResponse
-	179, // 289: testkit.v1.TestkitService.CancelUpload:output_type -> google.protobuf.Empty
-	135, // 290: testkit.v1.TestkitService.GenerateDownloadURL:output_type -> testkit.v1.GenerateDownloadURLResponse
-	137, // 291: testkit.v1.TestkitService.GenerateProcessURL:output_type -> testkit.v1.GenerateProcessURLResponse
-	139, // 292: testkit.v1.TestkitService.GenerateCDNURL:output_type -> testkit.v1.GenerateCDNURLResponse
-	141, // 293: testkit.v1.TestkitService.ListMyFiles:output_type -> testkit.v1.ListMyFilesResponse
-	143, // 294: testkit.v1.TestkitService.ListMyFilesPaged:output_type -> testkit.v1.ListMyFilesPagedResponse
-	111, // 295: testkit.v1.TestkitService.GetMyFile:output_type -> testkit.v1.FileInfo
-	111, // 296: testkit.v1.TestkitService.UpdateMyFile:output_type -> testkit.v1.FileInfo
-	179, // 297: testkit.v1.TestkitService.DeleteMyFile:output_type -> google.protobuf.Empty
-	148, // 298: testkit.v1.TestkitService.BatchDeleteMyFiles:output_type -> testkit.v1.BatchDeleteMyFilesResponse
-	113, // 299: testkit.v1.TestkitService.GetMyQuota:output_type -> testkit.v1.QuotaInfo
-	150, // 300: testkit.v1.TestkitService.ListMyAuditLogs:output_type -> testkit.v1.ListMyAuditLogsResponse
-	113, // 301: testkit.v1.TestkitService.SetOwnerQuota:output_type -> testkit.v1.QuotaInfo
-	113, // 302: testkit.v1.TestkitService.AddOwnerQuota:output_type -> testkit.v1.QuotaInfo
-	154, // 303: testkit.v1.TestkitService.AdminListFiles:output_type -> testkit.v1.AdminListFilesResponse
-	112, // 304: testkit.v1.TestkitService.AdminGetFile:output_type -> testkit.v1.AdminFileInfo
-	179, // 305: testkit.v1.TestkitService.AdminDeleteFile:output_type -> google.protobuf.Empty
-	113, // 306: testkit.v1.TestkitService.AdminGetQuota:output_type -> testkit.v1.QuotaInfo
-	113, // 307: testkit.v1.TestkitService.AdminSetQuota:output_type -> testkit.v1.QuotaInfo
-	160, // 308: testkit.v1.TestkitService.AdminGetStats:output_type -> testkit.v1.AdminGetStatsResponse
-	161, // 309: testkit.v1.TestkitService.AdminListProviders:output_type -> testkit.v1.AdminListProvidersResponse
-	162, // 310: testkit.v1.TestkitService.AdminListBuckets:output_type -> testkit.v1.AdminListBucketsResponse
-	164, // 311: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:output_type -> testkit.v1.AdminSoftDeleteOwnerFilesResponse
-	166, // 312: testkit.v1.TestkitService.AdminDeleteOwner:output_type -> testkit.v1.AdminDeleteOwnerResponse
-	168, // 313: testkit.v1.TestkitService.AdminListAuditLogs:output_type -> testkit.v1.AdminListAuditLogsResponse
-	226, // [226:314] is the sub-list for method output_type
-	138, // [138:226] is the sub-list for method input_type
-	138, // [138:138] is the sub-list for extension type_name
-	138, // [138:138] is the sub-list for extension extendee
-	0,   // [0:138] is the sub-list for field type_name
+	125, // 137: testkit.v1.AdminListAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
+	24,  // 138: testkit.v1.EmailVendorStats.vendor:type_name -> testkit.v1.EmailVendor
+	25,  // 139: testkit.v1.SmsVendorStats.vendor:type_name -> testkit.v1.SmsVendor
+	175, // 140: testkit.v1.SendEmailRequest.to:type_name -> testkit.v1.EmailAddress
+	175, // 141: testkit.v1.SendEmailRequest.cc:type_name -> testkit.v1.EmailAddress
+	175, // 142: testkit.v1.SendEmailRequest.bcc:type_name -> testkit.v1.EmailAddress
+	175, // 143: testkit.v1.SendEmailRequest.reply_to:type_name -> testkit.v1.EmailAddress
+	24,  // 144: testkit.v1.SendEmailRequest.vendor:type_name -> testkit.v1.EmailVendor
+	211, // 145: testkit.v1.SendEmailRequest.template_params:type_name -> testkit.v1.SendEmailRequest.TemplateParamsEntry
+	26,  // 146: testkit.v1.SendEmailRequest.scene:type_name -> testkit.v1.EmailScene
+	175, // 147: testkit.v1.SendEmailRequest.from:type_name -> testkit.v1.EmailAddress
+	176, // 148: testkit.v1.SendEmailRequest.attachments:type_name -> testkit.v1.EmailAttachment
+	212, // 149: testkit.v1.SendSMSRequest.template_params:type_name -> testkit.v1.SendSMSRequest.TemplateParamsEntry
+	25,  // 150: testkit.v1.SendSMSRequest.vendor:type_name -> testkit.v1.SmsVendor
+	27,  // 151: testkit.v1.SendSMSRequest.scene:type_name -> testkit.v1.SmsScene
+	23,  // 152: testkit.v1.SendResponse.status:type_name -> testkit.v1.MessageStatus
+	24,  // 153: testkit.v1.SendResponse.email_vendor:type_name -> testkit.v1.EmailVendor
+	25,  // 154: testkit.v1.SendResponse.sms_vendor:type_name -> testkit.v1.SmsVendor
+	24,  // 155: testkit.v1.EmailRecord.vendor:type_name -> testkit.v1.EmailVendor
+	26,  // 156: testkit.v1.EmailRecord.scene:type_name -> testkit.v1.EmailScene
+	23,  // 157: testkit.v1.EmailRecord.status:type_name -> testkit.v1.MessageStatus
+	175, // 158: testkit.v1.EmailRecord.target:type_name -> testkit.v1.EmailAddress
+	175, // 159: testkit.v1.EmailRecord.cc:type_name -> testkit.v1.EmailAddress
+	175, // 160: testkit.v1.EmailRecord.bcc:type_name -> testkit.v1.EmailAddress
+	175, // 161: testkit.v1.EmailRecord.reply_to:type_name -> testkit.v1.EmailAddress
+	213, // 162: testkit.v1.EmailRecord.template_params:type_name -> testkit.v1.EmailRecord.TemplateParamsEntry
+	176, // 163: testkit.v1.EmailRecord.attachments:type_name -> testkit.v1.EmailAttachment
+	25,  // 164: testkit.v1.SMSRecord.vendor:type_name -> testkit.v1.SmsVendor
+	27,  // 165: testkit.v1.SMSRecord.scene:type_name -> testkit.v1.SmsScene
+	23,  // 166: testkit.v1.SMSRecord.status:type_name -> testkit.v1.MessageStatus
+	214, // 167: testkit.v1.SMSRecord.template_params:type_name -> testkit.v1.SMSRecord.TemplateParamsEntry
+	24,  // 168: testkit.v1.ListEmailsRequest.vendor:type_name -> testkit.v1.EmailVendor
+	26,  // 169: testkit.v1.ListEmailsRequest.scene:type_name -> testkit.v1.EmailScene
+	23,  // 170: testkit.v1.ListEmailsRequest.status:type_name -> testkit.v1.MessageStatus
+	16,  // 171: testkit.v1.ListEmailsRequest.sort_field:type_name -> testkit.v1.SortField
+	22,  // 172: testkit.v1.ListEmailsRequest.sort_direction:type_name -> testkit.v1.SortDirection
+	182, // 173: testkit.v1.ListEmailsResponse.records:type_name -> testkit.v1.EmailRecord
+	25,  // 174: testkit.v1.ListSMSRequest.vendor:type_name -> testkit.v1.SmsVendor
+	27,  // 175: testkit.v1.ListSMSRequest.scene:type_name -> testkit.v1.SmsScene
+	23,  // 176: testkit.v1.ListSMSRequest.status:type_name -> testkit.v1.MessageStatus
+	16,  // 177: testkit.v1.ListSMSRequest.sort_field:type_name -> testkit.v1.SortField
+	22,  // 178: testkit.v1.ListSMSRequest.sort_direction:type_name -> testkit.v1.SortDirection
+	183, // 179: testkit.v1.ListSMSResponse.records:type_name -> testkit.v1.SMSRecord
+	24,  // 180: testkit.v1.ListEmailsByCursorRequest.vendor:type_name -> testkit.v1.EmailVendor
+	26,  // 181: testkit.v1.ListEmailsByCursorRequest.scene:type_name -> testkit.v1.EmailScene
+	23,  // 182: testkit.v1.ListEmailsByCursorRequest.status:type_name -> testkit.v1.MessageStatus
+	16,  // 183: testkit.v1.ListEmailsByCursorRequest.sort_field:type_name -> testkit.v1.SortField
+	22,  // 184: testkit.v1.ListEmailsByCursorRequest.sort_direction:type_name -> testkit.v1.SortDirection
+	182, // 185: testkit.v1.ListEmailsByCursorResponse.records:type_name -> testkit.v1.EmailRecord
+	25,  // 186: testkit.v1.ListSMSByCursorRequest.vendor:type_name -> testkit.v1.SmsVendor
+	27,  // 187: testkit.v1.ListSMSByCursorRequest.scene:type_name -> testkit.v1.SmsScene
+	23,  // 188: testkit.v1.ListSMSByCursorRequest.status:type_name -> testkit.v1.MessageStatus
+	16,  // 189: testkit.v1.ListSMSByCursorRequest.sort_field:type_name -> testkit.v1.SortField
+	22,  // 190: testkit.v1.ListSMSByCursorRequest.sort_direction:type_name -> testkit.v1.SortDirection
+	183, // 191: testkit.v1.ListSMSByCursorResponse.records:type_name -> testkit.v1.SMSRecord
+	24,  // 192: testkit.v1.GetEmailStatsRequest.vendor:type_name -> testkit.v1.EmailVendor
+	26,  // 193: testkit.v1.GetEmailStatsRequest.scene:type_name -> testkit.v1.EmailScene
+	177, // 194: testkit.v1.EmailStatsResponse.vendors:type_name -> testkit.v1.EmailVendorStats
+	25,  // 195: testkit.v1.GetSMSStatsRequest.vendor:type_name -> testkit.v1.SmsVendor
+	27,  // 196: testkit.v1.GetSMSStatsRequest.scene:type_name -> testkit.v1.SmsScene
+	178, // 197: testkit.v1.SMSStatsResponse.vendors:type_name -> testkit.v1.SmsVendorStats
+	218, // 198: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
+	29,  // 199: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
+	30,  // 200: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
+	31,  // 201: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
+	218, // 202: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
+	33,  // 203: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
+	45,  // 204: testkit.v1.TestkitService.GetProfile:input_type -> testkit.v1.GetProfileRequest
+	46,  // 205: testkit.v1.TestkitService.UpdateProfile:input_type -> testkit.v1.UpdateProfileRequest
+	47,  // 206: testkit.v1.TestkitService.ChangePassword:input_type -> testkit.v1.ChangePasswordRequest
+	48,  // 207: testkit.v1.TestkitService.ResetPassword:input_type -> testkit.v1.ResetPasswordRequest
+	49,  // 208: testkit.v1.TestkitService.ListIdentities:input_type -> testkit.v1.ListIdentitiesRequest
+	51,  // 209: testkit.v1.TestkitService.BindIdentity:input_type -> testkit.v1.BindIdentityRequest
+	52,  // 210: testkit.v1.TestkitService.BindOAuthIdentity:input_type -> testkit.v1.BindOAuthIdentityRequest
+	54,  // 211: testkit.v1.TestkitService.UnbindIdentity:input_type -> testkit.v1.UnbindIdentityRequest
+	55,  // 212: testkit.v1.TestkitService.ListSessions:input_type -> testkit.v1.ListSessionsRequest
+	57,  // 213: testkit.v1.TestkitService.RevokeSession:input_type -> testkit.v1.RevokeSessionRequest
+	58,  // 214: testkit.v1.TestkitService.RevokeAllSessions:input_type -> testkit.v1.RevokeAllSessionsRequest
+	59,  // 215: testkit.v1.TestkitService.GetSession:input_type -> testkit.v1.GetSessionRequest
+	61,  // 216: testkit.v1.TestkitService.IssueSessionCode:input_type -> testkit.v1.IssueSessionCodeRequest
+	63,  // 217: testkit.v1.TestkitService.ExchangeSessionCode:input_type -> testkit.v1.ExchangeSessionCodeRequest
+	65,  // 218: testkit.v1.TestkitService.GetOAuthURL:input_type -> testkit.v1.GetOAuthURLRequest
+	67,  // 219: testkit.v1.TestkitService.SocialLogin:input_type -> testkit.v1.SocialLoginRequest
+	68,  // 220: testkit.v1.TestkitService.MiniProgramLogin:input_type -> testkit.v1.MiniProgramLoginRequest
+	69,  // 221: testkit.v1.TestkitService.MiniProgramPhoneLogin:input_type -> testkit.v1.MiniProgramPhoneLoginRequest
+	71,  // 222: testkit.v1.TestkitService.CreateUser:input_type -> testkit.v1.CreateUserRequest
+	73,  // 223: testkit.v1.TestkitService.GetUser:input_type -> testkit.v1.GetUserRequest
+	75,  // 224: testkit.v1.TestkitService.ListUsers:input_type -> testkit.v1.ListUsersRequest
+	77,  // 225: testkit.v1.TestkitService.ListUsersPaged:input_type -> testkit.v1.ListUsersPagedRequest
+	74,  // 226: testkit.v1.TestkitService.DisableUser:input_type -> testkit.v1.DisableUserRequest
+	79,  // 227: testkit.v1.TestkitService.GetLoginLogs:input_type -> testkit.v1.GetLoginLogsRequest
+	81,  // 228: testkit.v1.TestkitService.CreateGroup:input_type -> testkit.v1.CreateGroupRequest
+	82,  // 229: testkit.v1.TestkitService.GetGroup:input_type -> testkit.v1.GetGroupRequest
+	83,  // 230: testkit.v1.TestkitService.UpdateGroup:input_type -> testkit.v1.UpdateGroupRequest
+	84,  // 231: testkit.v1.TestkitService.ListGroups:input_type -> testkit.v1.ListGroupsRequest
+	86,  // 232: testkit.v1.TestkitService.DeleteGroup:input_type -> testkit.v1.DeleteGroupRequest
+	87,  // 233: testkit.v1.TestkitService.AddGroupMember:input_type -> testkit.v1.AddGroupMemberRequest
+	88,  // 234: testkit.v1.TestkitService.RemoveGroupMember:input_type -> testkit.v1.RemoveGroupMemberRequest
+	89,  // 235: testkit.v1.TestkitService.ListGroupMembers:input_type -> testkit.v1.ListGroupMembersRequest
+	91,  // 236: testkit.v1.TestkitService.AddGroupRole:input_type -> testkit.v1.AddGroupRoleRequest
+	92,  // 237: testkit.v1.TestkitService.RemoveGroupRole:input_type -> testkit.v1.RemoveGroupRoleRequest
+	93,  // 238: testkit.v1.TestkitService.ListGroupRoles:input_type -> testkit.v1.ListGroupRolesRequest
+	95,  // 239: testkit.v1.TestkitService.CreateRole:input_type -> testkit.v1.CreateRoleRequest
+	96,  // 240: testkit.v1.TestkitService.GetRole:input_type -> testkit.v1.GetRoleRequest
+	97,  // 241: testkit.v1.TestkitService.UpdateRole:input_type -> testkit.v1.UpdateRoleRequest
+	98,  // 242: testkit.v1.TestkitService.DeleteRole:input_type -> testkit.v1.DeleteRoleRequest
+	99,  // 243: testkit.v1.TestkitService.ListRoles:input_type -> testkit.v1.ListRolesRequest
+	101, // 244: testkit.v1.TestkitService.AssignRole:input_type -> testkit.v1.AssignRoleRequest
+	102, // 245: testkit.v1.TestkitService.RevokeRole:input_type -> testkit.v1.RevokeRoleRequest
+	103, // 246: testkit.v1.TestkitService.ListUserRoles:input_type -> testkit.v1.ListUserRolesRequest
+	105, // 247: testkit.v1.TestkitService.ListPermissions:input_type -> testkit.v1.ListPermissionsRequest
+	107, // 248: testkit.v1.TestkitService.CreatePermission:input_type -> testkit.v1.CreatePermissionRequest
+	108, // 249: testkit.v1.TestkitService.GetPermission:input_type -> testkit.v1.GetPermissionRequest
+	109, // 250: testkit.v1.TestkitService.UpdatePermission:input_type -> testkit.v1.UpdatePermissionRequest
+	110, // 251: testkit.v1.TestkitService.DeletePermission:input_type -> testkit.v1.DeletePermissionRequest
+	111, // 252: testkit.v1.TestkitService.CreatePermissionGroup:input_type -> testkit.v1.CreatePermissionGroupRequest
+	112, // 253: testkit.v1.TestkitService.GetPermissionGroup:input_type -> testkit.v1.GetPermissionGroupRequest
+	113, // 254: testkit.v1.TestkitService.UpdatePermissionGroup:input_type -> testkit.v1.UpdatePermissionGroupRequest
+	114, // 255: testkit.v1.TestkitService.DeletePermissionGroup:input_type -> testkit.v1.DeletePermissionGroupRequest
+	115, // 256: testkit.v1.TestkitService.ListPermissionGroups:input_type -> testkit.v1.ListPermissionGroupsRequest
+	131, // 257: testkit.v1.TestkitService.GenerateUploadURL:input_type -> testkit.v1.GenerateUploadURLRequest
+	133, // 258: testkit.v1.TestkitService.GetSTSCredential:input_type -> testkit.v1.GetSTSCredentialRequest
+	135, // 259: testkit.v1.TestkitService.BatchGetSTSCredential:input_type -> testkit.v1.BatchGetSTSCredentialRequest
+	137, // 260: testkit.v1.TestkitService.ConfirmUpload:input_type -> testkit.v1.ConfirmUploadRequest
+	139, // 261: testkit.v1.TestkitService.CancelUpload:input_type -> testkit.v1.CancelUploadRequest
+	140, // 262: testkit.v1.TestkitService.GenerateDownloadURL:input_type -> testkit.v1.GenerateDownloadURLRequest
+	142, // 263: testkit.v1.TestkitService.GenerateProcessURL:input_type -> testkit.v1.GenerateProcessURLRequest
+	144, // 264: testkit.v1.TestkitService.GenerateCDNURL:input_type -> testkit.v1.GenerateCDNURLRequest
+	146, // 265: testkit.v1.TestkitService.ListMyFiles:input_type -> testkit.v1.ListMyFilesRequest
+	148, // 266: testkit.v1.TestkitService.ListMyFilesPaged:input_type -> testkit.v1.ListMyFilesPagedRequest
+	150, // 267: testkit.v1.TestkitService.GetMyFile:input_type -> testkit.v1.GetMyFileRequest
+	151, // 268: testkit.v1.TestkitService.UpdateMyFile:input_type -> testkit.v1.UpdateMyFileRequest
+	152, // 269: testkit.v1.TestkitService.DeleteMyFile:input_type -> testkit.v1.DeleteMyFileRequest
+	153, // 270: testkit.v1.TestkitService.BatchDeleteMyFiles:input_type -> testkit.v1.BatchDeleteMyFilesRequest
+	218, // 271: testkit.v1.TestkitService.GetMyQuota:input_type -> google.protobuf.Empty
+	155, // 272: testkit.v1.TestkitService.ListMyAuditLogs:input_type -> testkit.v1.ListMyAuditLogsRequest
+	157, // 273: testkit.v1.TestkitService.SetOwnerQuota:input_type -> testkit.v1.SetOwnerQuotaRequest
+	158, // 274: testkit.v1.TestkitService.AddOwnerQuota:input_type -> testkit.v1.AddOwnerQuotaRequest
+	159, // 275: testkit.v1.TestkitService.AdminListFiles:input_type -> testkit.v1.AdminListFilesRequest
+	161, // 276: testkit.v1.TestkitService.AdminGetFile:input_type -> testkit.v1.AdminGetFileRequest
+	162, // 277: testkit.v1.TestkitService.AdminDeleteFile:input_type -> testkit.v1.AdminDeleteFileRequest
+	163, // 278: testkit.v1.TestkitService.AdminGetQuota:input_type -> testkit.v1.AdminGetQuotaRequest
+	164, // 279: testkit.v1.TestkitService.AdminSetQuota:input_type -> testkit.v1.AdminSetQuotaRequest
+	165, // 280: testkit.v1.TestkitService.AdminGetStats:input_type -> testkit.v1.AdminGetStatsRequest
+	218, // 281: testkit.v1.TestkitService.AdminListProviders:input_type -> google.protobuf.Empty
+	218, // 282: testkit.v1.TestkitService.AdminListBuckets:input_type -> google.protobuf.Empty
+	169, // 283: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:input_type -> testkit.v1.AdminSoftDeleteOwnerFilesRequest
+	171, // 284: testkit.v1.TestkitService.AdminDeleteOwner:input_type -> testkit.v1.AdminDeleteOwnerRequest
+	173, // 285: testkit.v1.TestkitService.AdminListAuditLogs:input_type -> testkit.v1.AdminListAuditLogsRequest
+	179, // 286: testkit.v1.TestkitService.SendEmail:input_type -> testkit.v1.SendEmailRequest
+	180, // 287: testkit.v1.TestkitService.SendSMS:input_type -> testkit.v1.SendSMSRequest
+	184, // 288: testkit.v1.TestkitService.GetEmail:input_type -> testkit.v1.GetEmailRequest
+	186, // 289: testkit.v1.TestkitService.ListEmails:input_type -> testkit.v1.ListEmailsRequest
+	190, // 290: testkit.v1.TestkitService.ListEmailsByCursor:input_type -> testkit.v1.ListEmailsByCursorRequest
+	194, // 291: testkit.v1.TestkitService.GetEmailStats:input_type -> testkit.v1.GetEmailStatsRequest
+	198, // 292: testkit.v1.TestkitService.ListEmailSenders:input_type -> testkit.v1.ListEmailSendersRequest
+	185, // 293: testkit.v1.TestkitService.GetSMS:input_type -> testkit.v1.GetSMSRequest
+	188, // 294: testkit.v1.TestkitService.ListSMS:input_type -> testkit.v1.ListSMSRequest
+	192, // 295: testkit.v1.TestkitService.ListSMSByCursor:input_type -> testkit.v1.ListSMSByCursorRequest
+	196, // 296: testkit.v1.TestkitService.GetSMSStats:input_type -> testkit.v1.GetSMSStatsRequest
+	202, // 297: testkit.v1.TestkitService.ListSMSRegions:input_type -> testkit.v1.ListSMSRegionsRequest
+	200, // 298: testkit.v1.TestkitService.ListSMSSenders:input_type -> testkit.v1.ListSMSSendersRequest
+	28,  // 299: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
+	44,  // 300: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
+	44,  // 301: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
+	32,  // 302: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
+	218, // 303: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
+	44,  // 304: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
+	34,  // 305: testkit.v1.TestkitService.GetProfile:output_type -> testkit.v1.User
+	34,  // 306: testkit.v1.TestkitService.UpdateProfile:output_type -> testkit.v1.User
+	218, // 307: testkit.v1.TestkitService.ChangePassword:output_type -> google.protobuf.Empty
+	218, // 308: testkit.v1.TestkitService.ResetPassword:output_type -> google.protobuf.Empty
+	50,  // 309: testkit.v1.TestkitService.ListIdentities:output_type -> testkit.v1.ListIdentitiesResponse
+	35,  // 310: testkit.v1.TestkitService.BindIdentity:output_type -> testkit.v1.Identity
+	53,  // 311: testkit.v1.TestkitService.BindOAuthIdentity:output_type -> testkit.v1.BindOAuthIdentityResponse
+	218, // 312: testkit.v1.TestkitService.UnbindIdentity:output_type -> google.protobuf.Empty
+	56,  // 313: testkit.v1.TestkitService.ListSessions:output_type -> testkit.v1.ListSessionsResponse
+	218, // 314: testkit.v1.TestkitService.RevokeSession:output_type -> google.protobuf.Empty
+	218, // 315: testkit.v1.TestkitService.RevokeAllSessions:output_type -> google.protobuf.Empty
+	60,  // 316: testkit.v1.TestkitService.GetSession:output_type -> testkit.v1.GetSessionResponse
+	62,  // 317: testkit.v1.TestkitService.IssueSessionCode:output_type -> testkit.v1.IssueSessionCodeResponse
+	64,  // 318: testkit.v1.TestkitService.ExchangeSessionCode:output_type -> testkit.v1.ExchangeSessionCodeResponse
+	66,  // 319: testkit.v1.TestkitService.GetOAuthURL:output_type -> testkit.v1.GetOAuthURLResponse
+	70,  // 320: testkit.v1.TestkitService.SocialLogin:output_type -> testkit.v1.SocialLoginResponse
+	70,  // 321: testkit.v1.TestkitService.MiniProgramLogin:output_type -> testkit.v1.SocialLoginResponse
+	70,  // 322: testkit.v1.TestkitService.MiniProgramPhoneLogin:output_type -> testkit.v1.SocialLoginResponse
+	72,  // 323: testkit.v1.TestkitService.CreateUser:output_type -> testkit.v1.CreateUserResponse
+	34,  // 324: testkit.v1.TestkitService.GetUser:output_type -> testkit.v1.User
+	76,  // 325: testkit.v1.TestkitService.ListUsers:output_type -> testkit.v1.ListUsersResponse
+	78,  // 326: testkit.v1.TestkitService.ListUsersPaged:output_type -> testkit.v1.ListUsersPagedResponse
+	34,  // 327: testkit.v1.TestkitService.DisableUser:output_type -> testkit.v1.User
+	80,  // 328: testkit.v1.TestkitService.GetLoginLogs:output_type -> testkit.v1.GetLoginLogsResponse
+	37,  // 329: testkit.v1.TestkitService.CreateGroup:output_type -> testkit.v1.Group
+	37,  // 330: testkit.v1.TestkitService.GetGroup:output_type -> testkit.v1.Group
+	37,  // 331: testkit.v1.TestkitService.UpdateGroup:output_type -> testkit.v1.Group
+	85,  // 332: testkit.v1.TestkitService.ListGroups:output_type -> testkit.v1.ListGroupsResponse
+	218, // 333: testkit.v1.TestkitService.DeleteGroup:output_type -> google.protobuf.Empty
+	218, // 334: testkit.v1.TestkitService.AddGroupMember:output_type -> google.protobuf.Empty
+	218, // 335: testkit.v1.TestkitService.RemoveGroupMember:output_type -> google.protobuf.Empty
+	90,  // 336: testkit.v1.TestkitService.ListGroupMembers:output_type -> testkit.v1.ListGroupMembersResponse
+	218, // 337: testkit.v1.TestkitService.AddGroupRole:output_type -> google.protobuf.Empty
+	218, // 338: testkit.v1.TestkitService.RemoveGroupRole:output_type -> google.protobuf.Empty
+	94,  // 339: testkit.v1.TestkitService.ListGroupRoles:output_type -> testkit.v1.ListGroupRolesResponse
+	38,  // 340: testkit.v1.TestkitService.CreateRole:output_type -> testkit.v1.Role
+	38,  // 341: testkit.v1.TestkitService.GetRole:output_type -> testkit.v1.Role
+	38,  // 342: testkit.v1.TestkitService.UpdateRole:output_type -> testkit.v1.Role
+	218, // 343: testkit.v1.TestkitService.DeleteRole:output_type -> google.protobuf.Empty
+	100, // 344: testkit.v1.TestkitService.ListRoles:output_type -> testkit.v1.ListRolesResponse
+	218, // 345: testkit.v1.TestkitService.AssignRole:output_type -> google.protobuf.Empty
+	218, // 346: testkit.v1.TestkitService.RevokeRole:output_type -> google.protobuf.Empty
+	104, // 347: testkit.v1.TestkitService.ListUserRoles:output_type -> testkit.v1.ListUserRolesResponse
+	106, // 348: testkit.v1.TestkitService.ListPermissions:output_type -> testkit.v1.ListPermissionsResponse
+	39,  // 349: testkit.v1.TestkitService.CreatePermission:output_type -> testkit.v1.Permission
+	39,  // 350: testkit.v1.TestkitService.GetPermission:output_type -> testkit.v1.Permission
+	39,  // 351: testkit.v1.TestkitService.UpdatePermission:output_type -> testkit.v1.Permission
+	218, // 352: testkit.v1.TestkitService.DeletePermission:output_type -> google.protobuf.Empty
+	40,  // 353: testkit.v1.TestkitService.CreatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	40,  // 354: testkit.v1.TestkitService.GetPermissionGroup:output_type -> testkit.v1.PermissionGroup
+	40,  // 355: testkit.v1.TestkitService.UpdatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	218, // 356: testkit.v1.TestkitService.DeletePermissionGroup:output_type -> google.protobuf.Empty
+	116, // 357: testkit.v1.TestkitService.ListPermissionGroups:output_type -> testkit.v1.ListPermissionGroupsResponse
+	132, // 358: testkit.v1.TestkitService.GenerateUploadURL:output_type -> testkit.v1.GenerateUploadURLResponse
+	134, // 359: testkit.v1.TestkitService.GetSTSCredential:output_type -> testkit.v1.GetSTSCredentialResponse
+	136, // 360: testkit.v1.TestkitService.BatchGetSTSCredential:output_type -> testkit.v1.BatchGetSTSCredentialResponse
+	138, // 361: testkit.v1.TestkitService.ConfirmUpload:output_type -> testkit.v1.ConfirmUploadResponse
+	218, // 362: testkit.v1.TestkitService.CancelUpload:output_type -> google.protobuf.Empty
+	141, // 363: testkit.v1.TestkitService.GenerateDownloadURL:output_type -> testkit.v1.GenerateDownloadURLResponse
+	143, // 364: testkit.v1.TestkitService.GenerateProcessURL:output_type -> testkit.v1.GenerateProcessURLResponse
+	145, // 365: testkit.v1.TestkitService.GenerateCDNURL:output_type -> testkit.v1.GenerateCDNURLResponse
+	147, // 366: testkit.v1.TestkitService.ListMyFiles:output_type -> testkit.v1.ListMyFilesResponse
+	149, // 367: testkit.v1.TestkitService.ListMyFilesPaged:output_type -> testkit.v1.ListMyFilesPagedResponse
+	117, // 368: testkit.v1.TestkitService.GetMyFile:output_type -> testkit.v1.FileInfo
+	117, // 369: testkit.v1.TestkitService.UpdateMyFile:output_type -> testkit.v1.FileInfo
+	218, // 370: testkit.v1.TestkitService.DeleteMyFile:output_type -> google.protobuf.Empty
+	154, // 371: testkit.v1.TestkitService.BatchDeleteMyFiles:output_type -> testkit.v1.BatchDeleteMyFilesResponse
+	119, // 372: testkit.v1.TestkitService.GetMyQuota:output_type -> testkit.v1.QuotaInfo
+	156, // 373: testkit.v1.TestkitService.ListMyAuditLogs:output_type -> testkit.v1.ListMyAuditLogsResponse
+	119, // 374: testkit.v1.TestkitService.SetOwnerQuota:output_type -> testkit.v1.QuotaInfo
+	119, // 375: testkit.v1.TestkitService.AddOwnerQuota:output_type -> testkit.v1.QuotaInfo
+	160, // 376: testkit.v1.TestkitService.AdminListFiles:output_type -> testkit.v1.AdminListFilesResponse
+	118, // 377: testkit.v1.TestkitService.AdminGetFile:output_type -> testkit.v1.AdminFileInfo
+	218, // 378: testkit.v1.TestkitService.AdminDeleteFile:output_type -> google.protobuf.Empty
+	119, // 379: testkit.v1.TestkitService.AdminGetQuota:output_type -> testkit.v1.QuotaInfo
+	119, // 380: testkit.v1.TestkitService.AdminSetQuota:output_type -> testkit.v1.QuotaInfo
+	166, // 381: testkit.v1.TestkitService.AdminGetStats:output_type -> testkit.v1.AdminGetStatsResponse
+	167, // 382: testkit.v1.TestkitService.AdminListProviders:output_type -> testkit.v1.AdminListProvidersResponse
+	168, // 383: testkit.v1.TestkitService.AdminListBuckets:output_type -> testkit.v1.AdminListBucketsResponse
+	170, // 384: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:output_type -> testkit.v1.AdminSoftDeleteOwnerFilesResponse
+	172, // 385: testkit.v1.TestkitService.AdminDeleteOwner:output_type -> testkit.v1.AdminDeleteOwnerResponse
+	174, // 386: testkit.v1.TestkitService.AdminListAuditLogs:output_type -> testkit.v1.AdminListAuditLogsResponse
+	181, // 387: testkit.v1.TestkitService.SendEmail:output_type -> testkit.v1.SendResponse
+	181, // 388: testkit.v1.TestkitService.SendSMS:output_type -> testkit.v1.SendResponse
+	182, // 389: testkit.v1.TestkitService.GetEmail:output_type -> testkit.v1.EmailRecord
+	187, // 390: testkit.v1.TestkitService.ListEmails:output_type -> testkit.v1.ListEmailsResponse
+	191, // 391: testkit.v1.TestkitService.ListEmailsByCursor:output_type -> testkit.v1.ListEmailsByCursorResponse
+	195, // 392: testkit.v1.TestkitService.GetEmailStats:output_type -> testkit.v1.EmailStatsResponse
+	199, // 393: testkit.v1.TestkitService.ListEmailSenders:output_type -> testkit.v1.ListEmailSendersResponse
+	183, // 394: testkit.v1.TestkitService.GetSMS:output_type -> testkit.v1.SMSRecord
+	189, // 395: testkit.v1.TestkitService.ListSMS:output_type -> testkit.v1.ListSMSResponse
+	193, // 396: testkit.v1.TestkitService.ListSMSByCursor:output_type -> testkit.v1.ListSMSByCursorResponse
+	197, // 397: testkit.v1.TestkitService.GetSMSStats:output_type -> testkit.v1.SMSStatsResponse
+	203, // 398: testkit.v1.TestkitService.ListSMSRegions:output_type -> testkit.v1.ListSMSRegionsResponse
+	201, // 399: testkit.v1.TestkitService.ListSMSSenders:output_type -> testkit.v1.ListSMSSendersResponse
+	299, // [299:400] is the sub-list for method output_type
+	198, // [198:299] is the sub-list for method input_type
+	198, // [198:198] is the sub-list for extension type_name
+	198, // [198:198] is the sub-list for extension extendee
+	0,   // [0:198] is the sub-list for field type_name
 }
 
 func init() { file_testkit_v1_testkit_proto_init() }
@@ -13319,8 +16440,8 @@ func file_testkit_v1_testkit_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_testkit_v1_testkit_proto_rawDesc), len(file_testkit_v1_testkit_proto_rawDesc)),
-			NumEnums:      22,
-			NumMessages:   154,
+			NumEnums:      28,
+			NumMessages:   187,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

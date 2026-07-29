@@ -51,6 +51,7 @@ type Config struct {
 	JWT        *JWTConfig
 	CORS       *CORSConfig
 	ThirdParty *ThirdPartyConfig
+	Message    *MessageConfig
 	Cron       *CronConfig
 	Log        *logging.Config
 }
@@ -121,6 +122,21 @@ type RemoteServiceConfig[T any] struct {
 	Target string
 	// Config is the in-process config used when Mode == "module".
 	Config T
+}
+
+// MessageConfig holds testkit-side message-domain settings.
+//
+// SenderID is the value the BFF injects into downstream message Send requests'
+// sender_id field. It is a SERVICE LABEL (e.g. "testkit-service"), NOT a user
+// id — the downstream contract explicitly states sender_id is the calling
+// business service, and the caller records the end-user in its own audit
+// trail (see the P4 plan, decision 1). Per-deployment overrides (e.g.
+// "testkit-ops", "testkit-api") distinguish ingress points without touching
+// code.
+type MessageConfig struct {
+	// SenderID injected into SendEmail/SendSMS downstream requests. Defaults to
+	// "testkit-service"; service.New fail-fasts on empty (defense-in-depth).
+	SenderID string `default:"testkit-service"`
 }
 
 // Load reads config from the standard configx locations:

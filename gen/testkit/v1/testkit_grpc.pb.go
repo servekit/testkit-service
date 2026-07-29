@@ -108,6 +108,19 @@ const (
 	TestkitService_AdminSoftDeleteOwnerFiles_FullMethodName = "/testkit.v1.TestkitService/AdminSoftDeleteOwnerFiles"
 	TestkitService_AdminDeleteOwner_FullMethodName          = "/testkit.v1.TestkitService/AdminDeleteOwner"
 	TestkitService_AdminListAuditLogs_FullMethodName        = "/testkit.v1.TestkitService/AdminListAuditLogs"
+	TestkitService_SendEmail_FullMethodName                 = "/testkit.v1.TestkitService/SendEmail"
+	TestkitService_SendSMS_FullMethodName                   = "/testkit.v1.TestkitService/SendSMS"
+	TestkitService_GetEmail_FullMethodName                  = "/testkit.v1.TestkitService/GetEmail"
+	TestkitService_ListEmails_FullMethodName                = "/testkit.v1.TestkitService/ListEmails"
+	TestkitService_ListEmailsByCursor_FullMethodName        = "/testkit.v1.TestkitService/ListEmailsByCursor"
+	TestkitService_GetEmailStats_FullMethodName             = "/testkit.v1.TestkitService/GetEmailStats"
+	TestkitService_ListEmailSenders_FullMethodName          = "/testkit.v1.TestkitService/ListEmailSenders"
+	TestkitService_GetSMS_FullMethodName                    = "/testkit.v1.TestkitService/GetSMS"
+	TestkitService_ListSMS_FullMethodName                   = "/testkit.v1.TestkitService/ListSMS"
+	TestkitService_ListSMSByCursor_FullMethodName           = "/testkit.v1.TestkitService/ListSMSByCursor"
+	TestkitService_GetSMSStats_FullMethodName               = "/testkit.v1.TestkitService/GetSMSStats"
+	TestkitService_ListSMSRegions_FullMethodName            = "/testkit.v1.TestkitService/ListSMSRegions"
+	TestkitService_ListSMSSenders_FullMethodName            = "/testkit.v1.TestkitService/ListSMSSenders"
 )
 
 // TestkitServiceClient is the client API for TestkitService service.
@@ -219,6 +232,22 @@ type TestkitServiceClient interface {
 	AdminSoftDeleteOwnerFiles(ctx context.Context, in *AdminSoftDeleteOwnerFilesRequest, opts ...grpc.CallOption) (*AdminSoftDeleteOwnerFilesResponse, error)
 	AdminDeleteOwner(ctx context.Context, in *AdminDeleteOwnerRequest, opts ...grpc.CallOption) (*AdminDeleteOwnerResponse, error)
 	AdminListAuditLogs(ctx context.Context, in *AdminListAuditLogsRequest, opts ...grpc.CallOption) (*AdminListAuditLogsResponse, error)
+	// Send (sender_id injected from config).
+	SendEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendResponse, error)
+	SendSMS(ctx context.Context, in *SendSMSRequest, opts ...grpc.CallOption) (*SendResponse, error)
+	// Email records.
+	GetEmail(ctx context.Context, in *GetEmailRequest, opts ...grpc.CallOption) (*EmailRecord, error)
+	ListEmails(ctx context.Context, in *ListEmailsRequest, opts ...grpc.CallOption) (*ListEmailsResponse, error)
+	ListEmailsByCursor(ctx context.Context, in *ListEmailsByCursorRequest, opts ...grpc.CallOption) (*ListEmailsByCursorResponse, error)
+	GetEmailStats(ctx context.Context, in *GetEmailStatsRequest, opts ...grpc.CallOption) (*EmailStatsResponse, error)
+	ListEmailSenders(ctx context.Context, in *ListEmailSendersRequest, opts ...grpc.CallOption) (*ListEmailSendersResponse, error)
+	// SMS records.
+	GetSMS(ctx context.Context, in *GetSMSRequest, opts ...grpc.CallOption) (*SMSRecord, error)
+	ListSMS(ctx context.Context, in *ListSMSRequest, opts ...grpc.CallOption) (*ListSMSResponse, error)
+	ListSMSByCursor(ctx context.Context, in *ListSMSByCursorRequest, opts ...grpc.CallOption) (*ListSMSByCursorResponse, error)
+	GetSMSStats(ctx context.Context, in *GetSMSStatsRequest, opts ...grpc.CallOption) (*SMSStatsResponse, error)
+	ListSMSRegions(ctx context.Context, in *ListSMSRegionsRequest, opts ...grpc.CallOption) (*ListSMSRegionsResponse, error)
+	ListSMSSenders(ctx context.Context, in *ListSMSSendersRequest, opts ...grpc.CallOption) (*ListSMSSendersResponse, error)
 }
 
 type testkitServiceClient struct {
@@ -1109,6 +1138,136 @@ func (c *testkitServiceClient) AdminListAuditLogs(ctx context.Context, in *Admin
 	return out, nil
 }
 
+func (c *testkitServiceClient) SendEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendResponse)
+	err := c.cc.Invoke(ctx, TestkitService_SendEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) SendSMS(ctx context.Context, in *SendSMSRequest, opts ...grpc.CallOption) (*SendResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendResponse)
+	err := c.cc.Invoke(ctx, TestkitService_SendSMS_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetEmail(ctx context.Context, in *GetEmailRequest, opts ...grpc.CallOption) (*EmailRecord, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EmailRecord)
+	err := c.cc.Invoke(ctx, TestkitService_GetEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListEmails(ctx context.Context, in *ListEmailsRequest, opts ...grpc.CallOption) (*ListEmailsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListEmailsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListEmails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListEmailsByCursor(ctx context.Context, in *ListEmailsByCursorRequest, opts ...grpc.CallOption) (*ListEmailsByCursorResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListEmailsByCursorResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListEmailsByCursor_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetEmailStats(ctx context.Context, in *GetEmailStatsRequest, opts ...grpc.CallOption) (*EmailStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EmailStatsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetEmailStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListEmailSenders(ctx context.Context, in *ListEmailSendersRequest, opts ...grpc.CallOption) (*ListEmailSendersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListEmailSendersResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListEmailSenders_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetSMS(ctx context.Context, in *GetSMSRequest, opts ...grpc.CallOption) (*SMSRecord, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SMSRecord)
+	err := c.cc.Invoke(ctx, TestkitService_GetSMS_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListSMS(ctx context.Context, in *ListSMSRequest, opts ...grpc.CallOption) (*ListSMSResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListSMSResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListSMS_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListSMSByCursor(ctx context.Context, in *ListSMSByCursorRequest, opts ...grpc.CallOption) (*ListSMSByCursorResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListSMSByCursorResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListSMSByCursor_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetSMSStats(ctx context.Context, in *GetSMSStatsRequest, opts ...grpc.CallOption) (*SMSStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SMSStatsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetSMSStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListSMSRegions(ctx context.Context, in *ListSMSRegionsRequest, opts ...grpc.CallOption) (*ListSMSRegionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListSMSRegionsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListSMSRegions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListSMSSenders(ctx context.Context, in *ListSMSSendersRequest, opts ...grpc.CallOption) (*ListSMSSendersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListSMSSendersResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListSMSSenders_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TestkitServiceServer is the server API for TestkitService service.
 // All implementations must embed UnimplementedTestkitServiceServer
 // for forward compatibility.
@@ -1218,6 +1377,22 @@ type TestkitServiceServer interface {
 	AdminSoftDeleteOwnerFiles(context.Context, *AdminSoftDeleteOwnerFilesRequest) (*AdminSoftDeleteOwnerFilesResponse, error)
 	AdminDeleteOwner(context.Context, *AdminDeleteOwnerRequest) (*AdminDeleteOwnerResponse, error)
 	AdminListAuditLogs(context.Context, *AdminListAuditLogsRequest) (*AdminListAuditLogsResponse, error)
+	// Send (sender_id injected from config).
+	SendEmail(context.Context, *SendEmailRequest) (*SendResponse, error)
+	SendSMS(context.Context, *SendSMSRequest) (*SendResponse, error)
+	// Email records.
+	GetEmail(context.Context, *GetEmailRequest) (*EmailRecord, error)
+	ListEmails(context.Context, *ListEmailsRequest) (*ListEmailsResponse, error)
+	ListEmailsByCursor(context.Context, *ListEmailsByCursorRequest) (*ListEmailsByCursorResponse, error)
+	GetEmailStats(context.Context, *GetEmailStatsRequest) (*EmailStatsResponse, error)
+	ListEmailSenders(context.Context, *ListEmailSendersRequest) (*ListEmailSendersResponse, error)
+	// SMS records.
+	GetSMS(context.Context, *GetSMSRequest) (*SMSRecord, error)
+	ListSMS(context.Context, *ListSMSRequest) (*ListSMSResponse, error)
+	ListSMSByCursor(context.Context, *ListSMSByCursorRequest) (*ListSMSByCursorResponse, error)
+	GetSMSStats(context.Context, *GetSMSStatsRequest) (*SMSStatsResponse, error)
+	ListSMSRegions(context.Context, *ListSMSRegionsRequest) (*ListSMSRegionsResponse, error)
+	ListSMSSenders(context.Context, *ListSMSSendersRequest) (*ListSMSSendersResponse, error)
 	mustEmbedUnimplementedTestkitServiceServer()
 }
 
@@ -1491,6 +1666,45 @@ func (UnimplementedTestkitServiceServer) AdminDeleteOwner(context.Context, *Admi
 }
 func (UnimplementedTestkitServiceServer) AdminListAuditLogs(context.Context, *AdminListAuditLogsRequest) (*AdminListAuditLogsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AdminListAuditLogs not implemented")
+}
+func (UnimplementedTestkitServiceServer) SendEmail(context.Context, *SendEmailRequest) (*SendResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SendEmail not implemented")
+}
+func (UnimplementedTestkitServiceServer) SendSMS(context.Context, *SendSMSRequest) (*SendResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SendSMS not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetEmail(context.Context, *GetEmailRequest) (*EmailRecord, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetEmail not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListEmails(context.Context, *ListEmailsRequest) (*ListEmailsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListEmails not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListEmailsByCursor(context.Context, *ListEmailsByCursorRequest) (*ListEmailsByCursorResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListEmailsByCursor not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetEmailStats(context.Context, *GetEmailStatsRequest) (*EmailStatsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetEmailStats not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListEmailSenders(context.Context, *ListEmailSendersRequest) (*ListEmailSendersResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListEmailSenders not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetSMS(context.Context, *GetSMSRequest) (*SMSRecord, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSMS not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListSMS(context.Context, *ListSMSRequest) (*ListSMSResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListSMS not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListSMSByCursor(context.Context, *ListSMSByCursorRequest) (*ListSMSByCursorResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListSMSByCursor not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetSMSStats(context.Context, *GetSMSStatsRequest) (*SMSStatsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSMSStats not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListSMSRegions(context.Context, *ListSMSRegionsRequest) (*ListSMSRegionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListSMSRegions not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListSMSSenders(context.Context, *ListSMSSendersRequest) (*ListSMSSendersResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListSMSSenders not implemented")
 }
 func (UnimplementedTestkitServiceServer) mustEmbedUnimplementedTestkitServiceServer() {}
 func (UnimplementedTestkitServiceServer) testEmbeddedByValue()                        {}
@@ -3097,6 +3311,240 @@ func _TestkitService_AdminListAuditLogs_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestkitService_SendEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).SendEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_SendEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).SendEmail(ctx, req.(*SendEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_SendSMS_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendSMSRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).SendSMS(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_SendSMS_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).SendSMS(ctx, req.(*SendSMSRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetEmail(ctx, req.(*GetEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListEmails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListEmailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListEmails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListEmails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListEmails(ctx, req.(*ListEmailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListEmailsByCursor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListEmailsByCursorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListEmailsByCursor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListEmailsByCursor_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListEmailsByCursor(ctx, req.(*ListEmailsByCursorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetEmailStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEmailStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetEmailStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetEmailStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetEmailStats(ctx, req.(*GetEmailStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListEmailSenders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListEmailSendersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListEmailSenders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListEmailSenders_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListEmailSenders(ctx, req.(*ListEmailSendersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetSMS_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSMSRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetSMS(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetSMS_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetSMS(ctx, req.(*GetSMSRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListSMS_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSMSRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListSMS(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListSMS_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListSMS(ctx, req.(*ListSMSRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListSMSByCursor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSMSByCursorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListSMSByCursor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListSMSByCursor_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListSMSByCursor(ctx, req.(*ListSMSByCursorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetSMSStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSMSStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetSMSStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetSMSStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetSMSStats(ctx, req.(*GetSMSStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListSMSRegions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSMSRegionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListSMSRegions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListSMSRegions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListSMSRegions(ctx, req.(*ListSMSRegionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListSMSSenders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSMSSendersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListSMSSenders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListSMSSenders_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListSMSSenders(ctx, req.(*ListSMSSendersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TestkitService_ServiceDesc is the grpc.ServiceDesc for TestkitService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -3455,6 +3903,58 @@ var TestkitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AdminListAuditLogs",
 			Handler:    _TestkitService_AdminListAuditLogs_Handler,
+		},
+		{
+			MethodName: "SendEmail",
+			Handler:    _TestkitService_SendEmail_Handler,
+		},
+		{
+			MethodName: "SendSMS",
+			Handler:    _TestkitService_SendSMS_Handler,
+		},
+		{
+			MethodName: "GetEmail",
+			Handler:    _TestkitService_GetEmail_Handler,
+		},
+		{
+			MethodName: "ListEmails",
+			Handler:    _TestkitService_ListEmails_Handler,
+		},
+		{
+			MethodName: "ListEmailsByCursor",
+			Handler:    _TestkitService_ListEmailsByCursor_Handler,
+		},
+		{
+			MethodName: "GetEmailStats",
+			Handler:    _TestkitService_GetEmailStats_Handler,
+		},
+		{
+			MethodName: "ListEmailSenders",
+			Handler:    _TestkitService_ListEmailSenders_Handler,
+		},
+		{
+			MethodName: "GetSMS",
+			Handler:    _TestkitService_GetSMS_Handler,
+		},
+		{
+			MethodName: "ListSMS",
+			Handler:    _TestkitService_ListSMS_Handler,
+		},
+		{
+			MethodName: "ListSMSByCursor",
+			Handler:    _TestkitService_ListSMSByCursor_Handler,
+		},
+		{
+			MethodName: "GetSMSStats",
+			Handler:    _TestkitService_GetSMSStats_Handler,
+		},
+		{
+			MethodName: "ListSMSRegions",
+			Handler:    _TestkitService_ListSMSRegions_Handler,
+		},
+		{
+			MethodName: "ListSMSSenders",
+			Handler:    _TestkitService_ListSMSSenders_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

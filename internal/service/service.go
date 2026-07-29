@@ -44,12 +44,14 @@ import (
 	"github.com/servekit/testkit-service/internal/jobs"
 	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/auth"
+	"github.com/servekit/testkit-service/internal/service/message"
 	"github.com/servekit/testkit-service/internal/service/storage"
 	"github.com/servekit/testkit-service/internal/service/user"
 	"github.com/servekit/testkit-service/internal/version"
 	"github.com/servekit/testkit-service/pkg/config"
 	"github.com/servekit/testkit-service/pkg/option"
 	"github.com/servekit/testkit-service/pkg/thirdcall"
+	"github.com/servekit/testkit-service/pkg/xcodes"
 )
 
 // Service holds testkit-service business state: shared resources plus the four
@@ -85,6 +87,12 @@ type Service struct {
 	// admin). Named storageSvc (not storage) to avoid clashing with the thirdcall
 	// storage handler field above. Built once the storage handler is resolved.
 	storageSvc *storage.Service
+
+	// messageSvc is the P4 message domain (send + records + stats + lookups).
+	// Named messageSvc (not message) to match the storageSvc/userSvc convention;
+	// the thirdcall message handler field above keeps its name. Built once the
+	// message handler is resolved and cfg.Message.SenderID is validated.
+	messageSvc *message.Service
 
 	// startedAt is set once in New; Ping returns it for uptime.
 	startedAt int64
@@ -147,6 +155,15 @@ func New(cfg *config.Config, opts ...option.Option) (*Service, error) {
 	// and forwards the flat target owner for admin/owner-quota RPCs; no JWT is
 	// needed here (the interceptor already enforces login).
 	svc.storageSvc = storage.New(svc.storage)
+
+	// Build the P4 message domain against the embedded message handler. sender_id
+	// (a service label, not a user id) is injected from cfg.Message.SenderID on
+	// every Send — fail fast on empty rather than sending with a blank label.
+	// The default tag ("testkit-service") makes this unreachable in normal runs.
+	if cfg.Message.SenderID == "" {
+		return nil, rollback(mgr, xcodes.ErrSenderNotConfigured.New())
+	}
+	svc.messageSvc = message.New(svc.message, message.WithSenderID(cfg.Message.SenderID))
 
 	// jobs.Scheduler owns the cron instance; setupJobs builds it, registers
 	// it on mgr, and wires periodic jobs (empty by default — add jobs inside
@@ -215,6 +232,10 @@ func (s *Service) User() *user.Service { return s.userSvc }
 // Storage returns the P3 storage domain (my-files / upload / quota / audit /
 // admin). The handler delegates the storage RPCs to it.
 func (s *Service) Storage() *storage.Service { return s.storageSvc }
+
+// Message returns the P4 message domain (send + records + stats + lookups). The
+// handler delegates the message RPCs to it.
+func (s *Service) Message() *message.Service { return s.messageSvc }
 
 // --- internal helpers ---
 
