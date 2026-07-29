@@ -1,20 +1,20 @@
-import { PageContainer, ProCard } from '@ant-design/pro-components';
-import { Alert, Button, Space, Typography } from 'antd';
-import { history } from '@umijs/max';
+import { PageContainer, ProCard } from "@ant-design/pro-components";
+import { Alert, Button, Space, Typography } from "antd";
+import { history } from "@umijs/max";
 
 const { Paragraph } = Typography;
 
 /** Internal back-office landing. Real dashboard arrives P5. */
 export default function DashboardPage() {
   const logout = () => {
-    localStorage.removeItem('testkit_token');
-    localStorage.removeItem('testkit_user');
-    history.push('/user/login');
+    localStorage.removeItem("testkit_token");
+    localStorage.removeItem("testkit_user");
+    history.push("/user/login");
   };
   return (
     <PageContainer
       header={{
-        title: '工作台',
+        title: "工作台",
         extra: [
           <Button key="logout" onClick={logout}>
             退出登录
@@ -23,7 +23,7 @@ export default function DashboardPage() {
       }}
     >
       <ProCard>
-        <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           <Alert
             type="info"
             showIcon

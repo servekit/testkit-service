@@ -1,11 +1,11 @@
-import { LoginForm, ProFormText } from '@ant-design/pro-components';
-import { App, Typography } from 'antd';
-import { history } from '@umijs/max';
-import { login } from '@/services/testkit/testkitService';
+import { LoginForm, ProFormText } from "@ant-design/pro-components";
+import { App, Typography } from "antd";
+import { history } from "@umijs/max";
+import { login } from "@/services/testkit/testkitService";
 
 const { Link, Text } = Typography;
 
-const USER_TYPE_INTERNAL = 'USER_TYPE_INTERNAL';
+const USER_TYPE_INTERNAL = "USER_TYPE_INTERNAL";
 
 /**
  * Login page — uses the GENERATED `login` service (no hand-written fetch).
@@ -27,23 +27,23 @@ export default function LoginPage() {
       onFinish={async (vals) => {
         try {
           const data = await login({
-            method: 'LOGIN_METHOD_USERNAME_PASSWORD',
+            method: "LOGIN_METHOD_USERNAME_PASSWORD",
             username: vals.username,
             password: vals.password,
-            regionCode: 'CN',
+            regionCode: "CN",
           });
 
           const token = data?.token;
           const user = data?.user;
           if (!token || !user) {
-            message.error('登录失败：响应缺少 token 或用户信息');
+            message.error("登录失败：响应缺少 token 或用户信息");
             return false;
           }
-          localStorage.setItem('testkit_token', token);
-          localStorage.setItem('testkit_user', JSON.stringify(user));
-          message.success('登录成功');
+          localStorage.setItem("testkit_token", token);
+          localStorage.setItem("testkit_user", JSON.stringify(user));
+          message.success("登录成功");
           history.push(
-            user.userType === USER_TYPE_INTERNAL ? '/dashboard' : '/profile',
+            user.userType === USER_TYPE_INTERNAL ? "/dashboard" : "/profile",
           );
           return true;
         } catch (err) {
@@ -55,7 +55,7 @@ export default function LoginPage() {
             response?: { data?: { message?: string } };
           };
           const businessMessage =
-            e?.data?.message ?? e?.response?.data?.message ?? '登录失败';
+            e?.data?.message ?? e?.response?.data?.message ?? "登录失败";
           message.error(businessMessage);
           return false;
         }
@@ -64,18 +64,18 @@ export default function LoginPage() {
       <ProFormText
         name="username"
         placeholder="用户名"
-        rules={[{ required: true, message: '请输入用户名' }]}
+        rules={[{ required: true, message: "请输入用户名" }]}
       />
       <ProFormText.Password
         name="password"
         placeholder="密码"
-        rules={[{ required: true, message: '请输入密码' }]}
+        rules={[{ required: true, message: "请输入密码" }]}
       />
       <div
         style={{
           marginBlockEnd: 24,
-          display: 'flex',
-          justifyContent: 'space-between',
+          display: "flex",
+          justifyContent: "space-between",
         }}
       >
         <Text type="secondary">用户名密码登录</Text>

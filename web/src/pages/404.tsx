@@ -1,5 +1,5 @@
-import { Button, Result } from 'antd';
-import { history } from '@umijs/max';
+import { Button, Result } from "antd";
+import { history } from "@umijs/max";
 
 export default function NotFoundPage() {
   return (
@@ -8,7 +8,7 @@ export default function NotFoundPage() {
       title="404"
       subTitle="抱歉，你访问的页面不存在。"
       extra={
-        <Button type="primary" onClick={() => history.push('/')}>
+        <Button type="primary" onClick={() => history.push("/")}>
           返回首页
         </Button>
       }
