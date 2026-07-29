@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	testkitv1 "testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

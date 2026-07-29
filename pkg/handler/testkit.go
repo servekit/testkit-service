@@ -13,8 +13,8 @@ package handler
 import (
 	"context"
 
-	testkitv1 "testkit-service/gen/testkit/v1"
-	"testkit-service/internal/service"
+	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	"github.com/servekit/testkit-service/internal/service"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )

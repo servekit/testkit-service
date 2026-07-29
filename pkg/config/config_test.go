@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"testkit-service/pkg/config"
+	"github.com/servekit/testkit-service/pkg/config"
 )
 
 // writeConfig writes content to a temp file and points the configx

@@ -157,8 +157,8 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\n" +
 	"started_at\x18\t \x01(\x03R\tstartedAt2Q\n" +
 	"\x0eTestkitService\x12?\n" +
-	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x10.testkit.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/pingB\x91\x01\n" +
-	"\x0ecom.testkit.v1B\fTestkitProtoP\x01Z(testkit-service/gen/testkit/v1;testkitv1\xa2\x02\x03TXX\xaa\x02\n" +
+	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x10.testkit.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/pingB\xa5\x01\n" +
+	"\x0ecom.testkit.v1B\fTestkitProtoP\x01Z<github.com/servekit/testkit-service/gen/testkit/v1;testkitv1\xa2\x02\x03TXX\xaa\x02\n" +
 	"Testkit.V1\xca\x02\n" +
 	"Testkit\\V1\xe2\x02\x16Testkit\\V1\\GPBMetadata\xea\x02\vTestkit::V1b\x06proto3"
 

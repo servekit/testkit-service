@@ -14,11 +14,11 @@ import (
 	"github.com/servekit/go-common/grpcx"
 	"github.com/servekit/go-common/signalx"
 
-	testkitv1 "testkit-service/gen/testkit/v1"
-	"testkit-service/internal/service"
-	"testkit-service/pkg/config"
-	"testkit-service/pkg/handler"
-	"testkit-service/pkg/option"
+	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	"github.com/servekit/testkit-service/internal/service"
+	"github.com/servekit/testkit-service/pkg/config"
+	"github.com/servekit/testkit-service/pkg/handler"
+	"github.com/servekit/testkit-service/pkg/option"
 )
 
 // Compile-time assertion: *Server satisfies signalx.Service.

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package testkit.v1;
 
-option go_package = "testkit-service/gen/testkit/v1;testkitservicev1";
+option go_package = "github.com/servekit/testkit-service/gen/testkit/v1;testkitservicev1";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";

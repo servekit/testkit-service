@@ -1,4 +1,4 @@
-module testkit-service
+module github.com/servekit/testkit-service
 
 go 1.26.1
 

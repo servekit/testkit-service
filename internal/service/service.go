@@ -22,14 +22,14 @@ import (
 	"log/slog"
 	"time"
 
-	testkitv1 "testkit-service/gen/testkit/v1"
-	"testkit-service/internal/jobs"
-	"testkit-service/internal/version"
+	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	"github.com/servekit/testkit-service/internal/jobs"
+	"github.com/servekit/testkit-service/internal/version"
 
 	"github.com/redis/go-redis/v9"
 
-	"testkit-service/pkg/config"
-	"testkit-service/pkg/option"
+	"github.com/servekit/testkit-service/pkg/config"
+	"github.com/servekit/testkit-service/pkg/option"
 
 	"github.com/servekit/go-common/cronx"
 

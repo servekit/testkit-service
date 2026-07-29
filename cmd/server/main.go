@@ -15,10 +15,10 @@ import (
 	"github.com/servekit/go-common/logging"
 	"github.com/servekit/go-common/signalx"
 
-	pkg "testkit-service/pkg"
-	"testkit-service/pkg/config"
+	pkg "github.com/servekit/testkit-service/pkg"
+	"github.com/servekit/testkit-service/pkg/config"
 
-	"testkit-service/internal/version"
+	"github.com/servekit/testkit-service/internal/version"
 )
 
 func main() {

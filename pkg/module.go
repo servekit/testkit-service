@@ -1,11 +1,11 @@
 package pkg
 
 import (
-	testkitv1 "testkit-service/gen/testkit/v1"
-	"testkit-service/internal/service"
-	"testkit-service/pkg/config"
-	"testkit-service/pkg/handler"
-	"testkit-service/pkg/option"
+	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	"github.com/servekit/testkit-service/internal/service"
+	"github.com/servekit/testkit-service/pkg/config"
+	"github.com/servekit/testkit-service/pkg/handler"
+	"github.com/servekit/testkit-service/pkg/option"
 )
 
 // Handler is the in-process entry point. Callers invoke proto-typed RPC
