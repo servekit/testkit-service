@@ -1,30 +1,92 @@
-# Structure-only config template. Every value is a ${VAR} placeholder expanded
+# testkit-service configuration template.
+#
+# Structure only — every value is a ${TESTKIT_SERVICE_*} placeholder expanded
 # by configx (WithExpandEnv) from the process environment at startup; see
 # .env.example for the actual values. To override a value, set the env var in
 # .env (local) or the container/deployment env — never hard-code values here.
 #
+# Env-var naming mirrors user-service's USER_SERVICE_* convention: the
+# TESTKIT_SERVICE_ prefix derives from serviceName ("testkit-service"). Flat
+# TESTKIT_* overrides (e.g. TESTKIT_SERVER_GRPC_ADDR) also work via viper
+# AutomaticEnv, but the ${VAR} placeholders below are the canonical source.
+#
 # configx loads ./config.yaml (NOT this file). `make run` copies this template
 # to config.yaml automatically when missing; for docker, the renderer copies it
 # into the image as /app/config.yaml.
+#
+# Real secrets (DB password, JWT signing key) must never be committed — keep
+# them in .env (gitignored).
 
 server:
-  grpc_addr: ${TESTKIT_SERVICE_SERVER_GRPC_ADDR}
-  http_addr: ${TESTKIT_SERVICE_SERVER_HTTP_ADDR}
+  grpc_addr: ${TESTKIT_SERVICE_SERVER_GRPC_ADDR}        # gRPC listener
+  gateway_addr: ${TESTKIT_SERVICE_SERVER_GATEWAY_ADDR}  # grpc-gateway HTTP surface (the BFF port nginx/frontend hits)
+
+database:
+  host: ${TESTKIT_SERVICE_DB_HOST}
+  port: ${TESTKIT_SERVICE_DB_PORT}
+  user: ${TESTKIT_SERVICE_DB_USER}
+  password: ${TESTKIT_SERVICE_DB_PASSWORD}
+  dbname: ${TESTKIT_SERVICE_DB_NAME}
+  sslmode: ${TESTKIT_SERVICE_DB_SSLMODE}
+  max_open_conns: ${TESTKIT_SERVICE_DB_MAX_OPEN_CONNS}
+  max_idle_conns: ${TESTKIT_SERVICE_DB_MAX_IDLE_CONNS}
+  conn_max_lifetime: ${TESTKIT_SERVICE_DB_CONN_MAX_LIFETIME}
+  # GORM options
+  log_level: ${TESTKIT_SERVICE_DB_LOG_LEVEL}              # silent, error, warn, info
+  slow_threshold: ${TESTKIT_SERVICE_DB_SLOW_THRESHOLD}    # slow query warning threshold
+  skip_default_tx: ${TESTKIT_SERVICE_DB_SKIP_DEFAULT_TX}  # skip implicit transaction for single ops (recommended for production)
+  disable_fk: ${TESTKIT_SERVICE_DB_DISABLE_FK}            # disable foreign key constraints in migration
+  table_prefix: ${TESTKIT_SERVICE_DB_TABLE_PREFIX}        # prefix for testkit-owned tables (testkit has none in P1)
 
 redis:
   addr: ${TESTKIT_SERVICE_REDIS_ADDR}
-  username: ${TESTKIT_SERVICE_REDIS_USERNAME}
   password: ${TESTKIT_SERVICE_REDIS_PASSWORD}
   db: ${TESTKIT_SERVICE_REDIS_DB}
 
-third_party:
-  demo:
-    mode: ${TESTKIT_SERVICE_THIRD_PARTY_DEMO_MODE}
-    target: ${TESTKIT_SERVICE_THIRD_PARTY_DEMO_TARGET}
-    config:
-      prefix: ${TESTKIT_SERVICE_THIRD_PARTY_DEMO_CONFIG_PREFIX}
-      max_input_len: ${TESTKIT_SERVICE_THIRD_PARTY_DEMO_CONFIG_MAX_INPUT_LEN}
+# JWT signing parameters for the tokens testkit issues. The token carries a
+# user-service session id; testkit is the only signer.
+jwt:
+  secret: ${TESTKIT_SERVICE_JWT_SECRET}
+  ttl: ${TESTKIT_SERVICE_JWT_TTL}   # token lifetime, e.g. 2h
 
+# CORS allowed origins for the grpc-gateway HTTP surface.
+# Comma-separated list (configx StringToSlice splits on ",").
+cors:
+  allowed_origins: ${TESTKIT_SERVICE_CORS_ALLOWED_ORIGINS}
+
+# The four downstream services, each running in-process (mode=module) by
+# default; mode=grpc is reserved for splitting one out to its own deployment.
+# testkit shares ONE PG pool and ONE Redis client across them — those
+# connections are injected into each module via option.WithDB/WithRedis, so
+# each downstream's nested Database/Redis is intentionally left out of its
+# config block. The gid/message adapters (internal/adapter) are injected the
+# same way.
+third_party:
+  gid:
+    mode: ${TESTKIT_SERVICE_GID_MODE}          # module | grpc
+    target: ${TESTKIT_SERVICE_GID_TARGET}      # gRPC addr when mode=grpc
+    config:                                    # required when mode=module — gid has no DB
+      snowflake:
+        machine_id: ${TESTKIT_SERVICE_GID_MACHINE_ID}  # must be unique per node, 1..1023
+        # snowflake epoch — DO NOT change after deployment
+        start_time: ${TESTKIT_SERVICE_GID_START_TIME}
+  message:
+    mode: ${TESTKIT_SERVICE_MESSAGE_MODE}      # module | grpc
+    target: ${TESTKIT_SERVICE_MESSAGE_TARGET}
+    # config: DB/Redis injected via option; gid via adapter — module payload empty.
+  storage:
+    mode: ${TESTKIT_SERVICE_STORAGE_MODE}      # module | grpc
+    target: ${TESTKIT_SERVICE_STORAGE_TARGET}
+    # config: DB/Redis injected via option; gid via adapter. Cloud provider/bucket
+    #   credentials (providers/buckets/upload_token_secret) are deployment-specific
+    #   — fill them per environment when storage is exercised.
+  user:
+    mode: ${TESTKIT_SERVICE_USER_MODE}         # module | grpc
+    target: ${TESTKIT_SERVICE_USER_TARGET}
+    # config: DB/Redis injected via option; gid/message via adapters. OAuth
+    #   providers are optional (empty credentials = disabled).
+
+# Cron scheduler settings. jobs.Scheduler is wired but registers no jobs in P1.
 cron:
   timezone: ${TESTKIT_SERVICE_CRON_TIMEZONE}
 
