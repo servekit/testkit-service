@@ -270,6 +270,16 @@ export async function sendVerificationCode(body: API.v1SendVerificationCodeReque
   });
 }
 
+/** ---- Dashboard (P5, aggregated) ---- GET /api/v1/dashboard */
+export async function getDashboard(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1DashboardResponse>('/api/v1/dashboard', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/v1/emails */
 export async function listEmails(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -618,6 +628,47 @@ export async function listMyFilesPaged(
         // orderBy has a default value: SORT_FIELD_UNSPECIFIED
           'orderBy': 'SORT_FIELD_UNSPECIFIED',
         ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/gid/batch */
+export async function batchNextId(body: API.v1BatchNextIDRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1BatchNextIDResponse>('/api/v1/gid/batch', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/gid/decompose/${param0} */
+export async function decompose(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.DecomposeParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1DecomposeResponse>(`/api/v1/gid/decompose/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** ---- GID debug (P5) ---- GET /api/v1/gid/next */
+export async function nextId(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1NextIDResponse>('/api/v1/gid/next', {
+  method: 'GET',
     ...(options || {}),
   });
 }

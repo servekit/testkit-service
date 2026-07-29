@@ -82,9 +82,12 @@ export default defineConfig({
       ],
     },
     // --- Internal back-office → access: canInternal (UserType = INTERNAL) ---
+    // Dashboard is the internal landing page (P1 login redirects INTERNAL →
+    // /dashboard). KPI tiles + vendor charts over the aggregated GetDashboard
+    // RPC (message/storage/user fan-in). Built P5.
     {
       path: "/dashboard",
-      name: "工作台",
+      name: "仪表盘",
       icon: "DashboardOutlined",
       access: "canInternal",
       component: "./Dashboard",
@@ -222,12 +225,16 @@ export default defineConfig({
         },
       ],
     },
+    // --- GID debug (P5) → access: canInternal ---
+    // Internal-only snowflake ID debug tool: generate single/batch + decompose
+    // an ID into time/sequence/machine_id. gid RPCs are authenticated; the split
+    // is a frontend route guard (design §3.5).
     {
       path: "/gid",
-      name: "gid",
+      name: "GID 调试",
       icon: "NumberOutlined",
       access: "canInternal",
-      component: "./Placeholder",
+      component: "./Gid/Debug",
     },
     {
       path: "/system",

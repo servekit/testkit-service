@@ -113,6 +113,10 @@ declare namespace API {
     userId: string;
   };
 
+  type DecomposeParams = {
+    id: string;
+  };
+
   type DeleteGroupParams = {
     groupId: string;
   };
@@ -911,6 +915,14 @@ declare namespace API {
     items?: v1UploadCredentialItem[];
   };
 
+  type v1BatchNextIDRequest = {
+    count?: number;
+  };
+
+  type v1BatchNextIDResponse = {
+    ids?: string[];
+  };
+
   type v1BindIdentityRequest = {
     provider?: v1IdentityProvider;
     email?: string;
@@ -1012,6 +1024,21 @@ declare namespace API {
     user?: v1User;
   };
 
+  type v1DashboardResponse = {
+    emailStats?: v1EmailStats;
+    smsStats?: v1SMSStats;
+    quota?: v1MyQuota;
+    users?: v1UsersSummary;
+  };
+
+  type v1DecomposeResponse = {
+    time?: string;
+    sequence?: string;
+    machineId?: string;
+    /** ISO8601 timestamp */
+    generatedAt?: string;
+  };
+
   type v1DeviceType =
     | "DEVICE_TYPE_UNSPECIFIED"
     | "DEVICE_TYPE_WEB"
@@ -1067,6 +1094,15 @@ declare namespace API {
     | "EMAIL_SCENE_BIND_ACCOUNT"
     | "EMAIL_SCENE_NOTIFICATION"
     | "EMAIL_SCENE_VERIFY_EMAIL";
+
+  type v1EmailStats = {
+    total?: string;
+    sent?: string;
+    failed?: string;
+    /** success_rate in [0, 100]; -1 means "no data" (total == 0). */
+    successRate?: number;
+    vendors?: v1EmailVendorStats[];
+  };
 
   type v1EmailStatsResponse = {
     total?: string;
@@ -1475,6 +1511,17 @@ declare namespace API {
     avatarUrl?: string;
   };
 
+  type v1MyQuota = {
+    totalBytes?: string;
+    usedBytes?: string;
+    availableBytes?: string;
+    fileCount?: number;
+  };
+
+  type v1NextIDResponse = {
+    id?: string;
+  };
+
   type v1OwnerStats = {
     ownerType?: v1OwnerType;
     fileCount?: string;
@@ -1686,6 +1733,14 @@ a platform identifier (e.g. the target email/phone or "testkit-web"). */
     | "SMS_SCENE_BIND_ACCOUNT"
     | "SMS_SCENE_VERIFY_PHONE";
 
+  type v1SMSStats = {
+    total?: string;
+    sent?: string;
+    failed?: string;
+    successRate?: number;
+    vendors?: v1SmsVendorStats[];
+  };
+
   type v1SMSStatsResponse = {
     total?: string;
     sent?: string;
@@ -1812,6 +1867,10 @@ a platform identifier (e.g. the target email/phone or "testkit-web"). */
     | "USER_SORT_FIELD_CREATED_AT"
     | "USER_SORT_FIELD_UPDATED_AT"
     | "USER_SORT_FIELD_LAST_LOGIN_AT";
+
+  type v1UsersSummary = {
+    total?: string;
+  };
 
   type v1UserStatus =
     | "USER_STATUS_UNSPECIFIED"

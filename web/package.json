@@ -11,6 +11,7 @@
     "format": "prettier --cache --write ."
   },
   "dependencies": {
+    "@ant-design/charts": "^2.6.7",
     "@ant-design/icons": "^6.0.0",
     "@ant-design/pro-components": "3.1.14-6",
     "@umijs/max": "^4.6.0",
