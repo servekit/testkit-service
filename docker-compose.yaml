@@ -89,6 +89,20 @@ services:
       retries: ${HEALTHCHECK_RETRIES:-6}
       start_period: ${HEALTHCHECK_START_PERIOD:-10s}
 
+  # Frontend (nginx): serves the built SPA and reverse-proxies /api + /ping to
+  # testkit-service. Build context is the repo root (web/Dockerfile copies web/
+  # and api/swagger/, regenerates services via `npm run openapi`, then `max build`).
+  nginx:
+    image: ${WEB_IMAGE_REPOSITORY:-testkit-web}:${IMAGE_TAG:-latest}
+    build:
+      context: "."
+      dockerfile: "web/Dockerfile"
+    depends_on:
+      testkit-service:
+        condition: service_healthy
+    ports:
+      - "${HOST_NGINX_PORT:-8080}:80"
+
   postgres:
     image: ${POSTGRES_IMAGE:-postgres:17-alpine}
     environment:

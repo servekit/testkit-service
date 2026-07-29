@@ -14,3 +14,15 @@
 # Source mode compiles inside Docker and never needs host build output.
 bin/
 
+# Frontend (web/) — the nginx image builds from the repo-root context with its
+# own `npm ci` + `max build`, so never copy host node_modules / build artifacts.
+web/node_modules/
+web/dist/
+web/.umi/
+web/.mfsu/
+web/.cache/
+web/src/.umi/
+web/src/.umi-production/
+# Regenerated inside the image from api/swagger by `npm run openapi`.
+web/config/openapi.json
+

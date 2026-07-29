@@ -1,0 +1,32 @@
+{
+  "name": "testkit-web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "testkit-service frontend (Ant Design Pro v6 / Umi Max 4 + antd 6)",
+  "scripts": {
+    "setup": "max setup",
+    "start": "max dev",
+    "build": "max build",
+    "openapi": "swagger2openapi ../api/swagger/testkit/v1/testkit.swagger.json -o config/openapi.json && node scripts/fix-int64.js && max openapi",
+    "format": "prettier --cache --write ."
+  },
+  "dependencies": {
+    "@ant-design/icons": "^6.0.0",
+    "@ant-design/pro-components": "3.1.14-6",
+    "@umijs/max": "^4.6.0",
+    "antd": "^6.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@umijs/max-plugin-openapi": "^2.0.0",
+    "prettier": "^3.0.0",
+    "swagger2openapi": "^7.0.0",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

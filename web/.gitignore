@@ -1,0 +1,27 @@
+# dependencies
+/node_modules
+
+# umi build output
+/dist
+/dll
+
+# umi runtime cache + generated
+/.umirc.local.*
+/src/.umi
+/src/.umi-production
+/.umi
+/.cache
+/.mfsu
+
+# openapi codegen inputs (generated from backend swagger; regenerated on demand)
+/config/openapi.json
+
+# logs
+npm-debug.log*
+yarn-error.log
+
+# editor / os
+.DS_Store
+.idea
+.vscode/*
+!.vscode/settings.json
