@@ -44,6 +44,8 @@ import (
 	"github.com/servekit/testkit-service/internal/jobs"
 	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/auth"
+	dashboardsvc "github.com/servekit/testkit-service/internal/service/dashboard"
+	gidsvc "github.com/servekit/testkit-service/internal/service/gid"
 	"github.com/servekit/testkit-service/internal/service/message"
 	"github.com/servekit/testkit-service/internal/service/storage"
 	"github.com/servekit/testkit-service/internal/service/user"
@@ -93,6 +95,16 @@ type Service struct {
 	// the thirdcall message handler field above keeps its name. Built once the
 	// message handler is resolved and cfg.Message.SenderID is validated.
 	messageSvc *message.Service
+
+	// gidSvc is the P5 gid debug domain (1:1 forward NextID/BatchNextID/Decompose
+	// to gid-service). Aliased import gidsvc keeps it distinct from the thirdcall
+	// gid handler field above. Built once the gid handler is resolved.
+	gidSvc *gidsvc.Service
+
+	// dashboardSvc is the P5 dashboard aggregation domain (fail-fast errgroup
+	// fan-in over message/storage/user). Built once the four handlers are
+	// resolved; it holds no state beyond the three injected downstream clients.
+	dashboardSvc *dashboardsvc.Service
 
 	// startedAt is set once in New; Ping returns it for uptime.
 	startedAt int64
@@ -165,6 +177,12 @@ func New(cfg *config.Config, opts ...option.Option) (*Service, error) {
 	}
 	svc.messageSvc = message.New(svc.message, message.WithSenderID(cfg.Message.SenderID))
 
+	// Build the P5 gid + dashboard domains over the already-resolved handlers.
+	// gid is a 1:1 forward; dashboard fans out across message/storage/user
+	// (the caller's user_id for GetMyQuota is read from ctx inside the domain).
+	svc.gidSvc = gidsvc.New(svc.gid)
+	svc.dashboardSvc = dashboardsvc.New(svc.user, svc.storage, svc.message)
+
 	// jobs.Scheduler owns the cron instance; setupJobs builds it, registers
 	// it on mgr, and wires periodic jobs (empty by default — add jobs inside
 	// setupJobs as scheduler.AddFunc calls). See architecture.md (jobs.md).
@@ -236,6 +254,14 @@ func (s *Service) Storage() *storage.Service { return s.storageSvc }
 // Message returns the P4 message domain (send + records + stats + lookups). The
 // handler delegates the message RPCs to it.
 func (s *Service) Message() *message.Service { return s.messageSvc }
+
+// Gid returns the P5 gid debug domain (1:1 forward to gid-service). The handler
+// delegates the gid RPCs to it.
+func (s *Service) Gid() *gidsvc.Service { return s.gidSvc }
+
+// Dashboard returns the P5 dashboard aggregation domain (fail-fast fan-in over
+// message/storage/user). The handler delegates GetDashboard to it.
+func (s *Service) Dashboard() *dashboardsvc.Service { return s.dashboardSvc }
 
 // --- internal helpers ---
 
