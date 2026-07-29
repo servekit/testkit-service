@@ -7,7 +7,7 @@
     "setup": "max setup",
     "start": "max dev",
     "build": "max build",
-    "openapi": "swagger2openapi ../api/swagger/testkit/v1/testkit.swagger.json -o config/openapi.json && node scripts/fix-int64.js && max openapi",
+    "openapi": "swagger2openapi ../api/swagger/testkit/v1/testkit.swagger.json -o config/openapi.json && node scripts/fix-int64.js && max openapi && node scripts/fix-services.js",
     "format": "prettier --cache --write ."
   },
   "dependencies": {

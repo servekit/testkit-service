@@ -9,6 +9,105 @@ declare namespace API {
     groupId: string;
   };
 
+  type AdminDeleteFileParams = {
+    fileId: string;
+  };
+
+  type AdminGetFileParams = {
+    fileId: string;
+  };
+
+  type AdminGetQuotaParams = {
+    ownerType?:
+      | "OWNER_TYPE_UNSPECIFIED"
+      | "OWNER_TYPE_USER"
+      | "OWNER_TYPE_SYSTEM"
+      | "OWNER_TYPE_GROUP"
+      | "OWNER_TYPE_BUSINESS"
+      | "OWNER_TYPE_SERVICE";
+    ownerId?: string;
+  };
+
+  type AdminGetStatsParams = {
+    /** 0 = all */
+    ownerType?:
+      | "OWNER_TYPE_UNSPECIFIED"
+      | "OWNER_TYPE_USER"
+      | "OWNER_TYPE_SYSTEM"
+      | "OWNER_TYPE_GROUP"
+      | "OWNER_TYPE_BUSINESS"
+      | "OWNER_TYPE_SERVICE";
+    /** 0 = all */
+    ownerId?: string;
+  };
+
+  type AdminListAuditLogsParams = {
+    action?:
+      | "AUDIT_ACTION_UNSPECIFIED"
+      | "AUDIT_ACTION_UPLOAD"
+      | "AUDIT_ACTION_UPDATE"
+      | "AUDIT_ACTION_DELETE"
+      | "AUDIT_ACTION_BATCH_DELETE"
+      | "AUDIT_ACTION_ADMIN_DELETE"
+      | "AUDIT_ACTION_ADMIN_SET_QUOTA"
+      | "AUDIT_ACTION_ADMIN_SOFT_DELETE_OWNER"
+      | "AUDIT_ACTION_ADMIN_DELETE_OWNER"
+      | "AUDIT_ACTION_SET_OWNER_QUOTA"
+      | "AUDIT_ACTION_ADD_OWNER_QUOTA"
+      | "AUDIT_ACTION_UPLOAD_SESSION_CREATE"
+      | "AUDIT_ACTION_UPLOAD_SESSION_CONFIRM"
+      | "AUDIT_ACTION_UPLOAD_SESSION_CANCEL"
+      | "AUDIT_ACTION_UPLOAD_SESSION_GC";
+    targetType?:
+      | "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED"
+      | "AUDIT_LOG_TARGET_TYPE_FILE"
+      | "AUDIT_LOG_TARGET_TYPE_QUOTA"
+      | "AUDIT_LOG_TARGET_TYPE_OWNER";
+    status?:
+      | "AUDIT_LOG_STATUS_UNSPECIFIED"
+      | "AUDIT_LOG_STATUS_SUCCESS"
+      | "AUDIT_LOG_STATUS_FAILED";
+    /** filter: search logs by trace id */
+    requestId?: string;
+    ownerType?:
+      | "OWNER_TYPE_UNSPECIFIED"
+      | "OWNER_TYPE_USER"
+      | "OWNER_TYPE_SYSTEM"
+      | "OWNER_TYPE_GROUP"
+      | "OWNER_TYPE_BUSINESS"
+      | "OWNER_TYPE_SERVICE";
+    ownerId?: string;
+    targetId?: string;
+    startTime?: string;
+    endTime?: string;
+    pageSize?: number;
+    pageToken?: string;
+  };
+
+  type AdminListFilesParams = {
+    ownerType?:
+      | "OWNER_TYPE_UNSPECIFIED"
+      | "OWNER_TYPE_USER"
+      | "OWNER_TYPE_SYSTEM"
+      | "OWNER_TYPE_GROUP"
+      | "OWNER_TYPE_BUSINESS"
+      | "OWNER_TYPE_SERVICE";
+    ownerId?: string;
+    pathPrefix?: string;
+    extension?: string;
+    contentTypePrefix?: string;
+    orderBy?:
+      | "SORT_FIELD_UNSPECIFIED"
+      | "SORT_FIELD_CREATED_AT"
+      | "SORT_FIELD_FILENAME"
+      | "SORT_FIELD_SIZE";
+    descending?: boolean;
+    pageSize?: number;
+    pageToken?: string;
+    provider?: string;
+    bucket?: string;
+  };
+
   type AssignRoleParams = {
     /** target user (path) */
     userId: string;
@@ -16,6 +115,10 @@ declare namespace API {
 
   type DeleteGroupParams = {
     groupId: string;
+  };
+
+  type DeleteMyFileParams = {
+    fileId: string;
   };
 
   type DeletePermissionGroupParams = {
@@ -33,6 +136,18 @@ declare namespace API {
   type DisableUserParams = {
     /** target user (kept) */
     userId: string;
+  };
+
+  type GenerateCDNURLParams = {
+    fileId: string;
+  };
+
+  type GenerateDownloadURLParams = {
+    fileId: string;
+  };
+
+  type GenerateProcessURLParams = {
+    fileId: string;
   };
 
   type GetGroupParams = {
@@ -56,6 +171,10 @@ declare namespace API {
     success?: boolean;
     pageSize?: number;
     cursor?: string;
+  };
+
+  type GetMyFileParams = {
+    fileId: string;
   };
 
   type GetOAuthURLParams = {
@@ -110,6 +229,62 @@ declare namespace API {
     status?: string;
     pageSize?: number;
     cursor?: string;
+  };
+
+  type ListMyAuditLogsParams = {
+    action?:
+      | "AUDIT_ACTION_UNSPECIFIED"
+      | "AUDIT_ACTION_UPLOAD"
+      | "AUDIT_ACTION_UPDATE"
+      | "AUDIT_ACTION_DELETE"
+      | "AUDIT_ACTION_BATCH_DELETE"
+      | "AUDIT_ACTION_ADMIN_DELETE"
+      | "AUDIT_ACTION_ADMIN_SET_QUOTA"
+      | "AUDIT_ACTION_ADMIN_SOFT_DELETE_OWNER"
+      | "AUDIT_ACTION_ADMIN_DELETE_OWNER"
+      | "AUDIT_ACTION_SET_OWNER_QUOTA"
+      | "AUDIT_ACTION_ADD_OWNER_QUOTA"
+      | "AUDIT_ACTION_UPLOAD_SESSION_CREATE"
+      | "AUDIT_ACTION_UPLOAD_SESSION_CONFIRM"
+      | "AUDIT_ACTION_UPLOAD_SESSION_CANCEL"
+      | "AUDIT_ACTION_UPLOAD_SESSION_GC";
+    targetType?:
+      | "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED"
+      | "AUDIT_LOG_TARGET_TYPE_FILE"
+      | "AUDIT_LOG_TARGET_TYPE_QUOTA"
+      | "AUDIT_LOG_TARGET_TYPE_OWNER";
+    startTime?: string;
+    endTime?: string;
+    pageSize?: number;
+    pageToken?: string;
+  };
+
+  type ListMyFilesPagedParams = {
+    page?: number;
+    pageSize?: number;
+    pathPrefix?: string;
+    extension?: string;
+    contentTypePrefix?: string;
+    orderBy?:
+      | "SORT_FIELD_UNSPECIFIED"
+      | "SORT_FIELD_CREATED_AT"
+      | "SORT_FIELD_FILENAME"
+      | "SORT_FIELD_SIZE";
+    descending?: boolean;
+  };
+
+  type ListMyFilesParams = {
+    pathPrefix?: string;
+    extension?: string;
+    contentTypePrefix?: string;
+    orderBy?:
+      | "SORT_FIELD_UNSPECIFIED"
+      | "SORT_FIELD_CREATED_AT"
+      | "SORT_FIELD_FILENAME"
+      | "SORT_FIELD_SIZE";
+    descending?: boolean;
+    pageSize?: number;
+    pageToken?: string;
   };
 
   type ListPermissionGroupsParams = {
@@ -256,6 +431,8 @@ declare namespace API {
     "@type"?: string;
   };
 
+  type protobufNullValue = "NULL_VALUE";
+
   type RemoveGroupMemberParams = {
     groupId: string;
     userId: string;
@@ -300,9 +477,37 @@ declare namespace API {
     reason?: string;
   };
 
+  type TestkitServiceGenerateCDNURLBody = {
+    /** empty = plain download URL */
+    ops?: v1ImageProcessOp[];
+    ttl?: string;
+    /** unsigned permanent URL for public resources */
+    public?: boolean;
+    filename?: string;
+  };
+
+  type TestkitServiceGenerateDownloadURLBody = {
+    ttlSeconds?: number;
+    /** overrides response-content-disposition filename */
+    filename?: string;
+  };
+
+  type TestkitServiceGenerateProcessURLBody = {
+    ops?: v1ImageProcessOp[];
+    ttlSeconds?: number;
+  };
+
   type TestkitServiceUpdateGroupBody = {
     name?: string;
     description?: string;
+  };
+
+  type TestkitServiceUpdateMyFileBody = {
+    filename?: string;
+    filePath?: string;
+    description?: string;
+    metadata?: Record<string, any>;
+    clearMetadata?: boolean;
   };
 
   type TestkitServiceUpdatePermissionBody = {
@@ -335,6 +540,10 @@ declare namespace API {
     groupId: string;
   };
 
+  type UpdateMyFileParams = {
+    fileId: string;
+  };
+
   type UpdatePermissionGroupParams = {
     permissionGroupId: string;
   };
@@ -345,6 +554,164 @@ declare namespace API {
 
   type UpdateRoleParams = {
     roleId: string;
+  };
+
+  type v1AddOwnerQuotaRequest = {
+    ownerType?: v1OwnerType;
+    ownerId?: string;
+    /** positive = purchase, negative = refund */
+    deltaBytes?: string;
+  };
+
+  type v1AdminDeleteOwnerRequest = {
+    ownerType?: v1OwnerType;
+    ownerId?: string;
+  };
+
+  type v1AdminDeleteOwnerResponse = {
+    filesDeleted?: string;
+    bytesReleased?: string;
+  };
+
+  type v1AdminFileInfo = {
+    id?: string;
+    ownerType?: v1OwnerType;
+    ownerId?: string;
+    filename?: string;
+    filePath?: string;
+    description?: string;
+    metadata?: Record<string, any>;
+    isPublic?: boolean;
+    objectId?: string;
+    size?: string;
+    contentType?: string;
+    extension?: string;
+    md5?: string;
+    provider?: string;
+    bucket?: string;
+    objectKey?: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
+  type v1AdminGetStatsResponse = {
+    /** deduped physical files */
+    totalObjects?: string;
+    /** file references */
+    totalFiles?: string;
+    /** actual cloud storage used (deduped) */
+    physicalBytes?: string;
+    /** sum of used_bytes (user quota only) */
+    logicalBytes?: string;
+    ownerStats?: v1OwnerStats[];
+    providerStats?: v1ProviderStats[];
+    bucketStats?: v1BucketStats[];
+  };
+
+  type v1AdminListAuditLogsResponse = {
+    logs?: v1AuditLogEntry[];
+    totalCount?: number;
+    nextPageToken?: string;
+  };
+
+  type v1AdminListBucketsResponse = {
+    buckets?: v1BucketInfo[];
+  };
+
+  type v1AdminListFilesResponse = {
+    files?: v1AdminFileInfo[];
+    totalCount?: number;
+    nextPageToken?: string;
+  };
+
+  type v1AdminListProvidersResponse = {
+    providers?: v1ProviderInfo[];
+  };
+
+  type v1AdminSetQuotaRequest = {
+    ownerType?: v1OwnerType;
+    ownerId?: string;
+    totalBytes?: string;
+  };
+
+  type v1AdminSoftDeleteOwnerFilesRequest = {
+    ownerType?: v1OwnerType;
+    ownerId?: string;
+  };
+
+  type v1AdminSoftDeleteOwnerFilesResponse = {
+    filesDeleted?: string;
+    bytesReleased?: string;
+  };
+
+  type v1AuditAction =
+    | "AUDIT_ACTION_UNSPECIFIED"
+    | "AUDIT_ACTION_UPLOAD"
+    | "AUDIT_ACTION_UPDATE"
+    | "AUDIT_ACTION_DELETE"
+    | "AUDIT_ACTION_BATCH_DELETE"
+    | "AUDIT_ACTION_ADMIN_DELETE"
+    | "AUDIT_ACTION_ADMIN_SET_QUOTA"
+    | "AUDIT_ACTION_ADMIN_SOFT_DELETE_OWNER"
+    | "AUDIT_ACTION_ADMIN_DELETE_OWNER"
+    | "AUDIT_ACTION_SET_OWNER_QUOTA"
+    | "AUDIT_ACTION_ADD_OWNER_QUOTA"
+    | "AUDIT_ACTION_UPLOAD_SESSION_CREATE"
+    | "AUDIT_ACTION_UPLOAD_SESSION_CONFIRM"
+    | "AUDIT_ACTION_UPLOAD_SESSION_CANCEL"
+    | "AUDIT_ACTION_UPLOAD_SESSION_GC";
+
+  type v1AuditLogEntry = {
+    id?: string;
+    action?: v1AuditAction;
+    ownerType?: v1OwnerType;
+    ownerId?: string;
+    targetType?: v1AuditLogTargetType;
+    targetId?: string;
+    before?: Record<string, any>;
+    after?: Record<string, any>;
+    status?: v1AuditLogStatus;
+    errorMessage?: string;
+    requestId?: string;
+    createdAt?: string;
+  };
+
+  type v1AuditLogStatus =
+    | "AUDIT_LOG_STATUS_UNSPECIFIED"
+    | "AUDIT_LOG_STATUS_SUCCESS"
+    | "AUDIT_LOG_STATUS_FAILED";
+
+  type v1AuditLogTargetType =
+    | "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED"
+    | "AUDIT_LOG_TARGET_TYPE_FILE"
+    | "AUDIT_LOG_TARGET_TYPE_QUOTA"
+    | "AUDIT_LOG_TARGET_TYPE_OWNER";
+
+  type v1BatchDeleteMyFilesRequest = {
+    fileIds?: string[];
+  };
+
+  type v1BatchDeleteMyFilesResponse = {
+    deletedCount?: number;
+    failedIds?: string[];
+  };
+
+  type v1BatchGetSTSCredentialRequest = {
+    files?: v1UploadFileMeta[];
+    bucket?: string;
+    ttl?: string;
+    allowedExtensions?: string[];
+  };
+
+  type v1BatchGetSTSCredentialResponse = {
+    accessKey?: string;
+    secretKey?: string;
+    securityToken?: string;
+    endpoint?: string;
+    bucket?: string;
+    expiresAt?: string;
+    /** ordered to match request.files */
+    items?: v1UploadCredentialItem[];
   };
 
   type v1BindIdentityRequest = {
@@ -366,9 +733,43 @@ declare namespace API {
     identity?: v1Identity;
   };
 
+  type v1BucketACL =
+    | "BUCKET_ACL_UNSPECIFIED"
+    | "BUCKET_ACL_PRIVATE"
+    | "BUCKET_ACL_PUBLIC_READ"
+    | "BUCKET_ACL_PUBLIC_READ_WRITE";
+
+  type v1BucketInfo = {
+    name?: string;
+    provider?: string;
+    keyPrefix?: string;
+    acl?: v1BucketACL;
+    vendor?: v1Vendor;
+  };
+
+  type v1BucketStats = {
+    bucket?: string;
+    objectCount?: string;
+    totalBytes?: string;
+    fileCount?: string;
+  };
+
+  type v1CancelUploadRequest = {
+    uploadToken?: string;
+  };
+
   type v1ChangePasswordRequest = {
     oldPassword?: string;
     newPassword?: string;
+  };
+
+  type v1ConfirmUploadRequest = {
+    uploadToken?: string;
+  };
+
+  type v1ConfirmUploadResponse = {
+    fileId?: string;
+    fileInfo?: v1FileInfo;
   };
 
   type v1CreateGroupRequest = {
@@ -430,12 +831,65 @@ declare namespace API {
     userId?: string;
   };
 
+  type v1FileInfo = {
+    id?: string;
+    filename?: string;
+    filePath?: string;
+    description?: string;
+    metadata?: Record<string, any>;
+    isPublic?: boolean;
+    ownerType?: v1OwnerType;
+    size?: string;
+    contentType?: string;
+    extension?: string;
+    md5?: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
   type v1Gender =
     | "GENDER_UNSPECIFIED"
     | "GENDER_MALE"
     | "GENDER_FEMALE"
     | "GENDER_OTHER"
     | "GENDER_UNKNOWN";
+
+  type v1GenerateCDNURLResponse = {
+    url?: string;
+    expiresAt?: string;
+  };
+
+  type v1GenerateDownloadURLResponse = {
+    downloadUrl?: string;
+    expiresAt?: string;
+  };
+
+  type v1GenerateProcessURLResponse = {
+    url?: string;
+    expiresAt?: string;
+  };
+
+  type v1GenerateUploadURLRequest = {
+    filename?: string;
+    size?: string;
+    md5?: string;
+    contentType?: string;
+    bucket?: string;
+    filePath?: string;
+    description?: string;
+    metadata?: Record<string, any>;
+    vendor?: v1Vendor;
+  };
+
+  type v1GenerateUploadURLResponse = {
+    instant?: boolean;
+    fileId?: string;
+    fileInfo?: v1FileInfo;
+    uploadToken?: string;
+    uploadUrl?: string;
+    objectKey?: string;
+    headers?: Record<string, any>;
+  };
 
   type v1GetLoginLogsResponse = {
     logs?: v1LoginLog[];
@@ -457,6 +911,34 @@ declare namespace API {
     os?: string;
     browser?: string;
     loginMethod?: string;
+  };
+
+  type v1GetSTSCredentialRequest = {
+    bucket?: string;
+    maxSize?: string;
+    filename?: string;
+    md5?: string;
+    contentType?: string;
+    filePath?: string;
+    description?: string;
+    metadata?: Record<string, any>;
+    vendor?: v1Vendor;
+    ttl?: string;
+    allowedExtensions?: string[];
+  };
+
+  type v1GetSTSCredentialResponse = {
+    instant?: boolean;
+    fileId?: string;
+    fileInfo?: v1FileInfo;
+    uploadToken?: string;
+    accessKey?: string;
+    secretKey?: string;
+    securityToken?: string;
+    endpoint?: string;
+    bucket?: string;
+    objectKey?: string;
+    expiresAt?: string;
   };
 
   type v1Group = {
@@ -497,12 +979,54 @@ declare namespace API {
     | "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM"
     | "IDENTITY_PROVIDER_ADMIN";
 
+  type v1ImageFormat =
+    | "IMAGE_FORMAT_UNSPECIFIED"
+    | "IMAGE_FORMAT_JPG"
+    | "IMAGE_FORMAT_PNG"
+    | "IMAGE_FORMAT_WEBP"
+    | "IMAGE_FORMAT_GIF"
+    | "IMAGE_FORMAT_BMP"
+    | "IMAGE_FORMAT_HEIC"
+    | "IMAGE_FORMAT_AVIF";
+
+  type v1ImageProcessOp = {
+    type?: v1ImageProcessType;
+    width?: number;
+    height?: number;
+    format?: v1ImageFormat;
+    quality?: number;
+    resizeMode?: v1ImageResizeMode;
+    watermarkText?: string;
+    rotateDegrees?: number;
+  };
+
+  type v1ImageProcessType =
+    | "IMAGE_PROCESS_TYPE_UNSPECIFIED"
+    | "IMAGE_PROCESS_TYPE_RESIZE"
+    | "IMAGE_PROCESS_TYPE_CROP"
+    | "IMAGE_PROCESS_TYPE_QUALITY"
+    | "IMAGE_PROCESS_TYPE_FORMAT"
+    | "IMAGE_PROCESS_TYPE_WATERMARK"
+    | "IMAGE_PROCESS_TYPE_ROTATE";
+
+  type v1ImageResizeMode =
+    | "IMAGE_RESIZE_MODE_UNSPECIFIED"
+    | "IMAGE_RESIZE_MODE_FIT"
+    | "IMAGE_RESIZE_MODE_FILL"
+    | "IMAGE_RESIZE_MODE_PAD";
+
   type v1IssueSessionCodeRequest = {
     sessionId?: string;
   };
 
   type v1IssueSessionCodeResponse = {
     code?: string;
+  };
+
+  type v1ItemError = {
+    index?: number;
+    code?: string;
+    message?: string;
   };
 
   type v1ListGroupMembersResponse = {
@@ -523,6 +1047,25 @@ declare namespace API {
 
   type v1ListIdentitiesResponse = {
     identities?: v1Identity[];
+  };
+
+  type v1ListMyAuditLogsResponse = {
+    logs?: v1AuditLogEntry[];
+    totalCount?: number;
+    nextPageToken?: string;
+  };
+
+  type v1ListMyFilesPagedResponse = {
+    files?: v1FileInfo[];
+    totalCount?: string;
+    page?: number;
+    totalPages?: number;
+    hasMore?: boolean;
+  };
+
+  type v1ListMyFilesResponse = {
+    files?: v1FileInfo[];
+    nextPageToken?: string;
   };
 
   type v1ListPermissionGroupsResponse = {
@@ -620,6 +1163,20 @@ declare namespace API {
     avatarUrl?: string;
   };
 
+  type v1OwnerStats = {
+    ownerType?: v1OwnerType;
+    fileCount?: string;
+    totalBytes?: string;
+  };
+
+  type v1OwnerType =
+    | "OWNER_TYPE_UNSPECIFIED"
+    | "OWNER_TYPE_USER"
+    | "OWNER_TYPE_SYSTEM"
+    | "OWNER_TYPE_GROUP"
+    | "OWNER_TYPE_BUSINESS"
+    | "OWNER_TYPE_SERVICE";
+
   type v1Permission = {
     id?: string;
     resource?: string;
@@ -655,6 +1212,26 @@ declare namespace API {
     now?: string;
     /** process start time, Unix millis (client computes uptime) */
     startedAt?: string;
+  };
+
+  type v1ProviderInfo = {
+    name?: string;
+    vendor?: v1Vendor;
+    endpoint?: string;
+    region?: string;
+  };
+
+  type v1ProviderStats = {
+    provider?: string;
+    objectCount?: string;
+    totalBytes?: string;
+  };
+
+  type v1QuotaInfo = {
+    totalBytes?: string;
+    usedBytes?: string;
+    availableBytes?: string;
+    fileCount?: number;
   };
 
   type v1RefreshSessionRequest = {
@@ -723,6 +1300,12 @@ a platform identifier (e.g. the target email/phone or "testkit-web"). */
     current?: boolean;
   };
 
+  type v1SetOwnerQuotaRequest = {
+    ownerType?: v1OwnerType;
+    ownerId?: string;
+    totalBytes?: string;
+  };
+
   type v1SocialLoginRequest = {
     provider?: v1IdentityProvider;
     code?: string;
@@ -736,6 +1319,12 @@ a platform identifier (e.g. the target email/phone or "testkit-web"). */
     /** meaningful only for SocialLogin (OAuth callback flow) */
     returnTo?: string;
   };
+
+  type v1SortField =
+    | "SORT_FIELD_UNSPECIFIED"
+    | "SORT_FIELD_CREATED_AT"
+    | "SORT_FIELD_FILENAME"
+    | "SORT_FIELD_SIZE";
 
   type v1TokenResponse = {
     token?: string;
@@ -752,6 +1341,29 @@ a platform identifier (e.g. the target email/phone or "testkit-web"). */
     timezone?: string;
     locale?: string;
     bio?: string;
+  };
+
+  type v1UploadCredentialItem = {
+    token?: v1UploadTokenInfo;
+    error?: v1ItemError;
+  };
+
+  type v1UploadFileMeta = {
+    md5?: string;
+    size?: string;
+    filename?: string;
+    contentType?: string;
+    filePath?: string;
+    description?: string;
+    metadata?: Record<string, any>;
+  };
+
+  type v1UploadTokenInfo = {
+    uploadToken?: string;
+    expiresAt?: string;
+    /** non-zero when MD5 dedup hit (instant upload) */
+    fileId?: string;
+    objectKey?: string;
   };
 
   type v1User = {
@@ -803,6 +1415,15 @@ a platform identifier (e.g. the target email/phone or "testkit-web"). */
     | "USER_TYPE_UNSPECIFIED"
     | "USER_TYPE_NORMAL"
     | "USER_TYPE_INTERNAL";
+
+  type v1Vendor =
+    | "VENDOR_UNSPECIFIED"
+    | "VENDOR_ALIYUN_OSS"
+    | "VENDOR_AWS_S3"
+    | "VENDOR_S3_COMPATIBLE"
+    | "VENDOR_TENCENT_COS"
+    | "VENDOR_HUAWEI_OBS"
+    | "VENDOR_VOLCENGINE_TOS";
 
   type v1VerificationChannel =
     | "VERIFICATION_CHANNEL_UNSPECIFIED"

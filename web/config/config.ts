@@ -51,6 +51,36 @@ export default defineConfig({
       access: "canUser",
       component: "./Session",
     },
+    // --- Self-service storage (any logged-in user) → access: canUser ---
+    {
+      path: "/files",
+      name: "我的文件",
+      icon: "FileOutlined",
+      access: "canUser",
+      routes: [
+        { path: "/files", redirect: "/files/my" },
+        { path: "/files/my", name: "文件列表", component: "./Files/MyFiles" },
+      ],
+    },
+    {
+      path: "/storage",
+      name: "我的存储",
+      icon: "CloudServerOutlined",
+      access: "canUser",
+      routes: [
+        { path: "/storage", redirect: "/storage/quota" },
+        {
+          path: "/storage/quota",
+          name: "我的配额",
+          component: "./Storage/Quota",
+        },
+        {
+          path: "/storage/audit",
+          name: "操作审计",
+          component: "./Storage/Audit",
+        },
+      ],
+    },
     // --- Internal back-office → access: canInternal (UserType = INTERNAL) ---
     {
       path: "/dashboard",
@@ -118,14 +148,48 @@ export default defineConfig({
         },
       ],
     },
-    // --- Future-phase placeholders (P3–P6) ---
     {
-      path: "/files",
-      name: "文件",
-      icon: "FileOutlined",
+      path: "/admin/storage",
+      name: "存储管理",
+      icon: "CloudUploadOutlined",
       access: "canInternal",
-      component: "./Placeholder",
+      routes: [
+        { path: "/admin/storage", redirect: "/admin/storage/files" },
+        {
+          path: "/admin/storage/files",
+          name: "文件",
+          component: "./Admin/Storage/Files",
+        },
+        {
+          path: "/admin/storage/quota",
+          name: "配额",
+          component: "./Admin/Storage/Quota",
+        },
+        {
+          path: "/admin/storage/stats",
+          name: "统计",
+          component: "./Admin/Storage/Stats",
+        },
+        {
+          path: "/admin/storage/providers",
+          name: "Providers",
+          component: "./Admin/Storage/Providers",
+        },
+        {
+          path: "/admin/storage/buckets",
+          name: "Buckets",
+          component: "./Admin/Storage/Buckets",
+        },
+      ],
     },
+    {
+      path: "/admin/audit-logs",
+      name: "审计日志",
+      icon: "AuditOutlined",
+      access: "canInternal",
+      component: "./Admin/Audit",
+    },
+    // --- Future-phase placeholders (P4–P6) ---
     {
       path: "/messages",
       name: "消息",
