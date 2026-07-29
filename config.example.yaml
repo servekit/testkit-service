@@ -1,0 +1,33 @@
+# Structure-only config template. Every value is a ${VAR} placeholder expanded
+# by configx (WithExpandEnv) from the process environment at startup; see
+# .env.example for the actual values. To override a value, set the env var in
+# .env (local) or the container/deployment env — never hard-code values here.
+#
+# configx loads ./config.yaml (NOT this file). `make run` copies this template
+# to config.yaml automatically when missing; for docker, the renderer copies it
+# into the image as /app/config.yaml.
+
+server:
+  grpc_addr: ${TESTKIT_SERVICE_SERVER_GRPC_ADDR}
+  http_addr: ${TESTKIT_SERVICE_SERVER_HTTP_ADDR}
+
+redis:
+  addr: ${TESTKIT_SERVICE_REDIS_ADDR}
+  username: ${TESTKIT_SERVICE_REDIS_USERNAME}
+  password: ${TESTKIT_SERVICE_REDIS_PASSWORD}
+  db: ${TESTKIT_SERVICE_REDIS_DB}
+
+third_party:
+  demo:
+    mode: ${TESTKIT_SERVICE_THIRD_PARTY_DEMO_MODE}
+    target: ${TESTKIT_SERVICE_THIRD_PARTY_DEMO_TARGET}
+    config:
+      prefix: ${TESTKIT_SERVICE_THIRD_PARTY_DEMO_CONFIG_PREFIX}
+      max_input_len: ${TESTKIT_SERVICE_THIRD_PARTY_DEMO_CONFIG_MAX_INPUT_LEN}
+
+cron:
+  timezone: ${TESTKIT_SERVICE_CRON_TIMEZONE}
+
+log:
+  level: ${TESTKIT_SERVICE_LOG_LEVEL}
+  format: ${TESTKIT_SERVICE_LOG_FORMAT}
