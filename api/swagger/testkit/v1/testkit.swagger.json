@@ -16,6 +16,162 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1TokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "LoginRequest is the curated frontend DTO for login. Field names line up 1:1\nwith user-service LoginRequest; the auth mapping layer int-casts the enums.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1LoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "summary": "Logout revokes the caller's current session. session_id is NOT in the\nrequest — it is read from the authenticated context (set by the auth\ninterceptor from the JWT).",
+        "operationId": "Logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "operationId": "RefreshSession",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1TokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "RefreshSessionRequest refreshes the caller's session. session_id is optional:\nwhen empty, the handler derives it from the authenticated context\n(auth.SessionIDFromCtx). The response is a freshly-issued JWT.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RefreshSessionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "operationId": "Register",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1TokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "RegisterRequest is the curated frontend DTO for registration.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/captcha/send": {
+      "post": {
+        "operationId": "SendVerificationCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SendVerificationCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "SendVerificationCodeRequest is the curated frontend DTO for requesting a\nverification code. The vendor template fields (sms_template_id, email_body,\n...) live in user-service and are intentionally NOT exposed here — the BFF\nsupplies them from server config, not the frontend (design spec §3.2.2).",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SendVerificationCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
     "/ping": {
       "get": {
         "operationId": "Ping",
@@ -68,6 +224,66 @@
         }
       }
     },
+    "v1IdentityProvider": {
+      "type": "string",
+      "enum": [
+        "IDENTITY_PROVIDER_UNSPECIFIED",
+        "IDENTITY_PROVIDER_EMAIL",
+        "IDENTITY_PROVIDER_PHONE",
+        "IDENTITY_PROVIDER_GITHUB",
+        "IDENTITY_PROVIDER_GOOGLE",
+        "IDENTITY_PROVIDER_WECHAT",
+        "IDENTITY_PROVIDER_APPLE",
+        "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM",
+        "IDENTITY_PROVIDER_ADMIN"
+      ],
+      "default": "IDENTITY_PROVIDER_UNSPECIFIED",
+      "description": "IdentityProvider identifies which login system an identity belongs to. Mirrors\nuser-service IdentityProvider same-name/same-number. ADMIN=8 is an audit tag\nfor CreateUser — not a real login method (Login never uses it).\n\n - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method."
+    },
+    "v1LoginMethod": {
+      "type": "string",
+      "enum": [
+        "LOGIN_METHOD_UNSPECIFIED",
+        "LOGIN_METHOD_EMAIL_PASSWORD",
+        "LOGIN_METHOD_PHONE_PASSWORD",
+        "LOGIN_METHOD_PHONE_CODE",
+        "LOGIN_METHOD_EMAIL_CODE",
+        "LOGIN_METHOD_USERNAME_PASSWORD"
+      ],
+      "default": "LOGIN_METHOD_UNSPECIFIED",
+      "description": "LoginMethod is the authentication strategy for Login. Mirrors\nuser-service LoginMethod same-name/same-number.\n\n - LOGIN_METHOD_PHONE_CODE: Auto-registers on missing identity.\n - LOGIN_METHOD_EMAIL_CODE: Auto-registers on missing identity."
+    },
+    "v1LoginRequest": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "$ref": "#/definitions/v1LoginMethod"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "regionCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "captchaId": {
+          "type": "string",
+          "description": "captcha_id returned by SendVerificationCode; required for code-based login."
+        }
+      },
+      "description": "LoginRequest is the curated frontend DTO for login. Field names line up 1:1\nwith user-service LoginRequest; the auth mapping layer int-casts the enums."
+    },
     "v1Pong": {
       "type": "object",
       "properties": {
@@ -111,6 +327,154 @@
         }
       },
       "description": "Pong is the health-check response — only public, non-sensitive info\n(service name, build version, status, timestamps). Never include internal\naddresses, IPs, env vars, secrets, or dependency topology here."
+    },
+    "v1RefreshSessionRequest": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        }
+      },
+      "description": "RefreshSessionRequest refreshes the caller's session. session_id is optional:\nwhen empty, the handler derives it from the authenticated context\n(auth.SessionIDFromCtx). The response is a freshly-issued JWT."
+    },
+    "v1RegisterRequest": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "$ref": "#/definitions/v1IdentityProvider"
+        },
+        "email": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "regionCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "captchaId": {
+          "type": "string",
+          "description": "captcha_id returned by SendVerificationCode; required to verify the code."
+        }
+      },
+      "description": "RegisterRequest is the curated frontend DTO for registration."
+    },
+    "v1SendVerificationCodeRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "channel": {
+          "$ref": "#/definitions/v1VerificationChannel"
+        },
+        "purpose": {
+          "$ref": "#/definitions/v1VerificationPurpose"
+        },
+        "regionCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "senderId": {
+          "type": "string",
+          "description": "sender_id is the audit actor triggering this send (user id, service name,\nplatform identifier, ...). user-service is stateless and passes it through\nverbatim; for unauthenticated flows (register/login) the frontend supplies\na platform identifier (e.g. the target email/phone or \"testkit-web\")."
+        }
+      },
+      "description": "SendVerificationCodeRequest is the curated frontend DTO for requesting a\nverification code. The vendor template fields (sms_template_id, email_body,\n...) live in user-service and are intentionally NOT exposed here — the BFF\nsupplies them from server config, not the frontend (design spec §3.2.2)."
+    },
+    "v1SendVerificationCodeResponse": {
+      "type": "object",
+      "properties": {
+        "captchaId": {
+          "type": "string"
+        }
+      },
+      "description": "SendVerificationCodeResponse returns the captcha_id that binds the generated\ncode to this flow; it must be passed back to Register/Login."
+    },
+    "v1TokenResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/v1User"
+        }
+      },
+      "description": "TokenResponse is returned by every login-class RPC (Login, Register,\nRefreshSession). It carries the JWT (which embeds session_id internally) plus\nthe curated user. session_id is deliberately NOT surfaced — the frontend\nholds only the token (design spec §5.1/§11)."
+    },
+    "v1User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "userType": {
+          "$ref": "#/definitions/v1UserType"
+        }
+      },
+      "description": "User is the curated frontend user view. Carries user_type so the frontend can\ndo its two-track split (design spec §3.5). Sensitive/internal fields\n(status, register_source, real_name, timestamps, ...) are curated out."
+    },
+    "v1UserType": {
+      "type": "string",
+      "enum": [
+        "USER_TYPE_UNSPECIFIED",
+        "USER_TYPE_NORMAL",
+        "USER_TYPE_INTERNAL"
+      ],
+      "default": "USER_TYPE_UNSPECIFIED",
+      "description": "UserType separates external end users from internal platform users. Mirrors\nuser-service UserType same-name/same-number. Drives the two-track frontend\n(design spec §3.5): INTERNAL → 内部后台管理页, NORMAL → 普通用户后端页. This is\na frontend route/menu split only — NOT RBAC; backend admin endpoints do login-\nstate + identity injection only this phase.\n\n - USER_TYPE_NORMAL: External end user (default).\n - USER_TYPE_INTERNAL: Platform internal user (staff, operations, etc.)."
+    },
+    "v1VerificationChannel": {
+      "type": "string",
+      "enum": [
+        "VERIFICATION_CHANNEL_UNSPECIFIED",
+        "VERIFICATION_CHANNEL_EMAIL",
+        "VERIFICATION_CHANNEL_SMS"
+      ],
+      "default": "VERIFICATION_CHANNEL_UNSPECIFIED",
+      "description": "VerificationChannel is the delivery channel for SendVerificationCode. Mirrors\nuser-service VerificationChannel same-name/same-number."
+    },
+    "v1VerificationPurpose": {
+      "type": "string",
+      "enum": [
+        "VERIFICATION_PURPOSE_UNSPECIFIED",
+        "VERIFICATION_PURPOSE_REGISTER",
+        "VERIFICATION_PURPOSE_LOGIN",
+        "VERIFICATION_PURPOSE_VERIFY_EMAIL",
+        "VERIFICATION_PURPOSE_VERIFY_PHONE",
+        "VERIFICATION_PURPOSE_PASSWORD_RESET",
+        "VERIFICATION_PURPOSE_BIND"
+      ],
+      "default": "VERIFICATION_PURPOSE_UNSPECIFIED",
+      "description": "VerificationPurpose binds a code to its consuming RPC, preventing cross-context\nreplay. Mirrors user-service VerificationPurpose same-name/same-number.\n\n - VERIFICATION_PURPOSE_REGISTER: Consumed by Register.\n - VERIFICATION_PURPOSE_LOGIN: Consumed by Login (code methods).\n - VERIFICATION_PURPOSE_VERIFY_EMAIL: EMAIL channel only.\n - VERIFICATION_PURPOSE_VERIFY_PHONE: SMS channel only.\n - VERIFICATION_PURPOSE_PASSWORD_RESET: Consumed by ResetPassword (TBD).\n - VERIFICATION_PURPOSE_BIND: Consumed by BindIdentity (TBD)."
     }
   }
 }

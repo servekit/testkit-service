@@ -24,6 +24,304 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// LoginMethod is the authentication strategy for Login. Mirrors
+// user-service LoginMethod same-name/same-number.
+type LoginMethod int32
+
+const (
+	LoginMethod_LOGIN_METHOD_UNSPECIFIED       LoginMethod = 0
+	LoginMethod_LOGIN_METHOD_EMAIL_PASSWORD    LoginMethod = 1
+	LoginMethod_LOGIN_METHOD_PHONE_PASSWORD    LoginMethod = 2
+	LoginMethod_LOGIN_METHOD_PHONE_CODE        LoginMethod = 3 // Auto-registers on missing identity.
+	LoginMethod_LOGIN_METHOD_EMAIL_CODE        LoginMethod = 4 // Auto-registers on missing identity.
+	LoginMethod_LOGIN_METHOD_USERNAME_PASSWORD LoginMethod = 5
+)
+
+// Enum value maps for LoginMethod.
+var (
+	LoginMethod_name = map[int32]string{
+		0: "LOGIN_METHOD_UNSPECIFIED",
+		1: "LOGIN_METHOD_EMAIL_PASSWORD",
+		2: "LOGIN_METHOD_PHONE_PASSWORD",
+		3: "LOGIN_METHOD_PHONE_CODE",
+		4: "LOGIN_METHOD_EMAIL_CODE",
+		5: "LOGIN_METHOD_USERNAME_PASSWORD",
+	}
+	LoginMethod_value = map[string]int32{
+		"LOGIN_METHOD_UNSPECIFIED":       0,
+		"LOGIN_METHOD_EMAIL_PASSWORD":    1,
+		"LOGIN_METHOD_PHONE_PASSWORD":    2,
+		"LOGIN_METHOD_PHONE_CODE":        3,
+		"LOGIN_METHOD_EMAIL_CODE":        4,
+		"LOGIN_METHOD_USERNAME_PASSWORD": 5,
+	}
+)
+
+func (x LoginMethod) Enum() *LoginMethod {
+	p := new(LoginMethod)
+	*p = x
+	return p
+}
+
+func (x LoginMethod) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LoginMethod) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[0].Descriptor()
+}
+
+func (LoginMethod) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[0]
+}
+
+func (x LoginMethod) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LoginMethod.Descriptor instead.
+func (LoginMethod) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{0}
+}
+
+// IdentityProvider identifies which login system an identity belongs to. Mirrors
+// user-service IdentityProvider same-name/same-number. ADMIN=8 is an audit tag
+// for CreateUser — not a real login method (Login never uses it).
+type IdentityProvider int32
+
+const (
+	IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED        IdentityProvider = 0
+	IdentityProvider_IDENTITY_PROVIDER_EMAIL              IdentityProvider = 1
+	IdentityProvider_IDENTITY_PROVIDER_PHONE              IdentityProvider = 2
+	IdentityProvider_IDENTITY_PROVIDER_GITHUB             IdentityProvider = 3
+	IdentityProvider_IDENTITY_PROVIDER_GOOGLE             IdentityProvider = 4
+	IdentityProvider_IDENTITY_PROVIDER_WECHAT             IdentityProvider = 5
+	IdentityProvider_IDENTITY_PROVIDER_APPLE              IdentityProvider = 6
+	IdentityProvider_IDENTITY_PROVIDER_WECHAT_MINIPROGRAM IdentityProvider = 7
+	IdentityProvider_IDENTITY_PROVIDER_ADMIN              IdentityProvider = 8 // Audit tag for CreateUser; not a login method.
+)
+
+// Enum value maps for IdentityProvider.
+var (
+	IdentityProvider_name = map[int32]string{
+		0: "IDENTITY_PROVIDER_UNSPECIFIED",
+		1: "IDENTITY_PROVIDER_EMAIL",
+		2: "IDENTITY_PROVIDER_PHONE",
+		3: "IDENTITY_PROVIDER_GITHUB",
+		4: "IDENTITY_PROVIDER_GOOGLE",
+		5: "IDENTITY_PROVIDER_WECHAT",
+		6: "IDENTITY_PROVIDER_APPLE",
+		7: "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM",
+		8: "IDENTITY_PROVIDER_ADMIN",
+	}
+	IdentityProvider_value = map[string]int32{
+		"IDENTITY_PROVIDER_UNSPECIFIED":        0,
+		"IDENTITY_PROVIDER_EMAIL":              1,
+		"IDENTITY_PROVIDER_PHONE":              2,
+		"IDENTITY_PROVIDER_GITHUB":             3,
+		"IDENTITY_PROVIDER_GOOGLE":             4,
+		"IDENTITY_PROVIDER_WECHAT":             5,
+		"IDENTITY_PROVIDER_APPLE":              6,
+		"IDENTITY_PROVIDER_WECHAT_MINIPROGRAM": 7,
+		"IDENTITY_PROVIDER_ADMIN":              8,
+	}
+)
+
+func (x IdentityProvider) Enum() *IdentityProvider {
+	p := new(IdentityProvider)
+	*p = x
+	return p
+}
+
+func (x IdentityProvider) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IdentityProvider) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[1].Descriptor()
+}
+
+func (IdentityProvider) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[1]
+}
+
+func (x IdentityProvider) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use IdentityProvider.Descriptor instead.
+func (IdentityProvider) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{1}
+}
+
+// VerificationChannel is the delivery channel for SendVerificationCode. Mirrors
+// user-service VerificationChannel same-name/same-number.
+type VerificationChannel int32
+
+const (
+	VerificationChannel_VERIFICATION_CHANNEL_UNSPECIFIED VerificationChannel = 0
+	VerificationChannel_VERIFICATION_CHANNEL_EMAIL       VerificationChannel = 1
+	VerificationChannel_VERIFICATION_CHANNEL_SMS         VerificationChannel = 2
+)
+
+// Enum value maps for VerificationChannel.
+var (
+	VerificationChannel_name = map[int32]string{
+		0: "VERIFICATION_CHANNEL_UNSPECIFIED",
+		1: "VERIFICATION_CHANNEL_EMAIL",
+		2: "VERIFICATION_CHANNEL_SMS",
+	}
+	VerificationChannel_value = map[string]int32{
+		"VERIFICATION_CHANNEL_UNSPECIFIED": 0,
+		"VERIFICATION_CHANNEL_EMAIL":       1,
+		"VERIFICATION_CHANNEL_SMS":         2,
+	}
+)
+
+func (x VerificationChannel) Enum() *VerificationChannel {
+	p := new(VerificationChannel)
+	*p = x
+	return p
+}
+
+func (x VerificationChannel) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (VerificationChannel) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[2].Descriptor()
+}
+
+func (VerificationChannel) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[2]
+}
+
+func (x VerificationChannel) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use VerificationChannel.Descriptor instead.
+func (VerificationChannel) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{2}
+}
+
+// VerificationPurpose binds a code to its consuming RPC, preventing cross-context
+// replay. Mirrors user-service VerificationPurpose same-name/same-number.
+type VerificationPurpose int32
+
+const (
+	VerificationPurpose_VERIFICATION_PURPOSE_UNSPECIFIED    VerificationPurpose = 0
+	VerificationPurpose_VERIFICATION_PURPOSE_REGISTER       VerificationPurpose = 1 // Consumed by Register.
+	VerificationPurpose_VERIFICATION_PURPOSE_LOGIN          VerificationPurpose = 2 // Consumed by Login (code methods).
+	VerificationPurpose_VERIFICATION_PURPOSE_VERIFY_EMAIL   VerificationPurpose = 3 // EMAIL channel only.
+	VerificationPurpose_VERIFICATION_PURPOSE_VERIFY_PHONE   VerificationPurpose = 4 // SMS channel only.
+	VerificationPurpose_VERIFICATION_PURPOSE_PASSWORD_RESET VerificationPurpose = 5 // Consumed by ResetPassword (TBD).
+	VerificationPurpose_VERIFICATION_PURPOSE_BIND           VerificationPurpose = 6 // Consumed by BindIdentity (TBD).
+)
+
+// Enum value maps for VerificationPurpose.
+var (
+	VerificationPurpose_name = map[int32]string{
+		0: "VERIFICATION_PURPOSE_UNSPECIFIED",
+		1: "VERIFICATION_PURPOSE_REGISTER",
+		2: "VERIFICATION_PURPOSE_LOGIN",
+		3: "VERIFICATION_PURPOSE_VERIFY_EMAIL",
+		4: "VERIFICATION_PURPOSE_VERIFY_PHONE",
+		5: "VERIFICATION_PURPOSE_PASSWORD_RESET",
+		6: "VERIFICATION_PURPOSE_BIND",
+	}
+	VerificationPurpose_value = map[string]int32{
+		"VERIFICATION_PURPOSE_UNSPECIFIED":    0,
+		"VERIFICATION_PURPOSE_REGISTER":       1,
+		"VERIFICATION_PURPOSE_LOGIN":          2,
+		"VERIFICATION_PURPOSE_VERIFY_EMAIL":   3,
+		"VERIFICATION_PURPOSE_VERIFY_PHONE":   4,
+		"VERIFICATION_PURPOSE_PASSWORD_RESET": 5,
+		"VERIFICATION_PURPOSE_BIND":           6,
+	}
+)
+
+func (x VerificationPurpose) Enum() *VerificationPurpose {
+	p := new(VerificationPurpose)
+	*p = x
+	return p
+}
+
+func (x VerificationPurpose) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (VerificationPurpose) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[3].Descriptor()
+}
+
+func (VerificationPurpose) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[3]
+}
+
+func (x VerificationPurpose) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use VerificationPurpose.Descriptor instead.
+func (VerificationPurpose) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{3}
+}
+
+// UserType separates external end users from internal platform users. Mirrors
+// user-service UserType same-name/same-number. Drives the two-track frontend
+// (design spec §3.5): INTERNAL → 内部后台管理页, NORMAL → 普通用户后端页. This is
+// a frontend route/menu split only — NOT RBAC; backend admin endpoints do login-
+// state + identity injection only this phase.
+type UserType int32
+
+const (
+	UserType_USER_TYPE_UNSPECIFIED UserType = 0
+	UserType_USER_TYPE_NORMAL      UserType = 1 // External end user (default).
+	UserType_USER_TYPE_INTERNAL    UserType = 2 // Platform internal user (staff, operations, etc.).
+)
+
+// Enum value maps for UserType.
+var (
+	UserType_name = map[int32]string{
+		0: "USER_TYPE_UNSPECIFIED",
+		1: "USER_TYPE_NORMAL",
+		2: "USER_TYPE_INTERNAL",
+	}
+	UserType_value = map[string]int32{
+		"USER_TYPE_UNSPECIFIED": 0,
+		"USER_TYPE_NORMAL":      1,
+		"USER_TYPE_INTERNAL":    2,
+	}
+)
+
+func (x UserType) Enum() *UserType {
+	p := new(UserType)
+	*p = x
+	return p
+}
+
+func (x UserType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserType) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[4].Descriptor()
+}
+
+func (UserType) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[4]
+}
+
+func (x UserType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserType.Descriptor instead.
+func (UserType) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{4}
+}
+
 // Pong is the health-check response — only public, non-sensitive info
 // (service name, build version, status, timestamps). Never include internal
 // addresses, IPs, env vars, secrets, or dependency topology here.
@@ -135,6 +433,547 @@ func (x *Pong) GetStartedAt() int64 {
 	return 0
 }
 
+// LoginRequest is the curated frontend DTO for login. Field names line up 1:1
+// with user-service LoginRequest; the auth mapping layer int-casts the enums.
+type LoginRequest struct {
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	Method     LoginMethod            `protobuf:"varint,1,opt,name=method,proto3,enum=testkit.v1.LoginMethod" json:"method,omitempty"`
+	Username   string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Password   string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	Code       string                 `protobuf:"bytes,4,opt,name=code,proto3" json:"code,omitempty"`
+	Email      string                 `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`
+	RegionCode string                 `protobuf:"bytes,6,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone      string                 `protobuf:"bytes,7,opt,name=phone,proto3" json:"phone,omitempty"`
+	// captcha_id returned by SendVerificationCode; required for code-based login.
+	CaptchaId     string `protobuf:"bytes,8,opt,name=captcha_id,json=captchaId,proto3" json:"captcha_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginRequest) Reset() {
+	*x = LoginRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginRequest) ProtoMessage() {}
+
+func (x *LoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
+func (*LoginRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *LoginRequest) GetMethod() LoginMethod {
+	if x != nil {
+		return x.Method
+	}
+	return LoginMethod_LOGIN_METHOD_UNSPECIFIED
+}
+
+func (x *LoginRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetCaptchaId() string {
+	if x != nil {
+		return x.CaptchaId
+	}
+	return ""
+}
+
+// RegisterRequest is the curated frontend DTO for registration.
+type RegisterRequest struct {
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	Provider   IdentityProvider       `protobuf:"varint,1,opt,name=provider,proto3,enum=testkit.v1.IdentityProvider" json:"provider,omitempty"`
+	Email      string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Code       string                 `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
+	Username   string                 `protobuf:"bytes,4,opt,name=username,proto3" json:"username,omitempty"`
+	Nickname   string                 `protobuf:"bytes,5,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Password   string                 `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
+	RegionCode string                 `protobuf:"bytes,7,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone      string                 `protobuf:"bytes,8,opt,name=phone,proto3" json:"phone,omitempty"`
+	// captcha_id returned by SendVerificationCode; required to verify the code.
+	CaptchaId     string `protobuf:"bytes,9,opt,name=captcha_id,json=captchaId,proto3" json:"captcha_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterRequest) Reset() {
+	*x = RegisterRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterRequest) ProtoMessage() {}
+
+func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterRequest.ProtoReflect.Descriptor instead.
+func (*RegisterRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *RegisterRequest) GetProvider() IdentityProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return IdentityProvider_IDENTITY_PROVIDER_UNSPECIFIED
+}
+
+func (x *RegisterRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetCaptchaId() string {
+	if x != nil {
+		return x.CaptchaId
+	}
+	return ""
+}
+
+// SendVerificationCodeRequest is the curated frontend DTO for requesting a
+// verification code. The vendor template fields (sms_template_id, email_body,
+// ...) live in user-service and are intentionally NOT exposed here — the BFF
+// supplies them from server config, not the frontend (design spec §3.2.2).
+type SendVerificationCodeRequest struct {
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	Email      string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Channel    VerificationChannel    `protobuf:"varint,2,opt,name=channel,proto3,enum=testkit.v1.VerificationChannel" json:"channel,omitempty"`
+	Purpose    VerificationPurpose    `protobuf:"varint,3,opt,name=purpose,proto3,enum=testkit.v1.VerificationPurpose" json:"purpose,omitempty"`
+	RegionCode string                 `protobuf:"bytes,4,opt,name=region_code,json=regionCode,proto3" json:"region_code,omitempty"`
+	Phone      string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
+	// sender_id is the audit actor triggering this send (user id, service name,
+	// platform identifier, ...). user-service is stateless and passes it through
+	// verbatim; for unauthenticated flows (register/login) the frontend supplies
+	// a platform identifier (e.g. the target email/phone or "testkit-web").
+	SenderId      string `protobuf:"bytes,6,opt,name=sender_id,json=senderId,proto3" json:"sender_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendVerificationCodeRequest) Reset() {
+	*x = SendVerificationCodeRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendVerificationCodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendVerificationCodeRequest) ProtoMessage() {}
+
+func (x *SendVerificationCodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendVerificationCodeRequest.ProtoReflect.Descriptor instead.
+func (*SendVerificationCodeRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SendVerificationCodeRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *SendVerificationCodeRequest) GetChannel() VerificationChannel {
+	if x != nil {
+		return x.Channel
+	}
+	return VerificationChannel_VERIFICATION_CHANNEL_UNSPECIFIED
+}
+
+func (x *SendVerificationCodeRequest) GetPurpose() VerificationPurpose {
+	if x != nil {
+		return x.Purpose
+	}
+	return VerificationPurpose_VERIFICATION_PURPOSE_UNSPECIFIED
+}
+
+func (x *SendVerificationCodeRequest) GetRegionCode() string {
+	if x != nil {
+		return x.RegionCode
+	}
+	return ""
+}
+
+func (x *SendVerificationCodeRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *SendVerificationCodeRequest) GetSenderId() string {
+	if x != nil {
+		return x.SenderId
+	}
+	return ""
+}
+
+// SendVerificationCodeResponse returns the captcha_id that binds the generated
+// code to this flow; it must be passed back to Register/Login.
+type SendVerificationCodeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CaptchaId     string                 `protobuf:"bytes,1,opt,name=captcha_id,json=captchaId,proto3" json:"captcha_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendVerificationCodeResponse) Reset() {
+	*x = SendVerificationCodeResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendVerificationCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendVerificationCodeResponse) ProtoMessage() {}
+
+func (x *SendVerificationCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendVerificationCodeResponse.ProtoReflect.Descriptor instead.
+func (*SendVerificationCodeResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SendVerificationCodeResponse) GetCaptchaId() string {
+	if x != nil {
+		return x.CaptchaId
+	}
+	return ""
+}
+
+// RefreshSessionRequest refreshes the caller's session. session_id is optional:
+// when empty, the handler derives it from the authenticated context
+// (auth.SessionIDFromCtx). The response is a freshly-issued JWT.
+type RefreshSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RefreshSessionRequest) Reset() {
+	*x = RefreshSessionRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RefreshSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RefreshSessionRequest) ProtoMessage() {}
+
+func (x *RefreshSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RefreshSessionRequest.ProtoReflect.Descriptor instead.
+func (*RefreshSessionRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *RefreshSessionRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+// User is the curated frontend user view. Carries user_type so the frontend can
+// do its two-track split (design spec §3.5). Sensitive/internal fields
+// (status, register_source, real_name, timestamps, ...) are curated out.
+type User struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
+	Nickname      string                 `protobuf:"bytes,5,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	UserType      UserType               `protobuf:"varint,6,opt,name=user_type,json=userType,proto3,enum=testkit.v1.UserType" json:"user_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *User) Reset() {
+	*x = User{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *User) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*User) ProtoMessage() {}
+
+func (x *User) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use User.ProtoReflect.Descriptor instead.
+func (*User) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *User) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *User) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *User) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *User) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *User) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *User) GetUserType() UserType {
+	if x != nil {
+		return x.UserType
+	}
+	return UserType_USER_TYPE_UNSPECIFIED
+}
+
+// TokenResponse is returned by every login-class RPC (Login, Register,
+// RefreshSession). It carries the JWT (which embeds session_id internally) plus
+// the curated user. session_id is deliberately NOT surfaced — the frontend
+// holds only the token (design spec §5.1/§11).
+type TokenResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	User          *User                  `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TokenResponse) Reset() {
+	*x = TokenResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TokenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TokenResponse) ProtoMessage() {}
+
+func (x *TokenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TokenResponse.ProtoReflect.Descriptor instead.
+func (*TokenResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *TokenResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *TokenResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
 var File_testkit_v1_testkit_proto protoreflect.FileDescriptor
 
 const file_testkit_v1_testkit_proto_rawDesc = "" +
@@ -155,9 +994,102 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x06status\x18\a \x01(\tR\x06status\x12\x10\n" +
 	"\x03now\x18\b \x01(\x03R\x03now\x12\x1d\n" +
 	"\n" +
-	"started_at\x18\t \x01(\x03R\tstartedAt2Q\n" +
+	"started_at\x18\t \x01(\x03R\tstartedAt\"\xd0\x02\n" +
+	"\fLoginRequest\x12;\n" +
+	"\x06method\x18\x01 \x01(\x0e2\x17.testkit.v1.LoginMethodB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x06method\x12$\n" +
+	"\busername\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\busername\x12$\n" +
+	"\bpassword\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\bpassword\x12\x1b\n" +
+	"\x04code\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x18\x10R\x04code\x12\x1e\n" +
+	"\x05email\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05email\x122\n" +
+	"\vregion_code\x18\x06 \x01(\tB\x11\xbaH\x0er\f2\n" +
+	"^[A-Z]{2}$R\n" +
+	"regionCode\x12\x1d\n" +
+	"\x05phone\x18\a \x01(\tB\a\xbaH\x04r\x02\x18\x14R\x05phone\x12'\n" +
+	"\n" +
+	"captcha_id\x18\b \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\tcaptchaId\"\x82\x03\n" +
+	"\x0fRegisterRequest\x12D\n" +
+	"\bprovider\x18\x01 \x01(\x0e2\x1c.testkit.v1.IdentityProviderB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\bprovider\x12\x1e\n" +
+	"\x05email\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05email\x12\x1d\n" +
+	"\x04code\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18\x10R\x04code\x12#\n" +
+	"\busername\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x18@R\busername\x12#\n" +
+	"\bnickname\x18\x05 \x01(\tB\a\xbaH\x04r\x02\x18@R\bnickname\x12$\n" +
+	"\bpassword\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\bpassword\x122\n" +
+	"\vregion_code\x18\a \x01(\tB\x11\xbaH\x0er\f2\n" +
+	"^[A-Z]{2}$R\n" +
+	"regionCode\x12\x1d\n" +
+	"\x05phone\x18\b \x01(\tB\a\xbaH\x04r\x02\x18\x14R\x05phone\x12'\n" +
+	"\n" +
+	"captcha_id\x18\t \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\tcaptchaId\"\xc7\x02\n" +
+	"\x1bSendVerificationCodeRequest\x12\x1e\n" +
+	"\x05email\x18\x01 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05email\x12E\n" +
+	"\achannel\x18\x02 \x01(\x0e2\x1f.testkit.v1.VerificationChannelB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\achannel\x12E\n" +
+	"\apurpose\x18\x03 \x01(\x0e2\x1f.testkit.v1.VerificationPurposeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\apurpose\x122\n" +
+	"\vregion_code\x18\x04 \x01(\tB\x11\xbaH\x0er\f2\n" +
+	"^[A-Z]{2}$R\n" +
+	"regionCode\x12\x1d\n" +
+	"\x05phone\x18\x05 \x01(\tB\a\xbaH\x04r\x02\x18\x14R\x05phone\x12'\n" +
+	"\tsender_id\x18\x06 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\bsenderId\"=\n" +
+	"\x1cSendVerificationCodeResponse\x12\x1d\n" +
+	"\n" +
+	"captcha_id\x18\x01 \x01(\tR\tcaptchaId\"@\n" +
+	"\x15RefreshSessionRequest\x12'\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\tsessionId\"\xb7\x01\n" +
+	"\x04User\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x14\n" +
+	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x1a\n" +
+	"\bnickname\x18\x05 \x01(\tR\bnickname\x12;\n" +
+	"\tuser_type\x18\x06 \x01(\x0e2\x14.testkit.v1.UserTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\buserType\"K\n" +
+	"\rTokenResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12$\n" +
+	"\x04user\x18\x02 \x01(\v2\x10.testkit.v1.UserR\x04user*\xcb\x01\n" +
+	"\vLoginMethod\x12\x1c\n" +
+	"\x18LOGIN_METHOD_UNSPECIFIED\x10\x00\x12\x1f\n" +
+	"\x1bLOGIN_METHOD_EMAIL_PASSWORD\x10\x01\x12\x1f\n" +
+	"\x1bLOGIN_METHOD_PHONE_PASSWORD\x10\x02\x12\x1b\n" +
+	"\x17LOGIN_METHOD_PHONE_CODE\x10\x03\x12\x1b\n" +
+	"\x17LOGIN_METHOD_EMAIL_CODE\x10\x04\x12\"\n" +
+	"\x1eLOGIN_METHOD_USERNAME_PASSWORD\x10\x05*\xad\x02\n" +
+	"\x10IdentityProvider\x12!\n" +
+	"\x1dIDENTITY_PROVIDER_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17IDENTITY_PROVIDER_EMAIL\x10\x01\x12\x1b\n" +
+	"\x17IDENTITY_PROVIDER_PHONE\x10\x02\x12\x1c\n" +
+	"\x18IDENTITY_PROVIDER_GITHUB\x10\x03\x12\x1c\n" +
+	"\x18IDENTITY_PROVIDER_GOOGLE\x10\x04\x12\x1c\n" +
+	"\x18IDENTITY_PROVIDER_WECHAT\x10\x05\x12\x1b\n" +
+	"\x17IDENTITY_PROVIDER_APPLE\x10\x06\x12(\n" +
+	"$IDENTITY_PROVIDER_WECHAT_MINIPROGRAM\x10\a\x12\x1b\n" +
+	"\x17IDENTITY_PROVIDER_ADMIN\x10\b*y\n" +
+	"\x13VerificationChannel\x12$\n" +
+	" VERIFICATION_CHANNEL_UNSPECIFIED\x10\x00\x12\x1e\n" +
+	"\x1aVERIFICATION_CHANNEL_EMAIL\x10\x01\x12\x1c\n" +
+	"\x18VERIFICATION_CHANNEL_SMS\x10\x02*\x94\x02\n" +
+	"\x13VerificationPurpose\x12$\n" +
+	" VERIFICATION_PURPOSE_UNSPECIFIED\x10\x00\x12!\n" +
+	"\x1dVERIFICATION_PURPOSE_REGISTER\x10\x01\x12\x1e\n" +
+	"\x1aVERIFICATION_PURPOSE_LOGIN\x10\x02\x12%\n" +
+	"!VERIFICATION_PURPOSE_VERIFY_EMAIL\x10\x03\x12%\n" +
+	"!VERIFICATION_PURPOSE_VERIFY_PHONE\x10\x04\x12'\n" +
+	"#VERIFICATION_PURPOSE_PASSWORD_RESET\x10\x05\x12\x1d\n" +
+	"\x19VERIFICATION_PURPOSE_BIND\x10\x06*S\n" +
+	"\bUserType\x12\x19\n" +
+	"\x15USER_TYPE_UNSPECIFIED\x10\x00\x12\x14\n" +
+	"\x10USER_TYPE_NORMAL\x10\x01\x12\x16\n" +
+	"\x12USER_TYPE_INTERNAL\x10\x022\xe9\x04\n" +
 	"\x0eTestkitService\x12?\n" +
-	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x10.testkit.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/pingB\xa5\x01\n" +
+	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x10.testkit.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/ping\x12[\n" +
+	"\x05Login\x12\x18.testkit.v1.LoginRequest\x1a\x19.testkit.v1.TokenResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/auth/login\x12d\n" +
+	"\bRegister\x12\x1b.testkit.v1.RegisterRequest\x1a\x19.testkit.v1.TokenResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/v1/auth/register\x12\x8a\x01\n" +
+	"\x14SendVerificationCode\x12'.testkit.v1.SendVerificationCodeRequest\x1a(.testkit.v1.SendVerificationCodeResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/captcha/send\x12U\n" +
+	"\x06Logout\x12\x16.google.protobuf.Empty\x1a\x16.google.protobuf.Empty\"\x1b\x82\xd3\xe4\x93\x02\x15\"\x13/api/v1/auth/logout\x12o\n" +
+	"\x0eRefreshSession\x12!.testkit.v1.RefreshSessionRequest\x1a\x19.testkit.v1.TokenResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/auth/refreshB\xa5\x01\n" +
 	"\x0ecom.testkit.v1B\fTestkitProtoP\x01Z<github.com/servekit/testkit-service/gen/testkit/v1;testkitv1\xa2\x02\x03TXX\xaa\x02\n" +
 	"Testkit.V1\xca\x02\n" +
 	"Testkit\\V1\xe2\x02\x16Testkit\\V1\\GPBMetadata\xea\x02\vTestkit::V1b\x06proto3"
@@ -174,19 +1106,48 @@ func file_testkit_v1_testkit_proto_rawDescGZIP() []byte {
 	return file_testkit_v1_testkit_proto_rawDescData
 }
 
-var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_testkit_v1_testkit_proto_goTypes = []any{
-	(*Pong)(nil),          // 0: testkit.v1.Pong
-	(*emptypb.Empty)(nil), // 1: google.protobuf.Empty
+	(LoginMethod)(0),                     // 0: testkit.v1.LoginMethod
+	(IdentityProvider)(0),                // 1: testkit.v1.IdentityProvider
+	(VerificationChannel)(0),             // 2: testkit.v1.VerificationChannel
+	(VerificationPurpose)(0),             // 3: testkit.v1.VerificationPurpose
+	(UserType)(0),                        // 4: testkit.v1.UserType
+	(*Pong)(nil),                         // 5: testkit.v1.Pong
+	(*LoginRequest)(nil),                 // 6: testkit.v1.LoginRequest
+	(*RegisterRequest)(nil),              // 7: testkit.v1.RegisterRequest
+	(*SendVerificationCodeRequest)(nil),  // 8: testkit.v1.SendVerificationCodeRequest
+	(*SendVerificationCodeResponse)(nil), // 9: testkit.v1.SendVerificationCodeResponse
+	(*RefreshSessionRequest)(nil),        // 10: testkit.v1.RefreshSessionRequest
+	(*User)(nil),                         // 11: testkit.v1.User
+	(*TokenResponse)(nil),                // 12: testkit.v1.TokenResponse
+	(*emptypb.Empty)(nil),                // 13: google.protobuf.Empty
 }
 var file_testkit_v1_testkit_proto_depIdxs = []int32{
-	1, // 0: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
-	0, // 1: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: testkit.v1.LoginRequest.method:type_name -> testkit.v1.LoginMethod
+	1,  // 1: testkit.v1.RegisterRequest.provider:type_name -> testkit.v1.IdentityProvider
+	2,  // 2: testkit.v1.SendVerificationCodeRequest.channel:type_name -> testkit.v1.VerificationChannel
+	3,  // 3: testkit.v1.SendVerificationCodeRequest.purpose:type_name -> testkit.v1.VerificationPurpose
+	4,  // 4: testkit.v1.User.user_type:type_name -> testkit.v1.UserType
+	11, // 5: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
+	13, // 6: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
+	6,  // 7: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
+	7,  // 8: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
+	8,  // 9: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
+	13, // 10: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
+	10, // 11: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
+	5,  // 12: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
+	12, // 13: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
+	12, // 14: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
+	9,  // 15: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
+	13, // 16: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
+	12, // 17: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
+	12, // [12:18] is the sub-list for method output_type
+	6,  // [6:12] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_testkit_v1_testkit_proto_init() }
@@ -199,13 +1160,14 @@ func file_testkit_v1_testkit_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_testkit_v1_testkit_proto_rawDesc), len(file_testkit_v1_testkit_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   1,
+			NumEnums:      5,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_testkit_v1_testkit_proto_goTypes,
 		DependencyIndexes: file_testkit_v1_testkit_proto_depIdxs,
+		EnumInfos:         file_testkit_v1_testkit_proto_enumTypes,
 		MessageInfos:      file_testkit_v1_testkit_proto_msgTypes,
 	}.Build()
 	File_testkit_v1_testkit_proto = out.File

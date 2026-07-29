@@ -20,7 +20,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	TestkitService_Ping_FullMethodName = "/testkit.v1.TestkitService/Ping"
+	TestkitService_Ping_FullMethodName                 = "/testkit.v1.TestkitService/Ping"
+	TestkitService_Login_FullMethodName                = "/testkit.v1.TestkitService/Login"
+	TestkitService_Register_FullMethodName             = "/testkit.v1.TestkitService/Register"
+	TestkitService_SendVerificationCode_FullMethodName = "/testkit.v1.TestkitService/SendVerificationCode"
+	TestkitService_Logout_FullMethodName               = "/testkit.v1.TestkitService/Logout"
+	TestkitService_RefreshSession_FullMethodName       = "/testkit.v1.TestkitService/RefreshSession"
 )
 
 // TestkitServiceClient is the client API for TestkitService service.
@@ -28,6 +33,14 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TestkitServiceClient interface {
 	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Pong, error)
+	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*TokenResponse, error)
+	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*TokenResponse, error)
+	SendVerificationCode(ctx context.Context, in *SendVerificationCodeRequest, opts ...grpc.CallOption) (*SendVerificationCodeResponse, error)
+	// Logout revokes the caller's current session. session_id is NOT in the
+	// request — it is read from the authenticated context (set by the auth
+	// interceptor from the JWT).
+	Logout(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	RefreshSession(ctx context.Context, in *RefreshSessionRequest, opts ...grpc.CallOption) (*TokenResponse, error)
 }
 
 type testkitServiceClient struct {
@@ -48,11 +61,69 @@ func (c *testkitServiceClient) Ping(ctx context.Context, in *emptypb.Empty, opts
 	return out, nil
 }
 
+func (c *testkitServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*TokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TokenResponse)
+	err := c.cc.Invoke(ctx, TestkitService_Login_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*TokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TokenResponse)
+	err := c.cc.Invoke(ctx, TestkitService_Register_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) SendVerificationCode(ctx context.Context, in *SendVerificationCodeRequest, opts ...grpc.CallOption) (*SendVerificationCodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendVerificationCodeResponse)
+	err := c.cc.Invoke(ctx, TestkitService_SendVerificationCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) Logout(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, TestkitService_Logout_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RefreshSession(ctx context.Context, in *RefreshSessionRequest, opts ...grpc.CallOption) (*TokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TokenResponse)
+	err := c.cc.Invoke(ctx, TestkitService_RefreshSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TestkitServiceServer is the server API for TestkitService service.
 // All implementations must embed UnimplementedTestkitServiceServer
 // for forward compatibility.
 type TestkitServiceServer interface {
 	Ping(context.Context, *emptypb.Empty) (*Pong, error)
+	Login(context.Context, *LoginRequest) (*TokenResponse, error)
+	Register(context.Context, *RegisterRequest) (*TokenResponse, error)
+	SendVerificationCode(context.Context, *SendVerificationCodeRequest) (*SendVerificationCodeResponse, error)
+	// Logout revokes the caller's current session. session_id is NOT in the
+	// request — it is read from the authenticated context (set by the auth
+	// interceptor from the JWT).
+	Logout(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
+	RefreshSession(context.Context, *RefreshSessionRequest) (*TokenResponse, error)
 	mustEmbedUnimplementedTestkitServiceServer()
 }
 
@@ -65,6 +136,21 @@ type UnimplementedTestkitServiceServer struct{}
 
 func (UnimplementedTestkitServiceServer) Ping(context.Context, *emptypb.Empty) (*Pong, error) {
 	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedTestkitServiceServer) Login(context.Context, *LoginRequest) (*TokenResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedTestkitServiceServer) Register(context.Context, *RegisterRequest) (*TokenResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Register not implemented")
+}
+func (UnimplementedTestkitServiceServer) SendVerificationCode(context.Context, *SendVerificationCodeRequest) (*SendVerificationCodeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SendVerificationCode not implemented")
+}
+func (UnimplementedTestkitServiceServer) Logout(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method Logout not implemented")
+}
+func (UnimplementedTestkitServiceServer) RefreshSession(context.Context, *RefreshSessionRequest) (*TokenResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RefreshSession not implemented")
 }
 func (UnimplementedTestkitServiceServer) mustEmbedUnimplementedTestkitServiceServer() {}
 func (UnimplementedTestkitServiceServer) testEmbeddedByValue()                        {}
@@ -105,6 +191,96 @@ func _TestkitService_Ping_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestkitService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_Login_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).Login(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).Register(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_Register_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).Register(ctx, req.(*RegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_SendVerificationCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendVerificationCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).SendVerificationCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_SendVerificationCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).SendVerificationCode(ctx, req.(*SendVerificationCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).Logout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_Logout_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).Logout(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RefreshSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RefreshSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RefreshSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RefreshSession(ctx, req.(*RefreshSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TestkitService_ServiceDesc is the grpc.ServiceDesc for TestkitService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -115,6 +291,26 @@ var TestkitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _TestkitService_Ping_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _TestkitService_Login_Handler,
+		},
+		{
+			MethodName: "Register",
+			Handler:    _TestkitService_Register_Handler,
+		},
+		{
+			MethodName: "SendVerificationCode",
+			Handler:    _TestkitService_SendVerificationCode_Handler,
+		},
+		{
+			MethodName: "Logout",
+			Handler:    _TestkitService_Logout_Handler,
+		},
+		{
+			MethodName: "RefreshSession",
+			Handler:    _TestkitService_RefreshSession_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

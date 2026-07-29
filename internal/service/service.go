@@ -42,6 +42,8 @@ import (
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/internal/adapter"
 	"github.com/servekit/testkit-service/internal/jobs"
+	"github.com/servekit/testkit-service/internal/jwt"
+	"github.com/servekit/testkit-service/internal/service/auth"
 	"github.com/servekit/testkit-service/internal/version"
 	"github.com/servekit/testkit-service/pkg/config"
 	"github.com/servekit/testkit-service/pkg/option"
@@ -67,6 +69,10 @@ type Service struct {
 	message thirdcall.MessageService
 	storage thirdcall.StorageService
 	user    thirdcall.UserService
+
+	// auth is the P1 auth domain (forward to user-service + issue JWT). Built
+	// once the user handler is resolved and the JWT manager is constructed.
+	auth *auth.Service
 
 	// startedAt is set once in New; Ping returns it for uptime.
 	startedAt int64
@@ -109,6 +115,15 @@ func New(cfg *config.Config, opts ...option.Option) (*Service, error) {
 	if err := svc.resolveDownstreams(o); err != nil {
 		return nil, rollback(mgr, err)
 	}
+
+	// Build the P1 auth domain: a JWT manager (testkit is the sole signer) plus
+	// the auth service wired against the embedded user handler. The manager is
+	// stateless (secret + ttl only), so it is not registered with mgr.
+	jwtMgr, err := jwt.NewManager(cfg.JWT.Secret, cfg.JWT.TTL)
+	if err != nil {
+		return nil, rollback(mgr, fmt.Errorf("init jwt: %w", err))
+	}
+	svc.auth = auth.New(jwtMgr, auth.WithUserClient(svc.user))
 
 	// jobs.Scheduler owns the cron instance; setupJobs builds it, registers
 	// it on mgr, and wires periodic jobs (empty by default — add jobs inside
@@ -165,6 +180,10 @@ func (s *Service) StorageHandler() thirdcall.StorageService { return s.storage }
 // on it — GetSession for session→user_id resolution, Login/Register/... for
 // the auth RPCs.
 func (s *Service) UserHandler() thirdcall.UserService { return s.user }
+
+// Auth returns the P1 auth domain (forward to user-service + issue JWT). The
+// handler delegates the auth RPCs to it.
+func (s *Service) Auth() *auth.Service { return s.auth }
 
 // --- internal helpers ---
 
