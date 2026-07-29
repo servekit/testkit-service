@@ -121,6 +121,10 @@ const (
 	TestkitService_GetSMSStats_FullMethodName               = "/testkit.v1.TestkitService/GetSMSStats"
 	TestkitService_ListSMSRegions_FullMethodName            = "/testkit.v1.TestkitService/ListSMSRegions"
 	TestkitService_ListSMSSenders_FullMethodName            = "/testkit.v1.TestkitService/ListSMSSenders"
+	TestkitService_NextID_FullMethodName                    = "/testkit.v1.TestkitService/NextID"
+	TestkitService_BatchNextID_FullMethodName               = "/testkit.v1.TestkitService/BatchNextID"
+	TestkitService_Decompose_FullMethodName                 = "/testkit.v1.TestkitService/Decompose"
+	TestkitService_GetDashboard_FullMethodName              = "/testkit.v1.TestkitService/GetDashboard"
 )
 
 // TestkitServiceClient is the client API for TestkitService service.
@@ -248,6 +252,12 @@ type TestkitServiceClient interface {
 	GetSMSStats(ctx context.Context, in *GetSMSStatsRequest, opts ...grpc.CallOption) (*SMSStatsResponse, error)
 	ListSMSRegions(ctx context.Context, in *ListSMSRegionsRequest, opts ...grpc.CallOption) (*ListSMSRegionsResponse, error)
 	ListSMSSenders(ctx context.Context, in *ListSMSSendersRequest, opts ...grpc.CallOption) (*ListSMSSendersResponse, error)
+	// ---- GID debug (P5) ----
+	NextID(ctx context.Context, in *NextIDRequest, opts ...grpc.CallOption) (*NextIDResponse, error)
+	BatchNextID(ctx context.Context, in *BatchNextIDRequest, opts ...grpc.CallOption) (*BatchNextIDResponse, error)
+	Decompose(ctx context.Context, in *DecomposeRequest, opts ...grpc.CallOption) (*DecomposeResponse, error)
+	// ---- Dashboard (P5, aggregated) ----
+	GetDashboard(ctx context.Context, in *GetDashboardRequest, opts ...grpc.CallOption) (*DashboardResponse, error)
 }
 
 type testkitServiceClient struct {
@@ -1268,6 +1278,46 @@ func (c *testkitServiceClient) ListSMSSenders(ctx context.Context, in *ListSMSSe
 	return out, nil
 }
 
+func (c *testkitServiceClient) NextID(ctx context.Context, in *NextIDRequest, opts ...grpc.CallOption) (*NextIDResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NextIDResponse)
+	err := c.cc.Invoke(ctx, TestkitService_NextID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) BatchNextID(ctx context.Context, in *BatchNextIDRequest, opts ...grpc.CallOption) (*BatchNextIDResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchNextIDResponse)
+	err := c.cc.Invoke(ctx, TestkitService_BatchNextID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) Decompose(ctx context.Context, in *DecomposeRequest, opts ...grpc.CallOption) (*DecomposeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DecomposeResponse)
+	err := c.cc.Invoke(ctx, TestkitService_Decompose_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetDashboard(ctx context.Context, in *GetDashboardRequest, opts ...grpc.CallOption) (*DashboardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DashboardResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetDashboard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TestkitServiceServer is the server API for TestkitService service.
 // All implementations must embed UnimplementedTestkitServiceServer
 // for forward compatibility.
@@ -1393,6 +1443,12 @@ type TestkitServiceServer interface {
 	GetSMSStats(context.Context, *GetSMSStatsRequest) (*SMSStatsResponse, error)
 	ListSMSRegions(context.Context, *ListSMSRegionsRequest) (*ListSMSRegionsResponse, error)
 	ListSMSSenders(context.Context, *ListSMSSendersRequest) (*ListSMSSendersResponse, error)
+	// ---- GID debug (P5) ----
+	NextID(context.Context, *NextIDRequest) (*NextIDResponse, error)
+	BatchNextID(context.Context, *BatchNextIDRequest) (*BatchNextIDResponse, error)
+	Decompose(context.Context, *DecomposeRequest) (*DecomposeResponse, error)
+	// ---- Dashboard (P5, aggregated) ----
+	GetDashboard(context.Context, *GetDashboardRequest) (*DashboardResponse, error)
 	mustEmbedUnimplementedTestkitServiceServer()
 }
 
@@ -1705,6 +1761,18 @@ func (UnimplementedTestkitServiceServer) ListSMSRegions(context.Context, *ListSM
 }
 func (UnimplementedTestkitServiceServer) ListSMSSenders(context.Context, *ListSMSSendersRequest) (*ListSMSSendersResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListSMSSenders not implemented")
+}
+func (UnimplementedTestkitServiceServer) NextID(context.Context, *NextIDRequest) (*NextIDResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method NextID not implemented")
+}
+func (UnimplementedTestkitServiceServer) BatchNextID(context.Context, *BatchNextIDRequest) (*BatchNextIDResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method BatchNextID not implemented")
+}
+func (UnimplementedTestkitServiceServer) Decompose(context.Context, *DecomposeRequest) (*DecomposeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Decompose not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetDashboard(context.Context, *GetDashboardRequest) (*DashboardResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetDashboard not implemented")
 }
 func (UnimplementedTestkitServiceServer) mustEmbedUnimplementedTestkitServiceServer() {}
 func (UnimplementedTestkitServiceServer) testEmbeddedByValue()                        {}
@@ -3545,6 +3613,78 @@ func _TestkitService_ListSMSSenders_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestkitService_NextID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NextIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).NextID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_NextID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).NextID(ctx, req.(*NextIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_BatchNextID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchNextIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).BatchNextID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_BatchNextID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).BatchNextID(ctx, req.(*BatchNextIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_Decompose_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DecomposeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).Decompose(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_Decompose_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).Decompose(ctx, req.(*DecomposeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetDashboard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDashboardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetDashboard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetDashboard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetDashboard(ctx, req.(*GetDashboardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TestkitService_ServiceDesc is the grpc.ServiceDesc for TestkitService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -3955,6 +4095,22 @@ var TestkitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSMSSenders",
 			Handler:    _TestkitService_ListSMSSenders_Handler,
+		},
+		{
+			MethodName: "NextID",
+			Handler:    _TestkitService_NextID_Handler,
+		},
+		{
+			MethodName: "BatchNextID",
+			Handler:    _TestkitService_BatchNextID_Handler,
+		},
+		{
+			MethodName: "Decompose",
+			Handler:    _TestkitService_Decompose_Handler,
+		},
+		{
+			MethodName: "GetDashboard",
+			Handler:    _TestkitService_GetDashboard_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

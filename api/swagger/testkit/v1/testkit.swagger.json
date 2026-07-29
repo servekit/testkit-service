@@ -741,6 +741,29 @@
         ]
       }
     },
+    "/api/v1/dashboard": {
+      "get": {
+        "summary": "---- Dashboard (P5, aggregated) ----",
+        "operationId": "GetDashboard",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DashboardResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
     "/api/v1/emails": {
       "get": {
         "operationId": "ListEmails",
@@ -1675,6 +1698,92 @@
             "type": "boolean"
           }
         ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/gid/batch": {
+      "post": {
+        "operationId": "BatchNextID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BatchNextIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1BatchNextIDRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/gid/decompose/{id}": {
+      "get": {
+        "operationId": "Decompose",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DecomposeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/gid/next": {
+      "get": {
+        "summary": "---- GID debug (P5) ----",
+        "operationId": "NextID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1NextIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
         "tags": [
           "TestkitService"
         ]
@@ -5185,6 +5294,27 @@
         }
       }
     },
+    "v1BatchNextIDRequest": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1BatchNextIDResponse": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
+    },
     "v1BindIdentityRequest": {
       "type": "object",
       "properties": {
@@ -5442,6 +5572,44 @@
         }
       }
     },
+    "v1DashboardResponse": {
+      "type": "object",
+      "properties": {
+        "emailStats": {
+          "$ref": "#/definitions/v1EmailStats"
+        },
+        "smsStats": {
+          "$ref": "#/definitions/v1SMSStats"
+        },
+        "quota": {
+          "$ref": "#/definitions/v1MyQuota"
+        },
+        "users": {
+          "$ref": "#/definitions/v1UsersSummary"
+        }
+      }
+    },
+    "v1DecomposeResponse": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sequence": {
+          "type": "string",
+          "format": "int64"
+        },
+        "machineId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "generatedAt": {
+          "type": "string",
+          "title": "ISO8601 timestamp"
+        }
+      }
+    },
     "v1DeviceType": {
       "type": "string",
       "enum": [
@@ -5594,6 +5762,36 @@
         "EMAIL_SCENE_VERIFY_EMAIL"
       ],
       "default": "EMAIL_SCENE_UNSPECIFIED"
+    },
+    "v1EmailStats": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "failed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "successRate": {
+          "type": "number",
+          "format": "double",
+          "description": "success_rate in [0, 100]; -1 means \"no data\" (total == 0)."
+        },
+        "vendors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmailVendorStats"
+          }
+        }
+      },
+      "description": "EmailStats mirrors message.EmailStatsResponse (read-only snapshot)."
     },
     "v1EmailStatsResponse": {
       "type": "object",
@@ -6693,6 +6891,37 @@
         }
       }
     },
+    "v1MyQuota": {
+      "type": "object",
+      "properties": {
+        "totalBytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "usedBytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "availableBytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fileCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "MyQuota mirrors storage.QuotaInfo (read-only snapshot of the caller's quota)."
+    },
+    "v1NextIDResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1OwnerStats": {
       "type": "object",
       "properties": {
@@ -7035,6 +7264,35 @@
           "format": "int64"
         }
       }
+    },
+    "v1SMSStats": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "failed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "successRate": {
+          "type": "number",
+          "format": "double"
+        },
+        "vendors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SmsVendorStats"
+          }
+        }
+      },
+      "description": "SMSStats mirrors message.SMSStatsResponse (read-only snapshot)."
     },
     "v1SMSStatsResponse": {
       "type": "object",
@@ -7612,6 +7870,16 @@
       ],
       "default": "USER_TYPE_UNSPECIFIED",
       "description": "UserType separates external end users from internal platform users. Mirrors\nuser-service UserType same-name/same-number. Drives the two-track frontend\n(design spec §3.5): INTERNAL → 内部后台管理页, NORMAL → 普通用户后端页. This is\na frontend route/menu split only — NOT RBAC; backend admin endpoints do login-\nstate + identity injection only this phase.\n\n - USER_TYPE_NORMAL: External end user (default).\n - USER_TYPE_INTERNAL: Platform internal user (staff, operations, etc.)."
+    },
+    "v1UsersSummary": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "description": "UsersSummary is the user-count aggregate from user.ListUsersPaged (count=true)."
     },
     "v1Vendor": {
       "type": "string",

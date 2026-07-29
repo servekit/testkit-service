@@ -14238,6 +14238,659 @@ func (x *ListSMSRegionsResponse) GetRegionCodes() []string {
 	return nil
 }
 
+type NextIDRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NextIDRequest) Reset() {
+	*x = NextIDRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[176]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NextIDRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NextIDRequest) ProtoMessage() {}
+
+func (x *NextIDRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[176]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NextIDRequest.ProtoReflect.Descriptor instead.
+func (*NextIDRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{176}
+}
+
+type NextIDResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NextIDResponse) Reset() {
+	*x = NextIDResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[177]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NextIDResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NextIDResponse) ProtoMessage() {}
+
+func (x *NextIDResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[177]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NextIDResponse.ProtoReflect.Descriptor instead.
+func (*NextIDResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{177}
+}
+
+func (x *NextIDResponse) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type BatchNextIDRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Count         int32                  `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BatchNextIDRequest) Reset() {
+	*x = BatchNextIDRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[178]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchNextIDRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchNextIDRequest) ProtoMessage() {}
+
+func (x *BatchNextIDRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[178]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchNextIDRequest.ProtoReflect.Descriptor instead.
+func (*BatchNextIDRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{178}
+}
+
+func (x *BatchNextIDRequest) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+type BatchNextIDResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Ids           []int64                `protobuf:"varint,1,rep,packed,name=ids,proto3" json:"ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BatchNextIDResponse) Reset() {
+	*x = BatchNextIDResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[179]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchNextIDResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchNextIDResponse) ProtoMessage() {}
+
+func (x *BatchNextIDResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[179]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchNextIDResponse.ProtoReflect.Descriptor instead.
+func (*BatchNextIDResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{179}
+}
+
+func (x *BatchNextIDResponse) GetIds() []int64 {
+	if x != nil {
+		return x.Ids
+	}
+	return nil
+}
+
+type DecomposeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DecomposeRequest) Reset() {
+	*x = DecomposeRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[180]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DecomposeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DecomposeRequest) ProtoMessage() {}
+
+func (x *DecomposeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[180]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DecomposeRequest.ProtoReflect.Descriptor instead.
+func (*DecomposeRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{180}
+}
+
+func (x *DecomposeRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type DecomposeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Time          int64                  `protobuf:"varint,1,opt,name=time,proto3" json:"time,omitempty"`
+	Sequence      int64                  `protobuf:"varint,2,opt,name=sequence,proto3" json:"sequence,omitempty"`
+	MachineId     int64                  `protobuf:"varint,3,opt,name=machine_id,json=machineId,proto3" json:"machine_id,omitempty"`
+	GeneratedAt   string                 `protobuf:"bytes,4,opt,name=generated_at,json=generatedAt,proto3" json:"generated_at,omitempty"` // ISO8601 timestamp
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DecomposeResponse) Reset() {
+	*x = DecomposeResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[181]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DecomposeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DecomposeResponse) ProtoMessage() {}
+
+func (x *DecomposeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[181]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DecomposeResponse.ProtoReflect.Descriptor instead.
+func (*DecomposeResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{181}
+}
+
+func (x *DecomposeResponse) GetTime() int64 {
+	if x != nil {
+		return x.Time
+	}
+	return 0
+}
+
+func (x *DecomposeResponse) GetSequence() int64 {
+	if x != nil {
+		return x.Sequence
+	}
+	return 0
+}
+
+func (x *DecomposeResponse) GetMachineId() int64 {
+	if x != nil {
+		return x.MachineId
+	}
+	return 0
+}
+
+func (x *DecomposeResponse) GetGeneratedAt() string {
+	if x != nil {
+		return x.GeneratedAt
+	}
+	return ""
+}
+
+type GetDashboardRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetDashboardRequest) Reset() {
+	*x = GetDashboardRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[182]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDashboardRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDashboardRequest) ProtoMessage() {}
+
+func (x *GetDashboardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[182]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDashboardRequest.ProtoReflect.Descriptor instead.
+func (*GetDashboardRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{182}
+}
+
+// EmailStats mirrors message.EmailStatsResponse (read-only snapshot).
+type EmailStats struct {
+	state  protoimpl.MessageState `protogen:"open.v1"`
+	Total  int64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	Sent   int64                  `protobuf:"varint,2,opt,name=sent,proto3" json:"sent,omitempty"`
+	Failed int64                  `protobuf:"varint,3,opt,name=failed,proto3" json:"failed,omitempty"`
+	// success_rate in [0, 100]; -1 means "no data" (total == 0).
+	SuccessRate   float64             `protobuf:"fixed64,4,opt,name=success_rate,json=successRate,proto3" json:"success_rate,omitempty"`
+	Vendors       []*EmailVendorStats `protobuf:"bytes,5,rep,name=vendors,proto3" json:"vendors,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmailStats) Reset() {
+	*x = EmailStats{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[183]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmailStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmailStats) ProtoMessage() {}
+
+func (x *EmailStats) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[183]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmailStats.ProtoReflect.Descriptor instead.
+func (*EmailStats) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{183}
+}
+
+func (x *EmailStats) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *EmailStats) GetSent() int64 {
+	if x != nil {
+		return x.Sent
+	}
+	return 0
+}
+
+func (x *EmailStats) GetFailed() int64 {
+	if x != nil {
+		return x.Failed
+	}
+	return 0
+}
+
+func (x *EmailStats) GetSuccessRate() float64 {
+	if x != nil {
+		return x.SuccessRate
+	}
+	return 0
+}
+
+func (x *EmailStats) GetVendors() []*EmailVendorStats {
+	if x != nil {
+		return x.Vendors
+	}
+	return nil
+}
+
+// SMSStats mirrors message.SMSStatsResponse (read-only snapshot).
+type SMSStats struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Total         int64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	Sent          int64                  `protobuf:"varint,2,opt,name=sent,proto3" json:"sent,omitempty"`
+	Failed        int64                  `protobuf:"varint,3,opt,name=failed,proto3" json:"failed,omitempty"`
+	SuccessRate   float64                `protobuf:"fixed64,4,opt,name=success_rate,json=successRate,proto3" json:"success_rate,omitempty"`
+	Vendors       []*SmsVendorStats      `protobuf:"bytes,5,rep,name=vendors,proto3" json:"vendors,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SMSStats) Reset() {
+	*x = SMSStats{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[184]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SMSStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SMSStats) ProtoMessage() {}
+
+func (x *SMSStats) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[184]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SMSStats.ProtoReflect.Descriptor instead.
+func (*SMSStats) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{184}
+}
+
+func (x *SMSStats) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *SMSStats) GetSent() int64 {
+	if x != nil {
+		return x.Sent
+	}
+	return 0
+}
+
+func (x *SMSStats) GetFailed() int64 {
+	if x != nil {
+		return x.Failed
+	}
+	return 0
+}
+
+func (x *SMSStats) GetSuccessRate() float64 {
+	if x != nil {
+		return x.SuccessRate
+	}
+	return 0
+}
+
+func (x *SMSStats) GetVendors() []*SmsVendorStats {
+	if x != nil {
+		return x.Vendors
+	}
+	return nil
+}
+
+// MyQuota mirrors storage.QuotaInfo (read-only snapshot of the caller's quota).
+type MyQuota struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	TotalBytes     int64                  `protobuf:"varint,1,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
+	UsedBytes      int64                  `protobuf:"varint,2,opt,name=used_bytes,json=usedBytes,proto3" json:"used_bytes,omitempty"`
+	AvailableBytes int64                  `protobuf:"varint,3,opt,name=available_bytes,json=availableBytes,proto3" json:"available_bytes,omitempty"`
+	FileCount      int32                  `protobuf:"varint,4,opt,name=file_count,json=fileCount,proto3" json:"file_count,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *MyQuota) Reset() {
+	*x = MyQuota{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[185]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MyQuota) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MyQuota) ProtoMessage() {}
+
+func (x *MyQuota) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[185]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MyQuota.ProtoReflect.Descriptor instead.
+func (*MyQuota) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{185}
+}
+
+func (x *MyQuota) GetTotalBytes() int64 {
+	if x != nil {
+		return x.TotalBytes
+	}
+	return 0
+}
+
+func (x *MyQuota) GetUsedBytes() int64 {
+	if x != nil {
+		return x.UsedBytes
+	}
+	return 0
+}
+
+func (x *MyQuota) GetAvailableBytes() int64 {
+	if x != nil {
+		return x.AvailableBytes
+	}
+	return 0
+}
+
+func (x *MyQuota) GetFileCount() int32 {
+	if x != nil {
+		return x.FileCount
+	}
+	return 0
+}
+
+// UsersSummary is the user-count aggregate from user.ListUsersPaged (count=true).
+type UsersSummary struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Total         int64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UsersSummary) Reset() {
+	*x = UsersSummary{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[186]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UsersSummary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UsersSummary) ProtoMessage() {}
+
+func (x *UsersSummary) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[186]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UsersSummary.ProtoReflect.Descriptor instead.
+func (*UsersSummary) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{186}
+}
+
+func (x *UsersSummary) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+type DashboardResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmailStats    *EmailStats            `protobuf:"bytes,1,opt,name=email_stats,json=emailStats,proto3" json:"email_stats,omitempty"`
+	SmsStats      *SMSStats              `protobuf:"bytes,2,opt,name=sms_stats,json=smsStats,proto3" json:"sms_stats,omitempty"`
+	Quota         *MyQuota               `protobuf:"bytes,3,opt,name=quota,proto3" json:"quota,omitempty"`
+	Users         *UsersSummary          `protobuf:"bytes,4,opt,name=users,proto3" json:"users,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DashboardResponse) Reset() {
+	*x = DashboardResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[187]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DashboardResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DashboardResponse) ProtoMessage() {}
+
+func (x *DashboardResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[187]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DashboardResponse.ProtoReflect.Descriptor instead.
+func (*DashboardResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{187}
+}
+
+func (x *DashboardResponse) GetEmailStats() *EmailStats {
+	if x != nil {
+		return x.EmailStats
+	}
+	return nil
+}
+
+func (x *DashboardResponse) GetSmsStats() *SMSStats {
+	if x != nil {
+		return x.SmsStats
+	}
+	return nil
+}
+
+func (x *DashboardResponse) GetQuota() *MyQuota {
+	if x != nil {
+		return x.Quota
+	}
+	return nil
+}
+
+func (x *DashboardResponse) GetUsers() *UsersSummary {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
 var File_testkit_v1_testkit_proto protoreflect.FileDescriptor
 
 const file_testkit_v1_testkit_proto_rawDesc = "" +
@@ -15472,7 +16125,53 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"sender_ids\x18\x01 \x03(\tR\tsenderIds\"\x17\n" +
 	"\x15ListSMSRegionsRequest\";\n" +
 	"\x16ListSMSRegionsResponse\x12!\n" +
-	"\fregion_codes\x18\x01 \x03(\tR\vregionCodes*\xcb\x01\n" +
+	"\fregion_codes\x18\x01 \x03(\tR\vregionCodes\"\x0f\n" +
+	"\rNextIDRequest\" \n" +
+	"\x0eNextIDResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"6\n" +
+	"\x12BatchNextIDRequest\x12 \n" +
+	"\x05count\x18\x01 \x01(\x05B\n" +
+	"\xbaH\a\x1a\x05\x18\xe8\a(\x01R\x05count\"'\n" +
+	"\x13BatchNextIDResponse\x12\x10\n" +
+	"\x03ids\x18\x01 \x03(\x03R\x03ids\"+\n" +
+	"\x10DecomposeRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02(\x01R\x02id\"\x85\x01\n" +
+	"\x11DecomposeResponse\x12\x12\n" +
+	"\x04time\x18\x01 \x01(\x03R\x04time\x12\x1a\n" +
+	"\bsequence\x18\x02 \x01(\x03R\bsequence\x12\x1d\n" +
+	"\n" +
+	"machine_id\x18\x03 \x01(\x03R\tmachineId\x12!\n" +
+	"\fgenerated_at\x18\x04 \x01(\tR\vgeneratedAt\"\x15\n" +
+	"\x13GetDashboardRequest\"\xa9\x01\n" +
+	"\n" +
+	"EmailStats\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\x12\x12\n" +
+	"\x04sent\x18\x02 \x01(\x03R\x04sent\x12\x16\n" +
+	"\x06failed\x18\x03 \x01(\x03R\x06failed\x12!\n" +
+	"\fsuccess_rate\x18\x04 \x01(\x01R\vsuccessRate\x126\n" +
+	"\avendors\x18\x05 \x03(\v2\x1c.testkit.v1.EmailVendorStatsR\avendors\"\xa5\x01\n" +
+	"\bSMSStats\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\x12\x12\n" +
+	"\x04sent\x18\x02 \x01(\x03R\x04sent\x12\x16\n" +
+	"\x06failed\x18\x03 \x01(\x03R\x06failed\x12!\n" +
+	"\fsuccess_rate\x18\x04 \x01(\x01R\vsuccessRate\x124\n" +
+	"\avendors\x18\x05 \x03(\v2\x1a.testkit.v1.SmsVendorStatsR\avendors\"\x91\x01\n" +
+	"\aMyQuota\x12\x1f\n" +
+	"\vtotal_bytes\x18\x01 \x01(\x03R\n" +
+	"totalBytes\x12\x1d\n" +
+	"\n" +
+	"used_bytes\x18\x02 \x01(\x03R\tusedBytes\x12'\n" +
+	"\x0favailable_bytes\x18\x03 \x01(\x03R\x0eavailableBytes\x12\x1d\n" +
+	"\n" +
+	"file_count\x18\x04 \x01(\x05R\tfileCount\"$\n" +
+	"\fUsersSummary\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\"\xda\x01\n" +
+	"\x11DashboardResponse\x127\n" +
+	"\vemail_stats\x18\x01 \x01(\v2\x16.testkit.v1.EmailStatsR\n" +
+	"emailStats\x121\n" +
+	"\tsms_stats\x18\x02 \x01(\v2\x14.testkit.v1.SMSStatsR\bsmsStats\x12)\n" +
+	"\x05quota\x18\x03 \x01(\v2\x13.testkit.v1.MyQuotaR\x05quota\x12.\n" +
+	"\x05users\x18\x04 \x01(\v2\x18.testkit.v1.UsersSummaryR\x05users*\xcb\x01\n" +
 	"\vLoginMethod\x12\x1c\n" +
 	"\x18LOGIN_METHOD_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bLOGIN_METHOD_EMAIL_PASSWORD\x10\x01\x12\x1f\n" +
@@ -15662,7 +16361,7 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x12SMS_SCENE_REGISTER\x10\x03\x12\x1d\n" +
 	"\x19SMS_SCENE_CHANGE_PASSWORD\x10\x04\x12\x1a\n" +
 	"\x16SMS_SCENE_BIND_ACCOUNT\x10\x05\x12\x1a\n" +
-	"\x16SMS_SCENE_VERIFY_PHONE\x10\x062\xee]\n" +
+	"\x16SMS_SCENE_VERIFY_PHONE\x10\x062\x90a\n" +
 	"\x0eTestkitService\x12?\n" +
 	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x10.testkit.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/ping\x12[\n" +
 	"\x05Login\x12\x18.testkit.v1.LoginRequest\x1a\x19.testkit.v1.TokenResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/auth/login\x12d\n" +
@@ -15775,7 +16474,11 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x0fListSMSByCursor\x12\".testkit.v1.ListSMSByCursorRequest\x1a#.testkit.v1.ListSMSByCursorResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/sms:cursor\x12f\n" +
 	"\vGetSMSStats\x12\x1e.testkit.v1.GetSMSStatsRequest\x1a\x1c.testkit.v1.SMSStatsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/api/v1/sms:stats\x12t\n" +
 	"\x0eListSMSRegions\x12!.testkit.v1.ListSMSRegionsRequest\x1a\".testkit.v1.ListSMSRegionsResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/sms:regions\x12t\n" +
-	"\x0eListSMSSenders\x12!.testkit.v1.ListSMSSendersRequest\x1a\".testkit.v1.ListSMSSendersResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/sms:sendersB\xa5\x01\n" +
+	"\x0eListSMSSenders\x12!.testkit.v1.ListSMSSendersRequest\x1a\".testkit.v1.ListSMSSendersResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/sms:senders\x12Y\n" +
+	"\x06NextID\x12\x19.testkit.v1.NextIDRequest\x1a\x1a.testkit.v1.NextIDResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/gid/next\x12l\n" +
+	"\vBatchNextID\x12\x1e.testkit.v1.BatchNextIDRequest\x1a\x1f.testkit.v1.BatchNextIDResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/v1/gid/batch\x12l\n" +
+	"\tDecompose\x12\x1c.testkit.v1.DecomposeRequest\x1a\x1d.testkit.v1.DecomposeResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/api/v1/gid/decompose/{id}\x12i\n" +
+	"\fGetDashboard\x12\x1f.testkit.v1.GetDashboardRequest\x1a\x1d.testkit.v1.DashboardResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/api/v1/dashboardB\xa5\x01\n" +
 	"\x0ecom.testkit.v1B\fTestkitProtoP\x01Z<github.com/servekit/testkit-service/gen/testkit/v1;testkitv1\xa2\x02\x03TXX\xaa\x02\n" +
 	"Testkit.V1\xca\x02\n" +
 	"Testkit\\V1\xe2\x02\x16Testkit\\V1\\GPBMetadata\xea\x02\vTestkit::V1b\x06proto3"
@@ -15793,7 +16496,7 @@ func file_testkit_v1_testkit_proto_rawDescGZIP() []byte {
 }
 
 var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 28)
-var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 187)
+var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 199)
 var file_testkit_v1_testkit_proto_goTypes = []any{
 	(LoginMethod)(0),                          // 0: testkit.v1.LoginMethod
 	(IdentityProvider)(0),                     // 1: testkit.v1.IdentityProvider
@@ -15999,21 +16702,33 @@ var file_testkit_v1_testkit_proto_goTypes = []any{
 	(*ListSMSSendersResponse)(nil),            // 201: testkit.v1.ListSMSSendersResponse
 	(*ListSMSRegionsRequest)(nil),             // 202: testkit.v1.ListSMSRegionsRequest
 	(*ListSMSRegionsResponse)(nil),            // 203: testkit.v1.ListSMSRegionsResponse
-	nil,                                       // 204: testkit.v1.FileInfo.MetadataEntry
-	nil,                                       // 205: testkit.v1.AdminFileInfo.MetadataEntry
-	nil,                                       // 206: testkit.v1.UploadFileMeta.MetadataEntry
-	nil,                                       // 207: testkit.v1.GenerateUploadURLRequest.MetadataEntry
-	nil,                                       // 208: testkit.v1.GenerateUploadURLResponse.HeadersEntry
-	nil,                                       // 209: testkit.v1.GetSTSCredentialRequest.MetadataEntry
-	nil,                                       // 210: testkit.v1.UpdateMyFileRequest.MetadataEntry
-	nil,                                       // 211: testkit.v1.SendEmailRequest.TemplateParamsEntry
-	nil,                                       // 212: testkit.v1.SendSMSRequest.TemplateParamsEntry
-	nil,                                       // 213: testkit.v1.EmailRecord.TemplateParamsEntry
-	nil,                                       // 214: testkit.v1.SMSRecord.TemplateParamsEntry
-	(*timestamppb.Timestamp)(nil),             // 215: google.protobuf.Timestamp
-	(*structpb.Struct)(nil),                   // 216: google.protobuf.Struct
-	(*durationpb.Duration)(nil),               // 217: google.protobuf.Duration
-	(*emptypb.Empty)(nil),                     // 218: google.protobuf.Empty
+	(*NextIDRequest)(nil),                     // 204: testkit.v1.NextIDRequest
+	(*NextIDResponse)(nil),                    // 205: testkit.v1.NextIDResponse
+	(*BatchNextIDRequest)(nil),                // 206: testkit.v1.BatchNextIDRequest
+	(*BatchNextIDResponse)(nil),               // 207: testkit.v1.BatchNextIDResponse
+	(*DecomposeRequest)(nil),                  // 208: testkit.v1.DecomposeRequest
+	(*DecomposeResponse)(nil),                 // 209: testkit.v1.DecomposeResponse
+	(*GetDashboardRequest)(nil),               // 210: testkit.v1.GetDashboardRequest
+	(*EmailStats)(nil),                        // 211: testkit.v1.EmailStats
+	(*SMSStats)(nil),                          // 212: testkit.v1.SMSStats
+	(*MyQuota)(nil),                           // 213: testkit.v1.MyQuota
+	(*UsersSummary)(nil),                      // 214: testkit.v1.UsersSummary
+	(*DashboardResponse)(nil),                 // 215: testkit.v1.DashboardResponse
+	nil,                                       // 216: testkit.v1.FileInfo.MetadataEntry
+	nil,                                       // 217: testkit.v1.AdminFileInfo.MetadataEntry
+	nil,                                       // 218: testkit.v1.UploadFileMeta.MetadataEntry
+	nil,                                       // 219: testkit.v1.GenerateUploadURLRequest.MetadataEntry
+	nil,                                       // 220: testkit.v1.GenerateUploadURLResponse.HeadersEntry
+	nil,                                       // 221: testkit.v1.GetSTSCredentialRequest.MetadataEntry
+	nil,                                       // 222: testkit.v1.UpdateMyFileRequest.MetadataEntry
+	nil,                                       // 223: testkit.v1.SendEmailRequest.TemplateParamsEntry
+	nil,                                       // 224: testkit.v1.SendSMSRequest.TemplateParamsEntry
+	nil,                                       // 225: testkit.v1.EmailRecord.TemplateParamsEntry
+	nil,                                       // 226: testkit.v1.SMSRecord.TemplateParamsEntry
+	(*timestamppb.Timestamp)(nil),             // 227: google.protobuf.Timestamp
+	(*structpb.Struct)(nil),                   // 228: google.protobuf.Struct
+	(*durationpb.Duration)(nil),               // 229: google.protobuf.Duration
+	(*emptypb.Empty)(nil),                     // 230: google.protobuf.Empty
 }
 var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	0,   // 0: testkit.v1.LoginRequest.method:type_name -> testkit.v1.LoginMethod
@@ -16024,27 +16739,27 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	5,   // 5: testkit.v1.User.status:type_name -> testkit.v1.UserStatus
 	1,   // 6: testkit.v1.User.register_source:type_name -> testkit.v1.IdentityProvider
 	4,   // 7: testkit.v1.User.user_type:type_name -> testkit.v1.UserType
-	215, // 8: testkit.v1.User.last_login_at:type_name -> google.protobuf.Timestamp
-	215, // 9: testkit.v1.User.created_at:type_name -> google.protobuf.Timestamp
-	215, // 10: testkit.v1.User.updated_at:type_name -> google.protobuf.Timestamp
+	227, // 8: testkit.v1.User.last_login_at:type_name -> google.protobuf.Timestamp
+	227, // 9: testkit.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	227, // 10: testkit.v1.User.updated_at:type_name -> google.protobuf.Timestamp
 	1,   // 11: testkit.v1.Identity.provider:type_name -> testkit.v1.IdentityProvider
-	215, // 12: testkit.v1.Identity.created_at:type_name -> google.protobuf.Timestamp
+	227, // 12: testkit.v1.Identity.created_at:type_name -> google.protobuf.Timestamp
 	7,   // 13: testkit.v1.Session.device_type:type_name -> testkit.v1.DeviceType
-	215, // 14: testkit.v1.Session.created_at:type_name -> google.protobuf.Timestamp
-	215, // 15: testkit.v1.Session.last_active_at:type_name -> google.protobuf.Timestamp
-	215, // 16: testkit.v1.Group.created_at:type_name -> google.protobuf.Timestamp
-	215, // 17: testkit.v1.Group.updated_at:type_name -> google.protobuf.Timestamp
+	227, // 14: testkit.v1.Session.created_at:type_name -> google.protobuf.Timestamp
+	227, // 15: testkit.v1.Session.last_active_at:type_name -> google.protobuf.Timestamp
+	227, // 16: testkit.v1.Group.created_at:type_name -> google.protobuf.Timestamp
+	227, // 17: testkit.v1.Group.updated_at:type_name -> google.protobuf.Timestamp
 	39,  // 18: testkit.v1.Role.permissions:type_name -> testkit.v1.Permission
 	40,  // 19: testkit.v1.Role.perm_groups:type_name -> testkit.v1.PermissionGroup
-	215, // 20: testkit.v1.Role.created_at:type_name -> google.protobuf.Timestamp
-	215, // 21: testkit.v1.Role.updated_at:type_name -> google.protobuf.Timestamp
+	227, // 20: testkit.v1.Role.created_at:type_name -> google.protobuf.Timestamp
+	227, // 21: testkit.v1.Role.updated_at:type_name -> google.protobuf.Timestamp
 	39,  // 22: testkit.v1.PermissionGroup.permissions:type_name -> testkit.v1.Permission
-	215, // 23: testkit.v1.GroupMember.created_at:type_name -> google.protobuf.Timestamp
+	227, // 23: testkit.v1.GroupMember.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 24: testkit.v1.LoginLog.provider:type_name -> testkit.v1.IdentityProvider
 	8,   // 25: testkit.v1.LoginLog.action:type_name -> testkit.v1.LoginAction
 	7,   // 26: testkit.v1.LoginLog.device_type:type_name -> testkit.v1.DeviceType
-	215, // 27: testkit.v1.LoginLog.created_at:type_name -> google.protobuf.Timestamp
-	215, // 28: testkit.v1.UserRole.created_at:type_name -> google.protobuf.Timestamp
+	227, // 27: testkit.v1.LoginLog.created_at:type_name -> google.protobuf.Timestamp
+	227, // 28: testkit.v1.UserRole.created_at:type_name -> google.protobuf.Timestamp
 	34,  // 29: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
 	6,   // 30: testkit.v1.UpdateProfileRequest.gender:type_name -> testkit.v1.Gender
 	35,  // 31: testkit.v1.ListIdentitiesResponse.identities:type_name -> testkit.v1.Identity
@@ -16052,8 +16767,8 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	1,   // 33: testkit.v1.BindOAuthIdentityRequest.provider:type_name -> testkit.v1.IdentityProvider
 	35,  // 34: testkit.v1.BindOAuthIdentityResponse.identity:type_name -> testkit.v1.Identity
 	36,  // 35: testkit.v1.ListSessionsResponse.sessions:type_name -> testkit.v1.Session
-	215, // 36: testkit.v1.GetSessionResponse.expires_at:type_name -> google.protobuf.Timestamp
-	215, // 37: testkit.v1.GetSessionResponse.created_at:type_name -> google.protobuf.Timestamp
+	227, // 36: testkit.v1.GetSessionResponse.expires_at:type_name -> google.protobuf.Timestamp
+	227, // 37: testkit.v1.GetSessionResponse.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 38: testkit.v1.GetOAuthURLRequest.provider:type_name -> testkit.v1.IdentityProvider
 	1,   // 39: testkit.v1.SocialLoginRequest.provider:type_name -> testkit.v1.IdentityProvider
 	34,  // 40: testkit.v1.SocialLoginResponse.user:type_name -> testkit.v1.User
@@ -16064,10 +16779,10 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	6,   // 45: testkit.v1.ListUsersRequest.gender:type_name -> testkit.v1.Gender
 	1,   // 46: testkit.v1.ListUsersRequest.register_source:type_name -> testkit.v1.IdentityProvider
 	7,   // 47: testkit.v1.ListUsersRequest.register_device:type_name -> testkit.v1.DeviceType
-	215, // 48: testkit.v1.ListUsersRequest.created_at_start:type_name -> google.protobuf.Timestamp
-	215, // 49: testkit.v1.ListUsersRequest.created_at_end:type_name -> google.protobuf.Timestamp
-	215, // 50: testkit.v1.ListUsersRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
-	215, // 51: testkit.v1.ListUsersRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	227, // 48: testkit.v1.ListUsersRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	227, // 49: testkit.v1.ListUsersRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	227, // 50: testkit.v1.ListUsersRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	227, // 51: testkit.v1.ListUsersRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
 	4,   // 52: testkit.v1.ListUsersRequest.user_type:type_name -> testkit.v1.UserType
 	9,   // 53: testkit.v1.ListUsersRequest.order_by:type_name -> testkit.v1.UserSortField
 	34,  // 54: testkit.v1.ListUsersResponse.users:type_name -> testkit.v1.User
@@ -16076,10 +16791,10 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	1,   // 57: testkit.v1.ListUsersPagedRequest.register_source:type_name -> testkit.v1.IdentityProvider
 	7,   // 58: testkit.v1.ListUsersPagedRequest.register_device:type_name -> testkit.v1.DeviceType
 	4,   // 59: testkit.v1.ListUsersPagedRequest.user_type:type_name -> testkit.v1.UserType
-	215, // 60: testkit.v1.ListUsersPagedRequest.created_at_start:type_name -> google.protobuf.Timestamp
-	215, // 61: testkit.v1.ListUsersPagedRequest.created_at_end:type_name -> google.protobuf.Timestamp
-	215, // 62: testkit.v1.ListUsersPagedRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
-	215, // 63: testkit.v1.ListUsersPagedRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	227, // 60: testkit.v1.ListUsersPagedRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	227, // 61: testkit.v1.ListUsersPagedRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	227, // 62: testkit.v1.ListUsersPagedRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	227, // 63: testkit.v1.ListUsersPagedRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
 	9,   // 64: testkit.v1.ListUsersPagedRequest.order_by:type_name -> testkit.v1.UserSortField
 	34,  // 65: testkit.v1.ListUsersPagedResponse.users:type_name -> testkit.v1.User
 	1,   // 66: testkit.v1.GetLoginLogsRequest.provider:type_name -> testkit.v1.IdentityProvider
@@ -16091,46 +16806,46 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	43,  // 72: testkit.v1.ListUserRolesResponse.roles:type_name -> testkit.v1.UserRole
 	39,  // 73: testkit.v1.ListPermissionsResponse.permissions:type_name -> testkit.v1.Permission
 	40,  // 74: testkit.v1.ListPermissionGroupsResponse.groups:type_name -> testkit.v1.PermissionGroup
-	204, // 75: testkit.v1.FileInfo.metadata:type_name -> testkit.v1.FileInfo.MetadataEntry
+	216, // 75: testkit.v1.FileInfo.metadata:type_name -> testkit.v1.FileInfo.MetadataEntry
 	10,  // 76: testkit.v1.FileInfo.owner_type:type_name -> testkit.v1.OwnerType
 	10,  // 77: testkit.v1.AdminFileInfo.owner_type:type_name -> testkit.v1.OwnerType
-	205, // 78: testkit.v1.AdminFileInfo.metadata:type_name -> testkit.v1.AdminFileInfo.MetadataEntry
+	217, // 78: testkit.v1.AdminFileInfo.metadata:type_name -> testkit.v1.AdminFileInfo.MetadataEntry
 	21,  // 79: testkit.v1.ImageProcessOp.type:type_name -> testkit.v1.ImageProcessType
 	15,  // 80: testkit.v1.ImageProcessOp.format:type_name -> testkit.v1.ImageFormat
 	14,  // 81: testkit.v1.ImageProcessOp.resize_mode:type_name -> testkit.v1.ImageResizeMode
-	206, // 82: testkit.v1.UploadFileMeta.metadata:type_name -> testkit.v1.UploadFileMeta.MetadataEntry
+	218, // 82: testkit.v1.UploadFileMeta.metadata:type_name -> testkit.v1.UploadFileMeta.MetadataEntry
 	122, // 83: testkit.v1.UploadCredentialItem.token:type_name -> testkit.v1.UploadTokenInfo
 	123, // 84: testkit.v1.UploadCredentialItem.error:type_name -> testkit.v1.ItemError
 	17,  // 85: testkit.v1.AuditLogEntry.action:type_name -> testkit.v1.AuditAction
 	10,  // 86: testkit.v1.AuditLogEntry.owner_type:type_name -> testkit.v1.OwnerType
 	20,  // 87: testkit.v1.AuditLogEntry.target_type:type_name -> testkit.v1.AuditLogTargetType
-	216, // 88: testkit.v1.AuditLogEntry.before:type_name -> google.protobuf.Struct
-	216, // 89: testkit.v1.AuditLogEntry.after:type_name -> google.protobuf.Struct
+	228, // 88: testkit.v1.AuditLogEntry.before:type_name -> google.protobuf.Struct
+	228, // 89: testkit.v1.AuditLogEntry.after:type_name -> google.protobuf.Struct
 	19,  // 90: testkit.v1.AuditLogEntry.status:type_name -> testkit.v1.AuditLogStatus
 	10,  // 91: testkit.v1.OwnerStats.owner_type:type_name -> testkit.v1.OwnerType
 	11,  // 92: testkit.v1.ProviderInfo.vendor:type_name -> testkit.v1.Vendor
 	13,  // 93: testkit.v1.BucketInfo.acl:type_name -> testkit.v1.BucketACL
 	11,  // 94: testkit.v1.BucketInfo.vendor:type_name -> testkit.v1.Vendor
-	207, // 95: testkit.v1.GenerateUploadURLRequest.metadata:type_name -> testkit.v1.GenerateUploadURLRequest.MetadataEntry
+	219, // 95: testkit.v1.GenerateUploadURLRequest.metadata:type_name -> testkit.v1.GenerateUploadURLRequest.MetadataEntry
 	11,  // 96: testkit.v1.GenerateUploadURLRequest.vendor:type_name -> testkit.v1.Vendor
 	117, // 97: testkit.v1.GenerateUploadURLResponse.file_info:type_name -> testkit.v1.FileInfo
-	208, // 98: testkit.v1.GenerateUploadURLResponse.headers:type_name -> testkit.v1.GenerateUploadURLResponse.HeadersEntry
-	209, // 99: testkit.v1.GetSTSCredentialRequest.metadata:type_name -> testkit.v1.GetSTSCredentialRequest.MetadataEntry
+	220, // 98: testkit.v1.GenerateUploadURLResponse.headers:type_name -> testkit.v1.GenerateUploadURLResponse.HeadersEntry
+	221, // 99: testkit.v1.GetSTSCredentialRequest.metadata:type_name -> testkit.v1.GetSTSCredentialRequest.MetadataEntry
 	11,  // 100: testkit.v1.GetSTSCredentialRequest.vendor:type_name -> testkit.v1.Vendor
-	217, // 101: testkit.v1.GetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
+	229, // 101: testkit.v1.GetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
 	117, // 102: testkit.v1.GetSTSCredentialResponse.file_info:type_name -> testkit.v1.FileInfo
 	121, // 103: testkit.v1.BatchGetSTSCredentialRequest.files:type_name -> testkit.v1.UploadFileMeta
-	217, // 104: testkit.v1.BatchGetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
+	229, // 104: testkit.v1.BatchGetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
 	124, // 105: testkit.v1.BatchGetSTSCredentialResponse.items:type_name -> testkit.v1.UploadCredentialItem
 	117, // 106: testkit.v1.ConfirmUploadResponse.file_info:type_name -> testkit.v1.FileInfo
 	120, // 107: testkit.v1.GenerateProcessURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
 	120, // 108: testkit.v1.GenerateCDNURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
-	217, // 109: testkit.v1.GenerateCDNURLRequest.ttl:type_name -> google.protobuf.Duration
+	229, // 109: testkit.v1.GenerateCDNURLRequest.ttl:type_name -> google.protobuf.Duration
 	16,  // 110: testkit.v1.ListMyFilesRequest.order_by:type_name -> testkit.v1.SortField
 	117, // 111: testkit.v1.ListMyFilesResponse.files:type_name -> testkit.v1.FileInfo
 	16,  // 112: testkit.v1.ListMyFilesPagedRequest.order_by:type_name -> testkit.v1.SortField
 	117, // 113: testkit.v1.ListMyFilesPagedResponse.files:type_name -> testkit.v1.FileInfo
-	210, // 114: testkit.v1.UpdateMyFileRequest.metadata:type_name -> testkit.v1.UpdateMyFileRequest.MetadataEntry
+	222, // 114: testkit.v1.UpdateMyFileRequest.metadata:type_name -> testkit.v1.UpdateMyFileRequest.MetadataEntry
 	17,  // 115: testkit.v1.ListMyAuditLogsRequest.action:type_name -> testkit.v1.AuditAction
 	20,  // 116: testkit.v1.ListMyAuditLogsRequest.target_type:type_name -> testkit.v1.AuditLogTargetType
 	125, // 117: testkit.v1.ListMyAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
@@ -16161,11 +16876,11 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	175, // 142: testkit.v1.SendEmailRequest.bcc:type_name -> testkit.v1.EmailAddress
 	175, // 143: testkit.v1.SendEmailRequest.reply_to:type_name -> testkit.v1.EmailAddress
 	24,  // 144: testkit.v1.SendEmailRequest.vendor:type_name -> testkit.v1.EmailVendor
-	211, // 145: testkit.v1.SendEmailRequest.template_params:type_name -> testkit.v1.SendEmailRequest.TemplateParamsEntry
+	223, // 145: testkit.v1.SendEmailRequest.template_params:type_name -> testkit.v1.SendEmailRequest.TemplateParamsEntry
 	26,  // 146: testkit.v1.SendEmailRequest.scene:type_name -> testkit.v1.EmailScene
 	175, // 147: testkit.v1.SendEmailRequest.from:type_name -> testkit.v1.EmailAddress
 	176, // 148: testkit.v1.SendEmailRequest.attachments:type_name -> testkit.v1.EmailAttachment
-	212, // 149: testkit.v1.SendSMSRequest.template_params:type_name -> testkit.v1.SendSMSRequest.TemplateParamsEntry
+	224, // 149: testkit.v1.SendSMSRequest.template_params:type_name -> testkit.v1.SendSMSRequest.TemplateParamsEntry
 	25,  // 150: testkit.v1.SendSMSRequest.vendor:type_name -> testkit.v1.SmsVendor
 	27,  // 151: testkit.v1.SendSMSRequest.scene:type_name -> testkit.v1.SmsScene
 	23,  // 152: testkit.v1.SendResponse.status:type_name -> testkit.v1.MessageStatus
@@ -16178,12 +16893,12 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	175, // 159: testkit.v1.EmailRecord.cc:type_name -> testkit.v1.EmailAddress
 	175, // 160: testkit.v1.EmailRecord.bcc:type_name -> testkit.v1.EmailAddress
 	175, // 161: testkit.v1.EmailRecord.reply_to:type_name -> testkit.v1.EmailAddress
-	213, // 162: testkit.v1.EmailRecord.template_params:type_name -> testkit.v1.EmailRecord.TemplateParamsEntry
+	225, // 162: testkit.v1.EmailRecord.template_params:type_name -> testkit.v1.EmailRecord.TemplateParamsEntry
 	176, // 163: testkit.v1.EmailRecord.attachments:type_name -> testkit.v1.EmailAttachment
 	25,  // 164: testkit.v1.SMSRecord.vendor:type_name -> testkit.v1.SmsVendor
 	27,  // 165: testkit.v1.SMSRecord.scene:type_name -> testkit.v1.SmsScene
 	23,  // 166: testkit.v1.SMSRecord.status:type_name -> testkit.v1.MessageStatus
-	214, // 167: testkit.v1.SMSRecord.template_params:type_name -> testkit.v1.SMSRecord.TemplateParamsEntry
+	226, // 167: testkit.v1.SMSRecord.template_params:type_name -> testkit.v1.SMSRecord.TemplateParamsEntry
 	24,  // 168: testkit.v1.ListEmailsRequest.vendor:type_name -> testkit.v1.EmailVendor
 	26,  // 169: testkit.v1.ListEmailsRequest.scene:type_name -> testkit.v1.EmailScene
 	23,  // 170: testkit.v1.ListEmailsRequest.status:type_name -> testkit.v1.MessageStatus
@@ -16214,213 +16929,227 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	25,  // 195: testkit.v1.GetSMSStatsRequest.vendor:type_name -> testkit.v1.SmsVendor
 	27,  // 196: testkit.v1.GetSMSStatsRequest.scene:type_name -> testkit.v1.SmsScene
 	178, // 197: testkit.v1.SMSStatsResponse.vendors:type_name -> testkit.v1.SmsVendorStats
-	218, // 198: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
-	29,  // 199: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
-	30,  // 200: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
-	31,  // 201: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
-	218, // 202: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
-	33,  // 203: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
-	45,  // 204: testkit.v1.TestkitService.GetProfile:input_type -> testkit.v1.GetProfileRequest
-	46,  // 205: testkit.v1.TestkitService.UpdateProfile:input_type -> testkit.v1.UpdateProfileRequest
-	47,  // 206: testkit.v1.TestkitService.ChangePassword:input_type -> testkit.v1.ChangePasswordRequest
-	48,  // 207: testkit.v1.TestkitService.ResetPassword:input_type -> testkit.v1.ResetPasswordRequest
-	49,  // 208: testkit.v1.TestkitService.ListIdentities:input_type -> testkit.v1.ListIdentitiesRequest
-	51,  // 209: testkit.v1.TestkitService.BindIdentity:input_type -> testkit.v1.BindIdentityRequest
-	52,  // 210: testkit.v1.TestkitService.BindOAuthIdentity:input_type -> testkit.v1.BindOAuthIdentityRequest
-	54,  // 211: testkit.v1.TestkitService.UnbindIdentity:input_type -> testkit.v1.UnbindIdentityRequest
-	55,  // 212: testkit.v1.TestkitService.ListSessions:input_type -> testkit.v1.ListSessionsRequest
-	57,  // 213: testkit.v1.TestkitService.RevokeSession:input_type -> testkit.v1.RevokeSessionRequest
-	58,  // 214: testkit.v1.TestkitService.RevokeAllSessions:input_type -> testkit.v1.RevokeAllSessionsRequest
-	59,  // 215: testkit.v1.TestkitService.GetSession:input_type -> testkit.v1.GetSessionRequest
-	61,  // 216: testkit.v1.TestkitService.IssueSessionCode:input_type -> testkit.v1.IssueSessionCodeRequest
-	63,  // 217: testkit.v1.TestkitService.ExchangeSessionCode:input_type -> testkit.v1.ExchangeSessionCodeRequest
-	65,  // 218: testkit.v1.TestkitService.GetOAuthURL:input_type -> testkit.v1.GetOAuthURLRequest
-	67,  // 219: testkit.v1.TestkitService.SocialLogin:input_type -> testkit.v1.SocialLoginRequest
-	68,  // 220: testkit.v1.TestkitService.MiniProgramLogin:input_type -> testkit.v1.MiniProgramLoginRequest
-	69,  // 221: testkit.v1.TestkitService.MiniProgramPhoneLogin:input_type -> testkit.v1.MiniProgramPhoneLoginRequest
-	71,  // 222: testkit.v1.TestkitService.CreateUser:input_type -> testkit.v1.CreateUserRequest
-	73,  // 223: testkit.v1.TestkitService.GetUser:input_type -> testkit.v1.GetUserRequest
-	75,  // 224: testkit.v1.TestkitService.ListUsers:input_type -> testkit.v1.ListUsersRequest
-	77,  // 225: testkit.v1.TestkitService.ListUsersPaged:input_type -> testkit.v1.ListUsersPagedRequest
-	74,  // 226: testkit.v1.TestkitService.DisableUser:input_type -> testkit.v1.DisableUserRequest
-	79,  // 227: testkit.v1.TestkitService.GetLoginLogs:input_type -> testkit.v1.GetLoginLogsRequest
-	81,  // 228: testkit.v1.TestkitService.CreateGroup:input_type -> testkit.v1.CreateGroupRequest
-	82,  // 229: testkit.v1.TestkitService.GetGroup:input_type -> testkit.v1.GetGroupRequest
-	83,  // 230: testkit.v1.TestkitService.UpdateGroup:input_type -> testkit.v1.UpdateGroupRequest
-	84,  // 231: testkit.v1.TestkitService.ListGroups:input_type -> testkit.v1.ListGroupsRequest
-	86,  // 232: testkit.v1.TestkitService.DeleteGroup:input_type -> testkit.v1.DeleteGroupRequest
-	87,  // 233: testkit.v1.TestkitService.AddGroupMember:input_type -> testkit.v1.AddGroupMemberRequest
-	88,  // 234: testkit.v1.TestkitService.RemoveGroupMember:input_type -> testkit.v1.RemoveGroupMemberRequest
-	89,  // 235: testkit.v1.TestkitService.ListGroupMembers:input_type -> testkit.v1.ListGroupMembersRequest
-	91,  // 236: testkit.v1.TestkitService.AddGroupRole:input_type -> testkit.v1.AddGroupRoleRequest
-	92,  // 237: testkit.v1.TestkitService.RemoveGroupRole:input_type -> testkit.v1.RemoveGroupRoleRequest
-	93,  // 238: testkit.v1.TestkitService.ListGroupRoles:input_type -> testkit.v1.ListGroupRolesRequest
-	95,  // 239: testkit.v1.TestkitService.CreateRole:input_type -> testkit.v1.CreateRoleRequest
-	96,  // 240: testkit.v1.TestkitService.GetRole:input_type -> testkit.v1.GetRoleRequest
-	97,  // 241: testkit.v1.TestkitService.UpdateRole:input_type -> testkit.v1.UpdateRoleRequest
-	98,  // 242: testkit.v1.TestkitService.DeleteRole:input_type -> testkit.v1.DeleteRoleRequest
-	99,  // 243: testkit.v1.TestkitService.ListRoles:input_type -> testkit.v1.ListRolesRequest
-	101, // 244: testkit.v1.TestkitService.AssignRole:input_type -> testkit.v1.AssignRoleRequest
-	102, // 245: testkit.v1.TestkitService.RevokeRole:input_type -> testkit.v1.RevokeRoleRequest
-	103, // 246: testkit.v1.TestkitService.ListUserRoles:input_type -> testkit.v1.ListUserRolesRequest
-	105, // 247: testkit.v1.TestkitService.ListPermissions:input_type -> testkit.v1.ListPermissionsRequest
-	107, // 248: testkit.v1.TestkitService.CreatePermission:input_type -> testkit.v1.CreatePermissionRequest
-	108, // 249: testkit.v1.TestkitService.GetPermission:input_type -> testkit.v1.GetPermissionRequest
-	109, // 250: testkit.v1.TestkitService.UpdatePermission:input_type -> testkit.v1.UpdatePermissionRequest
-	110, // 251: testkit.v1.TestkitService.DeletePermission:input_type -> testkit.v1.DeletePermissionRequest
-	111, // 252: testkit.v1.TestkitService.CreatePermissionGroup:input_type -> testkit.v1.CreatePermissionGroupRequest
-	112, // 253: testkit.v1.TestkitService.GetPermissionGroup:input_type -> testkit.v1.GetPermissionGroupRequest
-	113, // 254: testkit.v1.TestkitService.UpdatePermissionGroup:input_type -> testkit.v1.UpdatePermissionGroupRequest
-	114, // 255: testkit.v1.TestkitService.DeletePermissionGroup:input_type -> testkit.v1.DeletePermissionGroupRequest
-	115, // 256: testkit.v1.TestkitService.ListPermissionGroups:input_type -> testkit.v1.ListPermissionGroupsRequest
-	131, // 257: testkit.v1.TestkitService.GenerateUploadURL:input_type -> testkit.v1.GenerateUploadURLRequest
-	133, // 258: testkit.v1.TestkitService.GetSTSCredential:input_type -> testkit.v1.GetSTSCredentialRequest
-	135, // 259: testkit.v1.TestkitService.BatchGetSTSCredential:input_type -> testkit.v1.BatchGetSTSCredentialRequest
-	137, // 260: testkit.v1.TestkitService.ConfirmUpload:input_type -> testkit.v1.ConfirmUploadRequest
-	139, // 261: testkit.v1.TestkitService.CancelUpload:input_type -> testkit.v1.CancelUploadRequest
-	140, // 262: testkit.v1.TestkitService.GenerateDownloadURL:input_type -> testkit.v1.GenerateDownloadURLRequest
-	142, // 263: testkit.v1.TestkitService.GenerateProcessURL:input_type -> testkit.v1.GenerateProcessURLRequest
-	144, // 264: testkit.v1.TestkitService.GenerateCDNURL:input_type -> testkit.v1.GenerateCDNURLRequest
-	146, // 265: testkit.v1.TestkitService.ListMyFiles:input_type -> testkit.v1.ListMyFilesRequest
-	148, // 266: testkit.v1.TestkitService.ListMyFilesPaged:input_type -> testkit.v1.ListMyFilesPagedRequest
-	150, // 267: testkit.v1.TestkitService.GetMyFile:input_type -> testkit.v1.GetMyFileRequest
-	151, // 268: testkit.v1.TestkitService.UpdateMyFile:input_type -> testkit.v1.UpdateMyFileRequest
-	152, // 269: testkit.v1.TestkitService.DeleteMyFile:input_type -> testkit.v1.DeleteMyFileRequest
-	153, // 270: testkit.v1.TestkitService.BatchDeleteMyFiles:input_type -> testkit.v1.BatchDeleteMyFilesRequest
-	218, // 271: testkit.v1.TestkitService.GetMyQuota:input_type -> google.protobuf.Empty
-	155, // 272: testkit.v1.TestkitService.ListMyAuditLogs:input_type -> testkit.v1.ListMyAuditLogsRequest
-	157, // 273: testkit.v1.TestkitService.SetOwnerQuota:input_type -> testkit.v1.SetOwnerQuotaRequest
-	158, // 274: testkit.v1.TestkitService.AddOwnerQuota:input_type -> testkit.v1.AddOwnerQuotaRequest
-	159, // 275: testkit.v1.TestkitService.AdminListFiles:input_type -> testkit.v1.AdminListFilesRequest
-	161, // 276: testkit.v1.TestkitService.AdminGetFile:input_type -> testkit.v1.AdminGetFileRequest
-	162, // 277: testkit.v1.TestkitService.AdminDeleteFile:input_type -> testkit.v1.AdminDeleteFileRequest
-	163, // 278: testkit.v1.TestkitService.AdminGetQuota:input_type -> testkit.v1.AdminGetQuotaRequest
-	164, // 279: testkit.v1.TestkitService.AdminSetQuota:input_type -> testkit.v1.AdminSetQuotaRequest
-	165, // 280: testkit.v1.TestkitService.AdminGetStats:input_type -> testkit.v1.AdminGetStatsRequest
-	218, // 281: testkit.v1.TestkitService.AdminListProviders:input_type -> google.protobuf.Empty
-	218, // 282: testkit.v1.TestkitService.AdminListBuckets:input_type -> google.protobuf.Empty
-	169, // 283: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:input_type -> testkit.v1.AdminSoftDeleteOwnerFilesRequest
-	171, // 284: testkit.v1.TestkitService.AdminDeleteOwner:input_type -> testkit.v1.AdminDeleteOwnerRequest
-	173, // 285: testkit.v1.TestkitService.AdminListAuditLogs:input_type -> testkit.v1.AdminListAuditLogsRequest
-	179, // 286: testkit.v1.TestkitService.SendEmail:input_type -> testkit.v1.SendEmailRequest
-	180, // 287: testkit.v1.TestkitService.SendSMS:input_type -> testkit.v1.SendSMSRequest
-	184, // 288: testkit.v1.TestkitService.GetEmail:input_type -> testkit.v1.GetEmailRequest
-	186, // 289: testkit.v1.TestkitService.ListEmails:input_type -> testkit.v1.ListEmailsRequest
-	190, // 290: testkit.v1.TestkitService.ListEmailsByCursor:input_type -> testkit.v1.ListEmailsByCursorRequest
-	194, // 291: testkit.v1.TestkitService.GetEmailStats:input_type -> testkit.v1.GetEmailStatsRequest
-	198, // 292: testkit.v1.TestkitService.ListEmailSenders:input_type -> testkit.v1.ListEmailSendersRequest
-	185, // 293: testkit.v1.TestkitService.GetSMS:input_type -> testkit.v1.GetSMSRequest
-	188, // 294: testkit.v1.TestkitService.ListSMS:input_type -> testkit.v1.ListSMSRequest
-	192, // 295: testkit.v1.TestkitService.ListSMSByCursor:input_type -> testkit.v1.ListSMSByCursorRequest
-	196, // 296: testkit.v1.TestkitService.GetSMSStats:input_type -> testkit.v1.GetSMSStatsRequest
-	202, // 297: testkit.v1.TestkitService.ListSMSRegions:input_type -> testkit.v1.ListSMSRegionsRequest
-	200, // 298: testkit.v1.TestkitService.ListSMSSenders:input_type -> testkit.v1.ListSMSSendersRequest
-	28,  // 299: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
-	44,  // 300: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
-	44,  // 301: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
-	32,  // 302: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
-	218, // 303: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
-	44,  // 304: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
-	34,  // 305: testkit.v1.TestkitService.GetProfile:output_type -> testkit.v1.User
-	34,  // 306: testkit.v1.TestkitService.UpdateProfile:output_type -> testkit.v1.User
-	218, // 307: testkit.v1.TestkitService.ChangePassword:output_type -> google.protobuf.Empty
-	218, // 308: testkit.v1.TestkitService.ResetPassword:output_type -> google.protobuf.Empty
-	50,  // 309: testkit.v1.TestkitService.ListIdentities:output_type -> testkit.v1.ListIdentitiesResponse
-	35,  // 310: testkit.v1.TestkitService.BindIdentity:output_type -> testkit.v1.Identity
-	53,  // 311: testkit.v1.TestkitService.BindOAuthIdentity:output_type -> testkit.v1.BindOAuthIdentityResponse
-	218, // 312: testkit.v1.TestkitService.UnbindIdentity:output_type -> google.protobuf.Empty
-	56,  // 313: testkit.v1.TestkitService.ListSessions:output_type -> testkit.v1.ListSessionsResponse
-	218, // 314: testkit.v1.TestkitService.RevokeSession:output_type -> google.protobuf.Empty
-	218, // 315: testkit.v1.TestkitService.RevokeAllSessions:output_type -> google.protobuf.Empty
-	60,  // 316: testkit.v1.TestkitService.GetSession:output_type -> testkit.v1.GetSessionResponse
-	62,  // 317: testkit.v1.TestkitService.IssueSessionCode:output_type -> testkit.v1.IssueSessionCodeResponse
-	64,  // 318: testkit.v1.TestkitService.ExchangeSessionCode:output_type -> testkit.v1.ExchangeSessionCodeResponse
-	66,  // 319: testkit.v1.TestkitService.GetOAuthURL:output_type -> testkit.v1.GetOAuthURLResponse
-	70,  // 320: testkit.v1.TestkitService.SocialLogin:output_type -> testkit.v1.SocialLoginResponse
-	70,  // 321: testkit.v1.TestkitService.MiniProgramLogin:output_type -> testkit.v1.SocialLoginResponse
-	70,  // 322: testkit.v1.TestkitService.MiniProgramPhoneLogin:output_type -> testkit.v1.SocialLoginResponse
-	72,  // 323: testkit.v1.TestkitService.CreateUser:output_type -> testkit.v1.CreateUserResponse
-	34,  // 324: testkit.v1.TestkitService.GetUser:output_type -> testkit.v1.User
-	76,  // 325: testkit.v1.TestkitService.ListUsers:output_type -> testkit.v1.ListUsersResponse
-	78,  // 326: testkit.v1.TestkitService.ListUsersPaged:output_type -> testkit.v1.ListUsersPagedResponse
-	34,  // 327: testkit.v1.TestkitService.DisableUser:output_type -> testkit.v1.User
-	80,  // 328: testkit.v1.TestkitService.GetLoginLogs:output_type -> testkit.v1.GetLoginLogsResponse
-	37,  // 329: testkit.v1.TestkitService.CreateGroup:output_type -> testkit.v1.Group
-	37,  // 330: testkit.v1.TestkitService.GetGroup:output_type -> testkit.v1.Group
-	37,  // 331: testkit.v1.TestkitService.UpdateGroup:output_type -> testkit.v1.Group
-	85,  // 332: testkit.v1.TestkitService.ListGroups:output_type -> testkit.v1.ListGroupsResponse
-	218, // 333: testkit.v1.TestkitService.DeleteGroup:output_type -> google.protobuf.Empty
-	218, // 334: testkit.v1.TestkitService.AddGroupMember:output_type -> google.protobuf.Empty
-	218, // 335: testkit.v1.TestkitService.RemoveGroupMember:output_type -> google.protobuf.Empty
-	90,  // 336: testkit.v1.TestkitService.ListGroupMembers:output_type -> testkit.v1.ListGroupMembersResponse
-	218, // 337: testkit.v1.TestkitService.AddGroupRole:output_type -> google.protobuf.Empty
-	218, // 338: testkit.v1.TestkitService.RemoveGroupRole:output_type -> google.protobuf.Empty
-	94,  // 339: testkit.v1.TestkitService.ListGroupRoles:output_type -> testkit.v1.ListGroupRolesResponse
-	38,  // 340: testkit.v1.TestkitService.CreateRole:output_type -> testkit.v1.Role
-	38,  // 341: testkit.v1.TestkitService.GetRole:output_type -> testkit.v1.Role
-	38,  // 342: testkit.v1.TestkitService.UpdateRole:output_type -> testkit.v1.Role
-	218, // 343: testkit.v1.TestkitService.DeleteRole:output_type -> google.protobuf.Empty
-	100, // 344: testkit.v1.TestkitService.ListRoles:output_type -> testkit.v1.ListRolesResponse
-	218, // 345: testkit.v1.TestkitService.AssignRole:output_type -> google.protobuf.Empty
-	218, // 346: testkit.v1.TestkitService.RevokeRole:output_type -> google.protobuf.Empty
-	104, // 347: testkit.v1.TestkitService.ListUserRoles:output_type -> testkit.v1.ListUserRolesResponse
-	106, // 348: testkit.v1.TestkitService.ListPermissions:output_type -> testkit.v1.ListPermissionsResponse
-	39,  // 349: testkit.v1.TestkitService.CreatePermission:output_type -> testkit.v1.Permission
-	39,  // 350: testkit.v1.TestkitService.GetPermission:output_type -> testkit.v1.Permission
-	39,  // 351: testkit.v1.TestkitService.UpdatePermission:output_type -> testkit.v1.Permission
-	218, // 352: testkit.v1.TestkitService.DeletePermission:output_type -> google.protobuf.Empty
-	40,  // 353: testkit.v1.TestkitService.CreatePermissionGroup:output_type -> testkit.v1.PermissionGroup
-	40,  // 354: testkit.v1.TestkitService.GetPermissionGroup:output_type -> testkit.v1.PermissionGroup
-	40,  // 355: testkit.v1.TestkitService.UpdatePermissionGroup:output_type -> testkit.v1.PermissionGroup
-	218, // 356: testkit.v1.TestkitService.DeletePermissionGroup:output_type -> google.protobuf.Empty
-	116, // 357: testkit.v1.TestkitService.ListPermissionGroups:output_type -> testkit.v1.ListPermissionGroupsResponse
-	132, // 358: testkit.v1.TestkitService.GenerateUploadURL:output_type -> testkit.v1.GenerateUploadURLResponse
-	134, // 359: testkit.v1.TestkitService.GetSTSCredential:output_type -> testkit.v1.GetSTSCredentialResponse
-	136, // 360: testkit.v1.TestkitService.BatchGetSTSCredential:output_type -> testkit.v1.BatchGetSTSCredentialResponse
-	138, // 361: testkit.v1.TestkitService.ConfirmUpload:output_type -> testkit.v1.ConfirmUploadResponse
-	218, // 362: testkit.v1.TestkitService.CancelUpload:output_type -> google.protobuf.Empty
-	141, // 363: testkit.v1.TestkitService.GenerateDownloadURL:output_type -> testkit.v1.GenerateDownloadURLResponse
-	143, // 364: testkit.v1.TestkitService.GenerateProcessURL:output_type -> testkit.v1.GenerateProcessURLResponse
-	145, // 365: testkit.v1.TestkitService.GenerateCDNURL:output_type -> testkit.v1.GenerateCDNURLResponse
-	147, // 366: testkit.v1.TestkitService.ListMyFiles:output_type -> testkit.v1.ListMyFilesResponse
-	149, // 367: testkit.v1.TestkitService.ListMyFilesPaged:output_type -> testkit.v1.ListMyFilesPagedResponse
-	117, // 368: testkit.v1.TestkitService.GetMyFile:output_type -> testkit.v1.FileInfo
-	117, // 369: testkit.v1.TestkitService.UpdateMyFile:output_type -> testkit.v1.FileInfo
-	218, // 370: testkit.v1.TestkitService.DeleteMyFile:output_type -> google.protobuf.Empty
-	154, // 371: testkit.v1.TestkitService.BatchDeleteMyFiles:output_type -> testkit.v1.BatchDeleteMyFilesResponse
-	119, // 372: testkit.v1.TestkitService.GetMyQuota:output_type -> testkit.v1.QuotaInfo
-	156, // 373: testkit.v1.TestkitService.ListMyAuditLogs:output_type -> testkit.v1.ListMyAuditLogsResponse
-	119, // 374: testkit.v1.TestkitService.SetOwnerQuota:output_type -> testkit.v1.QuotaInfo
-	119, // 375: testkit.v1.TestkitService.AddOwnerQuota:output_type -> testkit.v1.QuotaInfo
-	160, // 376: testkit.v1.TestkitService.AdminListFiles:output_type -> testkit.v1.AdminListFilesResponse
-	118, // 377: testkit.v1.TestkitService.AdminGetFile:output_type -> testkit.v1.AdminFileInfo
-	218, // 378: testkit.v1.TestkitService.AdminDeleteFile:output_type -> google.protobuf.Empty
-	119, // 379: testkit.v1.TestkitService.AdminGetQuota:output_type -> testkit.v1.QuotaInfo
-	119, // 380: testkit.v1.TestkitService.AdminSetQuota:output_type -> testkit.v1.QuotaInfo
-	166, // 381: testkit.v1.TestkitService.AdminGetStats:output_type -> testkit.v1.AdminGetStatsResponse
-	167, // 382: testkit.v1.TestkitService.AdminListProviders:output_type -> testkit.v1.AdminListProvidersResponse
-	168, // 383: testkit.v1.TestkitService.AdminListBuckets:output_type -> testkit.v1.AdminListBucketsResponse
-	170, // 384: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:output_type -> testkit.v1.AdminSoftDeleteOwnerFilesResponse
-	172, // 385: testkit.v1.TestkitService.AdminDeleteOwner:output_type -> testkit.v1.AdminDeleteOwnerResponse
-	174, // 386: testkit.v1.TestkitService.AdminListAuditLogs:output_type -> testkit.v1.AdminListAuditLogsResponse
-	181, // 387: testkit.v1.TestkitService.SendEmail:output_type -> testkit.v1.SendResponse
-	181, // 388: testkit.v1.TestkitService.SendSMS:output_type -> testkit.v1.SendResponse
-	182, // 389: testkit.v1.TestkitService.GetEmail:output_type -> testkit.v1.EmailRecord
-	187, // 390: testkit.v1.TestkitService.ListEmails:output_type -> testkit.v1.ListEmailsResponse
-	191, // 391: testkit.v1.TestkitService.ListEmailsByCursor:output_type -> testkit.v1.ListEmailsByCursorResponse
-	195, // 392: testkit.v1.TestkitService.GetEmailStats:output_type -> testkit.v1.EmailStatsResponse
-	199, // 393: testkit.v1.TestkitService.ListEmailSenders:output_type -> testkit.v1.ListEmailSendersResponse
-	183, // 394: testkit.v1.TestkitService.GetSMS:output_type -> testkit.v1.SMSRecord
-	189, // 395: testkit.v1.TestkitService.ListSMS:output_type -> testkit.v1.ListSMSResponse
-	193, // 396: testkit.v1.TestkitService.ListSMSByCursor:output_type -> testkit.v1.ListSMSByCursorResponse
-	197, // 397: testkit.v1.TestkitService.GetSMSStats:output_type -> testkit.v1.SMSStatsResponse
-	203, // 398: testkit.v1.TestkitService.ListSMSRegions:output_type -> testkit.v1.ListSMSRegionsResponse
-	201, // 399: testkit.v1.TestkitService.ListSMSSenders:output_type -> testkit.v1.ListSMSSendersResponse
-	299, // [299:400] is the sub-list for method output_type
-	198, // [198:299] is the sub-list for method input_type
-	198, // [198:198] is the sub-list for extension type_name
-	198, // [198:198] is the sub-list for extension extendee
-	0,   // [0:198] is the sub-list for field type_name
+	177, // 198: testkit.v1.EmailStats.vendors:type_name -> testkit.v1.EmailVendorStats
+	178, // 199: testkit.v1.SMSStats.vendors:type_name -> testkit.v1.SmsVendorStats
+	211, // 200: testkit.v1.DashboardResponse.email_stats:type_name -> testkit.v1.EmailStats
+	212, // 201: testkit.v1.DashboardResponse.sms_stats:type_name -> testkit.v1.SMSStats
+	213, // 202: testkit.v1.DashboardResponse.quota:type_name -> testkit.v1.MyQuota
+	214, // 203: testkit.v1.DashboardResponse.users:type_name -> testkit.v1.UsersSummary
+	230, // 204: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
+	29,  // 205: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
+	30,  // 206: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
+	31,  // 207: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
+	230, // 208: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
+	33,  // 209: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
+	45,  // 210: testkit.v1.TestkitService.GetProfile:input_type -> testkit.v1.GetProfileRequest
+	46,  // 211: testkit.v1.TestkitService.UpdateProfile:input_type -> testkit.v1.UpdateProfileRequest
+	47,  // 212: testkit.v1.TestkitService.ChangePassword:input_type -> testkit.v1.ChangePasswordRequest
+	48,  // 213: testkit.v1.TestkitService.ResetPassword:input_type -> testkit.v1.ResetPasswordRequest
+	49,  // 214: testkit.v1.TestkitService.ListIdentities:input_type -> testkit.v1.ListIdentitiesRequest
+	51,  // 215: testkit.v1.TestkitService.BindIdentity:input_type -> testkit.v1.BindIdentityRequest
+	52,  // 216: testkit.v1.TestkitService.BindOAuthIdentity:input_type -> testkit.v1.BindOAuthIdentityRequest
+	54,  // 217: testkit.v1.TestkitService.UnbindIdentity:input_type -> testkit.v1.UnbindIdentityRequest
+	55,  // 218: testkit.v1.TestkitService.ListSessions:input_type -> testkit.v1.ListSessionsRequest
+	57,  // 219: testkit.v1.TestkitService.RevokeSession:input_type -> testkit.v1.RevokeSessionRequest
+	58,  // 220: testkit.v1.TestkitService.RevokeAllSessions:input_type -> testkit.v1.RevokeAllSessionsRequest
+	59,  // 221: testkit.v1.TestkitService.GetSession:input_type -> testkit.v1.GetSessionRequest
+	61,  // 222: testkit.v1.TestkitService.IssueSessionCode:input_type -> testkit.v1.IssueSessionCodeRequest
+	63,  // 223: testkit.v1.TestkitService.ExchangeSessionCode:input_type -> testkit.v1.ExchangeSessionCodeRequest
+	65,  // 224: testkit.v1.TestkitService.GetOAuthURL:input_type -> testkit.v1.GetOAuthURLRequest
+	67,  // 225: testkit.v1.TestkitService.SocialLogin:input_type -> testkit.v1.SocialLoginRequest
+	68,  // 226: testkit.v1.TestkitService.MiniProgramLogin:input_type -> testkit.v1.MiniProgramLoginRequest
+	69,  // 227: testkit.v1.TestkitService.MiniProgramPhoneLogin:input_type -> testkit.v1.MiniProgramPhoneLoginRequest
+	71,  // 228: testkit.v1.TestkitService.CreateUser:input_type -> testkit.v1.CreateUserRequest
+	73,  // 229: testkit.v1.TestkitService.GetUser:input_type -> testkit.v1.GetUserRequest
+	75,  // 230: testkit.v1.TestkitService.ListUsers:input_type -> testkit.v1.ListUsersRequest
+	77,  // 231: testkit.v1.TestkitService.ListUsersPaged:input_type -> testkit.v1.ListUsersPagedRequest
+	74,  // 232: testkit.v1.TestkitService.DisableUser:input_type -> testkit.v1.DisableUserRequest
+	79,  // 233: testkit.v1.TestkitService.GetLoginLogs:input_type -> testkit.v1.GetLoginLogsRequest
+	81,  // 234: testkit.v1.TestkitService.CreateGroup:input_type -> testkit.v1.CreateGroupRequest
+	82,  // 235: testkit.v1.TestkitService.GetGroup:input_type -> testkit.v1.GetGroupRequest
+	83,  // 236: testkit.v1.TestkitService.UpdateGroup:input_type -> testkit.v1.UpdateGroupRequest
+	84,  // 237: testkit.v1.TestkitService.ListGroups:input_type -> testkit.v1.ListGroupsRequest
+	86,  // 238: testkit.v1.TestkitService.DeleteGroup:input_type -> testkit.v1.DeleteGroupRequest
+	87,  // 239: testkit.v1.TestkitService.AddGroupMember:input_type -> testkit.v1.AddGroupMemberRequest
+	88,  // 240: testkit.v1.TestkitService.RemoveGroupMember:input_type -> testkit.v1.RemoveGroupMemberRequest
+	89,  // 241: testkit.v1.TestkitService.ListGroupMembers:input_type -> testkit.v1.ListGroupMembersRequest
+	91,  // 242: testkit.v1.TestkitService.AddGroupRole:input_type -> testkit.v1.AddGroupRoleRequest
+	92,  // 243: testkit.v1.TestkitService.RemoveGroupRole:input_type -> testkit.v1.RemoveGroupRoleRequest
+	93,  // 244: testkit.v1.TestkitService.ListGroupRoles:input_type -> testkit.v1.ListGroupRolesRequest
+	95,  // 245: testkit.v1.TestkitService.CreateRole:input_type -> testkit.v1.CreateRoleRequest
+	96,  // 246: testkit.v1.TestkitService.GetRole:input_type -> testkit.v1.GetRoleRequest
+	97,  // 247: testkit.v1.TestkitService.UpdateRole:input_type -> testkit.v1.UpdateRoleRequest
+	98,  // 248: testkit.v1.TestkitService.DeleteRole:input_type -> testkit.v1.DeleteRoleRequest
+	99,  // 249: testkit.v1.TestkitService.ListRoles:input_type -> testkit.v1.ListRolesRequest
+	101, // 250: testkit.v1.TestkitService.AssignRole:input_type -> testkit.v1.AssignRoleRequest
+	102, // 251: testkit.v1.TestkitService.RevokeRole:input_type -> testkit.v1.RevokeRoleRequest
+	103, // 252: testkit.v1.TestkitService.ListUserRoles:input_type -> testkit.v1.ListUserRolesRequest
+	105, // 253: testkit.v1.TestkitService.ListPermissions:input_type -> testkit.v1.ListPermissionsRequest
+	107, // 254: testkit.v1.TestkitService.CreatePermission:input_type -> testkit.v1.CreatePermissionRequest
+	108, // 255: testkit.v1.TestkitService.GetPermission:input_type -> testkit.v1.GetPermissionRequest
+	109, // 256: testkit.v1.TestkitService.UpdatePermission:input_type -> testkit.v1.UpdatePermissionRequest
+	110, // 257: testkit.v1.TestkitService.DeletePermission:input_type -> testkit.v1.DeletePermissionRequest
+	111, // 258: testkit.v1.TestkitService.CreatePermissionGroup:input_type -> testkit.v1.CreatePermissionGroupRequest
+	112, // 259: testkit.v1.TestkitService.GetPermissionGroup:input_type -> testkit.v1.GetPermissionGroupRequest
+	113, // 260: testkit.v1.TestkitService.UpdatePermissionGroup:input_type -> testkit.v1.UpdatePermissionGroupRequest
+	114, // 261: testkit.v1.TestkitService.DeletePermissionGroup:input_type -> testkit.v1.DeletePermissionGroupRequest
+	115, // 262: testkit.v1.TestkitService.ListPermissionGroups:input_type -> testkit.v1.ListPermissionGroupsRequest
+	131, // 263: testkit.v1.TestkitService.GenerateUploadURL:input_type -> testkit.v1.GenerateUploadURLRequest
+	133, // 264: testkit.v1.TestkitService.GetSTSCredential:input_type -> testkit.v1.GetSTSCredentialRequest
+	135, // 265: testkit.v1.TestkitService.BatchGetSTSCredential:input_type -> testkit.v1.BatchGetSTSCredentialRequest
+	137, // 266: testkit.v1.TestkitService.ConfirmUpload:input_type -> testkit.v1.ConfirmUploadRequest
+	139, // 267: testkit.v1.TestkitService.CancelUpload:input_type -> testkit.v1.CancelUploadRequest
+	140, // 268: testkit.v1.TestkitService.GenerateDownloadURL:input_type -> testkit.v1.GenerateDownloadURLRequest
+	142, // 269: testkit.v1.TestkitService.GenerateProcessURL:input_type -> testkit.v1.GenerateProcessURLRequest
+	144, // 270: testkit.v1.TestkitService.GenerateCDNURL:input_type -> testkit.v1.GenerateCDNURLRequest
+	146, // 271: testkit.v1.TestkitService.ListMyFiles:input_type -> testkit.v1.ListMyFilesRequest
+	148, // 272: testkit.v1.TestkitService.ListMyFilesPaged:input_type -> testkit.v1.ListMyFilesPagedRequest
+	150, // 273: testkit.v1.TestkitService.GetMyFile:input_type -> testkit.v1.GetMyFileRequest
+	151, // 274: testkit.v1.TestkitService.UpdateMyFile:input_type -> testkit.v1.UpdateMyFileRequest
+	152, // 275: testkit.v1.TestkitService.DeleteMyFile:input_type -> testkit.v1.DeleteMyFileRequest
+	153, // 276: testkit.v1.TestkitService.BatchDeleteMyFiles:input_type -> testkit.v1.BatchDeleteMyFilesRequest
+	230, // 277: testkit.v1.TestkitService.GetMyQuota:input_type -> google.protobuf.Empty
+	155, // 278: testkit.v1.TestkitService.ListMyAuditLogs:input_type -> testkit.v1.ListMyAuditLogsRequest
+	157, // 279: testkit.v1.TestkitService.SetOwnerQuota:input_type -> testkit.v1.SetOwnerQuotaRequest
+	158, // 280: testkit.v1.TestkitService.AddOwnerQuota:input_type -> testkit.v1.AddOwnerQuotaRequest
+	159, // 281: testkit.v1.TestkitService.AdminListFiles:input_type -> testkit.v1.AdminListFilesRequest
+	161, // 282: testkit.v1.TestkitService.AdminGetFile:input_type -> testkit.v1.AdminGetFileRequest
+	162, // 283: testkit.v1.TestkitService.AdminDeleteFile:input_type -> testkit.v1.AdminDeleteFileRequest
+	163, // 284: testkit.v1.TestkitService.AdminGetQuota:input_type -> testkit.v1.AdminGetQuotaRequest
+	164, // 285: testkit.v1.TestkitService.AdminSetQuota:input_type -> testkit.v1.AdminSetQuotaRequest
+	165, // 286: testkit.v1.TestkitService.AdminGetStats:input_type -> testkit.v1.AdminGetStatsRequest
+	230, // 287: testkit.v1.TestkitService.AdminListProviders:input_type -> google.protobuf.Empty
+	230, // 288: testkit.v1.TestkitService.AdminListBuckets:input_type -> google.protobuf.Empty
+	169, // 289: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:input_type -> testkit.v1.AdminSoftDeleteOwnerFilesRequest
+	171, // 290: testkit.v1.TestkitService.AdminDeleteOwner:input_type -> testkit.v1.AdminDeleteOwnerRequest
+	173, // 291: testkit.v1.TestkitService.AdminListAuditLogs:input_type -> testkit.v1.AdminListAuditLogsRequest
+	179, // 292: testkit.v1.TestkitService.SendEmail:input_type -> testkit.v1.SendEmailRequest
+	180, // 293: testkit.v1.TestkitService.SendSMS:input_type -> testkit.v1.SendSMSRequest
+	184, // 294: testkit.v1.TestkitService.GetEmail:input_type -> testkit.v1.GetEmailRequest
+	186, // 295: testkit.v1.TestkitService.ListEmails:input_type -> testkit.v1.ListEmailsRequest
+	190, // 296: testkit.v1.TestkitService.ListEmailsByCursor:input_type -> testkit.v1.ListEmailsByCursorRequest
+	194, // 297: testkit.v1.TestkitService.GetEmailStats:input_type -> testkit.v1.GetEmailStatsRequest
+	198, // 298: testkit.v1.TestkitService.ListEmailSenders:input_type -> testkit.v1.ListEmailSendersRequest
+	185, // 299: testkit.v1.TestkitService.GetSMS:input_type -> testkit.v1.GetSMSRequest
+	188, // 300: testkit.v1.TestkitService.ListSMS:input_type -> testkit.v1.ListSMSRequest
+	192, // 301: testkit.v1.TestkitService.ListSMSByCursor:input_type -> testkit.v1.ListSMSByCursorRequest
+	196, // 302: testkit.v1.TestkitService.GetSMSStats:input_type -> testkit.v1.GetSMSStatsRequest
+	202, // 303: testkit.v1.TestkitService.ListSMSRegions:input_type -> testkit.v1.ListSMSRegionsRequest
+	200, // 304: testkit.v1.TestkitService.ListSMSSenders:input_type -> testkit.v1.ListSMSSendersRequest
+	204, // 305: testkit.v1.TestkitService.NextID:input_type -> testkit.v1.NextIDRequest
+	206, // 306: testkit.v1.TestkitService.BatchNextID:input_type -> testkit.v1.BatchNextIDRequest
+	208, // 307: testkit.v1.TestkitService.Decompose:input_type -> testkit.v1.DecomposeRequest
+	210, // 308: testkit.v1.TestkitService.GetDashboard:input_type -> testkit.v1.GetDashboardRequest
+	28,  // 309: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
+	44,  // 310: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
+	44,  // 311: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
+	32,  // 312: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
+	230, // 313: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
+	44,  // 314: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
+	34,  // 315: testkit.v1.TestkitService.GetProfile:output_type -> testkit.v1.User
+	34,  // 316: testkit.v1.TestkitService.UpdateProfile:output_type -> testkit.v1.User
+	230, // 317: testkit.v1.TestkitService.ChangePassword:output_type -> google.protobuf.Empty
+	230, // 318: testkit.v1.TestkitService.ResetPassword:output_type -> google.protobuf.Empty
+	50,  // 319: testkit.v1.TestkitService.ListIdentities:output_type -> testkit.v1.ListIdentitiesResponse
+	35,  // 320: testkit.v1.TestkitService.BindIdentity:output_type -> testkit.v1.Identity
+	53,  // 321: testkit.v1.TestkitService.BindOAuthIdentity:output_type -> testkit.v1.BindOAuthIdentityResponse
+	230, // 322: testkit.v1.TestkitService.UnbindIdentity:output_type -> google.protobuf.Empty
+	56,  // 323: testkit.v1.TestkitService.ListSessions:output_type -> testkit.v1.ListSessionsResponse
+	230, // 324: testkit.v1.TestkitService.RevokeSession:output_type -> google.protobuf.Empty
+	230, // 325: testkit.v1.TestkitService.RevokeAllSessions:output_type -> google.protobuf.Empty
+	60,  // 326: testkit.v1.TestkitService.GetSession:output_type -> testkit.v1.GetSessionResponse
+	62,  // 327: testkit.v1.TestkitService.IssueSessionCode:output_type -> testkit.v1.IssueSessionCodeResponse
+	64,  // 328: testkit.v1.TestkitService.ExchangeSessionCode:output_type -> testkit.v1.ExchangeSessionCodeResponse
+	66,  // 329: testkit.v1.TestkitService.GetOAuthURL:output_type -> testkit.v1.GetOAuthURLResponse
+	70,  // 330: testkit.v1.TestkitService.SocialLogin:output_type -> testkit.v1.SocialLoginResponse
+	70,  // 331: testkit.v1.TestkitService.MiniProgramLogin:output_type -> testkit.v1.SocialLoginResponse
+	70,  // 332: testkit.v1.TestkitService.MiniProgramPhoneLogin:output_type -> testkit.v1.SocialLoginResponse
+	72,  // 333: testkit.v1.TestkitService.CreateUser:output_type -> testkit.v1.CreateUserResponse
+	34,  // 334: testkit.v1.TestkitService.GetUser:output_type -> testkit.v1.User
+	76,  // 335: testkit.v1.TestkitService.ListUsers:output_type -> testkit.v1.ListUsersResponse
+	78,  // 336: testkit.v1.TestkitService.ListUsersPaged:output_type -> testkit.v1.ListUsersPagedResponse
+	34,  // 337: testkit.v1.TestkitService.DisableUser:output_type -> testkit.v1.User
+	80,  // 338: testkit.v1.TestkitService.GetLoginLogs:output_type -> testkit.v1.GetLoginLogsResponse
+	37,  // 339: testkit.v1.TestkitService.CreateGroup:output_type -> testkit.v1.Group
+	37,  // 340: testkit.v1.TestkitService.GetGroup:output_type -> testkit.v1.Group
+	37,  // 341: testkit.v1.TestkitService.UpdateGroup:output_type -> testkit.v1.Group
+	85,  // 342: testkit.v1.TestkitService.ListGroups:output_type -> testkit.v1.ListGroupsResponse
+	230, // 343: testkit.v1.TestkitService.DeleteGroup:output_type -> google.protobuf.Empty
+	230, // 344: testkit.v1.TestkitService.AddGroupMember:output_type -> google.protobuf.Empty
+	230, // 345: testkit.v1.TestkitService.RemoveGroupMember:output_type -> google.protobuf.Empty
+	90,  // 346: testkit.v1.TestkitService.ListGroupMembers:output_type -> testkit.v1.ListGroupMembersResponse
+	230, // 347: testkit.v1.TestkitService.AddGroupRole:output_type -> google.protobuf.Empty
+	230, // 348: testkit.v1.TestkitService.RemoveGroupRole:output_type -> google.protobuf.Empty
+	94,  // 349: testkit.v1.TestkitService.ListGroupRoles:output_type -> testkit.v1.ListGroupRolesResponse
+	38,  // 350: testkit.v1.TestkitService.CreateRole:output_type -> testkit.v1.Role
+	38,  // 351: testkit.v1.TestkitService.GetRole:output_type -> testkit.v1.Role
+	38,  // 352: testkit.v1.TestkitService.UpdateRole:output_type -> testkit.v1.Role
+	230, // 353: testkit.v1.TestkitService.DeleteRole:output_type -> google.protobuf.Empty
+	100, // 354: testkit.v1.TestkitService.ListRoles:output_type -> testkit.v1.ListRolesResponse
+	230, // 355: testkit.v1.TestkitService.AssignRole:output_type -> google.protobuf.Empty
+	230, // 356: testkit.v1.TestkitService.RevokeRole:output_type -> google.protobuf.Empty
+	104, // 357: testkit.v1.TestkitService.ListUserRoles:output_type -> testkit.v1.ListUserRolesResponse
+	106, // 358: testkit.v1.TestkitService.ListPermissions:output_type -> testkit.v1.ListPermissionsResponse
+	39,  // 359: testkit.v1.TestkitService.CreatePermission:output_type -> testkit.v1.Permission
+	39,  // 360: testkit.v1.TestkitService.GetPermission:output_type -> testkit.v1.Permission
+	39,  // 361: testkit.v1.TestkitService.UpdatePermission:output_type -> testkit.v1.Permission
+	230, // 362: testkit.v1.TestkitService.DeletePermission:output_type -> google.protobuf.Empty
+	40,  // 363: testkit.v1.TestkitService.CreatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	40,  // 364: testkit.v1.TestkitService.GetPermissionGroup:output_type -> testkit.v1.PermissionGroup
+	40,  // 365: testkit.v1.TestkitService.UpdatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	230, // 366: testkit.v1.TestkitService.DeletePermissionGroup:output_type -> google.protobuf.Empty
+	116, // 367: testkit.v1.TestkitService.ListPermissionGroups:output_type -> testkit.v1.ListPermissionGroupsResponse
+	132, // 368: testkit.v1.TestkitService.GenerateUploadURL:output_type -> testkit.v1.GenerateUploadURLResponse
+	134, // 369: testkit.v1.TestkitService.GetSTSCredential:output_type -> testkit.v1.GetSTSCredentialResponse
+	136, // 370: testkit.v1.TestkitService.BatchGetSTSCredential:output_type -> testkit.v1.BatchGetSTSCredentialResponse
+	138, // 371: testkit.v1.TestkitService.ConfirmUpload:output_type -> testkit.v1.ConfirmUploadResponse
+	230, // 372: testkit.v1.TestkitService.CancelUpload:output_type -> google.protobuf.Empty
+	141, // 373: testkit.v1.TestkitService.GenerateDownloadURL:output_type -> testkit.v1.GenerateDownloadURLResponse
+	143, // 374: testkit.v1.TestkitService.GenerateProcessURL:output_type -> testkit.v1.GenerateProcessURLResponse
+	145, // 375: testkit.v1.TestkitService.GenerateCDNURL:output_type -> testkit.v1.GenerateCDNURLResponse
+	147, // 376: testkit.v1.TestkitService.ListMyFiles:output_type -> testkit.v1.ListMyFilesResponse
+	149, // 377: testkit.v1.TestkitService.ListMyFilesPaged:output_type -> testkit.v1.ListMyFilesPagedResponse
+	117, // 378: testkit.v1.TestkitService.GetMyFile:output_type -> testkit.v1.FileInfo
+	117, // 379: testkit.v1.TestkitService.UpdateMyFile:output_type -> testkit.v1.FileInfo
+	230, // 380: testkit.v1.TestkitService.DeleteMyFile:output_type -> google.protobuf.Empty
+	154, // 381: testkit.v1.TestkitService.BatchDeleteMyFiles:output_type -> testkit.v1.BatchDeleteMyFilesResponse
+	119, // 382: testkit.v1.TestkitService.GetMyQuota:output_type -> testkit.v1.QuotaInfo
+	156, // 383: testkit.v1.TestkitService.ListMyAuditLogs:output_type -> testkit.v1.ListMyAuditLogsResponse
+	119, // 384: testkit.v1.TestkitService.SetOwnerQuota:output_type -> testkit.v1.QuotaInfo
+	119, // 385: testkit.v1.TestkitService.AddOwnerQuota:output_type -> testkit.v1.QuotaInfo
+	160, // 386: testkit.v1.TestkitService.AdminListFiles:output_type -> testkit.v1.AdminListFilesResponse
+	118, // 387: testkit.v1.TestkitService.AdminGetFile:output_type -> testkit.v1.AdminFileInfo
+	230, // 388: testkit.v1.TestkitService.AdminDeleteFile:output_type -> google.protobuf.Empty
+	119, // 389: testkit.v1.TestkitService.AdminGetQuota:output_type -> testkit.v1.QuotaInfo
+	119, // 390: testkit.v1.TestkitService.AdminSetQuota:output_type -> testkit.v1.QuotaInfo
+	166, // 391: testkit.v1.TestkitService.AdminGetStats:output_type -> testkit.v1.AdminGetStatsResponse
+	167, // 392: testkit.v1.TestkitService.AdminListProviders:output_type -> testkit.v1.AdminListProvidersResponse
+	168, // 393: testkit.v1.TestkitService.AdminListBuckets:output_type -> testkit.v1.AdminListBucketsResponse
+	170, // 394: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:output_type -> testkit.v1.AdminSoftDeleteOwnerFilesResponse
+	172, // 395: testkit.v1.TestkitService.AdminDeleteOwner:output_type -> testkit.v1.AdminDeleteOwnerResponse
+	174, // 396: testkit.v1.TestkitService.AdminListAuditLogs:output_type -> testkit.v1.AdminListAuditLogsResponse
+	181, // 397: testkit.v1.TestkitService.SendEmail:output_type -> testkit.v1.SendResponse
+	181, // 398: testkit.v1.TestkitService.SendSMS:output_type -> testkit.v1.SendResponse
+	182, // 399: testkit.v1.TestkitService.GetEmail:output_type -> testkit.v1.EmailRecord
+	187, // 400: testkit.v1.TestkitService.ListEmails:output_type -> testkit.v1.ListEmailsResponse
+	191, // 401: testkit.v1.TestkitService.ListEmailsByCursor:output_type -> testkit.v1.ListEmailsByCursorResponse
+	195, // 402: testkit.v1.TestkitService.GetEmailStats:output_type -> testkit.v1.EmailStatsResponse
+	199, // 403: testkit.v1.TestkitService.ListEmailSenders:output_type -> testkit.v1.ListEmailSendersResponse
+	183, // 404: testkit.v1.TestkitService.GetSMS:output_type -> testkit.v1.SMSRecord
+	189, // 405: testkit.v1.TestkitService.ListSMS:output_type -> testkit.v1.ListSMSResponse
+	193, // 406: testkit.v1.TestkitService.ListSMSByCursor:output_type -> testkit.v1.ListSMSByCursorResponse
+	197, // 407: testkit.v1.TestkitService.GetSMSStats:output_type -> testkit.v1.SMSStatsResponse
+	203, // 408: testkit.v1.TestkitService.ListSMSRegions:output_type -> testkit.v1.ListSMSRegionsResponse
+	201, // 409: testkit.v1.TestkitService.ListSMSSenders:output_type -> testkit.v1.ListSMSSendersResponse
+	205, // 410: testkit.v1.TestkitService.NextID:output_type -> testkit.v1.NextIDResponse
+	207, // 411: testkit.v1.TestkitService.BatchNextID:output_type -> testkit.v1.BatchNextIDResponse
+	209, // 412: testkit.v1.TestkitService.Decompose:output_type -> testkit.v1.DecomposeResponse
+	215, // 413: testkit.v1.TestkitService.GetDashboard:output_type -> testkit.v1.DashboardResponse
+	309, // [309:414] is the sub-list for method output_type
+	204, // [204:309] is the sub-list for method input_type
+	204, // [204:204] is the sub-list for extension type_name
+	204, // [204:204] is the sub-list for extension extendee
+	0,   // [0:204] is the sub-list for field type_name
 }
 
 func init() { file_testkit_v1_testkit_proto_init() }
@@ -16441,7 +17170,7 @@ func file_testkit_v1_testkit_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_testkit_v1_testkit_proto_rawDesc), len(file_testkit_v1_testkit_proto_rawDesc)),
 			NumEnums:      28,
-			NumMessages:   187,
+			NumMessages:   199,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

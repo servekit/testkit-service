@@ -1791,6 +1791,96 @@ message ListSMSRegionsResponse {
   repeated string region_codes = 1;
 }
 
+// ==================== GID debug (P5) ====================
+//
+// Mirrors gid-service/api/proto/gid/v1/gid.proto shape-for-shape. gid RPCs
+// carry no caller-identity (global unique ID generation is caller-agnostic), so
+// the testkit-owned messages are identical to gid.proto and the mapping layer
+// (internal/service/gid) is a plain field copy. Only the type ownership moves
+// to testkit.v1 (design spec v2 §3.1 — testkit.proto imports no downstream
+// proto). protovalidate enforces count ∈ [1,1000] and id >= 1; downstream
+// failures pass through as xerr (§9).
+
+message NextIDRequest {}
+
+message NextIDResponse {
+  int64 id = 1;
+}
+
+message BatchNextIDRequest {
+  int32 count = 1 [(buf.validate.field).int32 = {gte: 1, lte: 1000}];
+}
+
+message BatchNextIDResponse {
+  repeated int64 ids = 1;
+}
+
+message DecomposeRequest {
+  int64 id = 1 [(buf.validate.field).int64 = {gte: 1}];
+}
+
+message DecomposeResponse {
+  int64 time = 1;
+  int64 sequence = 2;
+  int64 machine_id = 3;
+  string generated_at = 4; // ISO8601 timestamp
+}
+
+// ==================== Dashboard (P5, aggregated) ====================
+//
+// GetDashboard fans out to message.GetEmailStats + message.GetSMSStats +
+// storage.GetMyQuota + user.ListUsersPaged concurrently (fail-fast via errgroup)
+// and assembles this response (design spec §10 "聚合型" reference example).
+//
+// The caller's Owner (for GetMyQuota) is injected from ctx by the BFF — it is
+// NEVER present in GetDashboardRequest (v2 §3.2 rule 1: the BFF is the sole
+// trust boundary). EmailVendor / SmsVendor / EmailVendorStats / SmsVendorStats
+// are reused as-is from P4 above (mirrored from message.proto name-for-name and
+// number-for-number), so the mapping layer is a plain int cast — no redefinition
+// here. The sub-structures (EmailStats / SMSStats / MyQuota / UsersSummary)
+// mirror the downstream response shapes as read-only snapshots.
+
+message GetDashboardRequest {} // caller user_id injected from ctx for GetMyQuota
+
+// EmailStats mirrors message.EmailStatsResponse (read-only snapshot).
+message EmailStats {
+  int64 total = 1;
+  int64 sent = 2;
+  int64 failed = 3;
+  // success_rate in [0, 100]; -1 means "no data" (total == 0).
+  double success_rate = 4;
+  repeated EmailVendorStats vendors = 5;
+}
+
+// SMSStats mirrors message.SMSStatsResponse (read-only snapshot).
+message SMSStats {
+  int64 total = 1;
+  int64 sent = 2;
+  int64 failed = 3;
+  double success_rate = 4;
+  repeated SmsVendorStats vendors = 5;
+}
+
+// MyQuota mirrors storage.QuotaInfo (read-only snapshot of the caller's quota).
+message MyQuota {
+  int64 total_bytes = 1;
+  int64 used_bytes = 2;
+  int64 available_bytes = 3;
+  int32 file_count = 4;
+}
+
+// UsersSummary is the user-count aggregate from user.ListUsersPaged (count=true).
+message UsersSummary {
+  int64 total = 1;
+}
+
+message DashboardResponse {
+  EmailStats email_stats = 1;
+  SMSStats sms_stats = 2;
+  MyQuota quota = 3;
+  UsersSummary users = 4;
+}
+
 service TestkitService {
   rpc Ping(google.protobuf.Empty) returns (Pong) {
     option (google.api.http) = { get: "/ping" };
@@ -2215,5 +2305,31 @@ service TestkitService {
   }
   rpc ListSMSSenders(ListSMSSendersRequest) returns (ListSMSSendersResponse) {
     option (google.api.http) = { get: "/api/v1/sms:senders" };
+  }
+
+  // ==================== P5 RPCs (gid debug + aggregated dashboard) ====================
+  //
+  // All four are authenticated (NOT on the public whitelist): the dashboard
+  // needs the caller's user_id to inject the GetMyQuota Owner, and the gid
+  // debug tools sit behind login. GetDashboard fans out to message/storage/user
+  // concurrently (fail-fast); the gid RPCs are 1:1 forwards to gid-service.
+
+  // ---- GID debug (P5) ----
+  rpc NextID(NextIDRequest) returns (NextIDResponse) {
+    option (google.api.http) = { get: "/api/v1/gid/next" };
+  }
+  rpc BatchNextID(BatchNextIDRequest) returns (BatchNextIDResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/gid/batch"
+      body: "*"
+    };
+  }
+  rpc Decompose(DecomposeRequest) returns (DecomposeResponse) {
+    option (google.api.http) = { get: "/api/v1/gid/decompose/{id}" };
+  }
+
+  // ---- Dashboard (P5, aggregated) ----
+  rpc GetDashboard(GetDashboardRequest) returns (DashboardResponse) {
+    option (google.api.http) = { get: "/api/v1/dashboard" };
   }
 }
