@@ -56,7 +56,7 @@ func WithServiceOptions(opts ...option.Option) ServerOption {
 //     rules declared in testkit.proto
 //
 // The HTTP gateway auto-registers via testkitv1.RegisterTestkitServiceHandlerFromEndpoint
-// when cfg.Server.HTTPAddr is non-empty.
+// when cfg.Server.GatewayAddr is non-empty.
 func NewServer(cfg *config.Config, opts ...ServerOption) (*Server, error) {
 	var so serverOptions
 	for _, opt := range opts {
@@ -78,7 +78,7 @@ func NewServer(cfg *config.Config, opts ...ServerOption) (*Server, error) {
 	grpcSrv := grpcx.New(
 		&grpcx.ServerConfig{
 			GRPCAddr:    cfg.Server.GRPCAddr,
-			GatewayAddr: cfg.Server.HTTPAddr,
+			GatewayAddr: cfg.Server.GatewayAddr,
 		},
 		func(gs *grpc.Server) {
 			testkitv1.RegisterTestkitServiceServer(gs, hdl)

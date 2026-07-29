@@ -21,35 +21,32 @@ import (
 	"fmt"
 	"log/slog"
 	"time"
-	
-	"github.com/redis/go-redis/v9"
+
 	testkitv1 "testkit-service/gen/testkit/v1"
 	"testkit-service/internal/jobs"
 	"testkit-service/internal/version"
-	
+
+	"github.com/redis/go-redis/v9"
+
 	"testkit-service/pkg/config"
 	"testkit-service/pkg/option"
-	"testkit-service/pkg/thirdcall"
 
 	"github.com/servekit/go-common/cronx"
-	
-	"github.com/servekit/go-common/redisx"
+
 	"github.com/servekit/go-common/lifecycle"
+	"github.com/servekit/go-common/redisx"
 )
 
 // Service holds testkit-service business state.
 //
-// Resource fields (db, redis, demoSvc) are convenience references kept on the
-// root Service for resolveXxx helpers — they point at the same instances
-// tracked by mgr and injected into subpackages. Each domain lives in its own
-// subpackage field (testkit *testkit.Service); subpackages do NOT
-// reference this struct.
+// Resource fields (db, redis) are convenience references kept on the root
+// Service for resolveXxx helpers — they point at the same instances tracked by
+// mgr and injected into subpackages. Each domain lives in its own subpackage
+// field; subpackages do not reference this struct.
 type Service struct {
-	cfg *config.Config
-	mgr *lifecycle.Manager
+	cfg   *config.Config
+	mgr   *lifecycle.Manager
 	redis *redis.Client
-	demoSvc thirdcall.DemoService
-	
 
 	// startedAt is set once in New; Ping returns it for uptime.
 	startedAt int64
@@ -68,7 +65,7 @@ func New(cfg *config.Config, opts ...option.Option) (*Service, error) {
 	o := option.Apply(opts...)
 	_ = o // injection seam; enabled resources read o.X below
 	mgr := lifecycle.NewManager()
-	
+
 	redis, err := resolveRedis(cfg, o.Redis, mgr)
 	if err != nil {
 		if cerr := mgr.Stop(); cerr != nil {
@@ -76,21 +73,12 @@ func New(cfg *config.Config, opts ...option.Option) (*Service, error) {
 		}
 		return nil, err
 	}
-	
-	demoSvc, err := resolveDemo(cfg, o.DemoService, mgr)
-	if err != nil {
-		if cerr := mgr.Stop(); cerr != nil {
-			err = errors.Join(err, fmt.Errorf("rollback: %w", cerr))
-		}
-		return nil, err
-	}
-	
+
 	svc := &Service{
-		cfg: cfg,
-		mgr: mgr,
+		cfg:   cfg,
+		mgr:   mgr,
 		redis: redis,
-		demoSvc: demoSvc,
-		
+
 		startedAt: time.Now().UnixMilli(),
 	}
 
@@ -131,7 +119,7 @@ func (s *Service) Ping(ctx context.Context) (*testkitv1.Pong, error) {
 		StartedAt: s.startedAt,
 	}, nil
 }
-	
+
 // --- internal helpers ---
 
 // setupJobs builds the jobs.Scheduler, registers it on s.mgr, and wires
@@ -151,7 +139,7 @@ func (s *Service) setupJobs() error {
 	s.mgr.Add("jobs", scheduler)
 	return nil
 }
-	
+
 // resolveRedis returns the *redis.Client to use. If the caller injected one
 // via WithRedis, it's returned as-is (caller owns lifecycle). Otherwise a new
 // one is built from cfg.Redis and registered with mgr as a Stopper.
@@ -170,25 +158,3 @@ func resolveRedis(cfg *config.Config, injected *redis.Client, mgr *lifecycle.Man
 	}))
 	return rdb, nil
 }
-	
-// resolveDemo returns the DemoService to use. If the caller injected one via
-// WithDemoService, it's returned as-is. Otherwise a new one is built from cfg
-// and — if it implements Close() — registered with mgr as a Stopper.
-func resolveDemo(cfg *config.Config, injected thirdcall.DemoService, mgr *lifecycle.Manager) (thirdcall.DemoService, error) {
-	if injected != nil {
-		return injected, nil
-	}
-	demo, err := thirdcall.NewDemoService(&cfg.ThirdParty.Demo)
-	if err != nil {
-		return nil, fmt.Errorf("init demo: %w", err)
-	}
-	if closer, ok := demo.(interface{ Close() error }); ok {
-		mgr.AddStopper("demo", lifecycle.StopFunc(func() {
-			if err := closer.Close(); err != nil {
-				slog.Warn("close demo", "error", err)
-			}
-		}))
-	}
-	return demo, nil
-}
-	

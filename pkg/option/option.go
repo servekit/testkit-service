@@ -30,11 +30,8 @@ package option
 
 import (
 	"github.com/robfig/cron/v3"
-	
+
 	"github.com/redis/go-redis/v9"
-	
-	"testkit-service/pkg/thirdcall"
-	
 )
 
 // Option mutates Options.
@@ -50,25 +47,15 @@ type Options struct {
 	// that rather than inject a separate *cron.Cron. This option exists for
 	// advanced cases (e.g., a parent process sharing its scheduler).
 	Cron *cron.Cron
-	
-	// DemoService is the placeholder third-party service showing the dual-mode
-	// (gRPC / module) integration pattern. Replace with real services as needed.
-	DemoService thirdcall.DemoService
-	
 }
-	
+
 // WithRedis injects an existing *redis.Client. Caller owns its lifecycle.
 func WithRedis(c *redis.Client) Option { return func(o *Options) { o.Redis = c } }
-	
+
 // WithCron injects an existing *cron.Cron. Caller owns its lifecycle. Most
 // periodic-task needs should extend the scaffold's jobs.Scheduler instead.
 func WithCron(c *cron.Cron) Option { return func(o *Options) { o.Cron = c } }
-	
-// WithDemoService injects an existing DemoService. Caller owns its lifecycle.
-func WithDemoService(d thirdcall.DemoService) Option {
-	return func(o *Options) { o.DemoService = d }
-}
-	
+
 // Apply evaluates all options and returns the resolved Options. A nil field
 // means "not injected — service owns it and will Stop it on shutdown".
 func Apply(opts ...Option) Options {

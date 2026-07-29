@@ -29,10 +29,10 @@ var _ testkitv1.TestkitServiceServer = (*Handler)(nil)
 //	if err != nil { panic(err) }
 //	if err := hdl.Start(); err != nil { panic(err) }   // background goroutines (cron, etc.)
 //	defer hdl.Stop()                                    // closes owned resources
-//	testkit, err := hdl.GetTestkit(ctx, &testkitv1.GetTestkitRequest{Id: 1})
+//	pong, err := hdl.Ping(ctx, &emptypb.Empty{})
 //
-// Resources injected via option.WithDB / WithDemoService are NOT owned by the
-// service — parent process keeps ownership and is responsible for cleanup.
+// Resources injected via option.WithRedis are NOT owned by the service —
+// parent process keeps ownership and is responsible for cleanup.
 // Only resources the service creates from cfg are tracked by the internal
 // lifecycle.Manager and stopped on Stop.
 func NewModule(cfg *config.Config, opts ...option.Option) (*Handler, error) {
@@ -42,4 +42,3 @@ func NewModule(cfg *config.Config, opts ...option.Option) (*Handler, error) {
 	}
 	return handler.New(svc), nil
 }
-

@@ -2,47 +2,86 @@
 // via go-common's configx.
 //
 // serviceName and envPrefix are the two anchors external tooling (systemd
-// unit, Docker env, k8s configmap) must agree on with this binary.
+// units, Docker env, k8s configmaps) must agree on with this binary:
+//
+//   - serviceName ("testkit-service") drives the config-file env var
+//     (TESTKIT_SERVICE_CONFIG) and the /etc/testkit-service search path.
+//   - envPrefix ("TESTKIT") scopes per-field env overrides (e.g.
+//     TESTKIT_SERVER_GRPC_ADDR overrides server.grpc_addr).
 package config
 
 import (
+	"time"
+
 	"github.com/servekit/go-common/configx"
-	
-	"github.com/servekit/go-common/redisx"
+	"github.com/servekit/go-common/dbx"
 	"github.com/servekit/go-common/logging"
+	"github.com/servekit/go-common/redisx"
+
+	gidconfig "github.com/servekit/gid-service/pkg/config"
+	messageconfig "github.com/servekit/message-service/pkg/config"
+	storageconfig "github.com/servekit/storage-service/pkg/config"
+	userconfig "github.com/servekit/user-service/pkg/config"
 )
 
-// serviceName identifies this binary in config file lookup (/etc/<name>) and
-// the <NAME>_CONFIG env var. envPrefix scopes all env overrides under
-// TESTKIT_SERVICE_.
 const (
 	serviceName = "testkit-service"
-	envPrefix   = "TESTKIT_SERVICE"
+	envPrefix   = "TESTKIT"
 )
 
 // Config holds all configuration for the testkit service.
 //
-// Sub-config fields are pointers per golang-development skill §14: keeps
+// testkit is a single-process BFF that embeds the four downstream services
+// (gid / message / storage / user) in-process. It has no own DB tables in P1,
+// but it shares one PG connection pool and one Redis client across those
+// modules — hence Database and Redis live here and are injected into each
+// module via option (option.WithDB / WithRedis) rather than letting each
+// downstream open its own.
+//
+// Sub-config fields are pointers per the golang-development skill: keeps
 // style consistent with the outer *Config return + functional options, and
-// avoids large-struct copies. Note: configx (viper) ALWAYS allocates nil
-// pointer fields during unmarshal, so cfg.X == nil is never true — express
-// "optional dependency" via an inner Enabled bool, not pointer nil-check.
+// gives cheaper copy semantics. Note: configx (viper) ALWAYS allocates nil
+// pointer fields during unmarshal, so cfg.X == nil is never true after Load —
+// express "optional dependency" via an inner Enabled bool, not a pointer
+// nil-check.
 type Config struct {
-	Server *ServerConfig
-	// Redis is the cache/key-value store (wired when --redis).
-	Redis *redisx.Config
-	// ThirdParty groups third-party service settings (wired when --thirdcall).
+	Server     *ServerConfig
+	Database   *dbx.Config
+	Redis      *redisx.Config
+	JWT        *JWTConfig
+	CORS       *CORSConfig
 	ThirdParty *ThirdPartyConfig
-	Cron *CronConfig
-	Log  *logging.Config
+	Cron       *CronConfig
+	Log        *logging.Config
 }
 
-// ServerConfig holds gRPC and HTTP server addresses.
+// ServerConfig holds the gRPC and grpc-gateway listener addresses.
+//
+// testkit exposes two listener ports: gRPC (:19095) and the grpc-gateway HTTP
+// port (:18085, the BFF surface the frontend/nginx hits). The HTTP port IS the
+// gateway — empty disables it.
 type ServerConfig struct {
-	// GRPCAddr defaults to ":9000" — the team-wide standard for the gRPC port.
-	GRPCAddr string `default:":9000"`
-	// HTTPAddr defaults to ":8080" — the grpc-gateway port; empty disables HTTP.
-	HTTPAddr string `default:":8080"`
+	// GRPCAddr defaults to ":19095" — the team-wide BFF gRPC port.
+	GRPCAddr string `default:":19095"`
+	// GatewayAddr defaults to ":18085" — the grpc-gateway HTTP port; empty
+	// disables the HTTP surface.
+	GatewayAddr string `default:":18085"`
+}
+
+// JWTConfig holds the HS256 signing parameters for the tokens testkit issues.
+// The token carries a user-service session id; testkit is the only signer.
+type JWTConfig struct {
+	// Secret signs/verifies tokens. ${VAR}-expanded from the environment —
+	// never commit a real value. Required (empty is a startup error at the
+	// jwt.Manager constructor, not here).
+	Secret string
+	// TTL is the token lifetime. Defaults to 2h.
+	TTL time.Duration `default:"2h"`
+}
+
+// CORSConfig holds the allowed origins for the grpc-gateway HTTP surface.
+type CORSConfig struct {
+	AllowedOrigins []string
 }
 
 // CronConfig configures the internal cronx instance used by jobs.Scheduler.
@@ -52,46 +91,48 @@ type CronConfig struct {
 	// Timezone for cron expression evaluation. Defaults to Asia/Shanghai.
 	Timezone string `default:"Asia/Shanghai"`
 }
-	
-// ThirdPartyConfig groups all third-party service settings.
+
+// ThirdPartyConfig groups the four downstream service settings. Each runs
+// in-process (mode=module) by default; mode=grpc is reserved for splitting a
+// downstream out to its own deployment later. Each downstream's own Config is
+// embedded as the module-mode payload; testkit overrides its DB/Redis by
+// injecting the shared connections via option, so each downstream's
+// Database/Redis sub-config is left as a placeholder in config.example.yaml.
 type ThirdPartyConfig struct {
-	Demo RemoteServiceConfig[DemoServiceConfig]
+	GID     *RemoteServiceConfig[*gidconfig.Config]
+	Message *RemoteServiceConfig[*messageconfig.Config]
+	Storage *RemoteServiceConfig[*storageconfig.Config]
+	User    *RemoteServiceConfig[*userconfig.Config]
 }
 
 // RemoteServiceConfig holds connection settings for a service that can run
 // in-process (module) or as a remote gRPC deployment. T is the full config
-// used in module mode. Adding a new third-party service is one line:
+// used in module mode. This mirrors user-service's RemoteServiceConfig shape
+// (the reference definition per the design spec §7) — each service in the org
+// defines its own identical generic copy so no cross-module type import is
+// needed just to spell the wrapper.
 //
-//	type ThirdPartyConfig struct {
-//	    Demo    RemoteServiceConfig[DemoServiceConfig]
-//	    Payment RemoteServiceConfig[PaymentConfig]   // new
-//	}
+// Mode has no default — the consuming constructor decides how to treat an
+// empty value (typically module).
 type RemoteServiceConfig[T any] struct {
-	// Mode is "grpc" or "module". "module" is the dev default — no external dep.
-	Mode   string // "module" | "grpc"
-	Target string // gRPC addr, used when Mode == "grpc"
-	Config T      // in-process config, used when Mode == "module"
+	// Mode is "module" (in-process) or "grpc" (remote).
+	Mode string
+	// Target is the gRPC address used when Mode == "grpc".
+	Target string
+	// Config is the in-process config used when Mode == "module".
+	Config T
 }
 
-// DemoServiceConfig is the in-process config for DemoService. Placeholder
-// fields — replace with whatever your real third-party service needs.
-type DemoServiceConfig struct {
-	// Prefix is prepended to every DoDemo result (module mode only).
-	Prefix string `default:"[demo]"`
-	// MaxInputLen caps the length of DoDemo inputs.
-	MaxInputLen int `default:"1024"`
-}
-	
 // Load reads config from the standard configx locations:
-//   - /etc/testkit-service/config.yaml
-//   - ./config.yaml
-//   - $TESTKIT_SERVICE_CONFIG
+//   - -config flag (e.g. -config /etc/testkit-service/config.yaml)
+//   - TESTKIT_SERVICE_CONFIG env var
+//   - config.<ext> in the working directory and /etc/testkit-service
 //
 // config.example.yaml is fully placeholder-driven: every value is a ${VAR}
 // reference expanded from the process environment (WithExpandEnv), so the file
 // holds structure only — all actual values live in .env.example / the runtime
-// env. Env vars under $TESTKIT_SERVICE_ also override file values via
-// viper's automatic binding; struct `default:` tags apply last.
+// env. Env vars under TESTKIT_ also override file values via viper's automatic
+// binding; struct `default:` tags apply last.
 func Load() (*Config, error) {
 	var cfg Config
 	if err := configx.Load(&cfg,
