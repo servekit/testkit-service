@@ -4,6 +4,7 @@
 //
 //	testkit-service           # start the gRPC + HTTP server (default)
 //	testkit-service serve     # same as above (explicit)
+//	testkit-service migrate   # apply GORM AutoMigrate for all embedded services, then exit
 package main
 
 import (
@@ -36,8 +37,13 @@ func main() {
 			slog.Error("serve failed", "error", err)
 			os.Exit(1)
 		}
+	case "migrate":
+		if err := runMigrate(); err != nil {
+			slog.Error("migrate failed", "error", err)
+			os.Exit(1)
+		}
 	default:
-		fmt.Fprintf(os.Stderr, "usage: %s [serve]\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "usage: %s [serve|migrate]\n", os.Args[0])
 		os.Exit(2)
 	}
 }
