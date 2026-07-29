@@ -44,6 +44,7 @@ import (
 	"github.com/servekit/testkit-service/internal/jobs"
 	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/auth"
+	"github.com/servekit/testkit-service/internal/service/storage"
 	"github.com/servekit/testkit-service/internal/service/user"
 	"github.com/servekit/testkit-service/internal/version"
 	"github.com/servekit/testkit-service/pkg/config"
@@ -79,6 +80,11 @@ type Service struct {
 	// Named userSvc (not user) to avoid clashing with the thirdcall user
 	// handler field above. Built once the user handler + JWT manager are ready.
 	userSvc *user.Service
+
+	// storageSvc is the P3 storage domain (my-files / upload / quota / audit /
+	// admin). Named storageSvc (not storage) to avoid clashing with the thirdcall
+	// storage handler field above. Built once the storage handler is resolved.
+	storageSvc *storage.Service
 
 	// startedAt is set once in New; Ping returns it for uptime.
 	startedAt int64
@@ -135,6 +141,12 @@ func New(cfg *config.Config, opts ...option.Option) (*Service, error) {
 	// shared JWT manager (social login consumes the downstream session_id and
 	// mints a testkit JWT, mirroring the auth domain's Login).
 	svc.userSvc = user.New(svc.user, jwtMgr)
+
+	// Build the P3 storage domain against the embedded storage handler. The
+	// domain reads the caller's user_id from ctx (ownerFromCtx) for "my" RPCs
+	// and forwards the flat target owner for admin/owner-quota RPCs; no JWT is
+	// needed here (the interceptor already enforces login).
+	svc.storageSvc = storage.New(svc.storage)
 
 	// jobs.Scheduler owns the cron instance; setupJobs builds it, registers
 	// it on mgr, and wires periodic jobs (empty by default — add jobs inside
@@ -199,6 +211,10 @@ func (s *Service) Auth() *auth.Service { return s.auth }
 // User returns the P2 user domain (profile / identity / session / social). The
 // handler delegates the self-service user RPCs to it.
 func (s *Service) User() *user.Service { return s.userSvc }
+
+// Storage returns the P3 storage domain (my-files / upload / quota / audit /
+// admin). The handler delegates the storage RPCs to it.
+func (s *Service) Storage() *storage.Service { return s.storageSvc }
 
 // --- internal helpers ---
 

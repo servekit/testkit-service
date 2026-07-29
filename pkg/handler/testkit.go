@@ -386,3 +386,167 @@ func (h *Handler) DeletePermissionGroup(ctx context.Context, req *testkitv1.Dele
 func (h *Handler) ListPermissionGroups(ctx context.Context, req *testkitv1.ListPermissionGroupsRequest) (*testkitv1.ListPermissionGroupsResponse, error) {
 	return h.svc.User().ListPermissionGroups(ctx, req)
 }
+
+// --- Storage-domain RPCs (P3: my-files / upload / quota / audit / admin) ---
+//
+// Each is a thin delegate to the storage domain (internal/service/storage). The
+// handler holds no storage logic; "my" RPCs read the caller's user_id from ctx
+// (via ownerFromCtx inside the domain) and admin/owner-quota RPCs carry their
+// flat target owner_type/owner_id on the request. No RBAC enforcement this stage.
+
+// --- Upload (owner injected from ctx inside the domain) ---
+
+// GenerateUploadURL returns a single-use presigned PUT URL for client upload.
+func (h *Handler) GenerateUploadURL(ctx context.Context, req *testkitv1.GenerateUploadURLRequest) (*testkitv1.GenerateUploadURLResponse, error) {
+	return h.svc.Storage().GenerateUploadURL(ctx, req)
+}
+
+// GetSTSCredential returns STS temporary credentials for client-side upload.
+func (h *Handler) GetSTSCredential(ctx context.Context, req *testkitv1.GetSTSCredentialRequest) (*testkitv1.GetSTSCredentialResponse, error) {
+	return h.svc.Storage().GetSTSCredential(ctx, req)
+}
+
+// BatchGetSTSCredential returns one shared STS credential + per-file tokens.
+func (h *Handler) BatchGetSTSCredential(ctx context.Context, req *testkitv1.BatchGetSTSCredentialRequest) (*testkitv1.BatchGetSTSCredentialResponse, error) {
+	return h.svc.Storage().BatchGetSTSCredential(ctx, req)
+}
+
+// ConfirmUpload finalizes an upload after the client PUT the bytes to OSS.
+func (h *Handler) ConfirmUpload(ctx context.Context, req *testkitv1.ConfirmUploadRequest) (*testkitv1.ConfirmUploadResponse, error) {
+	return h.svc.Storage().ConfirmUpload(ctx, req)
+}
+
+// CancelUpload invalidates an upload_token before the upload completes.
+func (h *Handler) CancelUpload(ctx context.Context, req *testkitv1.CancelUploadRequest) (*emptypb.Empty, error) {
+	return h.svc.Storage().CancelUpload(ctx, req)
+}
+
+// --- Download / Process (owner injected from ctx) ---
+
+// GenerateDownloadURL returns a presigned download URL for the caller's file.
+func (h *Handler) GenerateDownloadURL(ctx context.Context, req *testkitv1.GenerateDownloadURLRequest) (*testkitv1.GenerateDownloadURLResponse, error) {
+	return h.svc.Storage().GenerateDownloadURL(ctx, req)
+}
+
+// GenerateProcessURL returns a presigned image-processing URL.
+func (h *Handler) GenerateProcessURL(ctx context.Context, req *testkitv1.GenerateProcessURLRequest) (*testkitv1.GenerateProcessURLResponse, error) {
+	return h.svc.Storage().GenerateProcessURL(ctx, req)
+}
+
+// GenerateCDNURL returns a signed or public CDN URL.
+func (h *Handler) GenerateCDNURL(ctx context.Context, req *testkitv1.GenerateCDNURLRequest) (*testkitv1.GenerateCDNURLResponse, error) {
+	return h.svc.Storage().GenerateCDNURL(ctx, req)
+}
+
+// --- My Files (owner injected from ctx) ---
+
+// ListMyFiles lists the caller's files (cursor pagination).
+func (h *Handler) ListMyFiles(ctx context.Context, req *testkitv1.ListMyFilesRequest) (*testkitv1.ListMyFilesResponse, error) {
+	return h.svc.Storage().ListMyFiles(ctx, req)
+}
+
+// ListMyFilesPaged lists the caller's files (offset pagination + totals).
+func (h *Handler) ListMyFilesPaged(ctx context.Context, req *testkitv1.ListMyFilesPagedRequest) (*testkitv1.ListMyFilesPagedResponse, error) {
+	return h.svc.Storage().ListMyFilesPaged(ctx, req)
+}
+
+// GetMyFile returns the caller's file by id.
+func (h *Handler) GetMyFile(ctx context.Context, req *testkitv1.GetMyFileRequest) (*testkitv1.FileInfo, error) {
+	return h.svc.Storage().GetMyFile(ctx, req)
+}
+
+// UpdateMyFile updates the caller's file.
+func (h *Handler) UpdateMyFile(ctx context.Context, req *testkitv1.UpdateMyFileRequest) (*testkitv1.FileInfo, error) {
+	return h.svc.Storage().UpdateMyFile(ctx, req)
+}
+
+// DeleteMyFile deletes the caller's file.
+func (h *Handler) DeleteMyFile(ctx context.Context, req *testkitv1.DeleteMyFileRequest) (*emptypb.Empty, error) {
+	return h.svc.Storage().DeleteMyFile(ctx, req)
+}
+
+// BatchDeleteMyFiles deletes multiple of the caller's files.
+func (h *Handler) BatchDeleteMyFiles(ctx context.Context, req *testkitv1.BatchDeleteMyFilesRequest) (*testkitv1.BatchDeleteMyFilesResponse, error) {
+	return h.svc.Storage().BatchDeleteMyFiles(ctx, req)
+}
+
+// --- My Quota / Audit (owner injected from ctx) ---
+
+// GetMyQuota returns the caller's quota.
+func (h *Handler) GetMyQuota(ctx context.Context, req *emptypb.Empty) (*testkitv1.QuotaInfo, error) {
+	return h.svc.Storage().GetMyQuota(ctx, req)
+}
+
+// ListMyAuditLogs lists audit logs for the caller.
+func (h *Handler) ListMyAuditLogs(ctx context.Context, req *testkitv1.ListMyAuditLogsRequest) (*testkitv1.ListMyAuditLogsResponse, error) {
+	return h.svc.Storage().ListMyAuditLogs(ctx, req)
+}
+
+// --- Owner quota (target owner on request) ---
+
+// SetOwnerQuota sets a target owner's total quota.
+func (h *Handler) SetOwnerQuota(ctx context.Context, req *testkitv1.SetOwnerQuotaRequest) (*testkitv1.QuotaInfo, error) {
+	return h.svc.Storage().SetOwnerQuota(ctx, req)
+}
+
+// AddOwnerQuota adjusts a target owner's quota by a delta.
+func (h *Handler) AddOwnerQuota(ctx context.Context, req *testkitv1.AddOwnerQuotaRequest) (*testkitv1.QuotaInfo, error) {
+	return h.svc.Storage().AddOwnerQuota(ctx, req)
+}
+
+// --- Admin (target owner / file_id on request; no RBAC enforcement this stage) ---
+
+// AdminListFiles lists files across owners (admin view).
+func (h *Handler) AdminListFiles(ctx context.Context, req *testkitv1.AdminListFilesRequest) (*testkitv1.AdminListFilesResponse, error) {
+	return h.svc.Storage().AdminListFiles(ctx, req)
+}
+
+// AdminGetFile returns a file by id (admin view, includes storage location).
+func (h *Handler) AdminGetFile(ctx context.Context, req *testkitv1.AdminGetFileRequest) (*testkitv1.AdminFileInfo, error) {
+	return h.svc.Storage().AdminGetFile(ctx, req)
+}
+
+// AdminDeleteFile hard-deletes a file by id.
+func (h *Handler) AdminDeleteFile(ctx context.Context, req *testkitv1.AdminDeleteFileRequest) (*emptypb.Empty, error) {
+	return h.svc.Storage().AdminDeleteFile(ctx, req)
+}
+
+// AdminGetQuota returns a target owner's quota.
+func (h *Handler) AdminGetQuota(ctx context.Context, req *testkitv1.AdminGetQuotaRequest) (*testkitv1.QuotaInfo, error) {
+	return h.svc.Storage().AdminGetQuota(ctx, req)
+}
+
+// AdminSetQuota sets a target owner's total quota.
+func (h *Handler) AdminSetQuota(ctx context.Context, req *testkitv1.AdminSetQuotaRequest) (*testkitv1.QuotaInfo, error) {
+	return h.svc.Storage().AdminSetQuota(ctx, req)
+}
+
+// AdminGetStats returns aggregated storage statistics.
+func (h *Handler) AdminGetStats(ctx context.Context, req *testkitv1.AdminGetStatsRequest) (*testkitv1.AdminGetStatsResponse, error) {
+	return h.svc.Storage().AdminGetStats(ctx, req)
+}
+
+// AdminListProviders lists configured storage providers.
+func (h *Handler) AdminListProviders(ctx context.Context, req *emptypb.Empty) (*testkitv1.AdminListProvidersResponse, error) {
+	return h.svc.Storage().AdminListProviders(ctx, req)
+}
+
+// AdminListBuckets lists configured storage buckets.
+func (h *Handler) AdminListBuckets(ctx context.Context, req *emptypb.Empty) (*testkitv1.AdminListBucketsResponse, error) {
+	return h.svc.Storage().AdminListBuckets(ctx, req)
+}
+
+// AdminSoftDeleteOwnerFiles soft-deletes all files belonging to a target owner.
+func (h *Handler) AdminSoftDeleteOwnerFiles(ctx context.Context, req *testkitv1.AdminSoftDeleteOwnerFilesRequest) (*testkitv1.AdminSoftDeleteOwnerFilesResponse, error) {
+	return h.svc.Storage().AdminSoftDeleteOwnerFiles(ctx, req)
+}
+
+// AdminDeleteOwner deletes a target owner and all its files.
+func (h *Handler) AdminDeleteOwner(ctx context.Context, req *testkitv1.AdminDeleteOwnerRequest) (*testkitv1.AdminDeleteOwnerResponse, error) {
+	return h.svc.Storage().AdminDeleteOwner(ctx, req)
+}
+
+// AdminListAuditLogs lists audit logs with rich filters.
+func (h *Handler) AdminListAuditLogs(ctx context.Context, req *testkitv1.AdminListAuditLogsRequest) (*testkitv1.AdminListAuditLogsResponse, error) {
+	return h.svc.Storage().AdminListAuditLogs(ctx, req)
+}
