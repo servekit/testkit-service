@@ -19,7 +19,8 @@
 //
 // This package depends only on internal/jwt and go-common — it does NOT import
 // any downstream gen. The SessionResolver func is the narrow seam that bridges
-// to user-service; see internal/adapter for the concrete resolver.
+// to user-service; the service root (internal/service) supplies the concrete
+// resolver via Service.SessionResolver().
 package auth
 
 import (

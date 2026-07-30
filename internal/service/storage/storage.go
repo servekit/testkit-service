@@ -3,7 +3,7 @@
 // that imports both testkitv1 and storagev1 (design spec v2 §3.4) — it is the
 // testkit-msg ↔ storage-msg mapping boundary. pkg/handler and the testkit proto
 // see only testkitv1; the downstream storage handler is reached exclusively
-// through the storagev1.StorageServiceServer seam held here.
+// through the thirdcallstorage.StorageService seam held here.
 //
 // Curation rules (v2 §3.2):
 //   - "My" RPCs (GenerateUploadURL / GetSTSCredential / BatchGetSTSCredential /
@@ -47,30 +47,29 @@ import (
 
 	storagev1 "github.com/servekit/storage-service/gen/storage/v1"
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	thirdcallstorage "github.com/servekit/testkit-service/internal/thirdcall/storage"
 )
 
-// Service implements testkit's storage domain. The storage field is typed as the
-// full storagev1.StorageServiceServer — *storagehandler.Handler
-// (internal/thirdcall/storage) satisfies it; test stubs embed
-// storagev1.UnimplementedStorageServiceServer and override only the methods
-// under test (mirrors the P2 user domain's decision to use the full server
-// interface rather than a hand-written 29-method list, which would be verbose
-// and brittle).
+// Service implements testkit's storage domain. The storage field is typed as
+// the thirdcallstorage.StorageService interface — the in-process wrapper and
+// gRPC client both satisfy it; test stubs embed
+// storagev1.UnimplementedStorageServiceServer, override the methods under test,
+// and add a no-op Close (Task 2).
 type Service struct {
-	storage storagev1.StorageServiceServer
+	storage thirdcallstorage.StorageService
 }
 
 // Option configures a Service (for test injection).
 type Option func(*Service)
 
 // WithStorageClient overrides the embedded storage client (tests).
-func WithStorageClient(c storagev1.StorageServiceServer) Option {
+func WithStorageClient(c thirdcallstorage.StorageService) Option {
 	return func(s *Service) { s.storage = c }
 }
 
 // New constructs the storage-domain service. client is the embedded
-// storage-service handler (storagev1.StorageServiceServer).
-func New(client storagev1.StorageServiceServer, opts ...Option) *Service {
+// storage-service handler (thirdcallstorage.StorageService).
+func New(client thirdcallstorage.StorageService, opts ...Option) *Service {
 	s := &Service{storage: client}
 	for _, o := range opts {
 		o(s)

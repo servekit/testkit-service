@@ -15,13 +15,11 @@ import (
 	"github.com/servekit/go-common/signalx"
 
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
-	"github.com/servekit/testkit-service/internal/adapter"
 	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service"
 	"github.com/servekit/testkit-service/pkg/auth"
 	"github.com/servekit/testkit-service/pkg/config"
 	"github.com/servekit/testkit-service/pkg/handler"
-	"github.com/servekit/testkit-service/pkg/option"
 )
 
 // Compile-time assertion: *Server satisfies signalx.Service.
@@ -36,18 +34,6 @@ var _ signalx.Service = (*Server)(nil)
 type Server struct {
 	grpcSrv *grpcx.Server
 	hdl     *handler.Handler
-}
-
-// ServerOption configures a Server instance.
-type ServerOption func(*serverOptions)
-
-type serverOptions struct {
-	serviceOpts []option.Option
-}
-
-// WithServiceOptions forwards options to the service layer.
-func WithServiceOptions(opts ...option.Option) ServerOption {
-	return func(o *serverOptions) { o.serviceOpts = append(o.serviceOpts, opts...) }
 }
 
 // NewServer constructs a Server with all dependencies wired.
@@ -72,13 +58,8 @@ func WithServiceOptions(opts ...option.Option) ServerOption {
 // Authorization header to gRPC metadata under the unprefixed "authorization"
 // key by default (verified in grpc-gateway runtime/context.go), so no custom
 // header matcher is needed (design decision 4).
-func NewServer(cfg *config.Config, opts ...ServerOption) (*Server, error) {
-	var so serverOptions
-	for _, opt := range opts {
-		opt(&so)
-	}
-
-	svc, err := service.New(cfg, so.serviceOpts...)
+func NewServer(cfg *config.Config) (*Server, error) {
+	svc, err := service.New(cfg)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +75,7 @@ func NewServer(cfg *config.Config, opts ...ServerOption) (*Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	resolver := adapter.NewSessionResolver(svc.UserHandler())
+	resolver := svc.SessionResolver()
 	authIntercept := auth.NewInterceptor(
 		jwtMgr,
 		resolver,

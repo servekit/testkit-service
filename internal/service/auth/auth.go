@@ -6,7 +6,7 @@
 // downstream gen (userv1) — it is the testkit-msg ↔ user-msg mapping boundary
 // (design spec v2 §3.3/§3.4). pkg/handler and the testkit proto see only
 // testkitv1; the downstream user handler is reached exclusively through the
-// UserClient seam declared here.
+// thirdcalluser.UserService seam injected here.
 //
 // The enums in testkit.proto mirror user-service name-for-name and
 // number-for-number, so every enum conversion below is a plain int cast
@@ -24,30 +24,15 @@ import (
 
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/internal/jwt"
+	thirdcalluser "github.com/servekit/testkit-service/internal/thirdcall/user"
 	userv1 "github.com/servekit/user-service/gen/user/v1"
 )
-
-// UserClient is the subset of the embedded user-service handler the auth domain
-// needs. The real *userhandler.Handler satisfies it (it implements the full
-// userv1.UserServiceServer); tests stub it by embedding
-// userv1.UnimplementedUserServiceServer and overriding the five methods.
-//
-// Declared locally (not aliased from thirdcall) so this package does not import
-// pkg/thirdcall or the concrete handler type — the mapping boundary stays
-// narrow and stub-friendly.
-type UserClient interface {
-	Login(ctx context.Context, req *userv1.LoginRequest) (*userv1.LoginResponse, error)
-	Register(ctx context.Context, req *userv1.RegisterRequest) (*userv1.RegisterResponse, error)
-	SendVerificationCode(ctx context.Context, req *userv1.SendVerificationCodeRequest) (*userv1.SendVerificationCodeResponse, error)
-	Logout(ctx context.Context, req *userv1.LogoutRequest) (*emptypb.Empty, error)
-	RefreshSession(ctx context.Context, req *userv1.RefreshSessionRequest) (*emptypb.Empty, error)
-}
 
 // Service implements the auth domain. It holds the JWT manager (testkit is the
 // sole signer) and the user-service client it forwards to.
 type Service struct {
 	jwt  *jwt.Manager
-	user UserClient
+	user thirdcalluser.UserService
 }
 
 // Option configures a Service.
@@ -55,7 +40,7 @@ type Option func(*Service)
 
 // WithUserClient injects the user-service client. Required before any RPC call
 // (a nil client is a wiring bug surfaces as a nil-dereference on first use).
-func WithUserClient(c UserClient) Option { return func(s *Service) { s.user = c } }
+func WithUserClient(c thirdcalluser.UserService) Option { return func(s *Service) { s.user = c } }
 
 // New constructs the auth service. jwtMgr must be non-nil; the user client is
 // supplied via WithUserClient (the service root wires the embedded user

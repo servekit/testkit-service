@@ -11,24 +11,16 @@ import (
 
 	gidv1 "github.com/servekit/gid-service/gen/gid/v1"
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	thirdcallgid "github.com/servekit/testkit-service/internal/thirdcall/gid"
 )
-
-// Client is the subset of the embedded gid-service handler this domain uses.
-// The real thirdcall.GIDService (= *gidservice.Handler, which embeds
-// gidv1.GidServiceServer) satisfies it structurally; tests use a stub.
-type Client interface {
-	NextID(ctx context.Context, req *gidv1.NextIDRequest) (*gidv1.NextIDResponse, error)
-	BatchNextID(ctx context.Context, req *gidv1.BatchNextIDRequest) (*gidv1.BatchNextIDResponse, error)
-	Decompose(ctx context.Context, req *gidv1.DecomposeRequest) (*gidv1.DecomposeResponse, error)
-}
 
 // Service implements the gid debug domain.
 type Service struct {
-	client Client
+	client thirdcallgid.GIDService
 }
 
 // New constructs the gid service.
-func New(client Client) *Service { return &Service{client: client} }
+func New(client thirdcallgid.GIDService) *Service { return &Service{client: client} }
 
 // NextID forwards to gid-service and maps the single generated id.
 func (s *Service) NextID(ctx context.Context, _ *testkitv1.NextIDRequest) (*testkitv1.NextIDResponse, error) {

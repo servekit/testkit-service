@@ -8,7 +8,7 @@
 // downstream gen (userv1) — it is the testkit-msg ↔ user-msg mapping boundary
 // (design spec v2 §3.3/§3.4). pkg/handler and the testkit proto see only
 // testkitv1; the downstream user handler is reached exclusively through the
-// userv1.UserServiceServer seam held here.
+// thirdcalluser.UserService seam held here.
 //
 // Curation rules (v2 §3.2):
 //   - "My" RPCs (GetProfile / UpdateProfile / ChangePassword / ListIdentities /
@@ -58,17 +58,16 @@ import (
 
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/internal/jwt"
+	thirdcalluser "github.com/servekit/testkit-service/internal/thirdcall/user"
 	userv1 "github.com/servekit/user-service/gen/user/v1"
 )
 
-// Service implements testkit's user domain. The user field is typed as the full
-// userv1.UserServiceServer — *userhandler.Handler (internal/thirdcall/user)
-// satisfies it; test stubs embed userv1.UnimplementedUserServiceServer and
-// override only the methods under test (decision 3 — a deliberate departure
-// from the P1 auth domain's small hand-written interface, since the user domain
-// touches 18 methods and a hand-written list would be verbose and brittle).
+// Service implements testkit's user domain. The user field is typed as the
+// thirdcalluser.UserService interface — the in-process wrapper and gRPC client
+// both satisfy it; test stubs embed userv1.UnimplementedUserServiceServer,
+// override the methods under test, and add a no-op Close (Task 2).
 type Service struct {
-	user userv1.UserServiceServer
+	user thirdcalluser.UserService
 	jwt  *jwt.Manager // non-nil in production; required for social-login RPCs
 }
 
@@ -76,16 +75,16 @@ type Service struct {
 type Option func(*Service)
 
 // WithUserClient overrides the embedded user client (tests).
-func WithUserClient(c userv1.UserServiceServer) Option {
+func WithUserClient(c thirdcalluser.UserService) Option {
 	return func(s *Service) { s.user = c }
 }
 
 // New constructs the user-domain service. userClient is the embedded
-// user-service handler (userv1.UserServiceServer); jwtMgr is the shared JWT
+// user-service handler (thirdcalluser.UserService); jwtMgr is the shared JWT
 // manager used to mint tokens for social login (the same instance the auth
 // domain and the auth interceptor use). jwtMgr may be nil when the caller does
 // not exercise social-login RPCs (e.g. unit tests of profile/identity/session).
-func New(userClient userv1.UserServiceServer, jwtMgr *jwt.Manager, opts ...Option) *Service {
+func New(userClient thirdcalluser.UserService, jwtMgr *jwt.Manager, opts ...Option) *Service {
 	s := &Service{user: userClient, jwt: jwtMgr}
 	for _, o := range opts {
 		o(s)

@@ -19,36 +19,22 @@ import (
 	userv1 "github.com/servekit/user-service/gen/user/v1"
 
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	thirdcallmessage "github.com/servekit/testkit-service/internal/thirdcall/message"
+	thirdcallstorage "github.com/servekit/testkit-service/internal/thirdcall/storage"
+	thirdcalluser "github.com/servekit/testkit-service/internal/thirdcall/user"
 	"github.com/servekit/testkit-service/pkg/xcodes"
 )
 
-// UserClient is the subset of the embedded user-service handler dashboard uses.
-type UserClient interface {
-	ListUsersPaged(ctx context.Context, req *userv1.ListUsersPagedRequest) (*userv1.ListUsersPagedResponse, error)
-}
-
-// StorageClient is the subset of the embedded storage-service handler dashboard uses.
-type StorageClient interface {
-	GetMyQuota(ctx context.Context, req *storagev1.GetMyQuotaRequest) (*storagev1.QuotaInfo, error)
-}
-
-// MessageClient is the subset of the embedded message-service handler dashboard uses.
-type MessageClient interface {
-	GetEmailStats(ctx context.Context, req *messagev1.GetEmailStatsRequest) (*messagev1.EmailStatsResponse, error)
-	GetSMSStats(ctx context.Context, req *messagev1.GetSMSStatsRequest) (*messagev1.SMSStatsResponse, error)
-}
-
 // Service implements the dashboard aggregation domain.
 type Service struct {
-	user    UserClient
-	storage StorageClient
-	message MessageClient
+	user    thirdcalluser.UserService
+	storage thirdcallstorage.StorageService
+	message thirdcallmessage.MessageService
 }
 
 // New constructs the dashboard service. The three clients are the embedded
-// downstream handlers (thirdcall.{User,Storage,Message}Service), which satisfy
-// the narrow interfaces above structurally. Order: user, storage, message.
-func New(user UserClient, storage StorageClient, message MessageClient) *Service {
+// downstream handlers (thirdcall interfaces). Order: user, storage, message.
+func New(user thirdcalluser.UserService, storage thirdcallstorage.StorageService, message thirdcallmessage.MessageService) *Service {
 	return &Service{user: user, storage: storage, message: message}
 }
 
