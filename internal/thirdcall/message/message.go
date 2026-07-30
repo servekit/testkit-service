@@ -10,6 +10,8 @@ import (
 
 // MessageService is the subset of message-service testkit forwards (message
 // domain + dashboard stats). Methods take/return message-service proto verbatim.
+//
+//revive:disable-next-line:exported // MessageService mirrors user-service's thirdcall type name; stutter is intentional
 type MessageService interface {
 	SendEmail(context.Context, *messagev1.SendEmailRequest) (*messagev1.SendResponse, error)
 	SendSMS(context.Context, *messagev1.SendSMSRequest) (*messagev1.SendResponse, error)

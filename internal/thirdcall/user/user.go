@@ -15,6 +15,8 @@ import (
 // UserService is the subset of user-service testkit forwards (auth + user +
 // dashboard domains, and the session resolver). Methods take/return
 // user-service proto verbatim; Close releases the backend.
+//
+//revive:disable-next-line:exported // UserService mirrors user-service's thirdcall type name; stutter is intentional
 type UserService interface {
 	Register(context.Context, *userv1.RegisterRequest) (*userv1.RegisterResponse, error)
 	Login(context.Context, *userv1.LoginRequest) (*userv1.LoginResponse, error)

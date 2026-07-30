@@ -15,6 +15,8 @@ import (
 // GIDService is the subset of gid-service testkit uses. Methods take/return
 // gid-service proto verbatim; Close releases the backend (module Handler Stop
 // or gRPC conn Close), wired to a lifecycle Stopper by resolveGID.
+//
+//revive:disable-next-line:exported // GIDService mirrors user-service's thirdcall type name; stutter is intentional
 type GIDService interface {
 	NextID(context.Context, *gidv1.NextIDRequest) (*gidv1.NextIDResponse, error)
 	BatchNextID(context.Context, *gidv1.BatchNextIDRequest) (*gidv1.BatchNextIDResponse, error)

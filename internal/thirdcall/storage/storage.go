@@ -13,6 +13,8 @@ import (
 // StorageService is the subset of storage-service testkit forwards (storage
 // domain + dashboard GetMyQuota). Methods take/return storage-service proto
 // verbatim.
+//
+//revive:disable-next-line:exported // StorageService mirrors user-service's thirdcall type name; stutter is intentional
 type StorageService interface {
 	GenerateUploadURL(context.Context, *storagev1.GenerateUploadURLRequest) (*storagev1.GenerateUploadURLResponse, error)
 	GetSTSCredential(context.Context, *storagev1.GetSTSCredentialRequest) (*storagev1.GetSTSCredentialResponse, error)
