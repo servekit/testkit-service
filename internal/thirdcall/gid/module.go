@@ -24,5 +24,5 @@ func (m *moduleGID) Close() error {
 	if !m.owns {
 		return nil
 	}
-	return m.Handler.Stop()
+	return m.Stop()
 }

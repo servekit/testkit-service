@@ -14,6 +14,7 @@ type grpcStorage struct {
 	client *storageservice.Client
 }
 
+// NewGRPC dials storage-service at target and returns a StorageService over gRPC.
 func NewGRPC(target string) (StorageService, error) {
 	c, err := storageservice.NewClient(target)
 	if err != nil {

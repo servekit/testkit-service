@@ -23,5 +23,5 @@ func (m *moduleUser) Close() error {
 	if !m.owns {
 		return nil
 	}
-	return m.Handler.Stop()
+	return m.Stop()
 }

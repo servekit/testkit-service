@@ -2,6 +2,9 @@
 // (db, redis, the four embedded downstreams) are instantiated here from cfg and
 // wired into the domain subpackages via their constructors. testkit is a terminal
 // service, so nothing is injectable — there is no option/owns-from-parent path.
+// Consequently owns is always true at every thirdcall NewModule call site here;
+// the false (borrowed) branch in each module.go exists only for pattern parity
+// with user-service and is unreachable in this service.
 // Lifecycle follows user-service: each downstream is registered as a Stopper
 // whose stop calls Close() (Handler.Stop for module, conn.Close for grpc).
 //
@@ -149,7 +152,11 @@ func resolveGID(cfg *config.RemoteServiceConfig[*gidconfig.Config], mgr *lifecyc
 		if err != nil {
 			return nil, nil, fmt.Errorf("init gid-service: %w", err)
 		}
-		mgr.AddStopper("gid", lifecycle.StopFunc(func() { _ = g.Close() }))
+		mgr.AddStopper("gid", lifecycle.StopFunc(func() {
+			if err := g.Close(); err != nil {
+				slog.Warn("close gid", "error", err)
+			}
+		}))
 		return g, nil, nil
 	case "module", "":
 		if cfg.Config == nil {
@@ -160,7 +167,11 @@ func resolveGID(cfg *config.RemoteServiceConfig[*gidconfig.Config], mgr *lifecyc
 			return nil, nil, fmt.Errorf("init gid-service: %w", err)
 		}
 		g := thirdcallgid.NewModule(hdl, true)
-		mgr.AddStopper("gid", lifecycle.StopFunc(func() { _ = g.Close() }))
+		mgr.AddStopper("gid", lifecycle.StopFunc(func() {
+			if err := g.Close(); err != nil {
+				slog.Warn("close gid", "error", err)
+			}
+		}))
 		return g, hdl, nil
 	default:
 		return nil, nil, fmt.Errorf("third_party.gid: unknown mode %q (want \"grpc\" or \"module\")", cfg.Mode)
@@ -169,7 +180,9 @@ func resolveGID(cfg *config.RemoteServiceConfig[*gidconfig.Config], mgr *lifecyc
 
 // resolveMessage returns testkit's MessageService and, in module mode, the raw
 // *messageservice.Handler so module-mode user can share it. gidRaw (non-nil in
-// module mode) is shared into message-service via WithGIDHandler.
+// module mode) is shared into message-service via WithGIDHandler. When gidRaw is
+// nil (gid in grpc mode), it is NOT injected and message-service resolves its
+// own gid upstream from its own config — matching user-service's behavior.
 func resolveMessage(cfg *config.RemoteServiceConfig[*messageconfig.Config], db *gorm.DB, rdb *redis.Client, gidRaw *gidservice.Handler, mgr *lifecycle.Manager) (thirdcallmessage.MessageService, *messageservice.Handler, error) {
 	if cfg == nil {
 		return nil, nil, fmt.Errorf("third_party.message: not configured")
@@ -183,7 +196,11 @@ func resolveMessage(cfg *config.RemoteServiceConfig[*messageconfig.Config], db *
 		if err != nil {
 			return nil, nil, fmt.Errorf("init message-service: %w", err)
 		}
-		mgr.AddStopper("message", lifecycle.StopFunc(func() { _ = m.Close() }))
+		mgr.AddStopper("message", lifecycle.StopFunc(func() {
+			if err := m.Close(); err != nil {
+				slog.Warn("close message", "error", err)
+			}
+		}))
 		return m, nil, nil
 	case "module", "":
 		if cfg.Config == nil {
@@ -201,7 +218,11 @@ func resolveMessage(cfg *config.RemoteServiceConfig[*messageconfig.Config], db *
 			return nil, nil, fmt.Errorf("init message-service: %w", err)
 		}
 		m := thirdcallmessage.NewModule(hdl, true)
-		mgr.AddStopper("message", lifecycle.StopFunc(func() { _ = m.Close() }))
+		mgr.AddStopper("message", lifecycle.StopFunc(func() {
+			if err := m.Close(); err != nil {
+				slog.Warn("close message", "error", err)
+			}
+		}))
 		return m, hdl, nil
 	default:
 		return nil, nil, fmt.Errorf("third_party.message: unknown mode %q (want \"grpc\" or \"module\")", cfg.Mode)
@@ -209,6 +230,9 @@ func resolveMessage(cfg *config.RemoteServiceConfig[*messageconfig.Config], db *
 }
 
 // resolveStorage returns testkit's StorageService. gidRaw shared in module mode.
+// When gidRaw is nil (gid in grpc mode), it is NOT injected and storage-service
+// resolves its own gid upstream from its own config — matching user-service's
+// behavior.
 func resolveStorage(cfg *config.RemoteServiceConfig[*storageconfig.Config], db *gorm.DB, rdb *redis.Client, gidRaw *gidservice.Handler, mgr *lifecycle.Manager) (thirdcallstorage.StorageService, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("third_party.storage: not configured")
@@ -222,7 +246,11 @@ func resolveStorage(cfg *config.RemoteServiceConfig[*storageconfig.Config], db *
 		if err != nil {
 			return nil, fmt.Errorf("init storage-service: %w", err)
 		}
-		mgr.AddStopper("storage", lifecycle.StopFunc(func() { _ = s.Close() }))
+		mgr.AddStopper("storage", lifecycle.StopFunc(func() {
+			if err := s.Close(); err != nil {
+				slog.Warn("close storage", "error", err)
+			}
+		}))
 		return s, nil
 	case "module", "":
 		if cfg.Config == nil {
@@ -240,7 +268,11 @@ func resolveStorage(cfg *config.RemoteServiceConfig[*storageconfig.Config], db *
 			return nil, fmt.Errorf("init storage-service: %w", err)
 		}
 		s := thirdcallstorage.NewModule(hdl, true)
-		mgr.AddStopper("storage", lifecycle.StopFunc(func() { _ = s.Close() }))
+		mgr.AddStopper("storage", lifecycle.StopFunc(func() {
+			if err := s.Close(); err != nil {
+				slog.Warn("close storage", "error", err)
+			}
+		}))
 		return s, nil
 	default:
 		return nil, fmt.Errorf("third_party.storage: unknown mode %q (want \"grpc\" or \"module\")", cfg.Mode)
@@ -249,7 +281,10 @@ func resolveStorage(cfg *config.RemoteServiceConfig[*storageconfig.Config], db *
 
 // resolveUser returns testkit's UserService. gidRaw + msgRaw shared in module
 // mode. cfg.Config is normalized first (thirdcall/user.NormalizeConfig) because
-// user-service dereferences Session/RBAC/OAuth unconditionally at startup.
+// user-service dereferences Session/RBAC/OAuth unconditionally at startup. When
+// either raw handler is nil (that upstream in grpc mode), it is NOT injected and
+// user-service resolves that upstream from its own config — matching user-service's
+// behavior.
 func resolveUser(cfg *config.RemoteServiceConfig[*userconfig.Config], db *gorm.DB, rdb *redis.Client, gidRaw *gidservice.Handler, msgRaw *messageservice.Handler, mgr *lifecycle.Manager) (thirdcalluser.UserService, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("third_party.user: not configured")
@@ -263,9 +298,15 @@ func resolveUser(cfg *config.RemoteServiceConfig[*userconfig.Config], db *gorm.D
 		if err != nil {
 			return nil, fmt.Errorf("init user-service: %w", err)
 		}
-		mgr.AddStopper("user", lifecycle.StopFunc(func() { _ = u.Close() }))
+		mgr.AddStopper("user", lifecycle.StopFunc(func() {
+			if err := u.Close(); err != nil {
+				slog.Warn("close user", "error", err)
+			}
+		}))
 		return u, nil
 	case "module", "":
+		// Unlike gid/message/storage (which fail-fast on nil cfg.Config), user
+		// tolerates a nil config: NormalizeConfig backfills safe dev defaults.
 		opts := []usroption.Option{
 			usroption.WithDB(db),
 			usroption.WithRedis(rdb),
@@ -281,7 +322,11 @@ func resolveUser(cfg *config.RemoteServiceConfig[*userconfig.Config], db *gorm.D
 			return nil, fmt.Errorf("init user-service: %w", err)
 		}
 		u := thirdcalluser.NewModule(hdl, true)
-		mgr.AddStopper("user", lifecycle.StopFunc(func() { _ = u.Close() }))
+		mgr.AddStopper("user", lifecycle.StopFunc(func() {
+			if err := u.Close(); err != nil {
+				slog.Warn("close user", "error", err)
+			}
+		}))
 		return u, nil
 	default:
 		return nil, fmt.Errorf("third_party.user: unknown mode %q (want \"grpc\" or \"module\")", cfg.Mode)

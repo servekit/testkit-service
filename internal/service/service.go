@@ -106,9 +106,20 @@ func (s *Service) SessionResolver() pkauth.SessionResolver {
 	}
 }
 
-func (s *Service) Auth() *auth.Service              { return s.auth }
-func (s *Service) User() *user.Service              { return s.userSvc }
-func (s *Service) Storage() *storage.Service        { return s.storageSvc }
-func (s *Service) Message() *message.Service        { return s.messageSvc }
-func (s *Service) Gid() *gidsvc.Service             { return s.gidSvc }
+// Auth returns the P1 auth domain (login flow + testkit JWT issue).
+func (s *Service) Auth() *auth.Service { return s.auth }
+
+// User returns the P2 user domain (profile + admin user CRUD over user-service).
+func (s *Service) User() *user.Service { return s.userSvc }
+
+// Storage returns the P3 storage domain (file listing + STS over storage-service).
+func (s *Service) Storage() *storage.Service { return s.storageSvc }
+
+// Message returns the P4 message domain (email/SMS send over message-service).
+func (s *Service) Message() *message.Service { return s.messageSvc }
+
+// Gid returns the P5 gid domain (id issue/debug over gid-service).
+func (s *Service) Gid() *gidsvc.Service { return s.gidSvc }
+
+// Dashboard returns the P5 dashboard domain (aggregated user/storage/message stats).
 func (s *Service) Dashboard() *dashboardsvc.Service { return s.dashboardSvc }

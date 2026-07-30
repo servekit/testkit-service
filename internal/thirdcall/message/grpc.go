@@ -12,6 +12,7 @@ type grpcMessage struct {
 	client *messageservice.Client
 }
 
+// NewGRPC dials message-service at target and returns a MessageService over gRPC.
 func NewGRPC(target string) (MessageService, error) {
 	c, err := messageservice.NewClient(target)
 	if err != nil {

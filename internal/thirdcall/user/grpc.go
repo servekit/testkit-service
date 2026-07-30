@@ -14,6 +14,7 @@ type grpcUser struct {
 	client *userservice.Client
 }
 
+// NewGRPC dials user-service at target and returns a UserService over gRPC.
 func NewGRPC(target string) (UserService, error) {
 	c, err := userservice.NewClient(target)
 	if err != nil {
