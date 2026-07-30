@@ -74,6 +74,10 @@ func (s *stubServer) ListMyAuditLogs(ctx context.Context, req *storagev1.ListMyA
 	return s.UnimplementedStorageServiceServer.ListMyAuditLogs(ctx, req)
 }
 
+// Close is a no-op: the stub satisfies thirdcallstorage.StorageService (which
+// adds Close for lifecycle) without owning any real backend.
+func (s *stubServer) Close() error { return nil }
+
 // ctxWithUser returns a context carrying an authenticated user_id, mirroring
 // what the P1 auth interceptor injects.
 func ctxWithUser(uid int64) context.Context {
@@ -351,6 +355,9 @@ var errSentinel = errors.New("boom")
 func (s *errServer) ListMyFilesPaged(context.Context, *storagev1.ListMyFilesPagedRequest) (*storagev1.ListMyFilesPagedResponse, error) {
 	return nil, errSentinel
 }
+
+// Close is a no-op: the stub satisfies thirdcallstorage.StorageService.
+func (s *errServer) Close() error { return nil }
 
 func TestMyRPC_PlainErrorPassthrough(t *testing.T) {
 	svc := storage.New(&errServer{})

@@ -14,9 +14,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// --- stubs implement dashboard.{User,Storage,Message}Client ---
+// --- stubs implement dashboard's thirdcall seams (thirdcall{user,storage,
+// message}.{User,Storage,Message}Service). Each embeds the downstream's
+// Unimplemented*Server (so it satisfies the full RPC method set) and overrides
+// only the method(s) the dashboard exercises, plus Close for the lifecycle
+// seam. ---
 
 type stubUser struct {
+	userv1.UnimplementedUserServiceServer
+
 	total         int64
 	receivedCount bool
 	receivedSize  int32
@@ -32,7 +38,11 @@ func (s *stubUser) ListUsersPaged(_ context.Context, req *userv1.ListUsersPagedR
 	return &userv1.ListUsersPagedResponse{Total: s.total}, nil
 }
 
+func (s *stubUser) Close() error { return nil }
+
 type stubStorage struct {
+	storagev1.UnimplementedStorageServiceServer
+
 	quota         *storagev1.QuotaInfo
 	receivedOwner *storagev1.Owner
 	err           error
@@ -46,7 +56,11 @@ func (s *stubStorage) GetMyQuota(ctx context.Context, req *storagev1.GetMyQuotaR
 	return s.quota, nil
 }
 
+func (s *stubStorage) Close() error { return nil }
+
 type stubMessage struct {
+	messagev1.UnimplementedMessageServiceServer
+
 	email *messagev1.EmailStatsResponse
 	sms   *messagev1.SMSStatsResponse
 	err   error
@@ -65,6 +79,8 @@ func (s *stubMessage) GetSMSStats(ctx context.Context, req *messagev1.GetSMSStat
 	}
 	return s.sms, nil
 }
+
+func (s *stubMessage) Close() error { return nil }
 
 func ctxWithUser(id int64) context.Context {
 	return context.WithValue(context.Background(), grpcx.UserIDKey, id)

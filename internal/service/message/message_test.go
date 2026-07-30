@@ -133,6 +133,10 @@ func (s *stubServer) ListSMSRegions(_ context.Context, req *messagev1.ListSMSReg
 	return s.listSMSRegionsResp, s.listSMSRegionsErr
 }
 
+// Close is a no-op: the stub satisfies thirdcallmessage.MessageService (which
+// adds Close for lifecycle) without owning any real backend.
+func (s *stubServer) Close() error { return nil }
+
 // TestSendEmail_InjectsSenderIDFromConfig verifies the core curation (decision
 // 1): the testkit request has NO sender_id field; the converter fills the
 // downstream sender_id from the configured value (NOT from ctx user_id).

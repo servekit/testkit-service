@@ -92,6 +92,10 @@ func (s *stubUserClient) RefreshSession(_ context.Context, req *userv1.RefreshSe
 	return &emptypb.Empty{}, nil
 }
 
+// Close is a no-op: the stub satisfies thirdcalluser.UserService (which adds
+// Close for lifecycle) without owning any real backend.
+func (s *stubUserClient) Close() error { return nil }
+
 func sampleUser() *userv1.User {
 	return &userv1.User{
 		Id:       701,

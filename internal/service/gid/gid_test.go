@@ -31,6 +31,10 @@ func (s *stubClient) Decompose(ctx context.Context, req *gidv1.DecomposeRequest)
 	return s.decomposed, nil
 }
 
+// Close is a no-op: the stub satisfies thirdcallgid.GIDService (which adds
+// Close for lifecycle) without owning any real backend.
+func (s *stubClient) Close() error { return nil }
+
 func TestNextID_MapsResponse(t *testing.T) {
 	svc := gid.New(&stubClient{nextID: 42})
 	resp, err := svc.NextID(context.Background(), &testkitv1.NextIDRequest{})
