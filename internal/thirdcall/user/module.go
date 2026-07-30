@@ -13,8 +13,7 @@ type moduleUser struct {
 // NewModule wraps a user-service Handler as a UserService. owns=true when the
 // caller built it; false when borrowed. Resources (db/redis/gid/message) are
 // instantiated + injected by the service root — this wrapper only wraps. The
-// caller must have already normalized cfg (NormalizeConfig) before building the
-// Handler.
+// caller passes cfg as-is; user-service's own construction is nil-safe.
 func NewModule(h *userhandler.Handler, owns bool) UserService {
 	return &moduleUser{Handler: h, owns: owns}
 }

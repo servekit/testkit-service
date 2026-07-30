@@ -285,11 +285,12 @@ func resolveStorage(cfg *config.RemoteServiceConfig[*storageconfig.Config], db *
 }
 
 // resolveUser returns testkit's UserService. gidRaw + msgRaw shared in module
-// mode. cfg.Config is normalized first (thirdcall/user.NormalizeConfig) because
-// user-service dereferences Session/RBAC/OAuth unconditionally at startup. When
-// either raw handler is nil (that upstream in grpc mode), it is NOT injected and
-// user-service resolves that upstream from its own config — matching user-service's
-// behavior.
+// mode. cfg.Config is passed through as-is — user-service's construction is
+// nil-safe (nil/empty Session/RBAC/OAuth resolve to defaults; unconfigured
+// providers are skipped), so testkit no longer normalizes it. When either raw
+// handler is nil (that upstream in grpc mode), it is NOT injected and
+// user-service resolves that upstream from its own config — matching
+// user-service's behavior.
 func resolveUser(cfg *config.RemoteServiceConfig[*userconfig.Config], db *gorm.DB, rdb *redis.Client, gidRaw *gidservice.Handler, msgRaw *messageservice.Handler, mgr *lifecycle.Manager) (thirdcalluser.UserService, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("third_party.user: not configured")
@@ -310,8 +311,9 @@ func resolveUser(cfg *config.RemoteServiceConfig[*userconfig.Config], db *gorm.D
 		}))
 		return u, nil
 	case "module", "":
-		// Unlike gid/message/storage (which fail-fast on nil cfg.Config), user
-		// tolerates a nil config: NormalizeConfig backfills safe dev defaults.
+		// cfg.Config is passed through unmodified — user-service's construction
+		// is nil-safe (a nil/empty config boots with defaults; unconfigured OAuth
+		// providers are skipped).
 		opts := []usroption.Option{
 			usroption.WithDB(db),
 			usroption.WithRedis(rdb),
@@ -322,7 +324,7 @@ func resolveUser(cfg *config.RemoteServiceConfig[*userconfig.Config], db *gorm.D
 		if msgRaw != nil {
 			opts = append(opts, usroption.WithMessageHandler(msgRaw))
 		}
-		hdl, err := userservice.NewModule(thirdcalluser.NormalizeConfig(cfg.Config), opts...)
+		hdl, err := userservice.NewModule(cfg.Config, opts...)
 		if err != nil {
 			return nil, fmt.Errorf("init user-service: %w", err)
 		}
