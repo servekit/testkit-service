@@ -48,7 +48,7 @@ func defaultSessionConfig() *userconfig.SessionConfig {
 	}
 }
 
-// normalizeConfig fills in the sub-configs that user-service's newWithDeps
+// NormalizeConfig fills in the sub-configs that user-service's newWithDeps
 // dereferences unconditionally at startup — Session (session.NewManager),
 // RBAC + RBAC.Cache (cache.NewRBACCache reads Cache on every write), and OAuth
 // plus its four providers (social provider constructors; apple.New parses the
@@ -61,7 +61,7 @@ func defaultSessionConfig() *userconfig.SessionConfig {
 //
 // cfg may be nil — testkit's config block can be left empty, and configx does
 // not allocate the inner *userconfig.Config until the operator populates it.
-func normalizeConfig(cfg *userconfig.Config) *userconfig.Config {
+func NormalizeConfig(cfg *userconfig.Config) *userconfig.Config {
 	if cfg == nil {
 		cfg = &userconfig.Config{}
 	}

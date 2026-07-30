@@ -1,36 +1,23 @@
-// Package storage is the in-process wiring for storage-service.
 package storage
 
 import (
-	"fmt"
-
-	"github.com/redis/go-redis/v9"
-	"gorm.io/gorm"
-
-	gidservice "github.com/servekit/gid-service/pkg"
-	storageservice "github.com/servekit/storage-service/pkg"
-	"github.com/servekit/storage-service/pkg/config"
 	storagehandler "github.com/servekit/storage-service/pkg/handler"
-	stoption "github.com/servekit/storage-service/pkg/option"
 )
 
-// Handler is the in-process storage-service handle: a *pkg/handler.Handler.
-// storage-service's public pkg package does not re-export the handler type
-// (its NewModule returns *pkg/handler.Handler directly), so we alias the
-// pointer here — the single place outside the downstream that names it.
-type Handler = *storagehandler.Handler
+type moduleStorage struct {
+	*storagehandler.Handler
+	owns bool
+}
 
-// NewModule constructs an in-process storage-service, injecting the shared PG
-// and Redis pools and the raw gid handler (storage depends on gid for id
-// generation).
-func NewModule(cfg *config.Config, db *gorm.DB, rdb *redis.Client, gid *gidservice.Handler) (Handler, error) {
-	hdl, err := storageservice.NewModule(cfg,
-		stoption.WithDB(db),
-		stoption.WithRedis(rdb),
-		stoption.WithGIDHandler(gid),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("storage module: %w", err)
+// NewModule wraps a storage-service Handler as a StorageService. owns=true when
+// the caller built it; false when borrowed. Resources injected by service root.
+func NewModule(h *storagehandler.Handler, owns bool) StorageService {
+	return &moduleStorage{Handler: h, owns: owns}
+}
+
+func (m *moduleStorage) Close() error {
+	if !m.owns {
+		return nil
 	}
-	return hdl, nil
+	return m.Handler.Stop()
 }

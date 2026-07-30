@@ -13,7 +13,7 @@ import (
 // nil sub-configs are backfilled so user-service's newWithDeps never nil-derefs
 // at startup, and the Apple provider gets a parser-valid dev key.
 func TestNormalizeConfig_fillsNilSubconfigs(t *testing.T) {
-	cfg := normalizeConfig(nil)
+	cfg := NormalizeConfig(nil)
 
 	require.NotNil(t, cfg.Session)
 	assert.Equal(t, 168*time.Hour, cfg.Session.TTL)
@@ -49,7 +49,7 @@ func TestNormalizeConfig_preservesOperatorValues(t *testing.T) {
 			Apple:  &userconfig.OAuthAppleConfig{PrivateKey: realKey, ClientID: "com.op"},
 		},
 	}
-	out := normalizeConfig(in)
+	out := NormalizeConfig(in)
 	assert.Same(t, in, out, "should mutate in place")
 
 	// Operator scalars preserved.

@@ -1,29 +1,28 @@
-// Package gid is the in-process wiring for gid-service.
-//
-// It is the only place in testkit that imports gid-service's public pkg +
-// gen. Callers (service.go) reach gid via pkg/thirdcall, which delegates here.
 package gid
 
 import (
-	"fmt"
-
 	gidservice "github.com/servekit/gid-service/pkg"
-	"github.com/servekit/gid-service/pkg/config"
 )
 
-// Handler is the in-process gid-service handle: a *handler.Handler. Aliased
-// to the pointer because that is what gid-service's NewModule returns and what
-// testkit holds — it exposes the full gidv1.GidServiceServer method set
-// (NextID, BatchNextID, Decompose, ...) plus Start/Stop for lifecycle.
-type Handler = *gidservice.Handler
+// moduleGID wraps an in-process gid-service Handler. owns reports whether this
+// wrapper owns the Handler's lifecycle: true when the caller built it (Close
+// Stops it), false when borrowed from an owner (Close is a no-op).
+type moduleGID struct {
+	*gidservice.Handler
+	owns bool
+}
 
-// NewModule constructs an in-process gid-service from config. gid owns no
-// caller-injectable resources (no DB, no Redis, no upstream thirdcall), so it
-// takes no options — its pkg/option.Options is intentionally empty.
-func NewModule(cfg *config.Config) (Handler, error) {
-	hdl, err := gidservice.NewModule(cfg)
-	if err != nil {
-		return nil, fmt.Errorf("gid module: %w", err)
+// NewModule wraps a gid-service Handler as a GIDService. owns=true when the
+// caller built the Handler (Close Stops it); false when injected by an owner.
+// Resources (none for gid) are instantiated by the service root, not here.
+func NewModule(h *gidservice.Handler, owns bool) GIDService {
+	return &moduleGID{Handler: h, owns: owns}
+}
+
+// Close stops the Handler only if this wrapper owns it.
+func (m *moduleGID) Close() error {
+	if !m.owns {
+		return nil
 	}
-	return hdl, nil
+	return m.Handler.Stop()
 }
