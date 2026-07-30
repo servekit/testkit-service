@@ -17,9 +17,10 @@
 // testkit is a single-process BFF: it embeds gid/message/storage/user-service
 // in-process (mode=module) and shares one PG pool + one Redis client across
 // them. The four handlers are built from cfg.ThirdParty (or injected), wired
-// with the shared pools and the gid/message adapters (internal/adapter), and
-// each registered with mgr as a lifecycle.Service so their background jobs
-// (cron) start and stop with testkit. The shared pools are injected INTO the
+// with the shared pools and the raw gid/message handlers injected directly
+// (option.WithGIDHandler / WithMessageHandler — no adapters), and each
+// registered with mgr as a lifecycle.Service so their background jobs (cron)
+// start and stop with testkit. The shared pools are injected INTO the
 // downstreams, so each downstream's own lifecycle.Manager never owns them —
 // no double-close on shutdown.
 package service
@@ -34,13 +35,14 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
+	gidservice "github.com/servekit/gid-service/pkg"
 	"github.com/servekit/go-common/cronx"
 	"github.com/servekit/go-common/dbx"
 	"github.com/servekit/go-common/lifecycle"
 	"github.com/servekit/go-common/redisx"
+	messageservice "github.com/servekit/message-service/pkg"
 
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
-	"github.com/servekit/testkit-service/internal/adapter"
 	"github.com/servekit/testkit-service/internal/jobs"
 	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/auth"
@@ -269,9 +271,8 @@ func (s *Service) Dashboard() *dashboardsvc.Service { return s.dashboardSvc }
 // registers each self-built handler with mgr as a lifecycle.Service (each
 // downstream *handler.Handler satisfies Start/Stop, so its background jobs
 // start/stop with testkit). Injected handlers (option.WithX) are used as-is
-// and NOT registered — caller owns them. The gid and message adapters are
-// built once from the resolved handlers and shared across the downstreams that
-// need them.
+// and NOT registered — caller owns them. The raw gid and message handlers are
+// threaded directly into the downstreams that need them (no adapters).
 func (s *Service) resolveDownstreams(o option.Options) error {
 	// 1. gid (no upstream deps).
 	gidHdl, err := resolveGID(s.cfg, o.GID, s.mgr)
@@ -279,25 +280,23 @@ func (s *Service) resolveDownstreams(o option.Options) error {
 		return err
 	}
 	s.gid = gidHdl
-	gidAdapter := adapter.NewGIDAdapter(gidHdl)
 
 	// 2. message (depends on gid).
-	msgHdl, err := resolveMessage(s.cfg, o.Message, s.db, s.redis, gidAdapter, s.mgr)
+	msgHdl, err := resolveMessage(s.cfg, o.Message, s.db, s.redis, gidHdl, s.mgr)
 	if err != nil {
 		return err
 	}
 	s.message = msgHdl
-	msgAdapter := adapter.NewMessageAdapter(msgHdl)
 
 	// 3. storage (depends on gid).
-	stHdl, err := resolveStorage(s.cfg, o.Storage, s.db, s.redis, gidAdapter, s.mgr)
+	stHdl, err := resolveStorage(s.cfg, o.Storage, s.db, s.redis, gidHdl, s.mgr)
 	if err != nil {
 		return err
 	}
 	s.storage = stHdl
 
 	// 4. user (depends on gid + message).
-	usrHdl, err := resolveUser(s.cfg, o.User, s.db, s.redis, gidAdapter, msgAdapter, s.mgr)
+	usrHdl, err := resolveUser(s.cfg, o.User, s.db, s.redis, gidHdl, msgHdl, s.mgr)
 	if err != nil {
 		return err
 	}
@@ -320,8 +319,9 @@ func resolveGID(cfg *config.Config, injected thirdcall.GIDService, mgr *lifecycl
 }
 
 // resolveMessage returns the message handler to use. Injected → as-is.
-// Otherwise built with the shared pools + gid adapter and registered with mgr.
-func resolveMessage(cfg *config.Config, injected thirdcall.MessageService, db *gorm.DB, rdb *redis.Client, gid *adapter.GIDAdapter, mgr *lifecycle.Manager) (thirdcall.MessageService, error) {
+// Otherwise built with the shared pools + the raw gid handler and registered
+// with mgr.
+func resolveMessage(cfg *config.Config, injected thirdcall.MessageService, db *gorm.DB, rdb *redis.Client, gid *gidservice.Handler, mgr *lifecycle.Manager) (thirdcall.MessageService, error) {
 	if injected != nil {
 		return injected, nil
 	}
@@ -334,8 +334,9 @@ func resolveMessage(cfg *config.Config, injected thirdcall.MessageService, db *g
 }
 
 // resolveStorage returns the storage handler to use. Injected → as-is.
-// Otherwise built with the shared pools + gid adapter and registered with mgr.
-func resolveStorage(cfg *config.Config, injected thirdcall.StorageService, db *gorm.DB, rdb *redis.Client, gid *adapter.GIDAdapter, mgr *lifecycle.Manager) (thirdcall.StorageService, error) {
+// Otherwise built with the shared pools + the raw gid handler and registered
+// with mgr.
+func resolveStorage(cfg *config.Config, injected thirdcall.StorageService, db *gorm.DB, rdb *redis.Client, gid *gidservice.Handler, mgr *lifecycle.Manager) (thirdcall.StorageService, error) {
 	if injected != nil {
 		return injected, nil
 	}
@@ -348,8 +349,9 @@ func resolveStorage(cfg *config.Config, injected thirdcall.StorageService, db *g
 }
 
 // resolveUser returns the user handler to use. Injected → as-is. Otherwise
-// built with the shared pools + gid/message adapters and registered with mgr.
-func resolveUser(cfg *config.Config, injected thirdcall.UserService, db *gorm.DB, rdb *redis.Client, gid *adapter.GIDAdapter, msg *adapter.MessageAdapter, mgr *lifecycle.Manager) (thirdcall.UserService, error) {
+// built with the shared pools + the raw gid/message handlers and registered
+// with mgr.
+func resolveUser(cfg *config.Config, injected thirdcall.UserService, db *gorm.DB, rdb *redis.Client, gid *gidservice.Handler, msg *messageservice.Handler, mgr *lifecycle.Manager) (thirdcall.UserService, error) {
 	if injected != nil {
 		return injected, nil
 	}

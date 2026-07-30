@@ -1,3 +1,11 @@
+// Package adapter bridges testkit's shared in-process user handler to the auth
+// interceptor's SessionResolver seam.
+//
+// It is the single bridge between user-service's gen types and the
+// authentication boundary: pkg/auth stays free of downstream gen, and this
+// package owns the translation from GetSession to auth.SessionResolver
+// (design spec §3.4, the sanctioned adapter exception to the "only
+// internal/thirdcall imports gen" rule).
 package adapter
 
 import (
@@ -12,7 +20,7 @@ import (
 // SessionCaller is the minimal shape the session resolver needs from the shared
 // in-process user handler: its GetSession RPC. The real *user handler satisfies
 // it; tests use a stub. Declared as an interface so this package does not import
-// the concrete handler type (same pattern as GIDCaller / MessageCaller).
+// the concrete handler type.
 type SessionCaller interface {
 	GetSession(ctx context.Context, req *userv1.GetSessionRequest) (*userv1.GetSessionResponse, error)
 }

@@ -7,12 +7,11 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
+	gidservice "github.com/servekit/gid-service/pkg"
 	storageservice "github.com/servekit/storage-service/pkg"
 	"github.com/servekit/storage-service/pkg/config"
 	storagehandler "github.com/servekit/storage-service/pkg/handler"
 	stoption "github.com/servekit/storage-service/pkg/option"
-
-	"github.com/servekit/testkit-service/internal/adapter"
 )
 
 // Handler is the in-process storage-service handle: a *pkg/handler.Handler.
@@ -22,13 +21,13 @@ import (
 type Handler = *storagehandler.Handler
 
 // NewModule constructs an in-process storage-service, injecting the shared PG
-// and Redis pools and the gid adapter (storage depends on gid for id
+// and Redis pools and the raw gid handler (storage depends on gid for id
 // generation).
-func NewModule(cfg *config.Config, db *gorm.DB, rdb *redis.Client, gid *adapter.GIDAdapter) (Handler, error) {
+func NewModule(cfg *config.Config, db *gorm.DB, rdb *redis.Client, gid *gidservice.Handler) (Handler, error) {
 	hdl, err := storageservice.NewModule(cfg,
 		stoption.WithDB(db),
 		stoption.WithRedis(rdb),
-		stoption.WithGIDService(gid),
+		stoption.WithGIDHandler(gid),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("storage module: %w", err)

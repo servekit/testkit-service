@@ -643,16 +643,8 @@ github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb
 github.com/sagikazarmark/locafero v0.11.0 h1:1iurJgmM9G3PA/I+wWYIOw/5SyBtxapeHDcg+AAIFXc=
 github.com/sagikazarmark/locafero v0.11.0/go.mod h1:nVIGvgyzw595SUSUE6tvCp3YYTeHs15MvlmU87WwIik=
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
-github.com/servekit/gid-service v0.0.0-20260728161040-9e0022b0e11b h1:2tAJItID2f1GFT2UVpswOXM6FpiYkL72MPxbmO4Cdfw=
-github.com/servekit/gid-service v0.0.0-20260728161040-9e0022b0e11b/go.mod h1:/6i7vJiBCybc3c+HApKTWT3FTuJXtLVdvLEt18w5fGM=
 github.com/servekit/go-common v0.0.0-20260724135115-ddfd1bbfbf36 h1:JOjDTuZ9OFvkHRgmJc0Y+Hb75PPLnv6XEitJkO7CfSA=
 github.com/servekit/go-common v0.0.0-20260724135115-ddfd1bbfbf36/go.mod h1:Lskb0SHEV4aa5qmDryzGOzLRGxZvk55Fbx393SjGn3c=
-github.com/servekit/message-service v0.0.0-20260728161036-5229634ca3e4 h1:6ZtMMeZnTHMKmcd7/eOVqRRDWQzOvvBLQyW6rXT3ppA=
-github.com/servekit/message-service v0.0.0-20260728161036-5229634ca3e4/go.mod h1:7cgalVp+a1/Oh4uJfNaWnFLx4RcsPYj27yO9yXS/DtU=
-github.com/servekit/storage-service v0.0.0-20260728161032-d2f1e9ebfad7 h1:PfBKN3JCSf6hwBYPaBgRnNsvWDWZSSIyOWXbKnOp/6Y=
-github.com/servekit/storage-service v0.0.0-20260728161032-d2f1e9ebfad7/go.mod h1:S48yIWwVdiY+nmtci4RFn3dMVWdCpZIFMLnBRJB7TI0=
-github.com/servekit/user-service v0.0.0-20260728160600-3684acfe3725 h1:ll59kDipNkFDy2b0aQ4JZ/x5m/ZapGpHYWShRUJ/6H0=
-github.com/servekit/user-service v0.0.0-20260728160600-3684acfe3725/go.mod h1:ORSM5rVUbxMAulKIK6a74oAFzqaAHiG8Z7IzMGAjhkQ=
 github.com/shirou/gopsutil/v4 v4.26.3 h1:2ESdQt90yU3oXF/CdOlRCJxrP+Am1aBYubTMTfxJ1qc=
 github.com/shirou/gopsutil/v4 v4.26.3/go.mod h1:LZ6ewCSkBqUpvSOf+LsTGnRinC6iaNUNMGBtDkJBaLQ=
 github.com/shopspring/decimal v1.4.0/go.mod h1:gawqmDU56v4yIKSwfBSFip1HdCCXN8/+DMd9qYNcwME=

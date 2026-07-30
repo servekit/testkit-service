@@ -16,8 +16,9 @@
 //
 // Boundary (design spec §3.4): this package imports testkit's
 // internal/thirdcall (the only place that imports downstream pkg + gen for
-// client wiring) and internal/adapter (the cross-service bridge). service.go
-// imports this package + internal/adapter, never downstream gen directly.
+// client wiring) and the downstream pkg packages directly (raw *Handler types
+// for the factory signatures). service.go imports this package plus those same
+// raw handler types, never downstream gen directly.
 package thirdcall
 
 import (

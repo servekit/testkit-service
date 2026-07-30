@@ -6,9 +6,10 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
+	gidservice "github.com/servekit/gid-service/pkg"
+	messageservice "github.com/servekit/message-service/pkg"
 	userconfig "github.com/servekit/user-service/pkg/config"
 
-	"github.com/servekit/testkit-service/internal/adapter"
 	"github.com/servekit/testkit-service/internal/thirdcall/user"
 	"github.com/servekit/testkit-service/pkg/config"
 )
@@ -20,8 +21,8 @@ import (
 type UserService = user.Handler
 
 // NewUserService resolves user-service by mode. module mode embeds the shared
-// PG/Redis pools plus the gid and message adapters (user depends on both).
-func NewUserService(cfg *config.RemoteServiceConfig[*userconfig.Config], db *gorm.DB, rdb *redis.Client, gid *adapter.GIDAdapter, msg *adapter.MessageAdapter) (UserService, error) {
+// PG/Redis pools plus the raw gid and message handlers (user depends on both).
+func NewUserService(cfg *config.RemoteServiceConfig[*userconfig.Config], db *gorm.DB, rdb *redis.Client, gid *gidservice.Handler, msg *messageservice.Handler) (UserService, error) {
 	switch cfg.Mode {
 	case "grpc":
 		return nil, fmt.Errorf("user-service grpc mode not implemented in P1 (target %q)", cfg.Target)

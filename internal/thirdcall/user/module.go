@@ -7,12 +7,12 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
+	gidservice "github.com/servekit/gid-service/pkg"
+	messageservice "github.com/servekit/message-service/pkg"
 	userservice "github.com/servekit/user-service/pkg"
 	"github.com/servekit/user-service/pkg/config"
 	userhandler "github.com/servekit/user-service/pkg/handler"
 	usroption "github.com/servekit/user-service/pkg/option"
-
-	"github.com/servekit/testkit-service/internal/adapter"
 )
 
 // Handler is the in-process user-service handle: a *pkg/handler.Handler.
@@ -23,9 +23,10 @@ import (
 type Handler = *userhandler.Handler
 
 // NewModule constructs an in-process user-service, injecting the shared PG and
-// Redis pools plus the gid and message adapters. user-service depends on gid
-// (id generation) and message (email/SMS sending); testkit shares one of each
-// across all downstreams via the adapters in internal/adapter.
+// Redis pools plus the raw gid and message handlers. user-service depends on
+// gid (id generation) and message (email/SMS sending); testkit shares one of
+// each across all downstreams by injecting the raw handlers
+// (option.WithGIDHandler / WithMessageHandler).
 //
 // Captcha is intentionally not injected: user-service builds its own from its
 // config when the option is absent.
@@ -35,12 +36,12 @@ type Handler = *userhandler.Handler
 // an operator leaving third_party.user.config empty would otherwise nil-deref.
 // normalizeConfig backfills safe disabled defaults, merging with any values the
 // operator did provide.
-func NewModule(cfg *config.Config, db *gorm.DB, rdb *redis.Client, gid *adapter.GIDAdapter, msg *adapter.MessageAdapter) (Handler, error) {
+func NewModule(cfg *config.Config, db *gorm.DB, rdb *redis.Client, gid *gidservice.Handler, msg *messageservice.Handler) (Handler, error) {
 	hdl, err := userservice.NewModule(normalizeConfig(cfg),
 		usroption.WithDB(db),
 		usroption.WithRedis(rdb),
-		usroption.WithGIDService(gid),
-		usroption.WithMessageService(msg),
+		usroption.WithGIDHandler(gid),
+		usroption.WithMessageHandler(msg),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("user module: %w", err)

@@ -6,9 +6,9 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
+	gidservice "github.com/servekit/gid-service/pkg"
 	messageconfig "github.com/servekit/message-service/pkg/config"
 
-	"github.com/servekit/testkit-service/internal/adapter"
 	"github.com/servekit/testkit-service/internal/thirdcall/message"
 	"github.com/servekit/testkit-service/pkg/config"
 )
@@ -19,8 +19,8 @@ import (
 type MessageService = message.Handler
 
 // NewMessageService resolves message-service by mode. module mode embeds the
-// shared PG/Redis pools and the gid adapter (message depends on gid).
-func NewMessageService(cfg *config.RemoteServiceConfig[*messageconfig.Config], db *gorm.DB, rdb *redis.Client, gid *adapter.GIDAdapter) (MessageService, error) {
+// shared PG/Redis pools and the raw gid handler (message depends on gid).
+func NewMessageService(cfg *config.RemoteServiceConfig[*messageconfig.Config], db *gorm.DB, rdb *redis.Client, gid *gidservice.Handler) (MessageService, error) {
 	switch cfg.Mode {
 	case "grpc":
 		return nil, fmt.Errorf("message-service grpc mode not implemented in P1 (target %q)", cfg.Target)

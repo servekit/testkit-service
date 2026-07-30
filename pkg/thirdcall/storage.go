@@ -6,9 +6,9 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
+	gidservice "github.com/servekit/gid-service/pkg"
 	storageconfig "github.com/servekit/storage-service/pkg/config"
 
-	"github.com/servekit/testkit-service/internal/adapter"
 	"github.com/servekit/testkit-service/internal/thirdcall/storage"
 	"github.com/servekit/testkit-service/pkg/config"
 )
@@ -18,8 +18,8 @@ import (
 type StorageService = storage.Handler
 
 // NewStorageService resolves storage-service by mode. module mode embeds the
-// shared PG/Redis pools and the gid adapter (storage depends on gid).
-func NewStorageService(cfg *config.RemoteServiceConfig[*storageconfig.Config], db *gorm.DB, rdb *redis.Client, gid *adapter.GIDAdapter) (StorageService, error) {
+// shared PG/Redis pools and the raw gid handler (storage depends on gid).
+func NewStorageService(cfg *config.RemoteServiceConfig[*storageconfig.Config], db *gorm.DB, rdb *redis.Client, gid *gidservice.Handler) (StorageService, error) {
 	switch cfg.Mode {
 	case "grpc":
 		return nil, fmt.Errorf("storage-service grpc mode not implemented in P1 (target %q)", cfg.Target)

@@ -172,3 +172,15 @@ require (
 	gorm.io/cli/gorm v0.2.4 // indirect
 	gorm.io/driver/postgres v1.6.0 // indirect
 )
+
+// Dev-time local replaces: the downstreams' NEW raw-handler thirdcall API
+// (WithGIDHandler / WithMessageHandler) exists only in these local working
+// copies; the published versions referenced above still expose the old
+// WithGIDService / WithMessageService. Remove these four lines and bump the
+// require versions once the downstreams are published with the new API.
+replace (
+	github.com/servekit/gid-service => ../gid-service
+	github.com/servekit/message-service => ../message-service
+	github.com/servekit/storage-service => ../storage-service
+	github.com/servekit/user-service => ../user-service
+)
