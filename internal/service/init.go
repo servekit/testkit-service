@@ -6,7 +6,12 @@
 // the false (borrowed) branch in each module.go exists only for pattern parity
 // with user-service and is unreachable in this service.
 // Lifecycle follows user-service: each downstream is registered as a Stopper
-// whose stop calls Close() (Handler.Stop for module, conn.Close for grpc).
+// whose stop calls Close() (Handler.Stop for module, conn.Close for grpc). This
+// is Stopper-only — mgr.AddStopper does NOT invoke Start(), so an embedded
+// downstream's internal cron never runs under testkit. That's fine today (all
+// four downstreams ship empty cron schedulers), but it's a load-bearing
+// assumption: if any downstream gains a scheduled job, register its raw
+// *Handler with mgr.Add (not AddStopper) so Start() runs.
 //
 // Resolve order: shared redis+db → gid → message → storage → user (each
 // downstream shares the raw handlers of its upstreams in module mode). On

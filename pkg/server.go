@@ -1,7 +1,9 @@
-// Package pkg is the public surface of testkit-service. It wires internal pieces
-// into a runnable gRPC/HTTP server, a gRPC client, and an in-process module
-// entry point. Downstream services that depend on testkit-service should import
-// this package — not internal/*.
+// Package pkg is the public surface of testkit-service. It wires internal
+// pieces into a runnable gRPC + grpc-gateway server (Server) and a gRPC client
+// (Client) for testkit-service — a terminal, user-facing BFF with no downstream
+// embedder. Callers that need to talk to testkit over gRPC use this package's
+// Client; operators run Server. Nothing here is injectable into another
+// service.
 package pkg
 
 import (

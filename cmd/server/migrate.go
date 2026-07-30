@@ -15,13 +15,13 @@ import (
 )
 
 // runMigrate loads config and applies the current schema of every embedded
-// DB-bearing service on the shared parent database. Operators (or CI) run this
-// before bringing up the server, e.g. `docker run <image> migrate` or
+// DB-bearing downstream onto the shared parent database. Operators (or CI) run
+// this before bringing up the server, e.g. `docker run <image> migrate` or
 // `./testkit-service migrate`.
 //
-// Each downstream pkg.Migrate is the same entry point embedders call on an
-// injected db, so standalone `migrate` and in-process module deployments create
-// tables identically.
+// Each downstream's pkg.Migrate applies that downstream's AutoMigrate onto the
+// injected db — the standard entry point each *-service exposes to embedders.
+// testkit owns no tables yet (see runMigration below).
 func runMigrate() error {
 	cfg, err := config.Load()
 	if err != nil {

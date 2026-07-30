@@ -6,8 +6,8 @@
 // `return h.svc.X(ctx, req)` belongs in internal/service.
 //
 // Handler also implements signalx.Service (Start/Stop) by delegating to the
-// underlying Service, so in-process module users manage lifecycle via the same
-// object they call RPC methods on.
+// underlying Service, so pkg.Server drives service lifecycle through the same
+// object that serves RPCs.
 package handler
 
 import (
