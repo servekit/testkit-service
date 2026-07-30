@@ -1,17 +1,16 @@
 // Package service resource initialization + dependency injection. All resources
 // (db, redis, the four embedded downstreams) are instantiated here from cfg and
 // wired into the domain subpackages via their constructors. testkit is a terminal
-// service, so nothing is injectable — there is no option/owns-from-parent path.
-// Consequently owns is always true at every thirdcall NewModule call site here;
-// the false (borrowed) branch in each module.go exists only for pattern parity
-// with user-service and is unreachable in this service.
-// Lifecycle follows user-service: each downstream is registered as a Stopper
-// whose stop calls Close() (Handler.Stop for module, conn.Close for grpc). This
-// is Stopper-only — mgr.AddStopper does NOT invoke Start(), so an embedded
-// downstream's internal cron never runs under testkit. That's fine today (all
-// four downstreams ship empty cron schedulers), but it's a load-bearing
-// assumption: if any downstream gains a scheduled job, register its raw
-// *Handler with mgr.Add (not AddStopper) so Start() runs.
+// service, so nothing is injectable — there is no option/borrowed-from-parent
+// path; every thirdcall NewModule call site here owns nothing of the Handler's
+// lifecycle (the raw *Handler is what gets registered with the Manager).
+//
+// Lifecycle follows user-service: in module mode each downstream's raw *Handler
+// is registered with mgr.Add, which drives both Start and Stop — so an embedded
+// downstream's internal cron/schedulers run under testkit exactly as they do
+// standalone. grpc mode registers a stopper instead (the client only needs Close
+// to drop the connection). The thirdcall module wrappers themselves own no
+// lifecycle; their Close is a no-op.
 //
 // Resolve order: shared redis+db → gid → message → storage → user (each
 // downstream shares the raw handlers of its upstreams in module mode). On
@@ -171,12 +170,8 @@ func resolveGID(cfg *config.RemoteServiceConfig[*gidconfig.Config], mgr *lifecyc
 		if err != nil {
 			return nil, nil, fmt.Errorf("init gid-service: %w", err)
 		}
-		g := thirdcallgid.NewModule(hdl, true)
-		mgr.AddStopper("gid", lifecycle.StopFunc(func() {
-			if err := g.Close(); err != nil {
-				slog.Warn("close gid", "error", err)
-			}
-		}))
+		g := thirdcallgid.NewModule(hdl)
+		mgr.Add("gid", hdl)
 		return g, hdl, nil
 	default:
 		return nil, nil, fmt.Errorf("third_party.gid: unknown mode %q (want \"grpc\" or \"module\")", cfg.Mode)
@@ -222,12 +217,8 @@ func resolveMessage(cfg *config.RemoteServiceConfig[*messageconfig.Config], db *
 		if err != nil {
 			return nil, nil, fmt.Errorf("init message-service: %w", err)
 		}
-		m := thirdcallmessage.NewModule(hdl, true)
-		mgr.AddStopper("message", lifecycle.StopFunc(func() {
-			if err := m.Close(); err != nil {
-				slog.Warn("close message", "error", err)
-			}
-		}))
+		m := thirdcallmessage.NewModule(hdl)
+		mgr.Add("message", hdl)
 		return m, hdl, nil
 	default:
 		return nil, nil, fmt.Errorf("third_party.message: unknown mode %q (want \"grpc\" or \"module\")", cfg.Mode)
@@ -272,12 +263,8 @@ func resolveStorage(cfg *config.RemoteServiceConfig[*storageconfig.Config], db *
 		if err != nil {
 			return nil, fmt.Errorf("init storage-service: %w", err)
 		}
-		s := thirdcallstorage.NewModule(hdl, true)
-		mgr.AddStopper("storage", lifecycle.StopFunc(func() {
-			if err := s.Close(); err != nil {
-				slog.Warn("close storage", "error", err)
-			}
-		}))
+		s := thirdcallstorage.NewModule(hdl)
+		mgr.Add("storage", hdl)
 		return s, nil
 	default:
 		return nil, fmt.Errorf("third_party.storage: unknown mode %q (want \"grpc\" or \"module\")", cfg.Mode)
@@ -328,12 +315,8 @@ func resolveUser(cfg *config.RemoteServiceConfig[*userconfig.Config], db *gorm.D
 		if err != nil {
 			return nil, fmt.Errorf("init user-service: %w", err)
 		}
-		u := thirdcalluser.NewModule(hdl, true)
-		mgr.AddStopper("user", lifecycle.StopFunc(func() {
-			if err := u.Close(); err != nil {
-				slog.Warn("close user", "error", err)
-			}
-		}))
+		u := thirdcalluser.NewModule(hdl)
+		mgr.Add("user", hdl)
 		return u, nil
 	default:
 		return nil, fmt.Errorf("third_party.user: unknown mode %q (want \"grpc\" or \"module\")", cfg.Mode)

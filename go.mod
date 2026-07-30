@@ -173,14 +173,10 @@ require (
 	gorm.io/driver/postgres v1.6.0 // indirect
 )
 
-// Dev-time local replaces: the downstreams' NEW raw-handler thirdcall API
-// (WithGIDHandler / WithMessageHandler) exists only in these local working
-// copies; the published versions referenced above still expose the old
-// WithGIDService / WithMessageService. Remove these four lines and bump the
-// require versions once the downstreams are published with the new API.
-replace (
-	github.com/servekit/gid-service => ../gid-service
-	github.com/servekit/message-service => ../message-service
-	github.com/servekit/storage-service => ../storage-service
-	github.com/servekit/user-service => ../user-service
-)
+// Local dev uses a gitignored go.work (testkit-service/go.work) that `use`s this
+// module and `replace`s the four sibling services to their local checkouts, and
+// pins the deprecated google.golang.org/genproto monolith to a version that no
+// longer ships googleapis/* (workspace mode otherwise selects an old one via the
+// volcengine SDK -> go-kit chain that clashes with the split googleapis/{api,rpc}
+// modules). Bump the require versions above and drop go.work once the downstreams
+// publish the new WithGIDHandler / WithMessageHandler API.

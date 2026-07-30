@@ -14,7 +14,10 @@ import (
 
 // UserService is the subset of user-service testkit forwards (auth + user +
 // dashboard domains, and the session resolver). Methods take/return
-// user-service proto verbatim; Close releases the backend.
+// user-service proto verbatim. Close drops the connection only in grpc mode
+// (resolveUser wires it as a stopper); in module mode the in-process Handler is
+// registered with the lifecycle Manager via mgr.Add (Start/Stop), so the
+// module's Close is a no-op.
 //
 //revive:disable-next-line:exported // UserService mirrors user-service's thirdcall type name; stutter is intentional
 type UserService interface {

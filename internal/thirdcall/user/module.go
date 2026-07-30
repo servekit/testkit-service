@@ -5,22 +5,24 @@ import (
 	userhandler "github.com/servekit/user-service/pkg/handler"
 )
 
+// moduleUser wraps an in-process user-service Handler. The wrapper owns none of
+// the Handler's lifecycle; see Close.
 type moduleUser struct {
 	*userhandler.Handler
-	owns bool
 }
 
-// NewModule wraps a user-service Handler as a UserService. owns=true when the
-// caller built it; false when borrowed. Resources (db/redis/gid/message) are
-// instantiated + injected by the service root — this wrapper only wraps. The
-// caller passes cfg as-is; user-service's own construction is nil-safe.
-func NewModule(h *userhandler.Handler, owns bool) UserService {
-	return &moduleUser{Handler: h, owns: owns}
+// NewModule wraps a user-service Handler as a UserService. The module owns none
+// of the Handler's lifecycle: resolveUser registers the raw Handler with the
+// lifecycle Manager (mgr.Add drives its Start/Stop). See Close for why it is a
+// no-op.
+func NewModule(h *userhandler.Handler) UserService {
+	return &moduleUser{Handler: h}
 }
 
+// Close is a no-op. The Handler's lifecycle is owned by the lifecycle Manager
+// (resolveUser registers it via mgr.Add), not by this module, so the module has
+// nothing to release. The method exists only to satisfy the UserService
+// interface, whose grpc backend needs a real Close to drop its connection.
 func (m *moduleUser) Close() error {
-	if !m.owns {
-		return nil
-	}
-	return m.Stop()
+	return nil
 }

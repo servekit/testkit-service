@@ -13,8 +13,10 @@ import (
 )
 
 // GIDService is the subset of gid-service testkit uses. Methods take/return
-// gid-service proto verbatim; Close releases the backend (module Handler Stop
-// or gRPC conn Close), wired to a lifecycle Stopper by resolveGID.
+// gid-service proto verbatim. Close drops the connection only in grpc mode
+// (resolveGID wires it as a stopper); in module mode the in-process Handler is
+// registered with the lifecycle Manager via mgr.Add (Start/Stop), so the
+// module's Close is a no-op.
 //
 //revive:disable-next-line:exported // GIDService mirrors user-service's thirdcall type name; stutter is intentional
 type GIDService interface {

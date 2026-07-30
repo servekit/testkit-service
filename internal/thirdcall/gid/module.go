@@ -4,25 +4,24 @@ import (
 	gidservice "github.com/servekit/gid-service/pkg"
 )
 
-// moduleGID wraps an in-process gid-service Handler. owns reports whether this
-// wrapper owns the Handler's lifecycle: true when the caller built it (Close
-// Stops it), false when borrowed from an owner (Close is a no-op).
+// moduleGID wraps an in-process gid-service Handler. The wrapper owns none of
+// the Handler's lifecycle; see Close.
 type moduleGID struct {
 	*gidservice.Handler
-	owns bool
 }
 
-// NewModule wraps a gid-service Handler as a GIDService. owns=true when the
-// caller built the Handler (Close Stops it); false when injected by an owner.
-// Resources (none for gid) are instantiated by the service root, not here.
-func NewModule(h *gidservice.Handler, owns bool) GIDService {
-	return &moduleGID{Handler: h, owns: owns}
+// NewModule wraps an in-process gid-service Handler as a GIDService. The module
+// owns none of the Handler's lifecycle: resolveGID registers the raw Handler
+// with the lifecycle Manager (mgr.Add drives its Start/Stop). See Close for why
+// it is a no-op.
+func NewModule(h *gidservice.Handler) GIDService {
+	return &moduleGID{Handler: h}
 }
 
-// Close stops the Handler only if this wrapper owns it.
+// Close is a no-op. The Handler's lifecycle is owned by the lifecycle Manager
+// (resolveGID registers it via mgr.Add), not by this module, so the module has
+// nothing to release. The method exists only to satisfy the GIDService
+// interface, whose grpc backend needs a real Close to drop its connection.
 func (m *moduleGID) Close() error {
-	if !m.owns {
-		return nil
-	}
-	return m.Stop()
+	return nil
 }
