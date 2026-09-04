@@ -74,7 +74,7 @@ func (s *stubServer) ListMyAuditLogs(ctx context.Context, req *storagev1.ListMyA
 	return s.UnimplementedStorageServiceServer.ListMyAuditLogs(ctx, req)
 }
 
-// Close is a no-op: the stub satisfies thirdcallstorage.StorageService (which
+// Close is a no-op: the stub satisfies storageservice.Service (which
 // adds Close for lifecycle) without owning any real backend.
 func (s *stubServer) Close() error { return nil }
 
@@ -356,7 +356,7 @@ func (s *errServer) ListMyFilesPaged(context.Context, *storagev1.ListMyFilesPage
 	return nil, errSentinel
 }
 
-// Close is a no-op: the stub satisfies thirdcallstorage.StorageService.
+// Close is a no-op: the stub satisfies storageservice.Service.
 func (s *errServer) Close() error { return nil }
 
 func TestMyRPC_PlainErrorPassthrough(t *testing.T) {

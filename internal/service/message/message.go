@@ -3,7 +3,7 @@
 // that imports both testkitv1 and messagev1 (design spec v2 §3.4) — it is the
 // testkit-msg ↔ message-msg mapping boundary. pkg/handler and the testkit proto
 // see only testkitv1; the downstream message handler is reached exclusively
-// through the thirdcallmessage.MessageService seam held here.
+// through the messageservice.Service seam held here.
 //
 // Curation (plan §3.2 + P4 decisions):
 //   - SendEmail/SendSMS drop sender_id from the testkit request and inject it
@@ -32,17 +32,17 @@ import (
 	"context"
 
 	messagev1 "github.com/servekit/message-service/gen/message/v1"
+	messageservice "github.com/servekit/message-service/pkg"
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
-	thirdcallmessage "github.com/servekit/testkit-service/internal/thirdcall/message"
 )
 
 // Service implements testkit's message domain. The message field is typed as
-// the thirdcallmessage.MessageService interface — the in-process wrapper and
+// the messageservice.Service interface — the in-process wrapper and
 // gRPC client both satisfy it; test stubs embed
 // messagev1.UnimplementedMessageServiceServer, override the methods under test,
 // and add a no-op Close (Task 2).
 type Service struct {
-	message  thirdcallmessage.MessageService
+	message  messageservice.Service
 	senderID string // injected into downstream Send requests (decision 1)
 }
 
@@ -55,9 +55,9 @@ type Option func(*Service)
 func WithSenderID(id string) Option { return func(s *Service) { s.senderID = id } }
 
 // New constructs the message-domain service. client is the embedded
-// message-service handler (thirdcallmessage.MessageService). senderID is
+// message-service handler (messageservice.Service). senderID is
 // injected into downstream SendEmail/SendSMS requests.
-func New(client thirdcallmessage.MessageService, opts ...Option) *Service {
+func New(client messageservice.Service, opts ...Option) *Service {
 	s := &Service{message: client}
 	for _, o := range opts {
 		o(s)

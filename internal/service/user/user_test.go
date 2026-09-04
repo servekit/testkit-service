@@ -183,11 +183,6 @@ func (s *stubUserClient) SocialLogin(_ context.Context, req *userv1.SocialLoginR
 	}, nil
 }
 
-// Close is a no-op: the stub satisfies thirdcalluser.UserService (which adds
-// Close for lifecycle) without owning any real backend. Shared with
-// admin_test.go, whose overrides also live on stubUserClient.
-func (s *stubUserClient) Close() error { return nil }
-
 // --- Profile: my-resource RPC injects user_id from ctx ---
 
 func TestGetProfile_InjectsUserIDFromCtx(t *testing.T) {

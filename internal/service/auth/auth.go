@@ -6,7 +6,7 @@
 // downstream gen (userv1) — it is the testkit-msg ↔ user-msg mapping boundary
 // (design spec v2 §3.3/§3.4). pkg/handler and the testkit proto see only
 // testkitv1; the downstream user handler is reached exclusively through the
-// thirdcalluser.UserService seam injected here.
+// userservice.Service seam injected here.
 //
 // The enums in testkit.proto mirror user-service name-for-name and
 // number-for-number, so every enum conversion below is a plain int cast
@@ -24,15 +24,15 @@ import (
 
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/internal/jwt"
-	thirdcalluser "github.com/servekit/testkit-service/internal/thirdcall/user"
 	userv1 "github.com/servekit/user-service/gen/user/v1"
+	userservice "github.com/servekit/user-service/pkg"
 )
 
 // Service implements the auth domain. It holds the JWT manager (testkit is the
 // sole signer) and the user-service client it forwards to.
 type Service struct {
 	jwt  *jwt.Manager
-	user thirdcalluser.UserService
+	user userservice.Service
 }
 
 // Option configures a Service.
@@ -40,7 +40,7 @@ type Option func(*Service)
 
 // WithUserClient injects the user-service client. Required before any RPC call
 // (a nil client is a wiring bug surfaces as a nil-dereference on first use).
-func WithUserClient(c thirdcalluser.UserService) Option { return func(s *Service) { s.user = c } }
+func WithUserClient(c userservice.Service) Option { return func(s *Service) { s.user = c } }
 
 // New constructs the auth service. jwtMgr must be non-nil; the user client is
 // supplied via WithUserClient (the service root wires the embedded user

@@ -20,7 +20,10 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
+	gidservice "github.com/servekit/gid-service/pkg"
 	"github.com/servekit/go-common/lifecycle"
+	messageservice "github.com/servekit/message-service/pkg"
+	storageservice "github.com/servekit/storage-service/pkg"
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service/auth"
 	dashboardsvc "github.com/servekit/testkit-service/internal/service/dashboard"
@@ -28,14 +31,11 @@ import (
 	"github.com/servekit/testkit-service/internal/service/message"
 	"github.com/servekit/testkit-service/internal/service/storage"
 	"github.com/servekit/testkit-service/internal/service/user"
-	thirdcallgid "github.com/servekit/testkit-service/internal/thirdcall/gid"
-	thirdcallmessage "github.com/servekit/testkit-service/internal/thirdcall/message"
-	thirdcallstorage "github.com/servekit/testkit-service/internal/thirdcall/storage"
-	thirdcalluser "github.com/servekit/testkit-service/internal/thirdcall/user"
 	"github.com/servekit/testkit-service/internal/version"
 	pkauth "github.com/servekit/testkit-service/pkg/auth"
 	"github.com/servekit/testkit-service/pkg/config"
 	userv1 "github.com/servekit/user-service/gen/user/v1"
+	userservice "github.com/servekit/user-service/pkg"
 )
 
 // Service holds testkit-service runtime state: the four downstream thirdcall
@@ -48,10 +48,10 @@ type Service struct {
 
 	// The four embedded downstreams (thirdcall interfaces: full RPC method set
 	// + Close). Built + lifecycle-registered in init.go.
-	gid     thirdcallgid.GIDService
-	message thirdcallmessage.MessageService
-	storage thirdcallstorage.StorageService
-	user    thirdcalluser.UserService
+	gid     gidservice.Service
+	message messageservice.Service
+	storage storageservice.Service
+	user    userservice.Service
 
 	auth         *auth.Service
 	userSvc      *user.Service

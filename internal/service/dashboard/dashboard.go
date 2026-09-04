@@ -18,23 +18,23 @@ import (
 	storagev1 "github.com/servekit/storage-service/gen/storage/v1"
 	userv1 "github.com/servekit/user-service/gen/user/v1"
 
+	messageservice "github.com/servekit/message-service/pkg"
+	storageservice "github.com/servekit/storage-service/pkg"
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
-	thirdcallmessage "github.com/servekit/testkit-service/internal/thirdcall/message"
-	thirdcallstorage "github.com/servekit/testkit-service/internal/thirdcall/storage"
-	thirdcalluser "github.com/servekit/testkit-service/internal/thirdcall/user"
 	"github.com/servekit/testkit-service/pkg/xcodes"
+	userservice "github.com/servekit/user-service/pkg"
 )
 
 // Service implements the dashboard aggregation domain.
 type Service struct {
-	user    thirdcalluser.UserService
-	storage thirdcallstorage.StorageService
-	message thirdcallmessage.MessageService
+	user    userservice.Service
+	storage storageservice.Service
+	message messageservice.Service
 }
 
 // New constructs the dashboard service. The three clients are the embedded
 // downstream handlers (thirdcall interfaces). Order: user, storage, message.
-func New(user thirdcalluser.UserService, storage thirdcallstorage.StorageService, message thirdcallmessage.MessageService) *Service {
+func New(user userservice.Service, storage storageservice.Service, message messageservice.Service) *Service {
 	return &Service{user: user, storage: storage, message: message}
 }
 

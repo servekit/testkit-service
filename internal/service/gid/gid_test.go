@@ -10,10 +10,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// stubClient implements gid.Client without a real gid handler. Each method
-// returns the canned value fields hold; it records nothing because the gid
-// forwarders are pure shape copies with no ctx-dependent behavior.
+// stubClient stands in for the gid dependency without a real handler. It
+// embeds gidv1.UnimplementedGidServiceServer so it satisfies the full
+// gidservice.Service; each overridden method returns the canned value its
+// fields hold, and untested methods fall through to Unimplemented.
 type stubClient struct {
+	gidv1.UnimplementedGidServiceServer
 	nextID     int64
 	ids        []int64
 	decomposed *gidv1.DecomposeResponse
@@ -30,10 +32,6 @@ func (s *stubClient) BatchNextID(ctx context.Context, req *gidv1.BatchNextIDRequ
 func (s *stubClient) Decompose(ctx context.Context, req *gidv1.DecomposeRequest) (*gidv1.DecomposeResponse, error) {
 	return s.decomposed, nil
 }
-
-// Close is a no-op: the stub satisfies thirdcallgid.GIDService (which adds
-// Close for lifecycle) without owning any real backend.
-func (s *stubClient) Close() error { return nil }
 
 func TestNextID_MapsResponse(t *testing.T) {
 	svc := gid.New(&stubClient{nextID: 42})

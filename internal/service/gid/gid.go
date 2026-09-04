@@ -10,17 +10,17 @@ import (
 	"context"
 
 	gidv1 "github.com/servekit/gid-service/gen/gid/v1"
+	gidservice "github.com/servekit/gid-service/pkg"
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
-	thirdcallgid "github.com/servekit/testkit-service/internal/thirdcall/gid"
 )
 
 // Service implements the gid debug domain.
 type Service struct {
-	client thirdcallgid.GIDService
+	client gidservice.Service
 }
 
 // New constructs the gid service.
-func New(client thirdcallgid.GIDService) *Service { return &Service{client: client} }
+func New(client gidservice.Service) *Service { return &Service{client: client} }
 
 // NextID forwards to gid-service and maps the single generated id.
 func (s *Service) NextID(ctx context.Context, _ *testkitv1.NextIDRequest) (*testkitv1.NextIDResponse, error) {
