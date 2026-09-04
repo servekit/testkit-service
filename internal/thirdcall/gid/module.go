@@ -22,6 +22,6 @@ func NewModule(h *gidservice.Handler) GIDService {
 // (resolveGID registers it via mgr.Add), not by this module, so the module has
 // nothing to release. The method exists only to satisfy the GIDService
 // interface, whose grpc backend needs a real Close to drop its connection.
-func (m *moduleGID) Close() error {
+func (*moduleGID) Close() error {
 	return nil
 }

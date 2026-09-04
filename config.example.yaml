@@ -22,12 +22,19 @@ server:
   gateway_addr: ${TESTKIT_SERVICE_SERVER_GATEWAY_ADDR}  # grpc-gateway HTTP surface (the BFF port nginx/frontend hits)
 
 database:
-  host: ${TESTKIT_SERVICE_DB_HOST}
-  port: ${TESTKIT_SERVICE_DB_PORT}
-  user: ${TESTKIT_SERVICE_DB_USER}
-  password: ${TESTKIT_SERVICE_DB_PASSWORD}
-  dbname: ${TESTKIT_SERVICE_DB_NAME}
-  sslmode: ${TESTKIT_SERVICE_DB_SSLMODE}
+  # Driver selects the dialect; only the matching sub-block below is read.
+  # Empty defaults to postgres. To use mysql/sqlite, set this AND fill the
+  # corresponding nested block in config.yaml (the others are ignored).
+  driver: ${TESTKIT_SERVICE_DB_DRIVER}        # postgres | mysql | sqlite (empty = postgres)
+  postgres:                                   # connection params, read when driver=postgres (default)
+    host: ${TESTKIT_SERVICE_DB_HOST}
+    port: ${TESTKIT_SERVICE_DB_PORT}
+    user: ${TESTKIT_SERVICE_DB_USER}
+    password: ${TESTKIT_SERVICE_DB_PASSWORD}
+    dbname: ${TESTKIT_SERVICE_DB_NAME}
+    sslmode: ${TESTKIT_SERVICE_DB_SSLMODE}
+    # schema: ${TESTKIT_SERVICE_DB_SCHEMA}    # optional search_path (comma-separated, e.g. app,public); empty = server default (public)
+  # Shared connection-pool settings (apply to every dialect).
   max_open_conns: ${TESTKIT_SERVICE_DB_MAX_OPEN_CONNS}
   max_idle_conns: ${TESTKIT_SERVICE_DB_MAX_IDLE_CONNS}
   conn_max_lifetime: ${TESTKIT_SERVICE_DB_CONN_MAX_LIFETIME}
@@ -39,9 +46,30 @@ database:
   table_prefix: ${TESTKIT_SERVICE_DB_TABLE_PREFIX}        # prefix for testkit-owned tables (testkit has none in P1)
 
 redis:
+  # Standalone mode — used when master_name and sentinel_addrs are empty.
   addr: ${TESTKIT_SERVICE_REDIS_ADDR}
+  # Sentinel mode (HA) — takes precedence over addr when BOTH are set (set them
+  # together). Redis Cluster is intentionally unsupported; use sentinel for HA.
+  master_name: ${TESTKIT_SERVICE_REDIS_MASTER_NAME}
+  sentinel_addrs: ${TESTKIT_SERVICE_REDIS_SENTINEL_ADDRS}  # comma-separated (configx StringToSlice splits on ",")
+  username: ${TESTKIT_SERVICE_REDIS_USERNAME}      # Redis 6.0+ ACL username
   password: ${TESTKIT_SERVICE_REDIS_PASSWORD}
   db: ${TESTKIT_SERVICE_REDIS_DB}
+  client_name: ${TESTKIT_SERVICE_REDIS_CLIENT_NAME}  # CLIENT SETNAME — surfaces in CLIENT LIST for tracing
+  # Pool sizing. 0 = go-redis default (pool_size 10*GOMAXPROCS; min_idle_conns disabled).
+  pool_size: ${TESTKIT_SERVICE_REDIS_POOL_SIZE}
+  min_idle_conns: ${TESTKIT_SERVICE_REDIS_MIN_IDLE_CONNS}
+  conn_max_idle: ${TESTKIT_SERVICE_REDIS_CONN_MAX_IDLE}  # close after this idle duration (0s = go-redis 30m default)
+  conn_max_life: ${TESTKIT_SERVICE_REDIS_CONN_MAX_LIFE}  # close after this total age (0s = unlimited)
+  # Timeouts. 0s = go-redis defaults shown; pass a per-op ctx deadline for long
+  # ops (BLPOP, big SCAN) — don't raise these globally for them.
+  dial_timeout: ${TESTKIT_SERVICE_REDIS_DIAL_TIMEOUT}    # TCP connect (Validate rejects <100ms)
+  read_timeout: ${TESTKIT_SERVICE_REDIS_READ_TIMEOUT}    # per command
+  write_timeout: ${TESTKIT_SERVICE_REDIS_WRITE_TIMEOUT}
+  # Retries on transient failures (network resets, MOVED during failover). -1 = caller retries.
+  max_retries: ${TESTKIT_SERVICE_REDIS_MAX_RETRIES}
+  min_retry_backoff: ${TESTKIT_SERVICE_REDIS_MIN_RETRY_BACKOFF}
+  max_retry_backoff: ${TESTKIT_SERVICE_REDIS_MAX_RETRY_BACKOFF}
 
 # JWT signing parameters for the tokens testkit issues. The token carries a
 # user-service session id; testkit is the only signer.
@@ -73,18 +101,177 @@ third_party:
   message:
     mode: ${TESTKIT_SERVICE_MESSAGE_MODE}      # module | grpc
     target: ${TESTKIT_SERVICE_MESSAGE_TARGET}
-    # config: DB/Redis injected via option; gid via adapter — module payload empty.
+    # module-mode config. DB/Redis are injected via option and gid via adapter,
+    # so they stay out — but the email accounts / SMS vendors below are
+    # message-service's OWN config, passed through verbatim. Module mode BOOTS
+    # with empty accounts/vendors (idempotency TTLs are nil-safe), but
+    # SendEmail/SendSMS then fail at runtime with no account/vendor — fill per
+    # env. Get/List RPCs and the shared idempotency layer work without them.
+    config:
+      idempotency_key_prefix: ${TESTKIT_SERVICE_MESSAGE_IDEMPOTENCY_KEY_PREFIX}  # Redis namespace; default msg:idem is fine under testkit's shared Redis
+      email:
+        persistence: ${TESTKIT_SERVICE_MESSAGE_EMAIL_PERSISTENCE}        # write send records to DB (default true)
+        idempotency_ttl: ${TESTKIT_SERVICE_MESSAGE_EMAIL_IDEMPOTENCY_TTL}
+        accounts:
+          # One SMTP account scaffold — replace creds per env. Add a second
+          # list item (+ TESTKIT_SERVICE_MESSAGE_EMAIL_SECONDARY_*) for more.
+          - name: ${TESTKIT_SERVICE_MESSAGE_EMAIL_PRIMARY_NAME}
+            vendor: ${TESTKIT_SERVICE_MESSAGE_EMAIL_PRIMARY_VENDOR}      # message-service email vendor string, e.g. aliyun
+            host: ${TESTKIT_SERVICE_MESSAGE_EMAIL_PRIMARY_HOST}
+            port: ${TESTKIT_SERVICE_MESSAGE_EMAIL_PRIMARY_PORT}
+            username: ${TESTKIT_SERVICE_MESSAGE_EMAIL_PRIMARY_USERNAME}
+            password: ${TESTKIT_SERVICE_MESSAGE_EMAIL_PRIMARY_PASSWORD}
+            from: ${TESTKIT_SERVICE_MESSAGE_EMAIL_PRIMARY_FROM}
+        attachment:
+          fetch_timeout: ${TESTKIT_SERVICE_MESSAGE_EMAIL_ATTACHMENT_FETCH_TIMEOUT}
+          max_bytes: ${TESTKIT_SERVICE_MESSAGE_EMAIL_ATTACHMENT_MAX_BYTES}                      # 10 MB
+          max_inline_bytes: ${TESTKIT_SERVICE_MESSAGE_EMAIL_ATTACHMENT_MAX_INLINE_BYTES}        # 2 MB
+          max_total_inline_bytes: ${TESTKIT_SERVICE_MESSAGE_EMAIL_ATTACHMENT_MAX_TOTAL_INLINE_BYTES}  # 5 MB
+      sms:
+        default_country: ${TESTKIT_SERVICE_MESSAGE_SMS_DEFAULT_COUNTRY}  # ISO 3166-1 alpha-2 (default CN)
+        persistence: ${TESTKIT_SERVICE_MESSAGE_SMS_PERSISTENCE}
+        idempotency_ttl: ${TESTKIT_SERVICE_MESSAGE_SMS_IDEMPOTENCY_TTL}
+        vendors:
+          aliyun:
+            accounts:
+              # One Aliyun SMS account — replace creds per env. Uncomment
+              # tencent/volcengine/byteplus/huawei in message-service/
+              # config.example.yaml to enable more vendors.
+              - name: ${TESTKIT_SERVICE_MESSAGE_SMS_ALIYUN_PRIMARY_NAME}
+                aliyun:
+                  access_key_id: ${TESTKIT_SERVICE_MESSAGE_SMS_ALIYUN_PRIMARY_ACCESS_KEY_ID}
+                  access_key_secret: ${TESTKIT_SERVICE_MESSAGE_SMS_ALIYUN_PRIMARY_ACCESS_KEY_SECRET}
+                  sign_name: ${TESTKIT_SERVICE_MESSAGE_SMS_ALIYUN_PRIMARY_SIGN_NAME}
+                  region_id: ${TESTKIT_SERVICE_MESSAGE_SMS_ALIYUN_PRIMARY_REGION_ID}
   storage:
     mode: ${TESTKIT_SERVICE_STORAGE_MODE}      # module | grpc
     target: ${TESTKIT_SERVICE_STORAGE_TARGET}
-    # config: DB/Redis injected via option; gid via adapter. Cloud provider/bucket
-    #   credentials (providers/buckets/upload_token_secret) are deployment-specific
-    #   — fill them per environment when storage is exercised.
+    # module-mode config. DB/Redis are injected via option and gid via adapter,
+    # so they stay out — but the cloud provider/bucket credentials below are
+    # storage-service's OWN required config, passed through verbatim. The two
+    # scalars (upload_token_secret, default_bucket) and at least one provider
+    # are storage-service Validate()-enforced; configx makes the block non-nil
+    # but empty by default, so module mode BOOTS yet every storage RPC fails
+    # at runtime until these are filled. sts/cdn/rate_limit/retention default
+    # sensibly — override via storage-service/config.example.yaml if needed.
+    config:
+      storage:
+        upload_token_secret: ${TESTKIT_SERVICE_STORAGE_UPLOAD_TOKEN_SECRET}  # REQUIRED — signs upload tokens
+        default_bucket: ${TESTKIT_SERVICE_STORAGE_DEFAULT_BUCKET}            # REQUIRED — must match a bucket name below
+        providers:
+          # Active Aliyun OSS provider scaffold — replace creds per env. Add a
+          # second list item (+ TESTKIT_SERVICE_STORAGE_PROVIDER_2_*) for more.
+          - name: ${TESTKIT_SERVICE_STORAGE_PROVIDER_NAME}
+            vendor: ${TESTKIT_SERVICE_STORAGE_PROVIDER_VENDOR}      # VENDOR_ALIYUN_OSS | VENDOR_AWS_S3 | VENDOR_S3_COMPATIBLE | VENDOR_TENCENT_COS | VENDOR_HUAWEI_OBS | VENDOR_VOLCENGINE_TOS
+            endpoint: ${TESTKIT_SERVICE_STORAGE_PROVIDER_ENDPOINT}
+            region: ${TESTKIT_SERVICE_STORAGE_PROVIDER_REGION}
+            access_key: ${TESTKIT_SERVICE_STORAGE_PROVIDER_ACCESS_KEY}
+            secret_key: ${TESTKIT_SERVICE_STORAGE_PROVIDER_SECRET_KEY}
+            # role_arn enables STS via GetSTSCredential (vendor-specific format;
+            # empty = STS unavailable, clients fall back to GenerateUploadURL).
+            # role_arn: ${TESTKIT_SERVICE_STORAGE_PROVIDER_ROLE_ARN}
+            buckets:
+              - name: ${TESTKIT_SERVICE_STORAGE_PROVIDER_BUCKET_NAME}  # must include default_bucket above
+                key_prefix: ${TESTKIT_SERVICE_STORAGE_PROVIDER_BUCKET_KEY_PREFIX}
+                acl: ${TESTKIT_SERVICE_STORAGE_PROVIDER_BUCKET_ACL}
+                # CDN is optional per bucket (nil = CDN disabled). Signing keys
+                # differ by vendor — see storage-service/config.example.yaml.
+                # cdn:
+                #   domain: cdn.example.com
+                #   auth_key: ${TESTKIT_SERVICE_STORAGE_PROVIDER_BUCKET_CDN_AUTH_KEY}
   user:
     mode: ${TESTKIT_SERVICE_USER_MODE}         # module | grpc
     target: ${TESTKIT_SERVICE_USER_TARGET}
-    # config: DB/Redis injected via option; gid/message via adapters. OAuth
-    #   providers are optional (empty credentials = disabled).
+    # module-mode config. DB/Redis are injected via option and gid/message via
+    # adapters, so they stay out. Everything below is user-service's OWN config,
+    # passed through verbatim. OAuth providers have no built-in default (empty
+    # client_id/app_id = that provider disabled; testkit boots with OAuth off
+    # until you fill one in). session/rbac/captcha/rate_limit/cron DO have
+    # built-in defaults — the .env.example values mirror those defaults, so the
+    # block ships wired-but-stock; override per env without touching code.
+    config:
+      oauth:
+        # redirect_url must EXACTLY match the URL registered at the provider
+        # (scheme/host/path/trailing slash) — mismatch → "redirect_uri mismatch".
+        # allowed_redirect_urls is the business return_to allowlist (comma-split
+        # by configx); empty + non-empty return_to → rejected.
+        github:
+          client_id: ${TESTKIT_SERVICE_USER_OAUTH_GITHUB_CLIENT_ID}
+          client_secret: ${TESTKIT_SERVICE_USER_OAUTH_GITHUB_CLIENT_SECRET}
+          redirect_url: ${TESTKIT_SERVICE_USER_OAUTH_GITHUB_REDIRECT_URL}
+          allowed_redirect_urls: ${TESTKIT_SERVICE_USER_OAUTH_GITHUB_ALLOWED_REDIRECT_URLS}
+        google:
+          client_id: ${TESTKIT_SERVICE_USER_OAUTH_GOOGLE_CLIENT_ID}
+          client_secret: ${TESTKIT_SERVICE_USER_OAUTH_GOOGLE_CLIENT_SECRET}
+          redirect_url: ${TESTKIT_SERVICE_USER_OAUTH_GOOGLE_REDIRECT_URL}
+          allowed_redirect_urls: ${TESTKIT_SERVICE_USER_OAUTH_GOOGLE_ALLOWED_REDIRECT_URLS}
+        wechat:
+          app_id: ${TESTKIT_SERVICE_USER_OAUTH_WECHAT_APP_ID}
+          app_secret: ${TESTKIT_SERVICE_USER_OAUTH_WECHAT_APP_SECRET}
+          redirect_url: ${TESTKIT_SERVICE_USER_OAUTH_WECHAT_REDIRECT_URL}
+          allowed_redirect_urls: ${TESTKIT_SERVICE_USER_OAUTH_WECHAT_ALLOWED_REDIRECT_URLS}
+        apple:
+          client_id: ${TESTKIT_SERVICE_USER_OAUTH_APPLE_CLIENT_ID}
+          team_id: ${TESTKIT_SERVICE_USER_OAUTH_APPLE_TEAM_ID}
+          key_id: ${TESTKIT_SERVICE_USER_OAUTH_APPLE_KEY_ID}
+          private_key: ${TESTKIT_SERVICE_USER_OAUTH_APPLE_PRIVATE_KEY}
+          redirect_url: ${TESTKIT_SERVICE_USER_OAUTH_APPLE_REDIRECT_URL}
+          allowed_redirect_urls: ${TESTKIT_SERVICE_USER_OAUTH_APPLE_ALLOWED_REDIRECT_URLS}
+          client_secret_ttl: ${TESTKIT_SERVICE_USER_OAUTH_APPLE_CLIENT_SECRET_TTL}
+      # Session management (Redis-backed). Defaults mirror user-service's built-ins.
+      session:
+        ttl: ${TESTKIT_SERVICE_USER_SESSION_TTL}                   # session lifetime
+        max_sessions: ${TESTKIT_SERVICE_USER_SESSION_MAX_SESSIONS} # per-user concurrent sessions, 0 = unlimited
+        key_prefix: ${TESTKIT_SERVICE_USER_SESSION_KEY_PREFIX}
+        user_sessions_prefix: ${TESTKIT_SERVICE_USER_SESSION_USER_SESSIONS_PREFIX}
+        session_code_ttl: ${TESTKIT_SERVICE_USER_SESSION_CODE_TTL} # one-time OAuth handoff code TTL
+      # RBAC cache (Redis): TTLs + key prefixes.
+      rbac:
+        cache:
+          user_perms_ttl: ${TESTKIT_SERVICE_USER_RBAC_USER_PERMS_TTL}
+          user_roles_ttl: ${TESTKIT_SERVICE_USER_RBAC_USER_ROLES_TTL}
+          role_perms_ttl: ${TESTKIT_SERVICE_USER_RBAC_ROLE_PERMS_TTL}
+          group_roles_ttl: ${TESTKIT_SERVICE_USER_RBAC_GROUP_ROLES_TTL}
+          group_user_perms_ttl: ${TESTKIT_SERVICE_USER_RBAC_GROUP_USER_PERMS_TTL}
+        user_perms_prefix: ${TESTKIT_SERVICE_USER_RBAC_USER_PERMS_PREFIX}
+        user_roles_prefix: ${TESTKIT_SERVICE_USER_RBAC_USER_ROLES_PREFIX}
+        role_perms_prefix: ${TESTKIT_SERVICE_USER_RBAC_ROLE_PERMS_PREFIX}
+        group_roles_prefix: ${TESTKIT_SERVICE_USER_RBAC_GROUP_ROLES_PREFIX}
+        group_user_perms_prefix: ${TESTKIT_SERVICE_USER_RBAC_GROUP_USER_PERMS_PREFIX}
+      # Captcha (verification codes). Purpose keys are readable aliases mapped
+      # to the VerificationPurpose enum at config load (user-service rewrites
+      # them to the numeric keys its Redis layout uses); raw numeric keys
+      # ("1".."6") are also accepted. Shortest rate-rule window = code TTL.
+      # The anchor aliases all six purposes to one shared rule — split the env
+      # vars per purpose to diverge.
+      captcha:
+        prefix: ${TESTKIT_SERVICE_USER_CAPTCHA_PREFIX}
+        max_attempts: ${TESTKIT_SERVICE_USER_CAPTCHA_MAX_ATTEMPTS}
+        purposes:
+          register: &captcha_rule
+            rate_rules:
+              - window: ${TESTKIT_SERVICE_USER_CAPTCHA_WINDOW}
+                max: ${TESTKIT_SERVICE_USER_CAPTCHA_MAX}
+          login: *captcha_rule
+          verify_email: *captcha_rule
+          verify_phone: *captcha_rule
+          password_reset: *captcha_rule
+          bind: *captcha_rule
+      # Rate limiting by purpose (Redis). login = login attempts, code = SendVerificationCode volume.
+      rate_limit:
+        login:
+          prefix: ${TESTKIT_SERVICE_USER_RATE_LIMIT_LOGIN_PREFIX}
+          global:
+            - window: ${TESTKIT_SERVICE_USER_RATE_LIMIT_LOGIN_WINDOW}
+              max: ${TESTKIT_SERVICE_USER_RATE_LIMIT_LOGIN_MAX}
+        code:
+          prefix: ${TESTKIT_SERVICE_USER_RATE_LIMIT_CODE_PREFIX}
+          global:
+            - window: ${TESTKIT_SERVICE_USER_RATE_LIMIT_CODE_WINDOW}
+              max: ${TESTKIT_SERVICE_USER_RATE_LIMIT_CODE_MAX}
+      # Cron scheduler (per-task specs live in their owning domain config).
+      cron:
+        timezone: ${TESTKIT_SERVICE_USER_CRON_TIMEZONE}
 
 # Message-domain settings (P4). testkit injects sender_id into downstream
 # SendEmail/SendSMS requests; it is a service label (not a user id). Override
@@ -97,5 +284,15 @@ cron:
   timezone: ${TESTKIT_SERVICE_CRON_TIMEZONE}
 
 log:
-  level: ${TESTKIT_SERVICE_LOG_LEVEL}
-  format: ${TESTKIT_SERVICE_LOG_FORMAT}
+  level: ${TESTKIT_SERVICE_LOG_LEVEL}      # debug, info, warn, error
+  format: ${TESTKIT_SERVICE_LOG_FORMAT}    # text | json
+  service: ${TESTKIT_SERVICE_LOG_SERVICE}  # optional service-name prefix, e.g. testkit-service → [testkit-service]
+  # Optional file output with rotation (lumberjack). Empty path = stdout only.
+  # (configx always allocates the file block; leaving path empty keeps stdout-only
+  # logging — fill path to additionally write/rotate a file.)
+  file:
+    path: ${TESTKIT_SERVICE_LOG_FILE_PATH}                  # log file path; empty = stdout only
+    max_size_mb: ${TESTKIT_SERVICE_LOG_FILE_MAX_SIZE_MB}    # rotate after this many MB
+    max_backups: ${TESTKIT_SERVICE_LOG_FILE_MAX_BACKUPS}    # rotated files to keep
+    max_age_days: ${TESTKIT_SERVICE_LOG_FILE_MAX_AGE_DAYS}  # retain rotated files this many days (0 = no limit)
+    compress: ${TESTKIT_SERVICE_LOG_FILE_COMPRESS}          # gzip rotated files

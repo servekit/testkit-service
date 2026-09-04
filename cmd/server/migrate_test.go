@@ -12,7 +12,7 @@ import (
 // table per DB-bearing downstream is created. gid-service has no DB and
 // contributes no tables. testkit owns no tables in P1.
 func TestRunMigration_CreatesAllTables(t *testing.T) {
-	db := dbx.SetupTestDB(t)
+	db := dbx.SetupTestDB(t, dbx.DriverPostgres)
 	require.NoError(t, runMigration(db))
 
 	rows, err := db.Raw(`

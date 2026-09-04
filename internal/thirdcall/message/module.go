@@ -22,6 +22,6 @@ func NewModule(h *messageservice.Handler) MessageService {
 // (resolveMessage registers it via mgr.Add), not by this module, so the module
 // has nothing to release. The method exists only to satisfy the MessageService
 // interface, whose grpc backend needs a real Close to drop its connection.
-func (m *moduleMessage) Close() error {
+func (*moduleMessage) Close() error {
 	return nil
 }

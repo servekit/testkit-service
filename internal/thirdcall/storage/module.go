@@ -22,6 +22,6 @@ func NewModule(h *storagehandler.Handler) StorageService {
 // (resolveStorage registers it via mgr.Add), not by this module, so the module
 // has nothing to release. The method exists only to satisfy the StorageService
 // interface, whose grpc backend needs a real Close to drop its connection.
-func (m *moduleStorage) Close() error {
+func (*moduleStorage) Close() error {
 	return nil
 }

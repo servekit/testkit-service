@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/servekit/go-common/dbx"
 	"github.com/servekit/testkit-service/pkg/config"
 )
 
@@ -113,4 +114,56 @@ third_party:
 	require.Equal(t, "localhost:19092", cfg.ThirdParty.Message.Target)
 	require.Equal(t, "grpc", cfg.ThirdParty.User.Mode)
 	require.Equal(t, "localhost:19094", cfg.ThirdParty.User.Target)
+}
+
+// TestLoad_Database verifies the database block binds into dbx.Config after
+// go-common's dbx refactor (driver selector + nested dialect sub-configs).
+// The YAML below mirrors config.example.yaml's database block key-for-key —
+// the test exists to catch a key-shape drift (e.g. host left at the top level
+// after a dbx nesting change) that would otherwise silently fall back to
+// defaults and connect to the wrong database at runtime.
+func TestLoad_Database(t *testing.T) {
+	writeConfig(t, `
+database:
+  driver: postgres
+  postgres:
+    host: postgres
+    port: 5432
+    user: postgres
+    password: change-me
+    dbname: testkit
+    sslmode: disable
+  max_open_conns: 25
+  max_idle_conns: 10
+  conn_max_lifetime: 5m
+  log_level: warn
+  slow_threshold: 200ms
+  skip_default_tx: true
+  disable_fk: true
+  table_prefix: tk_
+`)
+
+	cfg, err := config.Load()
+	require.NoError(t, err)
+	require.NotNil(t, cfg.Database)
+
+	// Driver + nested postgres sub-config round-trip.
+	require.Equal(t, dbx.DriverPostgres, cfg.Database.Driver)
+	require.NotNil(t, cfg.Database.Postgres)
+	require.Equal(t, "postgres", cfg.Database.Postgres.Host)
+	require.Equal(t, 5432, cfg.Database.Postgres.Port)
+	require.Equal(t, "postgres", cfg.Database.Postgres.User)
+	require.Equal(t, "change-me", cfg.Database.Postgres.Password)
+	require.Equal(t, "testkit", cfg.Database.Postgres.DBName)
+	require.Equal(t, "disable", cfg.Database.Postgres.SSLMode)
+
+	// Shared pool + GORM options round-trip.
+	require.Equal(t, 25, cfg.Database.MaxOpenConns)
+	require.Equal(t, 10, cfg.Database.MaxIdleConns)
+	require.Equal(t, 5*time.Minute, cfg.Database.ConnMaxLifetime)
+	require.Equal(t, "warn", cfg.Database.LogLevel)
+	require.Equal(t, 200*time.Millisecond, cfg.Database.SlowThreshold)
+	require.True(t, cfg.Database.SkipDefaultTx)
+	require.True(t, cfg.Database.DisableFK)
+	require.Equal(t, "tk_", cfg.Database.TablePrefix)
 }
