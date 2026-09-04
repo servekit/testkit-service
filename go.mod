@@ -14,7 +14,7 @@ require (
 	github.com/redis/go-redis/v9 v9.20.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/servekit/gid-service v0.0.0-20260904082251-1b714a165028
-	github.com/servekit/go-common v0.0.0-20260904082059-4f99a93f1b32
+	github.com/servekit/go-common v0.0.0-20260904094002-f2da83b5aa42
 	github.com/servekit/message-service v0.0.0-20260904082757-f7fed846a189
 	github.com/servekit/storage-service v0.0.0-20260904082804-171aa7eb8278
 	github.com/servekit/user-service v0.0.0-20260904083044-dcc415ab34fb
