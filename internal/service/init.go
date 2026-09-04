@@ -17,6 +17,7 @@ import (
 	"time"
 
 	gidservice "github.com/servekit/gid-service/pkg"
+	"github.com/servekit/go-common/configx"
 	"github.com/servekit/go-common/cronx"
 	"github.com/servekit/go-common/dbx"
 	"github.com/servekit/go-common/lifecycle"
@@ -189,7 +190,7 @@ func rollback(mgr *lifecycle.Manager, err error) error {
 // provider's ConnectConfig takes. testkit is a terminal service with no
 // injection path, so each dependency must be configured; a nil section
 // returns zeros and fails inside the provider's Connect with a branded error.
-func unpack[T any](cfg *config.RemoteServiceConfig[T]) (mode, target string, config T) {
+func unpack[T any](cfg *config.RemoteServiceConfig[T]) (mode configx.Mode, target string, config T) {
 	if cfg == nil {
 		return "", "", config
 	}

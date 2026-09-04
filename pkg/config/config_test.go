@@ -1,6 +1,7 @@
 package config_test
 
 import (
+	"github.com/servekit/go-common/configx"
 	"os"
 	"testing"
 	"time"
@@ -104,15 +105,15 @@ third_party:
 	require.NoError(t, err)
 
 	// gid: deep check — real gidconfig.Config.Snowflake.MachineID round-trips.
-	require.Equal(t, "module", cfg.ThirdParty.GID.Mode)
+	require.Equal(t, configx.ModeModule, cfg.ThirdParty.GID.Mode)
 	require.Equal(t, int64(7), cfg.ThirdParty.GID.Config.Snowflake.MachineID)
 
 	// storage / message / user: wrapper mode + target.
-	require.Equal(t, "grpc", cfg.ThirdParty.Storage.Mode)
+	require.Equal(t, configx.ModeGRPC, cfg.ThirdParty.Storage.Mode)
 	require.Equal(t, "localhost:19093", cfg.ThirdParty.Storage.Target)
-	require.Equal(t, "grpc", cfg.ThirdParty.Message.Mode)
+	require.Equal(t, configx.ModeGRPC, cfg.ThirdParty.Message.Mode)
 	require.Equal(t, "localhost:19092", cfg.ThirdParty.Message.Target)
-	require.Equal(t, "grpc", cfg.ThirdParty.User.Mode)
+	require.Equal(t, configx.ModeGRPC, cfg.ThirdParty.User.Mode)
 	require.Equal(t, "localhost:19094", cfg.ThirdParty.User.Target)
 }
 

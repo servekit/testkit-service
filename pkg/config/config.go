@@ -113,16 +113,9 @@ type ThirdPartyConfig struct {
 // defines its own identical generic copy so no cross-module type import is
 // needed just to spell the wrapper.
 //
-// Mode has no default — the consuming constructor decides how to treat an
-// empty value (typically module).
-type RemoteServiceConfig[T any] struct {
-	// Mode is "module" (in-process) or "grpc" (remote).
-	Mode string
-	// Target is the gRPC address used when Mode == "grpc".
-	Target string
-	// Config is the in-process config used when Mode == "module".
-	Config T
-}
+// RemoteServiceConfig is the shared third_party.<name> section shape,
+// aliased from go-common so Mode is the configx.Mode enum.
+type RemoteServiceConfig[T any] = configx.RemoteServiceConfig[T]
 
 // MessageConfig holds testkit-side message-domain settings.
 //
