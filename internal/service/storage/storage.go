@@ -45,9 +45,9 @@ import (
 	"github.com/servekit/go-common/grpcx"
 	"github.com/servekit/go-common/xerr/xcodes"
 
-	storagev1 "github.com/servekit/storage-service/gen/storage/v1"
+	storagev1 "github.com/servekit/api/gen/go/storage/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	storageservice "github.com/servekit/storage-service/pkg"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 )
 
 // Service implements testkit's storage domain. The storage field is typed as
@@ -293,7 +293,7 @@ func (s *Service) CreateFileLink(ctx context.Context, req *testkitv1.CreateFileL
 		return nil, err
 	}
 	return &testkitv1.CreateFileLinkResponse{
-		LinkToken:  resp.GetLinkToken(),
+		LinkToken:   resp.GetLinkToken(),
 		RetainUntil: resp.GetRetainUntil(),
 	}, nil
 }
@@ -552,8 +552,6 @@ func (s *Service) ListMyAuditLogs(ctx context.Context, req *testkitv1.ListMyAudi
 // SetOwnerQuota / AddOwnerQuota carry the target owner_type + owner_id on the
 // request (the business being billed), NOT the caller. Forwarded unchanged.
 
-
-
 // --- Admin (target owner kept on request) ---
 //
 // Admin RPCs forward the target owner_type + owner_id (or file_id) straight from
@@ -660,7 +658,7 @@ func (s *Service) AdminListProviders(ctx context.Context, _ *emptypb.Empty) (*te
 	for _, p := range resp.GetProviders() {
 		providers = append(providers, &testkitv1.ProviderInfo{
 			Name:     p.GetName(),
-			Vendor:   testkitv1.Vendor(p.GetVendor()),
+			Vendor:   storagev1.Vendor(p.GetVendor()),
 			Endpoint: p.GetEndpoint(),
 			Region:   p.GetRegion(),
 		})
@@ -680,8 +678,8 @@ func (s *Service) AdminListBuckets(ctx context.Context, _ *emptypb.Empty) (*test
 			Name:      b.GetName(),
 			Provider:  b.GetProvider(),
 			KeyPrefix: b.GetKeyPrefix(),
-			Acl:       testkitv1.BucketACL(b.GetAcl()),
-			Vendor:    testkitv1.Vendor(b.GetVendor()),
+			Acl:       storagev1.BucketACL(b.GetAcl()),
+			Vendor:    storagev1.Vendor(b.GetVendor()),
 		})
 	}
 	return &testkitv1.AdminListBucketsResponse{Buckets: buckets}, nil
@@ -772,7 +770,7 @@ func toTestkitFileInfo(f *storagev1.UserFileInfo) *testkitv1.FileInfo {
 		Description: f.GetDescription(),
 		Metadata:    f.GetMetadata(),
 		IsPublic:    f.GetIsPublic(),
-		OwnerType:   testkitv1.OwnerType(f.GetOwnerType()),
+		OwnerType:   storagev1.OwnerType(f.GetOwnerType()),
 		Size:        f.GetSize(),
 		ContentType: f.GetContentType(),
 		Extension:   f.GetExtension(),
@@ -790,7 +788,7 @@ func toTestkitAdminFileInfo(f *storagev1.AdminFileInfo) *testkitv1.AdminFileInfo
 	}
 	return &testkitv1.AdminFileInfo{
 		Id:          f.GetId(),
-		OwnerType:   testkitv1.OwnerType(f.GetOwnerType()),
+		OwnerType:   storagev1.OwnerType(f.GetOwnerType()),
 		OwnerId:     f.GetOwnerId(),
 		Filename:    f.GetFilename(),
 		FilePath:    f.GetFilePath(),
@@ -831,14 +829,14 @@ func toTestkitAuditLogEntry(e *storagev1.AuditLogEntry) *testkitv1.AuditLogEntry
 	}
 	return &testkitv1.AuditLogEntry{
 		Id:           e.GetId(),
-		Action:       testkitv1.AuditAction(e.GetAction()),
-		OwnerType:    testkitv1.OwnerType(e.GetOwnerType()),
+		Action:       storagev1.AuditAction(e.GetAction()),
+		OwnerType:    storagev1.OwnerType(e.GetOwnerType()),
 		OwnerId:      e.GetOwnerId(),
-		TargetType:   testkitv1.AuditLogTargetType(e.GetTargetType()),
+		TargetType:   storagev1.AuditLogTargetType(e.GetTargetType()),
 		TargetId:     e.GetTargetId(),
 		Before:       e.GetBefore(),
 		After:        e.GetAfter(),
-		Status:       testkitv1.AuditLogStatus(e.GetStatus()),
+		Status:       storagev1.AuditLogStatus(e.GetStatus()),
 		ErrorMessage: e.GetErrorMessage(),
 		RequestId:    e.GetRequestId(),
 		CreatedAt:    e.GetCreatedAt(),
@@ -854,7 +852,7 @@ func toTestkitAdminGetStatsResponse(r *storagev1.AdminGetStatsResponse) *testkit
 	owners := make([]*testkitv1.OwnerStats, 0, len(r.GetOwnerStats()))
 	for _, o := range r.GetOwnerStats() {
 		owners = append(owners, &testkitv1.OwnerStats{
-			OwnerType:  testkitv1.OwnerType(o.GetOwnerType()),
+			OwnerType:  storagev1.OwnerType(o.GetOwnerType()),
 			FileCount:  o.GetFileCount(),
 			TotalBytes: o.GetTotalBytes(),
 		})

@@ -13,7 +13,8 @@ package handler
 import (
 	"context"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	commonv1 "github.com/servekit/api/gen/go/common/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service"
 
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -47,6 +48,6 @@ func (h *Handler) Stop() error { return h.svc.Stop() }
 // least one HTTP endpoint and pkg/server.go can always register the gateway
 // handler. (A proto service with zero RPCs produces no HandlerFromEndpoint,
 // which would silently disable the HTTP gateway.)
-func (h *Handler) Ping(ctx context.Context, _ *emptypb.Empty) (*testkitv1.Pong, error) {
+func (h *Handler) Ping(ctx context.Context, _ *emptypb.Empty) (*commonv1.Pong, error) {
 	return h.svc.Ping(ctx)
 }

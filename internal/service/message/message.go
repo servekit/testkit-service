@@ -30,10 +30,11 @@ package message
 
 import (
 	"context"
+	messagingv1 "github.com/servekit/api/gen/go/messaging/v1"
 
-	messagev1 "github.com/servekit/message-service/gen/message/v1"
+	messagev1 "github.com/servekit/api/gen/go/messaging/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	messageservice "github.com/servekit/message-service/pkg"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 )
 
 // Service implements testkit's message domain. The message field is typed as
@@ -339,13 +340,13 @@ func toTestkitSendResponse(r *messagev1.SendResponse) *testkitv1.SendResponse {
 	}
 	resp := &testkitv1.SendResponse{
 		Id:     r.GetId(),
-		Status: testkitv1.MessageStatus(r.GetStatus()),
+		Status: messagingv1.MessageStatus(r.GetStatus()),
 	}
 	switch v := r.GetVendor().(type) {
 	case *messagev1.SendResponse_EmailVendor:
-		resp.EmailVendor = testkitv1.EmailVendor(v.EmailVendor)
+		resp.EmailVendor = messagingv1.EmailVendor(v.EmailVendor)
 	case *messagev1.SendResponse_SmsVendor:
-		resp.SmsVendor = testkitv1.SmsVendor(v.SmsVendor)
+		resp.SmsVendor = messagingv1.SmsVendor(v.SmsVendor)
 	}
 	return resp
 }
@@ -356,10 +357,10 @@ func toTestkitEmailRecord(r *messagev1.EmailRecord) *testkitv1.EmailRecord {
 	}
 	return &testkitv1.EmailRecord{
 		Id:             r.GetId(),
-		Vendor:         testkitv1.EmailVendor(r.GetVendor()),
+		Vendor:         messagingv1.EmailVendor(r.GetVendor()),
 		Account:        r.GetAccount(),
-		Scene:          testkitv1.EmailScene(r.GetScene()),
-		Status:         testkitv1.MessageStatus(r.GetStatus()),
+		Scene:          messagingv1.EmailScene(r.GetScene()),
+		Status:         messagingv1.MessageStatus(r.GetStatus()),
 		Target:         toTestkitEmailAddress(r.GetTarget()),
 		SenderId:       r.GetSenderId(),
 		Cc:             toTestkitEmailAddresses(r.GetCc()),
@@ -385,10 +386,10 @@ func toTestkitSMSRecord(r *messagev1.SMSRecord) *testkitv1.SMSRecord {
 	}
 	return &testkitv1.SMSRecord{
 		Id:             r.GetId(),
-		Vendor:         testkitv1.SmsVendor(r.GetVendor()),
+		Vendor:         messagingv1.SmsVendor(r.GetVendor()),
 		Account:        r.GetAccount(),
-		Scene:          testkitv1.SmsScene(r.GetScene()),
-		Status:         testkitv1.MessageStatus(r.GetStatus()),
+		Scene:          messagingv1.SmsScene(r.GetScene()),
+		Status:         messagingv1.MessageStatus(r.GetStatus()),
 		RegionCode:     r.GetRegionCode(),
 		Phone:          r.GetPhone(),
 		SenderId:       r.GetSenderId(),
@@ -571,7 +572,7 @@ func toTestkitEmailVendorStats(in []*messagev1.EmailVendorStats) []*testkitv1.Em
 	out := make([]*testkitv1.EmailVendorStats, 0, len(in))
 	for _, v := range in {
 		out = append(out, &testkitv1.EmailVendorStats{
-			Vendor: testkitv1.EmailVendor(v.GetVendor()),
+			Vendor: messagingv1.EmailVendor(v.GetVendor()),
 			Total:  v.GetTotal(),
 			Sent:   v.GetSent(),
 			Failed: v.GetFailed(),
@@ -584,7 +585,7 @@ func toTestkitSmsVendorStats(in []*messagev1.SmsVendorStats) []*testkitv1.SmsVen
 	out := make([]*testkitv1.SmsVendorStats, 0, len(in))
 	for _, v := range in {
 		out = append(out, &testkitv1.SmsVendorStats{
-			Vendor: testkitv1.SmsVendor(v.GetVendor()),
+			Vendor: messagingv1.SmsVendor(v.GetVendor()),
 			Total:  v.GetTotal(),
 			Sent:   v.GetSent(),
 			Failed: v.GetFailed(),

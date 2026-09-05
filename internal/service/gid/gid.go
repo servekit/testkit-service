@@ -9,9 +9,9 @@ package gid
 import (
 	"context"
 
-	gidv1 "github.com/servekit/gid-service/gen/gid/v1"
+	gidv1 "github.com/servekit/api/gen/go/gid/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	gidservice "github.com/servekit/gid-service/pkg"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 )
 
 // Service implements the gid debug domain.

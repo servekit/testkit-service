@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	gidv1 "github.com/servekit/gid-service/gen/gid/v1"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	gidv1 "github.com/servekit/api/gen/go/gid/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service/gid"
 	"github.com/stretchr/testify/require"
 )

@@ -6,10 +6,11 @@ package telemetry
 
 import (
 	"context"
+	telemetryv1 "github.com/servekit/api/gen/go/telemetry/v1"
 
-	dnv1 "github.com/servekit/telemetry-service/gen/telemetry/v1"
+	dnv1 "github.com/servekit/api/gen/go/telemetry/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	telemetryservice "github.com/servekit/telemetry-service/pkg"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"google.golang.org/grpc/metadata"
 )
 
@@ -27,6 +28,12 @@ type Service struct {
 func New(client telemetryservice.Service, adminToken string) *Service {
 	return &Service{client: client, adminToken: adminToken}
 }
+
+// Backend returns the raw telemetry-service handle (module or gRPC mode).
+// Used by pkg/server.go to mount the raw ingestion HTTP face
+// (telemetry's pkg/ingesthttp), which speaks the downstream proto types
+// directly and must not be adapted through testkit's mirrored messages.
+func (s *Service) Backend() telemetryservice.Service { return s.client }
 
 // adminCtx appends the admin Bearer token to the outgoing metadata.
 func (s *Service) adminCtx(ctx context.Context) context.Context {
@@ -164,7 +171,7 @@ func toTestkitApp(src *dnv1.App) *testkitv1.App {
 	out.Name = src.Name
 	out.Email = src.Email
 	out.StrictVersions = src.StrictVersions
-	out.AuthMode = testkitv1.AuthMode(src.AuthMode)
+	out.AuthMode = telemetryv1.AuthMode(src.AuthMode)
 	out.AuthGraceUntil = src.AuthGraceUntil
 	out.RatePerMinute = src.RatePerMinute
 	out.RatePerDay = src.RatePerDay
@@ -779,7 +786,7 @@ func toTestkitUpdateAppRequest(src *dnv1.UpdateAppRequest) *testkitv1.UpdateAppR
 		out.StrictVersions = src.StrictVersions
 	}
 	if src.AuthMode != nil {
-		v := testkitv1.AuthMode(*src.AuthMode)
+		v := telemetryv1.AuthMode(*src.AuthMode)
 		out.AuthMode = &v
 	}
 	if src.AuthGraceUntil != nil {

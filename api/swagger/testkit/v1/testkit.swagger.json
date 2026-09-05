@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "testkit/v1/testkit.proto",
+    "title": "testkit/v1/service.proto",
     "version": "version not set"
   },
   "tags": [
@@ -791,6 +791,7 @@
         "parameters": [
           {
             "name": "vendor",
+            "description": " - EMAIL_VENDOR_ALIYUN: Aliyun DirectMail.\n - EMAIL_VENDOR_TENCENT: Tencent SES.\n - EMAIL_VENDOR_NETEASE: NetEase EasyMail.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -804,6 +805,7 @@
           },
           {
             "name": "scene",
+            "description": " - EMAIL_SCENE_LOGIN_CODE: One-time login verification code.\n - EMAIL_SCENE_FORGOT_PASSWORD: Password reset link / code.\n - EMAIL_SCENE_REGISTER: Registration verification code.\n - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.\n - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.\n - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.\n - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -821,6 +823,7 @@
           },
           {
             "name": "status",
+            "description": " - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.\n - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;\nthe sync flow does NOT write PENDING (currently unused).\n - MESSAGE_STATUS_SENT: SENT — the vendor synchronously accepted the send request.\nFor SMS: vendor API returned OK; does NOT mean handset received\n         (async delivery is not tracked yet).\nFor email: SMTP server accepted the message.\n - MESSAGE_STATUS_FAILED: FAILED — the vendor rejected the request, network/transport failed,\nor context was cancelled. error_message carries the last error.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -956,6 +959,7 @@
         "parameters": [
           {
             "name": "vendor",
+            "description": " - EMAIL_VENDOR_ALIYUN: Aliyun DirectMail.\n - EMAIL_VENDOR_TENCENT: Tencent SES.\n - EMAIL_VENDOR_NETEASE: NetEase EasyMail.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -969,6 +973,7 @@
           },
           {
             "name": "scene",
+            "description": " - EMAIL_SCENE_LOGIN_CODE: One-time login verification code.\n - EMAIL_SCENE_FORGOT_PASSWORD: Password reset link / code.\n - EMAIL_SCENE_REGISTER: Registration verification code.\n - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.\n - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.\n - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.\n - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -986,6 +991,7 @@
           },
           {
             "name": "status",
+            "description": " - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.\n - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;\nthe sync flow does NOT write PENDING (currently unused).\n - MESSAGE_STATUS_SENT: SENT — the vendor synchronously accepted the send request.\nFor SMS: vendor API returned OK; does NOT mean handset received\n         (async delivery is not tracked yet).\nFor email: SMTP server accepted the message.\n - MESSAGE_STATUS_FAILED: FAILED — the vendor rejected the request, network/transport failed,\nor context was cancelled. error_message carries the last error.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -1116,6 +1122,7 @@
         "parameters": [
           {
             "name": "vendor",
+            "description": " - EMAIL_VENDOR_ALIYUN: Aliyun DirectMail.\n - EMAIL_VENDOR_TENCENT: Tencent SES.\n - EMAIL_VENDOR_NETEASE: NetEase EasyMail.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -1129,6 +1136,7 @@
           },
           {
             "name": "scene",
+            "description": " - EMAIL_SCENE_LOGIN_CODE: One-time login verification code.\n - EMAIL_SCENE_FORGOT_PASSWORD: Password reset link / code.\n - EMAIL_SCENE_REGISTER: Registration verification code.\n - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.\n - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.\n - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.\n - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -4017,6 +4025,7 @@
         "parameters": [
           {
             "name": "vendor",
+            "description": " - SMS_VENDOR_ALIYUN: Aliyun (domestic + intl SendMessageToGlobe).\n - SMS_VENDOR_TENCENT: Tencent Cloud SMS (domestic + intl via SdkAppid).\n - SMS_VENDOR_VOLCENGINE: ByteDance Volcengine SMS.\n - SMS_VENDOR_BYTEPLUS: Byteplus (intl-only, template-based).\n - SMS_VENDOR_HUAWEI: Huawei Cloud SMS.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -4032,6 +4041,7 @@
           },
           {
             "name": "scene",
+            "description": " - SMS_SCENE_LOGIN_CODE: One-time login verification code.\n - SMS_SCENE_FORGOT_PASSWORD: Password reset code.\n - SMS_SCENE_REGISTER: Registration verification code.\n - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.\n - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.\n - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -4048,6 +4058,7 @@
           },
           {
             "name": "status",
+            "description": " - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.\n - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;\nthe sync flow does NOT write PENDING (currently unused).\n - MESSAGE_STATUS_SENT: SENT — the vendor synchronously accepted the send request.\nFor SMS: vendor API returned OK; does NOT mean handset received\n         (async delivery is not tracked yet).\nFor email: SMTP server accepted the message.\n - MESSAGE_STATUS_FAILED: FAILED — the vendor rejected the request, network/transport failed,\nor context was cancelled. error_message carries the last error.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -4189,6 +4200,7 @@
         "parameters": [
           {
             "name": "vendor",
+            "description": " - SMS_VENDOR_ALIYUN: Aliyun (domestic + intl SendMessageToGlobe).\n - SMS_VENDOR_TENCENT: Tencent Cloud SMS (domestic + intl via SdkAppid).\n - SMS_VENDOR_VOLCENGINE: ByteDance Volcengine SMS.\n - SMS_VENDOR_BYTEPLUS: Byteplus (intl-only, template-based).\n - SMS_VENDOR_HUAWEI: Huawei Cloud SMS.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -4204,6 +4216,7 @@
           },
           {
             "name": "scene",
+            "description": " - SMS_SCENE_LOGIN_CODE: One-time login verification code.\n - SMS_SCENE_FORGOT_PASSWORD: Password reset code.\n - SMS_SCENE_REGISTER: Registration verification code.\n - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.\n - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.\n - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -4220,6 +4233,7 @@
           },
           {
             "name": "status",
+            "description": " - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.\n - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;\nthe sync flow does NOT write PENDING (currently unused).\n - MESSAGE_STATUS_SENT: SENT — the vendor synchronously accepted the send request.\nFor SMS: vendor API returned OK; does NOT mean handset received\n         (async delivery is not tracked yet).\nFor email: SMTP server accepted the message.\n - MESSAGE_STATUS_FAILED: FAILED — the vendor rejected the request, network/transport failed,\nor context was cancelled. error_message carries the last error.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -4378,6 +4392,7 @@
         "parameters": [
           {
             "name": "vendor",
+            "description": " - SMS_VENDOR_ALIYUN: Aliyun (domestic + intl SendMessageToGlobe).\n - SMS_VENDOR_TENCENT: Tencent Cloud SMS (domestic + intl via SdkAppid).\n - SMS_VENDOR_VOLCENGINE: ByteDance Volcengine SMS.\n - SMS_VENDOR_BYTEPLUS: Byteplus (intl-only, template-based).\n - SMS_VENDOR_HUAWEI: Huawei Cloud SMS.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -4393,6 +4408,7 @@
           },
           {
             "name": "scene",
+            "description": " - SMS_SCENE_LOGIN_CODE: One-time login verification code.\n - SMS_SCENE_FORGOT_PASSWORD: Password reset code.\n - SMS_SCENE_REGISTER: Registration verification code.\n - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.\n - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.\n - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -5149,7 +5165,7 @@
           },
           {
             "name": "registerSource",
-            "description": " - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method.",
+            "description": " - IDENTITY_PROVIDER_WECHAT: WeChat web OAuth (redirect-based).\n - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -5168,6 +5184,7 @@
           },
           {
             "name": "registerDevice",
+            "description": " - DEVICE_TYPE_API: Machine-to-machine / direct API token (no UA).",
             "in": "query",
             "required": false,
             "type": "string",
@@ -5282,6 +5299,7 @@
           },
           {
             "name": "orderBy",
+            "description": " - USER_SORT_FIELD_ID: Default: snowflake id ascending.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -5366,7 +5384,7 @@
           },
           {
             "name": "provider",
-            "description": " - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method.",
+            "description": " - IDENTITY_PROVIDER_WECHAT: WeChat web OAuth (redirect-based).\n - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -5461,7 +5479,7 @@
           },
           {
             "name": "registerSource",
-            "description": " - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method.",
+            "description": " - IDENTITY_PROVIDER_WECHAT: WeChat web OAuth (redirect-based).\n - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -5480,6 +5498,7 @@
           },
           {
             "name": "registerDevice",
+            "description": " - DEVICE_TYPE_API: Machine-to-machine / direct API token (no UA).",
             "in": "query",
             "required": false,
             "type": "string",
@@ -5594,6 +5613,7 @@
           },
           {
             "name": "orderBy",
+            "description": " - USER_SORT_FIELD_ID: Default: snowflake id ascending.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -6525,7 +6545,7 @@
         "AUTH_MODE_HMAC"
       ],
       "default": "AUTH_MODE_UNSPECIFIED",
-      "description": "==================== telemetry-service domain (P6) ====================\nMirrors telemetry-service proto 1:1 — same field names/numbers, enum\nvalues, and buf.validate rules, with http paths rewritten to\n/api/v1/telemetry/. Admin RPCs forward the caller's testkit session;\nthe downstream's own auth guards still apply."
+      "description": "AuthMode selects the request-authentication posture of an app (spec §4.5).\n\n - AUTH_MODE_NONE: Public token only — lightweight SDKs may stay here.\n - AUTH_MODE_HMAC: Every batch must carry a valid X-Telemetry-Signature; failures are\ndropped silently with a 204."
     },
     "v1BatchDeleteMyFilesRequest": {
       "type": "object",
@@ -7099,7 +7119,7 @@
         "DEVICE_TYPE_API"
       ],
       "default": "DEVICE_TYPE_UNSPECIFIED",
-      "description": "DeviceType categorizes the client device for session/audit metadata. Mirrors\nuser-service same-name/same-number."
+      "description": "DeviceType categorizes the client device for session and audit metadata.\nInferred at login time from request headers / user-agent by the API gateway\nand passed through.\n\n - DEVICE_TYPE_API: Machine-to-machine / direct API token (no UA)."
     },
     "v1EmailAddress": {
       "type": "object",
@@ -7240,7 +7260,8 @@
         "EMAIL_SCENE_NOTIFICATION",
         "EMAIL_SCENE_VERIFY_EMAIL"
       ],
-      "default": "EMAIL_SCENE_UNSPECIFIED"
+      "default": "EMAIL_SCENE_UNSPECIFIED",
+      "description": "EmailScene represents the business purpose of an email. Required on every\nsend. Used for audit, filtering, and stats grouping — NOT for routing\n(vendor selection is independent of scene).\n\n - EMAIL_SCENE_LOGIN_CODE: One-time login verification code.\n - EMAIL_SCENE_FORGOT_PASSWORD: Password reset link / code.\n - EMAIL_SCENE_REGISTER: Registration verification code.\n - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.\n - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.\n - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.\n - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address."
     },
     "v1EmailStats": {
       "type": "object",
@@ -7309,7 +7330,8 @@
         "EMAIL_VENDOR_TENCENT",
         "EMAIL_VENDOR_NETEASE"
       ],
-      "default": "EMAIL_VENDOR_UNSPECIFIED"
+      "default": "EMAIL_VENDOR_UNSPECIFIED",
+      "description": "EmailVendor represents the email service brand. Each vendor offers SMTP\naccess today; an API path may be added per-vendor in the future. Vendor\nis an audit label and (vendor, account) selection key — the underlying\ntransport is always SMTP. Vendors are configured in config.yaml; selecting\none with an unconfigured account returns ErrBadRequest.\n\n - EMAIL_VENDOR_ALIYUN: Aliyun DirectMail.\n - EMAIL_VENDOR_TENCENT: Tencent SES.\n - EMAIL_VENDOR_NETEASE: NetEase EasyMail."
     },
     "v1EmailVendorStats": {
       "type": "object",
@@ -7378,7 +7400,8 @@
         "ENTITLEMENT_KIND_SUBSCRIPTION",
         "ENTITLEMENT_KIND_TRIAL"
       ],
-      "default": "ENTITLEMENT_KIND_UNSPECIFIED"
+      "default": "ENTITLEMENT_KIND_UNSPECIFIED",
+      "description": "EntitlementKind is the billing model of an entitlement entry."
     },
     "v1EventRule": {
       "type": "object",
@@ -7477,7 +7500,7 @@
         "GENDER_UNKNOWN"
       ],
       "default": "GENDER_UNSPECIFIED",
-      "description": "Gender is the user's self-reported gender. Mirrors user-service\nsame-name/same-number."
+      "description": "Gender is the user's self-reported gender. Stored as-is; no business logic\nbranches on it."
     },
     "v1GenerateCDNURLResponse": {
       "type": "object",
@@ -7957,7 +7980,7 @@
         "IDENTITY_PROVIDER_ADMIN"
       ],
       "default": "IDENTITY_PROVIDER_UNSPECIFIED",
-      "description": "IdentityProvider identifies which login system an identity belongs to. Mirrors\nuser-service IdentityProvider same-name/same-number. ADMIN=8 is an audit tag\nfor CreateUser — not a real login method (Login never uses it).\n\n - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method."
+      "description": "IdentityProvider identifies which login system a UserIdentity row belongs to.\nReferenced by: Register.provider, BindIdentity.provider, SocialLogin.provider,\nMiniProgramLogin (implicit WECHAT_MINIPROGRAM), and User.register_source.\n\nStorage note: PHONE identities store ProviderUID as \"\u003cregion_code\u003e|\u003cphone\u003e\"\n(e.g. \"CN|13800138000\") so a single index covers region + local number.\n\nADMIN is not a real login method — it tags identities created by the\nCreateUser RPC for audit purposes; Login never uses it.\n\n - IDENTITY_PROVIDER_WECHAT: WeChat web OAuth (redirect-based).\n - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method."
     },
     "v1ImageFormat": {
       "type": "string",
@@ -8183,7 +8206,8 @@
         "KEY_STATUS_ACTIVE",
         "KEY_STATUS_REVOKED"
       ],
-      "default": "KEY_STATUS_UNSPECIFIED"
+      "default": "KEY_STATUS_UNSPECIFIED",
+      "description": "KeyStatus is the lifecycle state of a license key. Revocation is a soft\nstate (rows kept); devices/entitlements survive and slots reattach on\nunrevoke."
     },
     "v1KickDeviceResponse": {
       "type": "object",
@@ -8585,7 +8609,7 @@
         "LOGIN_ACTION_UNBIND"
       ],
       "default": "LOGIN_ACTION_UNSPECIFIED",
-      "description": "LoginAction classifies a login audit log entry. Mirrors user-service\nsame-name/same-number."
+      "description": "LoginAction classifies an entry in the login audit log (UserLoginLog.action).\nSet by user-service at login time — callers never pass this value.\n\n - LOGIN_ACTION_LOGIN: Successful password Login.\n - LOGIN_ACTION_REGISTER: Register RPC or code-login auto-register.\n - LOGIN_ACTION_SOCIAL_LOGIN: SocialLogin on an existing user.\n - LOGIN_ACTION_SOCIAL_REGISTER: SocialLogin / MiniProgramLogin on a new user.\n - LOGIN_ACTION_BIND: BindIdentity (planned).\n - LOGIN_ACTION_UNBIND: UnbindIdentity (planned)."
     },
     "v1LoginLog": {
       "type": "object",
@@ -8646,7 +8670,7 @@
         "LOGIN_METHOD_USERNAME_PASSWORD"
       ],
       "default": "LOGIN_METHOD_UNSPECIFIED",
-      "description": "LoginMethod is the authentication strategy for Login. Mirrors\nuser-service LoginMethod same-name/same-number.\n\n - LOGIN_METHOD_PHONE_CODE: Auto-registers on missing identity.\n - LOGIN_METHOD_EMAIL_CODE: Auto-registers on missing identity."
+      "description": "LoginMethod is the authentication strategy for the Login RPC.\nPASSWORD methods verify a stored bcrypt hash; CODE methods verify a one-time\ncode from SendVerificationCode(purpose=LOGIN) and auto-register when the\nidentity is missing (response.is_new=true).\n\n - LOGIN_METHOD_PHONE_CODE: Auto-registers on missing identity.\n - LOGIN_METHOD_EMAIL_CODE: Auto-registers on missing identity."
     },
     "v1LoginRequest": {
       "type": "object",
@@ -8687,7 +8711,8 @@
         "MESSAGE_STATUS_SENT",
         "MESSAGE_STATUS_FAILED"
       ],
-      "default": "MESSAGE_STATUS_UNSPECIFIED"
+      "default": "MESSAGE_STATUS_UNSPECIFIED",
+      "description": "MessageStatus represents the delivery status of a message.\n\n - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.\n - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;\nthe sync flow does NOT write PENDING (currently unused).\n - MESSAGE_STATUS_SENT: SENT — the vendor synchronously accepted the send request.\nFor SMS: vendor API returned OK; does NOT mean handset received\n         (async delivery is not tracked yet).\nFor email: SMTP server accepted the message.\n - MESSAGE_STATUS_FAILED: FAILED — the vendor rejected the request, network/transport failed,\nor context was cancelled. error_message carries the last error."
     },
     "v1MiniProgramLoginRequest": {
       "type": "object",
@@ -8728,7 +8753,7 @@
         "MODULE_TOOLS"
       ],
       "default": "MODULE_UNSPECIFIED",
-      "description": "==================== license-service domain (P6) ====================\nMirrors license-service proto 1:1 — same field names/numbers, enum\nvalues, and buf.validate rules, with http paths rewritten to\n/api/v1/license/. Admin RPCs forward the caller's testkit session;\nthe downstream's own auth guards still apply."
+      "description": "Module is a sellable module. player/storage/sound/environment/settings are\nalways free and never enter the entitlement system. The client-facing\ntrial/start request carries the module as the lowercase wire name\n(\"downloads\"/\"tools\", matching the client contract) and converts at the\nservice boundary."
     },
     "v1MyQuota": {
       "type": "object",
@@ -8844,7 +8869,7 @@
       "properties": {
         "service": {
           "type": "string",
-          "title": "service name, e.g. \"demo-service\""
+          "title": "service name, e.g. \"user-service\""
         },
         "version": {
           "type": "string",
@@ -8881,7 +8906,7 @@
           "title": "process start time, Unix millis (client computes uptime)"
         }
       },
-      "description": "Pong is the health-check response — only public, non-sensitive info\n(service name, build version, status, timestamps). Never include internal\naddresses, IPs, env vars, secrets, or dependency topology here."
+      "description": "Pong is the standard health-check response shared by every servekit\nservice's Ping RPC — only public, non-sensitive info (service name, build\nversion, status, timestamps). Never include internal addresses, IPs, env\nvars, secrets, or dependency topology here."
     },
     "v1ProviderInfo": {
       "type": "object",
@@ -9518,7 +9543,8 @@
         "SMS_SCENE_BIND_ACCOUNT",
         "SMS_SCENE_VERIFY_PHONE"
       ],
-      "default": "SMS_SCENE_UNSPECIFIED"
+      "default": "SMS_SCENE_UNSPECIFIED",
+      "description": "SmsScene represents the business purpose of an SMS. Required on every send.\nMirrors EmailScene; VERIFY_PHONE is the SMS counterpart of VERIFY_EMAIL\n(cross-channel pairs like VERIFY_EMAIL+SMS are rejected by SendSMS).\n\n - SMS_SCENE_LOGIN_CODE: One-time login verification code.\n - SMS_SCENE_FORGOT_PASSWORD: Password reset code.\n - SMS_SCENE_REGISTER: Registration verification code.\n - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.\n - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.\n - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number."
     },
     "v1SmsVendor": {
       "type": "string",
@@ -9530,7 +9556,8 @@
         "SMS_VENDOR_BYTEPLUS",
         "SMS_VENDOR_HUAWEI"
       ],
-      "default": "SMS_VENDOR_UNSPECIFIED"
+      "default": "SMS_VENDOR_UNSPECIFIED",
+      "description": "SmsVendor represents the SMS service brand. Path capabilities differ:\n  - Domestic (CN) vendors: template-based only; raw content rejected.\n  - International vendors split into:\n      * raw-content (ALIYUN, VOLCENGINE intl, ...): caller supplies Content.\n      * template-based (TENCENT intl, BYTEPLUS): caller supplies TemplateID + Params.\nThe service picks a path automatically from the destination region_code,\nunless the request explicitly sets vendor + account.\n\n - SMS_VENDOR_ALIYUN: Aliyun (domestic + intl SendMessageToGlobe).\n - SMS_VENDOR_TENCENT: Tencent Cloud SMS (domestic + intl via SdkAppid).\n - SMS_VENDOR_VOLCENGINE: ByteDance Volcengine SMS.\n - SMS_VENDOR_BYTEPLUS: Byteplus (intl-only, template-based).\n - SMS_VENDOR_HUAWEI: Huawei Cloud SMS."
     },
     "v1SmsVendorStats": {
       "type": "object",
@@ -9596,7 +9623,7 @@
         "SORT_DIRECTION_DESC"
       ],
       "default": "SORT_DIRECTION_UNSPECIFIED",
-      "description": "SortDirection selects ascending or descending order for message lists.\nMirrors message-service name-for-name and number-for-number."
+      "description": "SortDirection selects ascending or descending order. UNSPECIFIED must be\ntreated as DESC by the service layer (preserves current behavior)."
     },
     "v1SortField": {
       "type": "string",
@@ -9928,7 +9955,7 @@
         "USER_SORT_FIELD_LAST_LOGIN_AT"
       ],
       "default": "USER_SORT_FIELD_UNSPECIFIED",
-      "description": "UserSortField is the sort column for ListUsers / ListUsersPaged. Mirrors\nuser-service same-name/same-number."
+      "description": "UserSortField is the sort column for ListUsers / ListUsersPaged.\nDefault (UNSPECIFIED + descending=false) is equivalent to ID ascending.\n\n - USER_SORT_FIELD_ID: Default: snowflake id ascending."
     },
     "v1UserStatus": {
       "type": "string",
@@ -9939,7 +9966,7 @@
         "USER_STATUS_PENDING_REVIEW"
       ],
       "default": "USER_STATUS_UNSPECIFIED",
-      "description": "UserStatus is the account lifecycle state. Mirrors user-service\nsame-name/same-number."
+      "description": "UserStatus is the account lifecycle state.\n  - ACTIVE: account can log in (default after Register / SocialLogin / MiniProgramLogin).\n  - DISABLED: account blocked; Login returns ErrUserDisabled.\n  - PENDING_REVIEW: account created via CreateUser; user must call ChangePassword\n    with the initial password to flip to ACTIVE before Login is accepted."
     },
     "v1UserType": {
       "type": "string",
@@ -9949,7 +9976,7 @@
         "USER_TYPE_INTERNAL"
       ],
       "default": "USER_TYPE_UNSPECIFIED",
-      "description": "UserType separates external end users from internal platform users. Mirrors\nuser-service UserType same-name/same-number. Drives the two-track frontend\n(design spec §3.5): INTERNAL → 内部后台管理页, NORMAL → 普通用户后端页. This is\na frontend route/menu split only — NOT RBAC; backend admin endpoints do login-\nstate + identity injection only this phase.\n\n - USER_TYPE_NORMAL: External end user (default).\n - USER_TYPE_INTERNAL: Platform internal user (staff, operations, etc.)."
+      "description": "UserType separates external end users from internal platform users\n(staff, operations, ...). Set at creation time; not user-editable.\n\n - USER_TYPE_NORMAL: External end user (default).\n - USER_TYPE_INTERNAL: Platform internal user (staff, operations, etc.)."
     },
     "v1UsersSummary": {
       "type": "object",
@@ -9983,7 +10010,7 @@
         "VERIFICATION_CHANNEL_SMS"
       ],
       "default": "VERIFICATION_CHANNEL_UNSPECIFIED",
-      "description": "VerificationChannel is the delivery channel for SendVerificationCode. Mirrors\nuser-service VerificationChannel same-name/same-number."
+      "description": "VerificationChannel is the delivery channel for SendVerificationCode.\nDecides which message-service API is called (SendEmail vs SendSMS) and which\ntemplate fields the request must supply."
     },
     "v1VerificationPurpose": {
       "type": "string",
@@ -9997,7 +10024,7 @@
         "VERIFICATION_PURPOSE_BIND"
       ],
       "default": "VERIFICATION_PURPOSE_UNSPECIFIED",
-      "description": "VerificationPurpose binds a code to its consuming RPC, preventing cross-context\nreplay. Mirrors user-service VerificationPurpose same-name/same-number.\n\n - VERIFICATION_PURPOSE_REGISTER: Consumed by Register.\n - VERIFICATION_PURPOSE_LOGIN: Consumed by Login (code methods).\n - VERIFICATION_PURPOSE_VERIFY_EMAIL: EMAIL channel only.\n - VERIFICATION_PURPOSE_VERIFY_PHONE: SMS channel only.\n - VERIFICATION_PURPOSE_PASSWORD_RESET: Consumed by ResetPassword (TBD).\n - VERIFICATION_PURPOSE_BIND: Consumed by BindIdentity (TBD)."
+      "description": "VerificationPurpose binds a SendVerificationCode call to its consuming RPC,\npreventing cross-context replay (e.g. a REGISTER code being reused to log in).\nThe (purpose, channel) pair must map to a valid scene in message-service —\ne.g. VERIFY_PHONE on the EMAIL channel is rejected.\n\n - VERIFICATION_PURPOSE_REGISTER: Consumed by Register.\n - VERIFICATION_PURPOSE_LOGIN: Consumed by Login (code methods).\n - VERIFICATION_PURPOSE_VERIFY_EMAIL: EMAIL channel only.\n - VERIFICATION_PURPOSE_VERIFY_PHONE: SMS channel only.\n - VERIFICATION_PURPOSE_PASSWORD_RESET: Consumed by ResetPassword (TBD).\n - VERIFICATION_PURPOSE_BIND: Consumed by BindIdentity (TBD)."
     },
     "v1VersionInfo": {
       "type": "object",
@@ -10026,7 +10053,7 @@
         "VISIBILITY_PRIVATE"
       ],
       "default": "VISIBILITY_UNSPECIFIED",
-      "description": "Visibility mirrors storage-service: PUBLIC uploads (avatar / cover style\npublic resources) land in the configured public bucket; PRIVATE (and\nUNSPECIFIED, for backward compatibility) keep the requested/default bucket."
+      "description": "Visibility declares the intended audience class of an upload (avatar /\ncover style \"public resource\" vs. default private). It maps to BUCKETS, not\nper-file ACLs: objects are content-addressed and deduplicated globally, so\na physical object cannot be public for one referencing file and private\nfor another — bucket-level visibility is the only coherent granularity.\nPUBLIC uploads land in the configured public bucket (public-read / CDN);\nPRIVATE (and UNSPECIFIED, for backward compatibility) keep today's\nbehavior: the requested bucket, or the default bucket when unset."
     }
   }
 }

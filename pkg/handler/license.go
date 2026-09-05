@@ -5,7 +5,7 @@ package handler
 import (
 	"context"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 )
 
 func (h *Handler) Activate(ctx context.Context, req *testkitv1.ActivateRequest) (*testkitv1.ActivateResponse, error) {

@@ -56,9 +56,9 @@ import (
 	"github.com/servekit/go-common/grpcx"
 	"github.com/servekit/go-common/xerr/xcodes"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/testkit-service/internal/jwt"
-	userv1 "github.com/servekit/user-service/gen/user/v1"
 	userservice "github.com/servekit/user-service/pkg"
 )
 
@@ -829,14 +829,14 @@ func toTestkitUser(u *userv1.User) *testkitv1.User {
 		Email:          u.GetEmail(),
 		RegionCode:     u.GetRegionCode(),
 		Phone:          u.GetPhone(),
-		Gender:         testkitv1.Gender(u.GetGender()),
+		Gender:         userv1.Gender(u.GetGender()),
 		Birthday:       u.GetBirthday(),
 		Timezone:       u.GetTimezone(),
 		Locale:         u.GetLocale(),
 		Bio:            u.GetBio(),
-		Status:         testkitv1.UserStatus(u.GetStatus()),
-		RegisterSource: testkitv1.IdentityProvider(u.GetRegisterSource()),
-		UserType:       testkitv1.UserType(u.GetUserType()),
+		Status:         userv1.UserStatus(u.GetStatus()),
+		RegisterSource: userv1.IdentityProvider(u.GetRegisterSource()),
+		UserType:       userv1.UserType(u.GetUserType()),
 		LastLoginAt:    u.GetLastLoginAt(),
 		CreatedAt:      u.GetCreatedAt(),
 		UpdatedAt:      u.GetUpdatedAt(),
@@ -851,7 +851,7 @@ func toTestkitIdentity(i *userv1.Identity) *testkitv1.Identity {
 	}
 	return &testkitv1.Identity{
 		Id:          i.GetId(),
-		Provider:    testkitv1.IdentityProvider(i.GetProvider()),
+		Provider:    userv1.IdentityProvider(i.GetProvider()),
 		ProviderUid: i.GetProviderUid(),
 		Verified:    i.GetVerified(),
 		CreatedAt:   i.GetCreatedAt(),
@@ -867,7 +867,7 @@ func toTestkitSession(s *userv1.Session) *testkitv1.Session {
 	return &testkitv1.Session{
 		Id:           s.GetId(),
 		Ip:           s.GetIp(),
-		DeviceType:   testkitv1.DeviceType(s.GetDeviceType()),
+		DeviceType:   userv1.DeviceType(s.GetDeviceType()),
 		Os:           s.GetOs(),
 		Browser:      s.GetBrowser(),
 		Country:      s.GetCountry(),
@@ -1017,12 +1017,12 @@ func toTestkitLoginLog(l *userv1.LoginLog) *testkitv1.LoginLog {
 	return &testkitv1.LoginLog{
 		Id:         l.GetId(),
 		UserId:     l.GetUserId(),
-		Provider:   testkitv1.IdentityProvider(l.GetProvider()),
-		Action:     testkitv1.LoginAction(l.GetAction()),
+		Provider:   userv1.IdentityProvider(l.GetProvider()),
+		Action:     userv1.LoginAction(l.GetAction()),
 		Success:    l.GetSuccess(),
 		FailReason: l.GetFailReason(),
 		Ip:         l.GetIp(),
-		DeviceType: testkitv1.DeviceType(l.GetDeviceType()),
+		DeviceType: userv1.DeviceType(l.GetDeviceType()),
 		Os:         l.GetOs(),
 		Browser:    l.GetBrowser(),
 		Country:    l.GetCountry(),

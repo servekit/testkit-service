@@ -3,12 +3,14 @@ package message_test
 import (
 	"context"
 	"errors"
+	messagingv1 "github.com/servekit/api/gen/go/messaging/v1"
+	storagev1 "github.com/servekit/api/gen/go/storage/v1"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 
-	messagev1 "github.com/servekit/message-service/gen/message/v1"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	messagev1 "github.com/servekit/api/gen/go/messaging/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service/message"
 )
 
@@ -150,7 +152,7 @@ func TestSendEmail_InjectsSenderIDFromConfig(t *testing.T) {
 		To:      []*testkitv1.EmailAddress{{Email: "alice@example.com", DisplayName: "Alice"}},
 		Subject: "hello",
 		Body:    "body",
-		Scene:   testkitv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
+		Scene:   messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
 	})
 	require.NoError(t, err)
 	// sender_id injected from config, NOT present on the testkit request.
@@ -162,9 +164,9 @@ func TestSendEmail_InjectsSenderIDFromConfig(t *testing.T) {
 	require.Equal(t, messagev1.EmailScene_EMAIL_SCENE_NOTIFICATION, stub.sendEmailReq.GetScene())
 	// response oneof → split fields (decision 6): email_vendor set, sms_vendor zero.
 	require.Equal(t, int64(7001), resp.GetId())
-	require.Equal(t, testkitv1.MessageStatus_MESSAGE_STATUS_SENT, resp.GetStatus())
-	require.Equal(t, testkitv1.EmailVendor_EMAIL_VENDOR_ALIYUN, resp.GetEmailVendor())
-	require.Equal(t, testkitv1.SmsVendor_SMS_VENDOR_UNSPECIFIED, resp.GetSmsVendor())
+	require.Equal(t, messagingv1.MessageStatus_MESSAGE_STATUS_SENT, resp.GetStatus())
+	require.Equal(t, messagingv1.EmailVendor_EMAIL_VENDOR_ALIYUN, resp.GetEmailVendor())
+	require.Equal(t, messagingv1.SmsVendor_SMS_VENDOR_UNSPECIFIED, resp.GetSmsVendor())
 }
 
 // TestSendEmail_PassesAttachmentsAndIdempotencyKey verifies nested attachments
@@ -178,7 +180,7 @@ func TestSendEmail_PassesAttachmentsAndIdempotencyKey(t *testing.T) {
 		To:      []*testkitv1.EmailAddress{{Email: "b@x.com"}},
 		Subject: "s",
 		Body:    "b",
-		Scene:   testkitv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
+		Scene:   messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
 		Attachments: []*testkitv1.EmailAttachment{{
 			Filename:  "report.pdf",
 			Url:       "https://oss.example.com/report.pdf",
@@ -212,7 +214,7 @@ func TestSendSMS_InjectsSenderIDFromConfig(t *testing.T) {
 		SignName:       "testkit",
 		TemplateId:     "SMS_123",
 		TemplateParams: map[string]string{"code": "888888"},
-		Scene:          testkitv1.SmsScene_SMS_SCENE_LOGIN_CODE,
+		Scene:          messagingv1.SmsScene_SMS_SCENE_LOGIN_CODE,
 	})
 	require.NoError(t, err)
 	require.Equal(t, "testkit-service", stub.sendSMSReq.GetSenderId())
@@ -222,8 +224,8 @@ func TestSendSMS_InjectsSenderIDFromConfig(t *testing.T) {
 	require.Equal(t, map[string]string{"code": "888888"}, stub.sendSMSReq.GetTemplateParams())
 	// response: SMS branch set, email branch zero.
 	require.Equal(t, int64(9001), resp.GetId())
-	require.Equal(t, testkitv1.SmsVendor_SMS_VENDOR_ALIYUN, resp.GetSmsVendor())
-	require.Equal(t, testkitv1.EmailVendor_EMAIL_VENDOR_UNSPECIFIED, resp.GetEmailVendor())
+	require.Equal(t, messagingv1.SmsVendor_SMS_VENDOR_ALIYUN, resp.GetSmsVendor())
+	require.Equal(t, messagingv1.EmailVendor_EMAIL_VENDOR_UNSPECIFIED, resp.GetEmailVendor())
 }
 
 // TestGetEmail_MapsAllFields verifies the EmailRecord converter preserves every
@@ -255,9 +257,9 @@ func TestGetEmail_MapsAllFields(t *testing.T) {
 	got, err := svc.GetEmail(context.Background(), &testkitv1.GetEmailRequest{Id: 1})
 	require.NoError(t, err)
 	require.Equal(t, int64(1), got.GetId())
-	require.Equal(t, testkitv1.EmailVendor_EMAIL_VENDOR_TENCENT, got.GetVendor())
-	require.Equal(t, testkitv1.EmailScene_EMAIL_SCENE_REGISTER, got.GetScene())
-	require.Equal(t, testkitv1.MessageStatus_MESSAGE_STATUS_FAILED, got.GetStatus())
+	require.Equal(t, messagingv1.EmailVendor_EMAIL_VENDOR_TENCENT, got.GetVendor())
+	require.Equal(t, messagingv1.EmailScene_EMAIL_SCENE_REGISTER, got.GetScene())
+	require.Equal(t, messagingv1.MessageStatus_MESSAGE_STATUS_FAILED, got.GetStatus())
 	require.Equal(t, "to@x.com", got.GetTarget().GetEmail())
 	require.Len(t, got.GetCc(), 1)
 	require.Equal(t, "subj", got.GetSubject())
@@ -290,7 +292,7 @@ func TestGetSMS_MapsAllFields(t *testing.T) {
 	got, err := svc.GetSMS(context.Background(), &testkitv1.GetSMSRequest{Id: 2})
 	require.NoError(t, err)
 	require.Equal(t, int64(2), got.GetId())
-	require.Equal(t, testkitv1.SmsVendor_SMS_VENDOR_VOLCENGINE, got.GetVendor())
+	require.Equal(t, messagingv1.SmsVendor_SMS_VENDOR_VOLCENGINE, got.GetVendor())
 	require.Equal(t, "US", got.GetRegionCode())
 	require.Equal(t, "5551234567", got.GetPhone())
 	require.Equal(t, int32(1), got.GetAttempts())
@@ -310,14 +312,14 @@ func TestListEmails_OmitsSenderIDFilter(t *testing.T) {
 	svc := message.New(stub, message.WithSenderID("testkit-service"))
 
 	got, err := svc.ListEmails(context.Background(), &testkitv1.ListEmailsRequest{
-		Vendor:        testkitv1.EmailVendor_EMAIL_VENDOR_ALIYUN,
-		Scene:         testkitv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
-		Status:        testkitv1.MessageStatus_MESSAGE_STATUS_SENT,
+		Vendor:        messagingv1.EmailVendor_EMAIL_VENDOR_ALIYUN,
+		Scene:         messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
+		Status:        messagingv1.MessageStatus_MESSAGE_STATUS_SENT,
 		Target:        "alice@x.com",
 		Page:          1,
 		PageSize:      20,
-		SortField:     testkitv1.SortField_SORT_FIELD_CREATED_AT,
-		SortDirection: testkitv1.SortDirection_SORT_DIRECTION_DESC,
+		SortField:     storagev1.SortField_SORT_FIELD_CREATED_AT,
+		SortDirection: messagingv1.SortDirection_SORT_DIRECTION_DESC,
 	})
 	require.NoError(t, err)
 	// decision 2: no sender_id filter forwarded.
@@ -369,7 +371,7 @@ func TestListEmailsByCursor_PassesPageTokenAndIncludeTotal(t *testing.T) {
 		PageSize:     50,
 		PageToken:    "cursor-prev",
 		IncludeTotal: true,
-		SortField:    testkitv1.SortField_SORT_FIELD_CREATED_AT,
+		SortField:    storagev1.SortField_SORT_FIELD_CREATED_AT,
 	})
 	require.NoError(t, err)
 	require.Equal(t, "cursor-prev", stub.listEmailsByCursorReq.GetPageToken())
@@ -412,8 +414,8 @@ func TestGetEmailStats_MapsVendorBreakdown(t *testing.T) {
 	svc := message.New(stub, message.WithSenderID("tk"))
 
 	got, err := svc.GetEmailStats(context.Background(), &testkitv1.GetEmailStatsRequest{
-		Vendor:    testkitv1.EmailVendor_EMAIL_VENDOR_ALIYUN,
-		Scene:     testkitv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
+		Vendor:    messagingv1.EmailVendor_EMAIL_VENDOR_ALIYUN,
+		Scene:     messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
 		StartTime: 1,
 		EndTime:   2,
 	})
@@ -422,7 +424,7 @@ func TestGetEmailStats_MapsVendorBreakdown(t *testing.T) {
 	require.Equal(t, int64(10), got.GetTotal())
 	require.InDelta(t, 80.0, got.GetSuccessRate(), 0.001)
 	require.Len(t, got.GetVendors(), 2)
-	require.Equal(t, testkitv1.EmailVendor_EMAIL_VENDOR_ALIYUN, got.GetVendors()[0].GetVendor())
+	require.Equal(t, messagingv1.EmailVendor_EMAIL_VENDOR_ALIYUN, got.GetVendors()[0].GetVendor())
 	require.Equal(t, int64(6), got.GetVendors()[0].GetTotal())
 }
 
@@ -487,7 +489,7 @@ func TestSendEmail_DownstreamErrorPassthrough(t *testing.T) {
 		To:      []*testkitv1.EmailAddress{{Email: "x@y.com"}},
 		Subject: "s",
 		Body:    "b",
-		Scene:   testkitv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
+		Scene:   messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
 	})
 	require.ErrorIs(t, err, downstream)
 }

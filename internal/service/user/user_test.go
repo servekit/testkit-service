@@ -10,11 +10,11 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/go-common/grpcx"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/user"
-	userv1 "github.com/servekit/user-service/gen/user/v1"
 )
 
 // stubUserClient stands in for the embedded user-service handler. It embeds
@@ -210,7 +210,7 @@ func TestUpdateProfile_ForwardsFieldsAndUserID(t *testing.T) {
 		Nickname:  "newnick",
 		RealName:  "Alice S",
 		AvatarUrl: "https://cdn/x.png",
-		Gender:    testkitv1.Gender_GENDER_FEMALE,
+		Gender:    userv1.Gender_GENDER_FEMALE,
 		Birthday:  "1990-01-02",
 		Timezone:  "Asia/Shanghai",
 		Locale:    "zh-CN",
@@ -274,7 +274,7 @@ func TestListIdentities_InjectsUserIDFromCtx_AndMapsIdentity(t *testing.T) {
 	require.Len(t, resp.GetIdentities(), 1)
 	got := resp.GetIdentities()[0]
 	require.Equal(t, int64(1), got.GetId())
-	require.Equal(t, testkitv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL, got.GetProvider()) // enum int-cast
+	require.Equal(t, userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL, got.GetProvider()) // enum int-cast
 	require.Equal(t, "alice@example.com", got.GetProviderUid())
 	require.True(t, got.GetVerified())
 	require.NotNil(t, got.GetCreatedAt())
@@ -308,7 +308,7 @@ func TestListSessions_InjectsUserIDFromCtx_AndMapsSession(t *testing.T) {
 	require.Len(t, resp.GetSessions(), 1)
 	got := resp.GetSessions()[0]
 	require.Equal(t, "sess-1", got.GetId())
-	require.Equal(t, testkitv1.DeviceType_DEVICE_TYPE_WEB, got.GetDeviceType()) // enum int-cast
+	require.Equal(t, userv1.DeviceType_DEVICE_TYPE_WEB, got.GetDeviceType()) // enum int-cast
 	require.Equal(t, "macOS", got.GetOs())
 	require.True(t, got.GetCurrent())
 }
@@ -338,7 +338,7 @@ func TestSocialLogin_ConsumesSessionID_AndSignsJWT(t *testing.T) {
 	svc, m := newSvc(t, stub, false)
 
 	resp, err := svc.SocialLogin(ctxWithUser(0), &testkitv1.SocialLoginRequest{
-		Provider: testkitv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
+		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
 		Code:     "oauth-code",
 		State:    "csrf-state",
 	})
@@ -368,7 +368,7 @@ func TestSocialLogin_PropagatesDownstreamError(t *testing.T) {
 	svc, _ := newSvc(t, stub, false)
 
 	_, err := svc.SocialLogin(context.Background(), &testkitv1.SocialLoginRequest{
-		Provider: testkitv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
+		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
 		Code:     "x",
 		State:    "y",
 	})
@@ -380,7 +380,7 @@ func TestSocialLogin_NilJWTManager_InternalError(t *testing.T) {
 	svc, _ := newSvc(t, stub, true) // passNilJWT = true
 
 	_, err := svc.SocialLogin(context.Background(), &testkitv1.SocialLoginRequest{
-		Provider: testkitv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
+		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
 		Code:     "x",
 		State:    "y",
 	})
@@ -392,7 +392,7 @@ func TestSocialLogin_EmptySessionID_Rejected(t *testing.T) {
 	svc, _ := newSvc(t, stub, false)
 
 	_, err := svc.SocialLogin(context.Background(), &testkitv1.SocialLoginRequest{
-		Provider: testkitv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
+		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
 		Code:     "x",
 		State:    "y",
 	})
@@ -404,7 +404,7 @@ func TestGetOAuthURL_ForwardsAsIs(t *testing.T) {
 	svc, _ := newSvc(t, stub, false)
 
 	resp, err := svc.GetOAuthURL(context.Background(), &testkitv1.GetOAuthURLRequest{
-		Provider: testkitv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
+		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
 		ReturnTo: "https://app/home",
 		State:    "caller-state",
 	})
@@ -438,14 +438,14 @@ func TestToTestkitUser_CuratesAllFieldsAndIntCastsEnums(t *testing.T) {
 	require.Equal(t, "alice@example.com", u.GetEmail())
 	require.Equal(t, "CN", u.GetRegionCode())
 	require.Equal(t, "13800138000", u.GetPhone())
-	require.Equal(t, testkitv1.Gender_GENDER_FEMALE, u.GetGender())
+	require.Equal(t, userv1.Gender_GENDER_FEMALE, u.GetGender())
 	require.Equal(t, "1990-01-02", u.GetBirthday())
 	require.Equal(t, "Asia/Shanghai", u.GetTimezone())
 	require.Equal(t, "zh-CN", u.GetLocale())
 	require.Equal(t, "hello", u.GetBio())
-	require.Equal(t, testkitv1.UserStatus_USER_STATUS_ACTIVE, u.GetStatus())
-	require.Equal(t, testkitv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL, u.GetRegisterSource())
-	require.Equal(t, testkitv1.UserType_USER_TYPE_INTERNAL, u.GetUserType())
+	require.Equal(t, userv1.UserStatus_USER_STATUS_ACTIVE, u.GetStatus())
+	require.Equal(t, userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL, u.GetRegisterSource())
+	require.Equal(t, userv1.UserType_USER_TYPE_INTERNAL, u.GetUserType())
 	require.NotNil(t, u.GetLastLoginAt())
 	require.NotNil(t, u.GetCreatedAt())
 	require.NotNil(t, u.GetUpdatedAt())
@@ -457,7 +457,7 @@ func TestToTestkitUser_NilInput(t *testing.T) {
 	svc, _ := newSvc(t, stub, false)
 
 	resp, err := svc.SocialLogin(context.Background(), &testkitv1.SocialLoginRequest{
-		Provider: testkitv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
+		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
 		Code:     "x",
 		State:    "y",
 	})
@@ -476,10 +476,10 @@ func TestEnumIntCast_MirroredSameNumber(t *testing.T) {
 		testkit int32
 		want    int32
 	}{
-		{"DeviceType WEB", int32(testkitv1.DeviceType_DEVICE_TYPE_WEB), int32(userv1.DeviceType_DEVICE_TYPE_WEB)},
-		{"Gender FEMALE", int32(testkitv1.Gender_GENDER_FEMALE), int32(userv1.Gender_GENDER_FEMALE)},
-		{"UserStatus ACTIVE", int32(testkitv1.UserStatus_USER_STATUS_ACTIVE), int32(userv1.UserStatus_USER_STATUS_ACTIVE)},
-		{"IdentityProvider ADMIN=8", int32(testkitv1.IdentityProvider_IDENTITY_PROVIDER_ADMIN), int32(userv1.IdentityProvider_IDENTITY_PROVIDER_ADMIN)},
+		{"DeviceType WEB", int32(userv1.DeviceType_DEVICE_TYPE_WEB), int32(userv1.DeviceType_DEVICE_TYPE_WEB)},
+		{"Gender FEMALE", int32(userv1.Gender_GENDER_FEMALE), int32(userv1.Gender_GENDER_FEMALE)},
+		{"UserStatus ACTIVE", int32(userv1.UserStatus_USER_STATUS_ACTIVE), int32(userv1.UserStatus_USER_STATUS_ACTIVE)},
+		{"IdentityProvider ADMIN=8", int32(userv1.IdentityProvider_IDENTITY_PROVIDER_ADMIN), int32(userv1.IdentityProvider_IDENTITY_PROVIDER_ADMIN)},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

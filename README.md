@@ -17,14 +17,21 @@
 ```bash
 make build       # 产出 bin/testkit-service
 make run         # 本地启动（auto-cp config.example.yaml -> config.yaml）
-make regenerate  # = proto + generate + tidy（改 proto/model 后跑）
+make regenerate  # = generate + tidy（改 model 后跑；proto 变更去 ../api 仓库）
 make migrate     # 执行数据库迁移
 make test        # 测试（race + coverage）
 make lint        # golangci-lint
 make docker-up   # 起完整 docker 栈（含 postgres）
 ```
 
-gRPC 监听 `:9000`，HTTP gateway 监听 `:8080`（除非 `server.http_addr` 为空）。
+gRPC 监听 `:19095`，HTTP gateway 监听 `:18085`（nginx `/api/` 反代到这里）。
+gateway 上除 testkit 自己的转码 RPC 外，还托管两个后端面：
+
+- **telemetry 摄入端点**（`POST /v1/e/{token}/events`、`POST /v1/collect/events`）
+  —— 挂载 telemetry-service 的 `pkg/ingesthttp` 模块（HMAC 覆盖原始字节、
+  204/413/429 精确语义，客户端 SDK 上报地址即本端口）；
+- **`GET /metrics`**（Prometheus）—— module 模式下内嵌 telemetry 的
+  `collector_*` 计数器与本进程指标都在这里。
 
 ## 配置
 

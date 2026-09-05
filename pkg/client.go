@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	commonv1 "github.com/servekit/api/gen/go/common/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -48,7 +49,7 @@ func NewClient(addr string, opts ...grpc.DialOption) (*Client, error) {
 func (c *Client) Close() error { return c.conn.Close() }
 
 // Ping delegates to the remote testkit-service.
-func (c *Client) Ping(ctx context.Context, in *emptypb.Empty) (*testkitv1.Pong, error) {
+func (c *Client) Ping(ctx context.Context, in *emptypb.Empty) (*commonv1.Pong, error) {
 	return c.cli.Ping(ctx, in)
 }
 
@@ -421,8 +422,6 @@ func (c *Client) GetMyQuota(ctx context.Context, in *emptypb.Empty) (*testkitv1.
 func (c *Client) ListMyAuditLogs(ctx context.Context, in *testkitv1.ListMyAuditLogsRequest) (*testkitv1.ListMyAuditLogsResponse, error) {
 	return c.cli.ListMyAuditLogs(ctx, in)
 }
-
-
 
 // AdminListFiles delegates to the remote testkit-service.
 func (c *Client) AdminListFiles(ctx context.Context, in *testkitv1.AdminListFilesRequest) (*testkitv1.AdminListFilesResponse, error) {

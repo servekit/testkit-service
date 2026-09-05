@@ -4,7 +4,7 @@ package handler
 import (
 	"context"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -116,8 +116,6 @@ func (h *Handler) ListMyAuditLogs(ctx context.Context, req *testkitv1.ListMyAudi
 }
 
 // --- Owner quota (target owner on request) ---
-
-
 
 // --- Admin (target owner / file_id on request; no RBAC enforcement this stage) ---
 

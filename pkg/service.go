@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 )
 
 // Service is how a consumer holds testkit-service regardless of backend: the

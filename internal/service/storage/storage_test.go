@@ -11,8 +11,8 @@ import (
 	"github.com/servekit/go-common/xerr"
 	"github.com/stretchr/testify/require"
 
-	storagev1 "github.com/servekit/storage-service/gen/storage/v1"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	storagev1 "github.com/servekit/api/gen/go/storage/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service/storage"
 )
 
@@ -101,13 +101,13 @@ func TestListMyFilesPaged_InjectsOwnerFromCtx(t *testing.T) {
 	}
 	svc := storage.New(stub)
 	resp, err := svc.ListMyFilesPaged(ctxWithUser(42), &testkitv1.ListMyFilesPagedRequest{
-		Page: 1, PageSize: 10, OrderBy: testkitv1.SortField_SORT_FIELD_SIZE,
+		Page: 1, PageSize: 10, OrderBy: storagev1.SortField_SORT_FIELD_SIZE,
 	})
 	require.NoError(t, err)
 	require.Len(t, resp.GetFiles(), 1)
 	require.Equal(t, int64(7), resp.GetFiles()[0].GetId())
 	require.Equal(t, "a.jpg", resp.GetFiles()[0].GetFilename())
-	require.Equal(t, testkitv1.OwnerType_OWNER_TYPE_USER, resp.GetFiles()[0].GetOwnerType())
+	require.Equal(t, storagev1.OwnerType_OWNER_TYPE_USER, resp.GetFiles()[0].GetOwnerType())
 	require.Equal(t, int32(1), resp.GetPage())
 	require.Equal(t, int64(1), resp.GetTotalCount())
 	require.True(t, resp.GetHasMore())
@@ -149,7 +149,7 @@ func TestGetSTSCredential_InjectsOwnerAndMapsCredential(t *testing.T) {
 	svc := storage.New(stub)
 	resp, err := svc.GetSTSCredential(ctxWithUser(42), &testkitv1.GetSTSCredentialRequest{
 		Filename: "photo.jpg", Md5: "900150983cd24fb0d6963f7d28e17f72",
-		ContentType: "image/jpeg", Vendor: testkitv1.Vendor_VENDOR_ALIYUN_OSS,
+		ContentType: "image/jpeg", Vendor: storagev1.Vendor_VENDOR_ALIYUN_OSS,
 		AllowedExtensions: []string{".jpg"},
 	})
 	require.NoError(t, err)
@@ -191,15 +191,15 @@ func TestAdminListFiles_KeepsTargetOwner_NoCtxInjection(t *testing.T) {
 	svc := storage.New(stub)
 	// NOTE: context.Background() — no user_id. Admin RPCs must not need ctx owner.
 	resp, err := svc.AdminListFiles(context.Background(), &testkitv1.AdminListFilesRequest{
-		OwnerType: testkitv1.OwnerType_OWNER_TYPE_USER, OwnerId: 77, Provider: "oss-prod",
-		OrderBy: testkitv1.SortField_SORT_FIELD_SIZE,
+		OwnerType: storagev1.OwnerType_OWNER_TYPE_USER, OwnerId: 77, Provider: "oss-prod",
+		OrderBy: storagev1.SortField_SORT_FIELD_SIZE,
 	})
 	require.NoError(t, err)
 	require.Len(t, resp.GetFiles(), 1)
 	f := resp.GetFiles()[0]
 	require.Equal(t, int64(1), f.GetId())
 	require.Equal(t, int64(77), f.GetOwnerId())
-	require.Equal(t, testkitv1.OwnerType_OWNER_TYPE_USER, f.GetOwnerType())
+	require.Equal(t, storagev1.OwnerType_OWNER_TYPE_USER, f.GetOwnerType())
 	require.Equal(t, "oss-prod", f.GetProvider())
 	require.Equal(t, "k", f.GetObjectKey())
 	require.Equal(t, int64(55), f.GetObjectId())
@@ -228,7 +228,7 @@ func TestAdminGetStats_MapsNestedAggregates(t *testing.T) {
 	require.Equal(t, int64(5000), resp.GetPhysicalBytes())
 	require.Equal(t, int64(8000), resp.GetLogicalBytes())
 	require.Len(t, resp.GetOwnerStats(), 1)
-	require.Equal(t, testkitv1.OwnerType_OWNER_TYPE_USER, resp.GetOwnerStats()[0].GetOwnerType())
+	require.Equal(t, storagev1.OwnerType_OWNER_TYPE_USER, resp.GetOwnerStats()[0].GetOwnerType())
 	require.Equal(t, int64(50), resp.GetOwnerStats()[0].GetFileCount())
 	require.Equal(t, int64(8000), resp.GetOwnerStats()[0].GetTotalBytes())
 	require.Equal(t, "oss", resp.GetProviderStats()[0].GetProvider())
@@ -293,17 +293,17 @@ func TestListMyAuditLogs_EnumCastAndStructPassthrough(t *testing.T) {
 	}
 	svc := storage.New(stub)
 	resp, err := svc.ListMyAuditLogs(ctxWithUser(42), &testkitv1.ListMyAuditLogsRequest{
-		Action:     testkitv1.AuditAction_AUDIT_ACTION_UPLOAD,
-		TargetType: testkitv1.AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_FILE,
+		Action:     storagev1.AuditAction_AUDIT_ACTION_UPLOAD,
+		TargetType: storagev1.AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_FILE,
 	})
 	require.NoError(t, err)
 	require.Equal(t, "tok", resp.GetNextPageToken())
 	require.Equal(t, int32(1), resp.GetTotalCount())
 	require.Len(t, resp.GetLogs(), 1)
 	l := resp.GetLogs()[0]
-	require.Equal(t, testkitv1.AuditAction_AUDIT_ACTION_UPLOAD, l.GetAction())
-	require.Equal(t, testkitv1.AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_FILE, l.GetTargetType())
-	require.Equal(t, testkitv1.AuditLogStatus_AUDIT_LOG_STATUS_SUCCESS, l.GetStatus())
+	require.Equal(t, storagev1.AuditAction_AUDIT_ACTION_UPLOAD, l.GetAction())
+	require.Equal(t, storagev1.AuditLogTargetType_AUDIT_LOG_TARGET_TYPE_FILE, l.GetTargetType())
+	require.Equal(t, storagev1.AuditLogStatus_AUDIT_LOG_STATUS_SUCCESS, l.GetStatus())
 	require.Equal(t, "req-1", l.GetRequestId())
 	require.Equal(t, before, l.GetBefore()) // struct forwarded by reference
 	require.Equal(t, after, l.GetAfter())

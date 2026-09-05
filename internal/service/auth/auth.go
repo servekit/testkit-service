@@ -22,9 +22,9 @@ import (
 
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/testkit-service/internal/jwt"
-	userv1 "github.com/servekit/user-service/gen/user/v1"
 	userservice "github.com/servekit/user-service/pkg"
 )
 
@@ -200,6 +200,6 @@ func toTestkitUser(u *userv1.User) *testkitv1.User {
 		Email:    u.GetEmail(),
 		Phone:    u.GetPhone(),
 		Nickname: u.GetNickname(),
-		UserType: testkitv1.UserType(u.GetUserType()),
+		UserType: userv1.UserType(u.GetUserType()),
 	}
 }

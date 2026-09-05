@@ -4,7 +4,7 @@ package handler
 import (
 	"context"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 )
 
 // --- Message-domain RPCs (P4: send + records + stats + lookups) ---

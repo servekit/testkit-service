@@ -6,10 +6,11 @@ package license
 
 import (
 	"context"
+	licensev1 "github.com/servekit/api/gen/go/license/v1"
 
-	dnv1 "github.com/servekit/license-service/gen/license/v1"
+	dnv1 "github.com/servekit/api/gen/go/license/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	licenseservice "github.com/servekit/license-service/pkg"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"google.golang.org/grpc/metadata"
 )
 
@@ -420,8 +421,8 @@ func toTestkitEntitlementInfo(src *dnv1.EntitlementInfo) *testkitv1.EntitlementI
 		return nil
 	}
 	out := &testkitv1.EntitlementInfo{}
-	out.Module = testkitv1.Module(src.Module)
-	out.Kind = testkitv1.EntitlementKind(src.Kind)
+	out.Module = licensev1.Module(src.Module)
+	out.Kind = licensev1.EntitlementKind(src.Kind)
 	out.ExpiresAt = src.ExpiresAt
 	out.GrantedAt = src.GrantedAt
 	return out
@@ -444,8 +445,8 @@ func toTestkitEntitlementInput(src *dnv1.EntitlementInput) *testkitv1.Entitlemen
 		return nil
 	}
 	out := &testkitv1.EntitlementInput{}
-	out.Module = testkitv1.Module(src.Module)
-	out.Kind = testkitv1.EntitlementKind(src.Kind)
+	out.Module = licensev1.Module(src.Module)
+	out.Kind = licensev1.EntitlementKind(src.Kind)
 	out.DurationDays = src.DurationDays
 	out.ExpiresAt = src.ExpiresAt
 	return out
@@ -470,8 +471,8 @@ func toTestkitGrantModuleRequest(src *dnv1.GrantModuleRequest) *testkitv1.GrantM
 	}
 	out := &testkitv1.GrantModuleRequest{}
 	out.KeyId = src.KeyId
-	out.Module = testkitv1.Module(src.Module)
-	out.Kind = testkitv1.EntitlementKind(src.Kind)
+	out.Module = licensev1.Module(src.Module)
+	out.Kind = licensev1.EntitlementKind(src.Kind)
 	out.DurationDays = src.DurationDays
 	out.ExpiresAt = src.ExpiresAt
 	return out
@@ -585,7 +586,7 @@ func toTestkitKeyInfo(src *dnv1.KeyInfo) *testkitv1.KeyInfo {
 	out.Label = src.Label
 	out.MaxSlots = src.MaxSlots
 	out.UsedSlots = src.UsedSlots
-	out.Status = testkitv1.KeyStatus(src.Status)
+	out.Status = licensev1.KeyStatus(src.Status)
 	out.CreatedAt = src.CreatedAt
 	out.RevokedAt = src.RevokedAt
 	for _, item := range src.Entitlements {
@@ -696,7 +697,7 @@ func toTestkitListKeysRequest(src *dnv1.ListKeysRequest) *testkitv1.ListKeysRequ
 		return nil
 	}
 	out := &testkitv1.ListKeysRequest{}
-	out.Status = testkitv1.KeyStatus(src.Status)
+	out.Status = licensev1.KeyStatus(src.Status)
 	out.Limit = src.Limit
 	return out
 }
@@ -740,7 +741,7 @@ func toTestkitResetTrialRequest(src *dnv1.ResetTrialRequest) *testkitv1.ResetTri
 	}
 	out := &testkitv1.ResetTrialRequest{}
 	out.FingerprintId = src.FingerprintId
-	out.Module = testkitv1.Module(src.Module)
+	out.Module = licensev1.Module(src.Module)
 	out.Reason = src.Reason
 	return out
 }
@@ -842,7 +843,7 @@ func toTestkitRevokeModuleRequest(src *dnv1.RevokeModuleRequest) *testkitv1.Revo
 	}
 	out := &testkitv1.RevokeModuleRequest{}
 	out.KeyId = src.KeyId
-	out.Module = testkitv1.Module(src.Module)
+	out.Module = licensev1.Module(src.Module)
 	if src.Reason != nil {
 		out.Reason = src.Reason
 	}
@@ -961,7 +962,7 @@ func toTestkitShowTrialRequest(src *dnv1.ShowTrialRequest) *testkitv1.ShowTrialR
 	}
 	out := &testkitv1.ShowTrialRequest{}
 	out.FingerprintId = src.FingerprintId
-	out.Module = testkitv1.Module(src.Module)
+	out.Module = licensev1.Module(src.Module)
 	return out
 }
 
@@ -1076,7 +1077,7 @@ func toTestkitTrialInfo(src *dnv1.TrialInfo) *testkitv1.TrialInfo {
 	}
 	out := &testkitv1.TrialInfo{}
 	out.FingerprintId = src.FingerprintId
-	out.Module = testkitv1.Module(src.Module)
+	out.Module = licensev1.Module(src.Module)
 	out.StartedAt = src.StartedAt
 	out.ExpiresAt = src.ExpiresAt
 	out.FirstDeviceToken = src.FirstDeviceToken

@@ -15,7 +15,7 @@ Testkit service — 基于 [go-common](https://github.com/servekit/go-common) �
 - **枚举优先 proto**：枚举在 proto 里定义，DB 存 `int32`，用 proto 内置方法转换（`int32(x)` / `testkitv1.X(x)` / `.String()` / `_name` / `_value` map），**不要自己写 helper**（边界用例见 enum.md）。
 - **第三方调用双层**：`pkg/thirdcall/` 定义接口，`internal/thirdcall/<name>/` 实现；service 只 import 接口，不碰实现。
 - **资源用 lifecycle.Manager**：不要 `ownX bool`；注入的资源（`WithX`）不注册，自建的注册为 Stopper。
-- **加 RPC 四步**：proto 加方法 → `make proto` → handler 加委托 → `service.go` 加 facade → 子包加业务。
+- **加 RPC 四步**：`../api` 的 service.proto 加方法并 `make gen` → 本仓库 `go mod tidy` → handler 加委托 → `service.go` 加 facade → 子包加业务。
 - **scaffold 是 one-shot**：本服务已生成，后续演进手写，**绝不重跑** `new-service.sh`（会覆盖丢代码）。
 
 ## 增量能力必看范例（强制）
@@ -31,10 +31,9 @@ scaffold 已按生成时的能力开关接好；这里说的是**生成之后**�
 ## 技术栈约定
 
 ### gRPC / Proto
-- Proto 在 `api/proto/testkit/v1/`（初始版本；破坏性变更开新版本目录 `v2/`、`v3/`，不就地改老版本）
-- buf v2 配置在 `buf.yaml` / `buf.gen.yaml`
-- 生成代码到 `gen/`（committed），由 `make proto` 生成
-- Swagger 2.0 文档生成到 `api/swagger/`（committed，供前端/客户端消费），同样由 `make proto` 产出——openapiv2 插件从 proto 的 `google.api.http` 注解派生
+- Proto 在契约仓库 `../api/testkit/v1/`（三分文件；破坏性变更开新版本目录 `v2/`，在 api 仓库做）
+- 生成代码来自 `github.com/servekit/api/gen/go`（`replace ../api/gen/go`）；改 proto 在 `../api` 仓库做并 `make gen`
+- Swagger 2.0 文档由 `../api` 仓库生成（openapiv2 从 testkit 的注解派生）；本仓库 `make refresh-swagger` 同步到 `api/swagger/` 供前端 openapi 链路消费
 
 ### 数据库 / GORM
 - PostgreSQL（通过 `dbx.New`）
@@ -51,7 +50,7 @@ scaffold 已按生成时的能力开关接好；这里说的是**生成之后**�
 ## 运行模式
 
 1. **standalone gRPC**: `make run` → listen :9000
-2. **HTTP gateway**: 同上自动启用，:8080（除非 `server.http_addr` 为空）
+2. **HTTP gateway**: 同上自动启用，:18085。除 testkit 转码 RPC 外还托管 telemetry 摄入端点（`pkg/server.go` 的 registerGateway 挂 `telemetry-service/pkg/ingesthttp`）与 `GET /metrics`（promhttp）
 3. **in-process module**: 其它服务 `import "testkit-service/pkg"` → `pkg.NewModule(cfg, opts...)`
 4. **Docker**: `make docker-up` —— 用 `Dockerfile` + `docker-compose.yaml` 起完整栈（含 postgres 等，跑 healthcheck）；`make docker-down` 停。Docker 产物由 `golang-service-docker` skill 生成。
 
@@ -65,7 +64,7 @@ make lint        # golangci-lint
 make fmt         # gofmt + goimports
 
 # 代码生成（改 proto / model 后跑）
-make regenerate  # = proto + generate + tidy
+make regenerate  # = generate + tidy（proto 变更去 ../api 仓库）
 
 # 数据库迁移
 make migrate     # AutoMigrate（本地 PostgreSQL）

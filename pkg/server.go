@@ -7,21 +7,27 @@
 package pkg
 
 import (
+	"context"
 	"errors"
+	"net/http"
 
 	"buf.build/go/protovalidate"
 	protovalidate_middleware "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/protovalidate"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 
 	"github.com/servekit/go-common/grpcx"
 	"github.com/servekit/go-common/signalx"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service"
 	"github.com/servekit/testkit-service/pkg/auth"
 	"github.com/servekit/testkit-service/pkg/config"
 	"github.com/servekit/testkit-service/pkg/handler"
+
+	"github.com/servekit/telemetry-service/pkg/ingesthttp"
 )
 
 // Compile-time assertion: *Server satisfies signalx.Service.
@@ -125,7 +131,7 @@ func NewServer(cfg *config.Config) (*Server, error) {
 		func(gs *grpc.Server) {
 			testkitv1.RegisterTestkitServiceServer(gs, hdl)
 		},
-		testkitv1.RegisterTestkitServiceHandlerFromEndpoint,
+		registerGateway(svc),
 		// Chain order is outermost-first (grpc.ChainUnaryInterceptor).
 		// ErrorInterceptor wraps the auth gate so its *xerr.Error rejections
 		// (and protovalidate's) are translated to gRPC status / HTTP codes.
@@ -137,6 +143,37 @@ func NewServer(cfg *config.Config) (*Server, error) {
 	)
 
 	return &Server{grpcSrv: grpcSrv, hdl: hdl}, nil
+}
+
+// registerGateway builds the gateway registration closure: testkit's own
+// transcoded RPC surface first, then the two faces testkit hosts on behalf
+// of its gRPC-only backends:
+//   - the telemetry raw ingestion endpoints (telemetry pkg/ingesthttp —
+//     HMAC covers the raw body bytes, so these can never ride transcoding);
+//   - /metrics: promhttp off the default registry. In module mode the
+//     embedded telemetry's collector_* counters self-register into this
+//     process at init, so one endpoint exposes both testkit and telemetry
+//     metrics.
+func registerGateway(svc *service.Service) grpcx.RegisterGatewayFunc {
+	return func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
+		if err := testkitv1.RegisterTestkitServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
+			return err
+		}
+		ingest := ingesthttp.Handler(svc.Telemetry().Backend())
+		for _, route := range []struct{ method, pattern string }{
+			{http.MethodPost, "/v1/e/{token}/events"},
+			{http.MethodPost, "/v1/collect/events"},
+		} {
+			if err := mux.HandlePath(route.method, route.pattern, func(w http.ResponseWriter, r *http.Request, _ map[string]string) {
+				ingest.ServeHTTP(w, r)
+			}); err != nil {
+				return err
+			}
+		}
+		return mux.HandlePath(http.MethodGet, "/metrics", func(w http.ResponseWriter, r *http.Request, _ map[string]string) {
+			promhttp.Handler().ServeHTTP(w, r)
+		})
+	}
 }
 
 // Start starts service internals and the gRPC + HTTP gateway without blocking.

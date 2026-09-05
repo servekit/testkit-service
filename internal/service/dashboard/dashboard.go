@@ -10,17 +10,18 @@ package dashboard
 
 import (
 	"context"
+	messagingv1 "github.com/servekit/api/gen/go/messaging/v1"
 
 	"github.com/servekit/go-common/grpcx"
 	"golang.org/x/sync/errgroup"
 
-	messagev1 "github.com/servekit/message-service/gen/message/v1"
-	storagev1 "github.com/servekit/storage-service/gen/storage/v1"
-	userv1 "github.com/servekit/user-service/gen/user/v1"
+	messagev1 "github.com/servekit/api/gen/go/messaging/v1"
+	storagev1 "github.com/servekit/api/gen/go/storage/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	messageservice "github.com/servekit/message-service/pkg"
 	storageservice "github.com/servekit/storage-service/pkg"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/pkg/xcodes"
 	userservice "github.com/servekit/user-service/pkg"
 )
@@ -108,7 +109,7 @@ func emailStatsFromMessage(r *messagev1.EmailStatsResponse) *testkitv1.EmailStat
 	vendors := make([]*testkitv1.EmailVendorStats, 0, len(r.GetVendors()))
 	for _, v := range r.GetVendors() {
 		vendors = append(vendors, &testkitv1.EmailVendorStats{
-			Vendor: testkitv1.EmailVendor(v.GetVendor()), // int cast — enums mirror message.proto
+			Vendor: messagingv1.EmailVendor(v.GetVendor()), // int cast — enums mirror message.proto
 			Total:  v.GetTotal(),
 			Sent:   v.GetSent(),
 			Failed: v.GetFailed(),
@@ -130,7 +131,7 @@ func smsStatsFromMessage(r *messagev1.SMSStatsResponse) *testkitv1.SMSStats {
 	vendors := make([]*testkitv1.SmsVendorStats, 0, len(r.GetVendors()))
 	for _, v := range r.GetVendors() {
 		vendors = append(vendors, &testkitv1.SmsVendorStats{
-			Vendor: testkitv1.SmsVendor(v.GetVendor()),
+			Vendor: messagingv1.SmsVendor(v.GetVendor()),
 			Total:  v.GetTotal(),
 			Sent:   v.GetSent(),
 			Failed: v.GetFailed(),

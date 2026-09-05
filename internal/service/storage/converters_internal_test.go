@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	storagev1 "github.com/servekit/storage-service/gen/storage/v1"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	storagev1 "github.com/servekit/api/gen/go/storage/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 )
 
 // These tests exercise the unexported converters directly: nil branches and the
@@ -49,7 +49,7 @@ func TestToTestkitFileInfo_EnumCast(t *testing.T) {
 	require.Equal(t, "p", out.GetFilePath())
 	require.Equal(t, map[string]string{"k": "v"}, out.GetMetadata())
 	require.True(t, out.GetIsPublic())
-	require.Equal(t, testkitv1.OwnerType_OWNER_TYPE_BUSINESS, out.GetOwnerType())
+	require.Equal(t, storagev1.OwnerType_OWNER_TYPE_BUSINESS, out.GetOwnerType())
 	require.Equal(t, ".txt", out.GetExtension())
 	require.Equal(t, "t2", out.GetUpdatedAt())
 }
@@ -59,7 +59,7 @@ func TestToTestkitFileInfo_EnumCast(t *testing.T) {
 // ImageFormat / ImageResizeMode casts, on a multi-op slice and an empty slice.
 func TestToStorageImageProcessOps_NestedEnumAndCasts(t *testing.T) {
 	in := []*testkitv1.ImageProcessOp{
-		{Type: testkitv1.ImageProcessType_IMAGE_PROCESS_TYPE_RESIZE, Width: 10, Height: 20, Format: testkitv1.ImageFormat_IMAGE_FORMAT_WEBP, Quality: 80, ResizeMode: testkitv1.ImageResizeMode_IMAGE_RESIZE_MODE_FIT, WatermarkText: "w", RotateDegrees: 90},
+		{Type: testkitv1.ImageProcessType_IMAGE_PROCESS_TYPE_RESIZE, Width: 10, Height: 20, Format: storagev1.ImageFormat_IMAGE_FORMAT_WEBP, Quality: 80, ResizeMode: storagev1.ImageResizeMode_IMAGE_RESIZE_MODE_FIT, WatermarkText: "w", RotateDegrees: 90},
 		{Type: testkitv1.ImageProcessType_IMAGE_PROCESS_TYPE_CROP},
 	}
 	out := toStorageImageProcessOps(in)

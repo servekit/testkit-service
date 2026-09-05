@@ -1,4 +1,4 @@
-.PHONY: all build run test lint fmt vet proto tidy regenerate
+.PHONY: all build run test lint fmt vet tidy regenerate
 
 # Published binary name. Override to ship under a different name without
 # touching the source tree, e.g. `make build BIN_NAME=msgsvc`.
@@ -43,10 +43,6 @@ fmt:
 ## vet: Run go vet
 vet:
 	go vet ./...
-
-## proto: Generate protobuf code with buf
-proto:
-	buf generate
 
 ## tidy: Run go mod tidy
 tidy:
@@ -103,3 +99,10 @@ docker-health:
 	$(DOCKER_COMPOSE) exec -T testkit-service grpc_health_probe -addr=127.0.0.1:19095
 
 # END golang-service-docker
+
+## refresh-swagger: copy testkit's generated swagger from the api repo.
+## The web client generation (web/package.json "openapi") consumes
+## api/swagger/testkit/v1/testkit.swagger.json.
+.PHONY: refresh-swagger
+refresh-swagger:
+	cp ../api/gen/openapi/testkit/v1/service.swagger.json api/swagger/testkit/v1/testkit.swagger.json

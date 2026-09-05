@@ -6,8 +6,9 @@ import (
 	"reflect"
 	"testing"
 
+	commonv1 "github.com/servekit/api/gen/go/common/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	"github.com/servekit/go-common/grpcx/clienttest"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
@@ -20,8 +21,8 @@ type smokeStub struct {
 	testkitv1.UnimplementedTestkitServiceServer
 }
 
-func (smokeStub) Ping(context.Context, *emptypb.Empty) (*testkitv1.Pong, error) {
-	return &testkitv1.Pong{Status: "SERVING"}, nil
+func (smokeStub) Ping(context.Context, *emptypb.Empty) (*commonv1.Pong, error) {
+	return &commonv1.Pong{Status: "SERVING"}, nil
 }
 
 // TestClient_GRPCRoundTrip drives the server-shaped *Client against a real

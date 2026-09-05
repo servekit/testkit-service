@@ -3,14 +3,15 @@ package dashboard_test
 import (
 	"context"
 	"errors"
+	messagingv1 "github.com/servekit/api/gen/go/messaging/v1"
 	"testing"
 
+	messagev1 "github.com/servekit/api/gen/go/messaging/v1"
+	storagev1 "github.com/servekit/api/gen/go/storage/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/go-common/grpcx"
-	messagev1 "github.com/servekit/message-service/gen/message/v1"
-	storagev1 "github.com/servekit/storage-service/gen/storage/v1"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service/dashboard"
-	userv1 "github.com/servekit/user-service/gen/user/v1"
 	"github.com/stretchr/testify/require"
 )
 
@@ -108,7 +109,7 @@ func TestGetDashboard_AssemblesAllFour(t *testing.T) {
 	require.Equal(t, int64(50), resp.GetEmailStats().GetTotal())
 	require.Equal(t, float64(96), resp.GetEmailStats().GetSuccessRate())
 	require.Len(t, resp.GetEmailStats().GetVendors(), 1)
-	require.Equal(t, testkitv1.EmailVendor_EMAIL_VENDOR_ALIYUN, resp.GetEmailStats().GetVendors()[0].GetVendor())
+	require.Equal(t, messagingv1.EmailVendor_EMAIL_VENDOR_ALIYUN, resp.GetEmailStats().GetVendors()[0].GetVendor())
 	require.Equal(t, int64(10), resp.GetSmsStats().GetTotal())
 	require.Equal(t, int64(1000), resp.GetQuota().GetTotalBytes())
 	require.Equal(t, int32(9), resp.GetQuota().GetFileCount())

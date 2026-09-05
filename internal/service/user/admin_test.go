@@ -8,9 +8,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/testkit-service/internal/service/user"
-	userv1 "github.com/servekit/user-service/gen/user/v1"
 )
 
 // --- admin / RBAC stub overrides ---
@@ -100,7 +100,7 @@ func TestGetUser_ForwardsTargetUserID_NoCtxInjection(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, int64(5), resp.GetId())                // mapped back through toTestkitUser
 	require.Equal(t, int64(5), stub.gotGetUser.GetUserId()) // forwarded to downstream
-	require.Equal(t, testkitv1.UserStatus_USER_STATUS_ACTIVE, resp.GetStatus())
+	require.Equal(t, userv1.UserStatus_USER_STATUS_ACTIVE, resp.GetStatus())
 }
 
 func TestDisableUser_ForwardsTargetIDAndDisableFlag(t *testing.T) {
@@ -117,7 +117,7 @@ func TestDisableUser_ForwardsTargetIDAndDisableFlag(t *testing.T) {
 	require.True(t, stub.gotDisableUser.GetDisable())
 	require.Equal(t, "spam", stub.gotDisableUser.GetReason())
 	require.Equal(t, int64(9), resp.GetId())
-	require.Equal(t, testkitv1.UserStatus_USER_STATUS_DISABLED, resp.GetStatus())
+	require.Equal(t, userv1.UserStatus_USER_STATUS_DISABLED, resp.GetStatus())
 }
 
 // --- Pattern: admin create forwards all fields + enum int-cast ---
@@ -127,7 +127,7 @@ func TestCreateUser_ForwardsAllFields_AndEnumIntCast(t *testing.T) {
 	svc, _ := newSvc(t, stub, false)
 
 	resp, err := svc.CreateUser(context.Background(), &testkitv1.CreateUserRequest{
-		UserType:   testkitv1.UserType_USER_TYPE_INTERNAL,
+		UserType:   userv1.UserType_USER_TYPE_INTERNAL,
 		Username:   "bob",
 		Nickname:   "Bob",
 		RealName:   "Bob Q",
@@ -135,7 +135,7 @@ func TestCreateUser_ForwardsAllFields_AndEnumIntCast(t *testing.T) {
 		RegionCode: "US",
 		Phone:      "+1555000",
 		Password:   "secret123",
-		Gender:     testkitv1.Gender_GENDER_MALE,
+		Gender:     userv1.Gender_GENDER_MALE,
 		Timezone:   "UTC",
 		Locale:     "en",
 	})
@@ -158,7 +158,7 @@ func TestCreateUser_ForwardsAllFields_AndEnumIntCast(t *testing.T) {
 
 	// Response wraps the curated user.
 	require.NotNil(t, resp.GetUser())
-	require.Equal(t, testkitv1.UserType_USER_TYPE_INTERNAL, resp.GetUser().GetUserType())
+	require.Equal(t, userv1.UserType_USER_TYPE_INTERNAL, resp.GetUser().GetUserType())
 }
 
 // --- Pattern: paginated list mapping (ListUsersPaged) ---
@@ -199,12 +199,12 @@ func TestToUserListUsersPagedRequest_CoversAllFields(t *testing.T) {
 	llEnd := timestamppb.Now()
 
 	got := user.ToUserListUsersPagedRequest(&testkitv1.ListUsersPagedRequest{
-		Status:           testkitv1.UserStatus_USER_STATUS_DISABLED,
+		Status:           userv1.UserStatus_USER_STATUS_DISABLED,
 		Nickname:         "n",
-		Gender:           testkitv1.Gender_GENDER_MALE,
-		RegisterSource:   testkitv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
-		RegisterDevice:   testkitv1.DeviceType_DEVICE_TYPE_WEB,
-		UserType:         testkitv1.UserType_USER_TYPE_INTERNAL,
+		Gender:           userv1.Gender_GENDER_MALE,
+		RegisterSource:   userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
+		RegisterDevice:   userv1.DeviceType_DEVICE_TYPE_WEB,
+		UserType:         userv1.UserType_USER_TYPE_INTERNAL,
 		Locale:           "zh",
 		Timezone:         "UTC",
 		RegisterIp:       "1.1.1.1",
@@ -218,7 +218,7 @@ func TestToUserListUsersPagedRequest_CoversAllFields(t *testing.T) {
 		RegionCode:       "CN",
 		Phone:            "13800000000",
 		Username:         "u",
-		OrderBy:          testkitv1.UserSortField_USER_SORT_FIELD_ID,
+		OrderBy:          userv1.UserSortField_USER_SORT_FIELD_ID,
 		Descending:       true,
 		Page:             2,
 		PageSize:         50,
@@ -328,9 +328,9 @@ func TestGetLoginLogs_MapsLogs_AndEnumIntCast(t *testing.T) {
 	l := resp.GetLogs()[0]
 	require.Equal(t, int64(1), l.GetId())
 	require.Equal(t, int64(5), l.GetUserId())
-	require.Equal(t, testkitv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL, l.GetProvider())
-	require.Equal(t, testkitv1.LoginAction_LOGIN_ACTION_LOGIN, l.GetAction()) // enum int-cast
-	require.Equal(t, testkitv1.DeviceType_DEVICE_TYPE_WEB, l.GetDeviceType())
+	require.Equal(t, userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL, l.GetProvider())
+	require.Equal(t, userv1.LoginAction_LOGIN_ACTION_LOGIN, l.GetAction()) // enum int-cast
+	require.Equal(t, userv1.DeviceType_DEVICE_TYPE_WEB, l.GetDeviceType())
 	require.Equal(t, "macOS", l.GetOs())
 	require.Equal(t, int32(1), resp.GetTotal())
 	// user_id filter forwarded (target ID, optional).
@@ -380,9 +380,9 @@ func TestEnumIntCast_AdminRBACEnums(t *testing.T) {
 		testkit int32
 		want    int32
 	}{
-		{"LoginAction LOGIN", int32(testkitv1.LoginAction_LOGIN_ACTION_LOGIN), int32(userv1.LoginAction_LOGIN_ACTION_LOGIN)},
-		{"UserSortField ID", int32(testkitv1.UserSortField_USER_SORT_FIELD_ID), int32(userv1.UserSortField_USER_SORT_FIELD_ID)},
-		{"UserSortField CREATED_AT", int32(testkitv1.UserSortField_USER_SORT_FIELD_CREATED_AT), int32(userv1.UserSortField_USER_SORT_FIELD_CREATED_AT)},
+		{"LoginAction LOGIN", int32(userv1.LoginAction_LOGIN_ACTION_LOGIN), int32(userv1.LoginAction_LOGIN_ACTION_LOGIN)},
+		{"UserSortField ID", int32(userv1.UserSortField_USER_SORT_FIELD_ID), int32(userv1.UserSortField_USER_SORT_FIELD_ID)},
+		{"UserSortField CREATED_AT", int32(userv1.UserSortField_USER_SORT_FIELD_CREATED_AT), int32(userv1.UserSortField_USER_SORT_FIELD_CREATED_AT)},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

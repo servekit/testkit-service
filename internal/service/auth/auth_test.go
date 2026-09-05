@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
+	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/auth"
-	userv1 "github.com/servekit/user-service/gen/user/v1"
 )
 
 // stubUserClient stands in for the embedded user-service handler. It embeds
@@ -108,7 +108,7 @@ func TestLogin_ForwardsAndSignsJWT(t *testing.T) {
 	svc, m := newAuthSvc(t, stub)
 
 	resp, err := svc.Login(context.Background(), &testkitv1.LoginRequest{
-		Method:     testkitv1.LoginMethod_LOGIN_METHOD_USERNAME_PASSWORD,
+		Method:     userv1.LoginMethod_LOGIN_METHOD_USERNAME_PASSWORD,
 		Username:   "alice",
 		Password:   "pw",
 		Code:       "c",
@@ -146,7 +146,7 @@ func TestLogin_PropagatesDownstreamError(t *testing.T) {
 	stub := &stubUserClient{loginErr: errors.New("bad credentials")}
 	svc, _ := newAuthSvc(t, stub)
 	_, err := svc.Login(context.Background(), &testkitv1.LoginRequest{
-		Method:   testkitv1.LoginMethod_LOGIN_METHOD_EMAIL_PASSWORD,
+		Method:   userv1.LoginMethod_LOGIN_METHOD_EMAIL_PASSWORD,
 		Email:    "x@example.com",
 		Password: "pw",
 	})
@@ -158,7 +158,7 @@ func TestRegister_ForwardsAndSignsJWT(t *testing.T) {
 	svc, m := newAuthSvc(t, stub)
 
 	resp, err := svc.Register(context.Background(), &testkitv1.RegisterRequest{
-		Provider:   testkitv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL,
+		Provider:   userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL,
 		Email:      "alice@example.com",
 		Code:       "123456",
 		Username:   "alice",
@@ -191,8 +191,8 @@ func TestSendVerificationCode_ForwardsAndReturnsCaptchaID(t *testing.T) {
 
 	resp, err := svc.SendVerificationCode(context.Background(), &testkitv1.SendVerificationCodeRequest{
 		Email:      "alice@example.com",
-		Channel:    testkitv1.VerificationChannel_VERIFICATION_CHANNEL_EMAIL,
-		Purpose:    testkitv1.VerificationPurpose_VERIFICATION_PURPOSE_REGISTER,
+		Channel:    userv1.VerificationChannel_VERIFICATION_CHANNEL_EMAIL,
+		Purpose:    userv1.VerificationPurpose_VERIFICATION_PURPOSE_REGISTER,
 		RegionCode: "CN",
 		Phone:      "13800138000",
 		SenderId:   "testkit-web",
@@ -257,7 +257,7 @@ func TestEnumIntCast_MirroredSameNumber(t *testing.T) {
 		testkit  int32
 		userWant userv1.IdentityProvider
 	}{
-		{"ADMIN=8", int32(testkitv1.IdentityProvider_IDENTITY_PROVIDER_ADMIN), userv1.IdentityProvider_IDENTITY_PROVIDER_ADMIN},
+		{"ADMIN=8", int32(userv1.IdentityProvider_IDENTITY_PROVIDER_ADMIN), userv1.IdentityProvider_IDENTITY_PROVIDER_ADMIN},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -272,7 +272,7 @@ func TestToTestkitUser_CuratesAndIntCastsUserType(t *testing.T) {
 	svc, _ := newAuthSvc(t, stub)
 
 	resp, err := svc.Login(context.Background(), &testkitv1.LoginRequest{
-		Method: testkitv1.LoginMethod_LOGIN_METHOD_USERNAME_PASSWORD,
+		Method: userv1.LoginMethod_LOGIN_METHOD_USERNAME_PASSWORD,
 	})
 	require.NoError(t, err)
 
@@ -283,7 +283,7 @@ func TestToTestkitUser_CuratesAndIntCastsUserType(t *testing.T) {
 	require.Equal(t, "13800138000", u.GetPhone())
 	require.Equal(t, "Alice", u.GetNickname())
 	// user_type int-cast preserves INTERNAL for the frontend two-track split.
-	require.Equal(t, testkitv1.UserType_USER_TYPE_INTERNAL, u.GetUserType())
+	require.Equal(t, userv1.UserType_USER_TYPE_INTERNAL, u.GetUserType())
 }
 
 func TestToTestkitUser_NilInput(t *testing.T) {

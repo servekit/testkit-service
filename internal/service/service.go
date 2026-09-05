@@ -20,13 +20,14 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
+	commonv1 "github.com/servekit/api/gen/go/common/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 	gidservice "github.com/servekit/gid-service/pkg"
 	"github.com/servekit/go-common/lifecycle"
 	licenseservice "github.com/servekit/license-service/pkg"
 	messageservice "github.com/servekit/message-service/pkg"
 	storageservice "github.com/servekit/storage-service/pkg"
 	telemetryservice "github.com/servekit/telemetry-service/pkg"
-	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service/auth"
 	dashboardsvc "github.com/servekit/testkit-service/internal/service/dashboard"
 	gidsvc "github.com/servekit/testkit-service/internal/service/gid"
@@ -38,7 +39,6 @@ import (
 	"github.com/servekit/testkit-service/internal/version"
 	pkauth "github.com/servekit/testkit-service/pkg/auth"
 	"github.com/servekit/testkit-service/pkg/config"
-	userv1 "github.com/servekit/user-service/gen/user/v1"
 	userservice "github.com/servekit/user-service/pkg"
 )
 
@@ -78,9 +78,9 @@ func (s *Service) Start() error { return s.mgr.Start() }
 func (s *Service) Stop() error { return s.mgr.Stop() }
 
 // Ping is a health-check RPC. Returns only public, non-sensitive info.
-func (s *Service) Ping(_ context.Context) (*testkitv1.Pong, error) {
+func (s *Service) Ping(_ context.Context) (*commonv1.Pong, error) {
 	v := version.Get()
-	return &testkitv1.Pong{
+	return &commonv1.Pong{
 		Service:   "testkit-service",
 		Version:   v.Version,
 		GitCommit: v.GitCommit,
