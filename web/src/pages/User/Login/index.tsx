@@ -1,6 +1,6 @@
 import { LoginForm, ProFormText } from "@ant-design/pro-components";
 import { App, Typography } from "antd";
-import { history } from "@umijs/max";
+import { history, useModel } from "@umijs/max";
 import { login } from "@/services/testkit/testkitService";
 
 const { Link, Text } = Typography;
@@ -19,6 +19,7 @@ const USER_TYPE_INTERNAL = "USER_TYPE_INTERNAL";
  */
 export default function LoginPage() {
   const { message } = App.useApp();
+  const { setInitialState } = useModel("@@initialState");
 
   return (
     <LoginForm<{ username: string; password: string }>
@@ -41,6 +42,9 @@ export default function LoginPage() {
           }
           localStorage.setItem("testkit_token", token);
           localStorage.setItem("testkit_user", JSON.stringify(user));
+          // Refresh initialState so the access plugin re-evaluates (it reads
+          // the stored user) before the client-side redirect below.
+          await setInitialState({ currentUser: user });
           message.success("登录成功");
           history.push(
             user.userType === USER_TYPE_INTERNAL ? "/dashboard" : "/profile",
@@ -79,7 +83,15 @@ export default function LoginPage() {
         }}
       >
         <Text type="secondary">用户名密码登录</Text>
-        <Link>忘记密码</Link>
+        <span>
+          <Link
+            style={{ marginInlineEnd: 12 }}
+            onClick={() => history.push("/user/register")}
+          >
+            注册账号
+          </Link>
+          <Link>忘记密码</Link>
+        </span>
       </div>
     </LoginForm>
   );

@@ -5,6 +5,8 @@ import type { ReactNode } from 'react';
 import { requestConfig } from './request';
 
 const LOGIN_PATH = '/user/login';
+// Public (session-less) surfaces: everything under /user/ — login + register.
+const PUBLIC_PREFIX = '/user/';
 
 function readUser(): API.User | undefined {
   try {
@@ -29,8 +31,8 @@ export async function getInitialState(): Promise<{
 /** Auth gate: bounce to /user/login when there is no session. */
 export function render(oldRender: () => void) {
   const token = localStorage.getItem('testkit_token');
-  const onLogin = window.location.pathname.startsWith(LOGIN_PATH);
-  if (!token && !onLogin) {
+  const isPublic = window.location.pathname.startsWith(PUBLIC_PREFIX);
+  if (!token && !isPublic) {
     history.push(LOGIN_PATH);
   }
   oldRender();

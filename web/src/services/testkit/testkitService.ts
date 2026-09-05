@@ -87,7 +87,8 @@ export async function adminDeleteFile(
   } = params;
   return request<Record<string, any>>(`/api/v1/admin/files/${param0}`, {
   method: 'DELETE',
-    params: {...queryParams,},
+    params: {
+        ...queryParams,},
     ...(options || {}),
   });
 }
@@ -304,7 +305,8 @@ export async function listEmails(
         // sortField has a default value: SORT_FIELD_UNSPECIFIED
           'sortField': 'SORT_FIELD_UNSPECIFIED',
         // sortDirection has a default value: SORT_DIRECTION_UNSPECIFIED
-          'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',...params,},
+          'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',
+        ...params,},
     ...(options || {}),
   });
 }
@@ -349,6 +351,7 @@ export async function listEmailsByCursor(
           'sortField': 'SORT_FIELD_UNSPECIFIED',
         // sortDirection has a default value: SORT_DIRECTION_UNSPECIFIED
           'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',
+        
         
         
         ...params,},
@@ -437,7 +440,8 @@ export async function deleteMyFile(
   } = params;
   return request<Record<string, any>>(`/api/v1/files/${param0}`, {
   method: 'DELETE',
-    params: {...queryParams,},
+    params: {
+        ...queryParams,},
     ...(options || {}),
   });
 }
@@ -720,6 +724,311 @@ export async function bindOAuthIdentity(body: API.v1BindOAuthIdentityRequest,
   options ?: {[key: string]: any}
 ) {
   return request<API.v1BindOAuthIdentityResponse>('/api/v1/identities/oauth', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/activate */
+export async function activate(body: API.v1ActivateRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ActivateResponse>('/api/v1/license/activate', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/license/admin/keys */
+export async function listKeys(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListKeysParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListKeysResponse>('/api/v1/license/admin/keys', {
+  method: 'GET',
+    params: {
+        // status has a default value: KEY_STATUS_UNSPECIFIED
+          'status': 'KEY_STATUS_UNSPECIFIED',
+        ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/admin/keys */
+export async function createKey(body: API.v1CreateKeyRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1CreateKeyResponse>('/api/v1/license/admin/keys', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/license/admin/keys/${param0} */
+export async function showKey(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ShowKeyParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'keyId': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1ShowKeyResponse>(`/api/v1/license/admin/keys/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/license/admin/keys/${param0} */
+export async function deleteKey(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.DeleteKeyParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'keyId': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1DeleteKeyResponse>(`/api/v1/license/admin/keys/${param0}`, {
+  method: 'DELETE',
+    params: {
+        ...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PATCH /api/v1/license/admin/keys/${param0} */
+export async function updateKey(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.UpdateKeyParams
+    ,body: API.TestkitServiceUpdateKeyBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'keyId': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1UpdateKeyResponse>(`/api/v1/license/admin/keys/${param0}`, {
+  method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/license/admin/keys/${param0}/devices */
+export async function listKeyDevices(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListKeyDevicesParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'keyId': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1ListKeyDevicesResponse>(`/api/v1/license/admin/keys/${param0}/devices`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/license/admin/keys/${param0}/devices/${param1} */
+export async function kickDevice(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.KickDeviceParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'keyId': param0, 'deviceToken': param1, 
+  ...queryParams
+  } = params;
+  return request<API.v1KickDeviceResponse>(`/api/v1/license/admin/keys/${param0}/devices/${param1}`, {
+  method: 'DELETE',
+    params: {
+        ...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/license/admin/keys/${param0}/grants/${param1} */
+export async function grantModule(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GrantModuleParams
+    ,body: API.TestkitServiceGrantModuleBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'keyId': param0, 'module': param1, 
+  ...queryParams
+  } = params;
+  return request<API.v1GrantModuleResponse>(`/api/v1/license/admin/keys/${param0}/grants/${param1}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/license/admin/keys/${param0}/grants/${param1} */
+export async function revokeModule(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.RevokeModuleParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'keyId': param0, 'module': param1, 
+  ...queryParams
+  } = params;
+  return request<API.v1RevokeModuleResponse>(`/api/v1/license/admin/keys/${param0}/grants/${param1}`, {
+  method: 'DELETE',
+    params: {
+        ...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/admin/keys/${param0}/revoke */
+export async function revokeKey(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.RevokeKeyParams
+    ,body: API.TestkitServiceRevokeKeyBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'keyId': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1RevokeKeyResponse>(`/api/v1/license/admin/keys/${param0}/revoke`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/admin/keys/${param0}/unrevoke */
+export async function unrevokeKey(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.UnrevokeKeyParams
+    ,body: API.TestkitServiceUnrevokeKeyBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'keyId': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1UnrevokeKeyResponse>(`/api/v1/license/admin/keys/${param0}/unrevoke`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/license/admin/signing/pubkey */
+export async function showPubKey(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ShowPubKeyResponse>('/api/v1/license/admin/signing/pubkey', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/license/admin/trials/${param0} */
+export async function showTrial(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ShowTrialParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'fingerprintId': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1ShowTrialResponse>(`/api/v1/license/admin/trials/${param0}`, {
+  method: 'GET',
+    params: {
+        // module has a default value: MODULE_UNSPECIFIED
+          'module': 'MODULE_UNSPECIFIED',...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/admin/trials/${param0}/${param1}/reset */
+export async function resetTrial(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ResetTrialParams
+    ,body: API.TestkitServiceResetTrialBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'fingerprintId': param0, 'module': param1, 
+  ...queryParams
+  } = params;
+  return request<API.v1ResetTrialResponse>(`/api/v1/license/admin/trials/${param0}/${param1}/reset`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/deactivate */
+export async function deactivate(body: API.v1DeactivateRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1DeactivateResponse>('/api/v1/license/deactivate', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/license/healthz */
+export async function health(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1HealthResponse>('/api/v1/license/healthz', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/trial/start */
+export async function trialStart(body: API.v1TrialStartRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1TrialStartResponse>('/api/v1/license/trial/start', {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -1411,7 +1720,8 @@ export async function listSms(
         // sortField has a default value: SORT_FIELD_UNSPECIFIED
           'sortField': 'SORT_FIELD_UNSPECIFIED',
         // sortDirection has a default value: SORT_DIRECTION_UNSPECIFIED
-          'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',...params,},
+          'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',
+        ...params,},
     ...(options || {}),
   });
 }
@@ -1457,6 +1767,7 @@ export async function listSmsByCursor(
           'sortField': 'SORT_FIELD_UNSPECIFIED',
         // sortDirection has a default value: SORT_DIRECTION_UNSPECIFIED
           'sortDirection': 'SORT_DIRECTION_UNSPECIFIED',
+        
         
         
         ...params,},
@@ -1621,6 +1932,208 @@ export async function getMyQuota(
 ) {
   return request<API.v1QuotaInfo>('/api/v1/storage/quota', {
   method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/apps */
+export async function createApp(body: API.v1CreateAppRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1CreateAppResponse>('/api/v1/telemetry/admin/apps', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/telemetry/admin/apps/${param0} */
+export async function getApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GetAppParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1GetAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/telemetry/admin/apps/${param0} */
+export async function updateApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.UpdateAppParams
+    ,body: API.TestkitServiceUpdateAppBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1UpdateAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/telemetry/admin/apps/${param0}/events */
+export async function replaceEventRules(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ReplaceEventRulesParams
+    ,body: API.TestkitServiceReplaceEventRulesBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1ReplaceEventRulesResponse>(`/api/v1/telemetry/admin/apps/${param0}/events`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/apps/${param0}/signing-keys */
+export async function createSigningKey(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.CreateSigningKeyParams
+    ,body: API.TestkitServiceCreateSigningKeyBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1CreateSigningKeyResponse>(`/api/v1/telemetry/admin/apps/${param0}/signing-keys`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/telemetry/admin/apps/${param0}/signing-keys/${param1} */
+export async function revokeSigningKey(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.RevokeSigningKeyParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 'keyId': param1, 
+  ...queryParams
+  } = params;
+  return request<API.v1RevokeSigningKeyResponse>(`/api/v1/telemetry/admin/apps/${param0}/signing-keys/${param1}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/telemetry/admin/apps/${param0}/stats */
+export async function getAppStats(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GetAppStatsParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1GetAppStatsResponse>(`/api/v1/telemetry/admin/apps/${param0}/stats`, {
+  method: 'GET',
+    params: {
+        ...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/apps/${param0}/tokens */
+export async function rotateToken(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.RotateTokenParams
+    ,body: API.TestkitServiceRotateTokenBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1RotateTokenResponse>(`/api/v1/telemetry/admin/apps/${param0}/tokens`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/telemetry/admin/apps/${param0}/tokens/${param1} */
+export async function revokeToken(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.RevokeTokenParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 'prefix': param1, 
+  ...queryParams
+  } = params;
+  return request<API.v1RevokeTokenResponse>(`/api/v1/telemetry/admin/apps/${param0}/tokens/${param1}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/telemetry/admin/apps/${param0}/versions/${param1} */
+export async function setVersionBlocked(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.SetVersionBlockedParams
+    ,body: API.TestkitServiceSetVersionBlockedBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 'version': param1, 
+  ...queryParams
+  } = params;
+  return request<API.v1SetVersionBlockedResponse>(`/api/v1/telemetry/admin/apps/${param0}/versions/${param1}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/telemetry/ingest */
+export async function ingest(body: API.v1IngestRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1IngestResponse>('/api/v1/telemetry/ingest', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

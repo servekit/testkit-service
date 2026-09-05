@@ -17,6 +17,7 @@ import {
 } from "@/services/testkit/testkitService";
 import {
   GENDER_VALUE_ENUM,
+  PROVIDER_VALUE_ENUM,
   USER_STATUS_VALUE_ENUM,
   USER_TYPE_VALUE_ENUM,
   UserStatusTag,
@@ -56,7 +57,12 @@ export default function UserListPage() {
       width: 90,
       render: (_, r) => <UserStatusTag status={r.status} />,
     },
-    { title: "注册来源", dataIndex: "registerSource", search: false },
+    {
+      title: "注册来源",
+      dataIndex: "registerSource",
+      search: false,
+      valueEnum: PROVIDER_VALUE_ENUM,
+    },
     { title: "最后登录", dataIndex: "lastLoginAt", search: false, width: 180 },
     {
       title: "操作",

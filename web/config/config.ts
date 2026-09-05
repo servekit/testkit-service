@@ -27,64 +27,23 @@ export default defineConfig({
     {
       path: "/user",
       layout: false,
-      routes: [{ path: "/user/login", component: "./User/Login" }],
-    },
-    // --- Self-service (any logged-in user, incl. internal) → access: canUser ---
-    {
-      path: "/profile",
-      name: "个人资料",
-      icon: "UserOutlined",
-      access: "canUser",
-      component: "./Profile",
-    },
-    {
-      path: "/identity",
-      name: "登录方式",
-      icon: "SafetyCertificateOutlined",
-      access: "canUser",
-      component: "./Identity",
-    },
-    {
-      path: "/sessions",
-      name: "会话管理",
-      icon: "DesktopOutlined",
-      access: "canUser",
-      component: "./Session",
-    },
-    // --- Self-service storage (any logged-in user) → access: canUser ---
-    {
-      path: "/files",
-      name: "我的文件",
-      icon: "FileOutlined",
-      access: "canUser",
       routes: [
-        { path: "/files", redirect: "/files/my" },
-        { path: "/files/my", name: "文件列表", component: "./Files/MyFiles" },
+        { path: "/user/login", component: "./User/Login" },
+        { path: "/user/register", component: "./User/Register" },
       ],
     },
-    {
-      path: "/storage",
-      name: "我的存储",
-      icon: "CloudServerOutlined",
-      access: "canUser",
-      routes: [
-        { path: "/storage", redirect: "/storage/quota" },
-        {
-          path: "/storage/quota",
-          name: "我的配额",
-          component: "./Storage/Quota",
-        },
-        {
-          path: "/storage/audit",
-          name: "操作审计",
-          component: "./Storage/Audit",
-        },
-      ],
-    },
-    // --- Internal back-office → access: canInternal (UserType = INTERNAL) ---
-    // Dashboard is the internal landing page (P1 login redirects INTERNAL →
-    // /dashboard). KPI tiles + vendor charts over the aggregated GetDashboard
-    // RPC (message/storage/user fan-in). Built P5.
+    // --- Nav grouped one top-level menu item per embedded service (user /
+    // storage / message / gid) plus testkit's own surfaces (dashboard / system).
+    // Group parents are PATHLESS routes (no `path`) — umi/react-router require
+    // a child's absolute path to be prefixed by its parent's path, so a pathed
+    // parent like "/user-service" with child "/profile" breaks route creation.
+    // A pathless parent only groups the MENU; matching behaves exactly as the
+    // previous flat layout, so every leaf path/URL below is unchanged.
+    // Access stays per leaf: self-service pages keep access: canUser,
+    // back-office pages keep access: canInternal. Mixed parents (用户服务 /
+    // 存储服务) gate on canUser so the submenu filters down to the
+    // self-service pages for normal users; internal users see all. Nameless
+    // redirect entries (e.g. /files → /files/my) never render in the menu.
     {
       path: "/dashboard",
       name: "仪表盘",
@@ -92,105 +51,168 @@ export default defineConfig({
       access: "canInternal",
       component: "./Dashboard",
     },
+    // --- user-service: profile / identities / sessions + back-office ---
+    // `key` is required on PATHLESS group parents: umi's menu transform
+    // (route-utils transformRoute) derives a submenu's key from `item.key ||
+    // path` — without a path every pathless parent degrades to the same shared
+    // key (they expand/collapse together) and children get no parentKeys
+    // (selecting a leaf freezes the other submenus).
     {
-      path: "/users",
-      name: "用户运营",
+      key: "svc-user",
+      name: "用户服务",
       icon: "TeamOutlined",
-      access: "canInternal",
+      access: "canUser",
       routes: [
+        {
+          path: "/profile",
+          name: "个人资料",
+          access: "canUser",
+          component: "./Profile",
+        },
+        {
+          path: "/identity",
+          name: "登录方式",
+          access: "canUser",
+          component: "./Identity",
+        },
+        {
+          path: "/sessions",
+          name: "会话管理",
+          access: "canUser",
+          component: "./Session",
+        },
         {
           path: "/users",
-          redirect: "/users/list",
+          name: "用户运营",
+          access: "canInternal",
+          routes: [
+            {
+              path: "/users",
+              redirect: "/users/list",
+            },
+            {
+              path: "/users/list",
+              name: "用户列表",
+              component: "./User/List",
+            },
+            {
+              path: "/users/login-logs",
+              name: "登录日志",
+              component: "./User/LoginLogs",
+            },
+          ],
         },
-        {
-          path: "/users/list",
-          name: "用户列表",
-          component: "./User/List",
-        },
-        {
-          path: "/users/login-logs",
-          name: "登录日志",
-          component: "./User/LoginLogs",
-        },
-      ],
-    },
-    {
-      path: "/rbac",
-      name: "权限管理",
-      icon: "KeyOutlined",
-      access: "canInternal",
-      routes: [
         {
           path: "/rbac",
-          redirect: "/rbac/roles",
-        },
-        {
-          path: "/rbac/roles",
-          name: "角色",
-          component: "./Rbac/Roles",
-        },
-        {
-          path: "/rbac/groups",
-          name: "用户组",
-          component: "./Rbac/Groups",
-        },
-        {
-          path: "/rbac/permissions",
-          name: "权限",
-          component: "./Rbac/Permissions",
-        },
-        {
-          path: "/rbac/permission-groups",
-          name: "权限组",
-          component: "./Rbac/PermissionGroups",
-        },
-        {
-          path: "/rbac/user-roles",
-          name: "用户角色",
-          component: "./Rbac/UserRoles",
+          name: "权限管理",
+          access: "canInternal",
+          routes: [
+            {
+              path: "/rbac",
+              redirect: "/rbac/roles",
+            },
+            {
+              path: "/rbac/roles",
+              name: "角色",
+              component: "./Rbac/Roles",
+            },
+            {
+              path: "/rbac/groups",
+              name: "用户组",
+              component: "./Rbac/Groups",
+            },
+            {
+              path: "/rbac/permissions",
+              name: "权限",
+              component: "./Rbac/Permissions",
+            },
+            {
+              path: "/rbac/permission-groups",
+              name: "权限组",
+              component: "./Rbac/PermissionGroups",
+            },
+            {
+              path: "/rbac/user-roles",
+              name: "用户角色",
+              component: "./Rbac/UserRoles",
+            },
+          ],
         },
       ],
     },
+    // --- storage-service: my files/quota + admin console + audit ---
+    // `key` on this pathless parent — see the svc-user comment above.
     {
-      path: "/admin/storage",
-      name: "存储管理",
-      icon: "CloudUploadOutlined",
-      access: "canInternal",
+      key: "svc-storage",
+      name: "存储服务",
+      icon: "CloudServerOutlined",
+      access: "canUser",
       routes: [
-        { path: "/admin/storage", redirect: "/admin/storage/files" },
+        { path: "/files", redirect: "/files/my" },
         {
-          path: "/admin/storage/files",
-          name: "文件",
-          component: "./Admin/Storage/Files",
+          path: "/files/my",
+          name: "我的文件",
+          access: "canUser",
+          component: "./Files/MyFiles",
         },
         {
-          path: "/admin/storage/quota",
-          name: "配额",
-          component: "./Admin/Storage/Quota",
+          path: "/storage",
+          name: "我的存储",
+          access: "canUser",
+          routes: [
+            { path: "/storage", redirect: "/storage/quota" },
+            {
+              path: "/storage/quota",
+              name: "我的配额",
+              component: "./Storage/Quota",
+            },
+            {
+              path: "/storage/audit",
+              name: "操作审计",
+              component: "./Storage/Audit",
+            },
+          ],
         },
         {
-          path: "/admin/storage/stats",
-          name: "统计",
-          component: "./Admin/Storage/Stats",
+          path: "/admin/storage",
+          name: "存储管理",
+          access: "canInternal",
+          routes: [
+            { path: "/admin/storage", redirect: "/admin/storage/files" },
+            {
+              path: "/admin/storage/files",
+              name: "文件",
+              component: "./Admin/Storage/Files",
+            },
+            {
+              path: "/admin/storage/quota",
+              name: "配额",
+              component: "./Admin/Storage/Quota",
+            },
+            {
+              path: "/admin/storage/stats",
+              name: "统计",
+              component: "./Admin/Storage/Stats",
+            },
+            {
+              path: "/admin/storage/providers",
+              name: "Providers",
+              component: "./Admin/Storage/Providers",
+            },
+            {
+              path: "/admin/storage/buckets",
+              name: "Buckets",
+              component: "./Admin/Storage/Buckets",
+            },
+          ],
         },
         {
-          path: "/admin/storage/providers",
-          name: "Providers",
-          component: "./Admin/Storage/Providers",
-        },
-        {
-          path: "/admin/storage/buckets",
-          name: "Buckets",
-          component: "./Admin/Storage/Buckets",
+          path: "/admin/audit-logs",
+          name: "审计日志",
+          access: "canInternal",
+          component: "./Admin/Audit",
         },
       ],
-    },
-    {
-      path: "/admin/audit-logs",
-      name: "审计日志",
-      icon: "AuditOutlined",
-      access: "canInternal",
-      component: "./Admin/Audit",
     },
     // --- Message ops console (P4) → access: canInternal ---
     // Internal-only ops surface: ad-hoc send (email/SMS) + full-fidelity record
@@ -198,7 +220,7 @@ export default defineConfig({
     // does no RBAC this phase (design §3.5), the split is a frontend route guard.
     {
       path: "/message",
-      name: "消息管理",
+      name: "消息服务",
       icon: "MessageOutlined",
       access: "canInternal",
       routes: [
@@ -231,10 +253,50 @@ export default defineConfig({
     // is a frontend route guard (design §3.5).
     {
       path: "/gid",
-      name: "GID 调试",
+      name: "GID 服务",
       icon: "NumberOutlined",
       access: "canInternal",
       component: "./Gid/Debug",
+    },
+    // --- license-service (P6): key lifecycle + client activation surface ---
+    {
+      key: "svc-license",
+      name: "License 服务",
+      icon: "KeyOutlined",
+      access: "canInternal",
+      routes: [
+        { path: "/license", redirect: "/license/keys" },
+        {
+          path: "/license/keys",
+          name: "密钥管理",
+          component: "./License/Keys",
+        },
+        {
+          path: "/license/console",
+          name: "客户端测试",
+          component: "./License/Console",
+        },
+      ],
+    },
+    // --- telemetry-service (P6): app registry + stats ---
+    {
+      key: "svc-telemetry",
+      name: "Telemetry 服务",
+      icon: "MonitorOutlined",
+      access: "canInternal",
+      routes: [
+        { path: "/telemetry", redirect: "/telemetry/apps" },
+        {
+          path: "/telemetry/apps",
+          name: "应用管理",
+          component: "./Telemetry/Apps",
+        },
+        {
+          path: "/telemetry/stats",
+          name: "应用统计",
+          component: "./Telemetry/Stats",
+        },
+      ],
     },
     {
       path: "/system",
