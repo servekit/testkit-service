@@ -678,8 +678,6 @@ github.com/servekit/go-common v0.0.0-20260904101207-39630b2b22cc h1:jefXIjZOQrXH
 github.com/servekit/go-common v0.0.0-20260904101207-39630b2b22cc/go.mod h1:z6VodepIxCJoDyV5enWfUSW8yvkM+EFsftU5eXoPYBc=
 github.com/servekit/message-service v0.0.0-20260904102231-3626ecab0ab3 h1:AQ1M7/6ewe20wn7wSW1xqiYsSmAhQCvA5nVE8ing/3Y=
 github.com/servekit/message-service v0.0.0-20260904102231-3626ecab0ab3/go.mod h1:B90Pg/Y/iwmkq9nGYgv/cUMTEg598Wf6tjg+qDGaVlQ=
-github.com/servekit/storage-service v0.0.0-20260904102237-5f9ae8502cbd h1:CLOrJtcZnFvAKKMJDQMfADP6lVb0lkyDW5g0lKNmAXo=
-github.com/servekit/storage-service v0.0.0-20260904102237-5f9ae8502cbd/go.mod h1:X2A3xCFyD30i1/dshKp3H1CqMpff0zwGdSj4JmvSw7c=
 github.com/shirou/gopsutil/v4 v4.26.5 h1:RPcBXkpz7kOj9PqGFQOlBPZHsyaPvPVQc098y9RmCNM=
 github.com/shirou/gopsutil/v4 v4.26.5/go.mod h1:LZ6ewCSkBqUpvSOf+LsTGnRinC6iaNUNMGBtDkJBaLQ=
 github.com/shopspring/decimal v1.4.0/go.mod h1:gawqmDU56v4yIKSwfBSFip1HdCCXN8/+DMd9qYNcwME=

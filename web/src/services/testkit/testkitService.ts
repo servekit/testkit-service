@@ -467,6 +467,28 @@ export async function updateMyFile(
   });
 }
 
+/** ---- Sharing (anonymous download surface for external links) ----
+CreateFileLink mints / renews an anonymous link token (owner from ctx). POST /api/v1/files/${param0}/links */
+export async function createFileLink(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.CreateFileLinkParams
+    ,body: API.TestkitServiceCreateFileLinkBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'fileId': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1CreateFileLinkResponse>(`/api/v1/files/${param0}/links`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /api/v1/files/${param0}${cdnUrl} */
 export async function generateCdnurl(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -1034,6 +1056,24 @@ export async function trialStart(body: API.v1TrialStartRequest,
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** GetFileLinkDownload is the anonymous backend for file links embedded in
+emails etc. — the token IS the credential, no login required. GET /api/v1/links/${param0}/download */
+export async function getFileLinkDownload(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GetFileLinkDownloadParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'linkToken': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1GetFileLinkDownloadResponse>(`/api/v1/links/${param0}/download`, {
+  method: 'GET',
+    params: {...queryParams,},
     ...(options || {}),
   });
 }
@@ -1894,34 +1934,6 @@ export async function listMyAuditLogs(
         
         
         ...params,},
-    ...(options || {}),
-  });
-}
-
-/** ---- Owner quota (owner_type+owner_id = target via body) ---- PUT /api/v1/storage/owners/quota */
-export async function setOwnerQuota(body: API.v1SetOwnerQuotaRequest,
-  options ?: {[key: string]: any}
-) {
-  return request<API.v1QuotaInfo>('/api/v1/storage/owners/quota', {
-  method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/v1/storage/owners/quota${add} */
-export async function addOwnerQuota(body: API.v1AddOwnerQuotaRequest,
-  options ?: {[key: string]: any}
-) {
-  return request<API.v1QuotaInfo>(`/api/v1/storage/owners/quota:add`, {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
     ...(options || {}),
   });
 }

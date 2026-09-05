@@ -13,7 +13,7 @@
 //     caller's owner from the request — it is read from the authenticated context
 //     (grpcx.GetUserIDFromCtx, injected by the P1 auth interceptor) and injected
 //     into the downstream request as Owner{OWNER_TYPE_USER, user_id} via the
-//     shared ownerFromCtx helper. The testkit request carries no owner field.
+//     linkd ownerFromCtx helper. The testkit request carries no owner field.
 //   - Admin and owner-quota RPCs (AdminListFiles / AdminGetFile / AdminDeleteFile /
 //     AdminGetQuota / AdminSetQuota / AdminGetStats / AdminListProviders /
 //     AdminListBuckets / AdminSoftDeleteOwnerFiles / AdminDeleteOwner /
@@ -112,6 +112,7 @@ func (s *Service) GenerateUploadURL(ctx context.Context, req *testkitv1.Generate
 		Description: req.GetDescription(),
 		Metadata:    req.GetMetadata(),
 		Vendor:      storagev1.Vendor(req.GetVendor()),
+		Visibility:  storagev1.Visibility(req.GetVisibility()),
 		Owner:       owner,
 		RequestId:   req.GetRequestId(),
 	})
@@ -148,6 +149,7 @@ func (s *Service) GetSTSCredential(ctx context.Context, req *testkitv1.GetSTSCre
 		Vendor:            storagev1.Vendor(req.GetVendor()),
 		Ttl:               req.GetTtl(),
 		AllowedExtensions: req.GetAllowedExtensions(),
+		Visibility:        storagev1.Visibility(req.GetVisibility()),
 		Owner:             owner,
 		RequestId:         req.GetRequestId(),
 	})
@@ -169,7 +171,7 @@ func (s *Service) GetSTSCredential(ctx context.Context, req *testkitv1.GetSTSCre
 	}, nil
 }
 
-// BatchGetSTSCredential returns one shared STS credential + per-file upload
+// BatchGetSTSCredential returns one linkd STS credential + per-file upload
 // tokens (or per-file errors) via a oneof. Owner is injected from ctx.
 func (s *Service) BatchGetSTSCredential(ctx context.Context, req *testkitv1.BatchGetSTSCredentialRequest) (*testkitv1.BatchGetSTSCredentialResponse, error) {
 	owner, err := ownerFromCtx(ctx)
@@ -193,6 +195,7 @@ func (s *Service) BatchGetSTSCredential(ctx context.Context, req *testkitv1.Batc
 		Bucket:            req.GetBucket(),
 		Ttl:               req.GetTtl(),
 		AllowedExtensions: req.GetAllowedExtensions(),
+		Visibility:        storagev1.Visibility(req.GetVisibility()),
 		Owner:             owner,
 		RequestId:         req.GetRequestId(),
 	})
@@ -269,6 +272,48 @@ func (s *Service) GenerateDownloadURL(ctx context.Context, req *testkitv1.Genera
 	return &testkitv1.GenerateDownloadURLResponse{
 		DownloadUrl: resp.GetDownloadUrl(),
 		ExpiresAt:   resp.GetExpiresAt(),
+	}, nil
+}
+
+// --- Sharing (anonymous download surface for external links) ---
+
+// CreateFileLink mints or renews an anonymous link token for the caller's
+// file. Owner is injected from ctx.
+func (s *Service) CreateFileLink(ctx context.Context, req *testkitv1.CreateFileLinkRequest) (*testkitv1.CreateFileLinkResponse, error) {
+	owner, err := ownerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := s.storage.CreateFileLink(ctx, &storagev1.CreateFileLinkRequest{
+		FileId:              req.GetFileId(),
+		RetentionTtlSeconds: req.GetRetentionTtlSeconds(),
+		Owner:               owner,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &testkitv1.CreateFileLinkResponse{
+		LinkToken:  resp.GetLinkToken(),
+		RetainUntil: resp.GetRetainUntil(),
+	}, nil
+}
+
+// GetFileLinkDownload resolves a link token for an anonymous recipient —
+// the token IS the credential, no owner context is injected (and the RPC is
+// on the interceptor's public-methods list).
+func (s *Service) GetFileLinkDownload(ctx context.Context, req *testkitv1.GetFileLinkDownloadRequest) (*testkitv1.GetFileLinkDownloadResponse, error) {
+	resp, err := s.storage.GetFileLinkDownload(ctx, &storagev1.GetFileLinkDownloadRequest{
+		LinkToken: req.GetLinkToken(),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &testkitv1.GetFileLinkDownloadResponse{
+		Expired:     resp.GetExpired(),
+		Filename:    resp.GetFilename(),
+		SizeBytes:   resp.GetSizeBytes(),
+		DownloadUrl: resp.GetDownloadUrl(),
+		RetainUntil: resp.GetRetainUntil(),
 	}, nil
 }
 
@@ -507,35 +552,7 @@ func (s *Service) ListMyAuditLogs(ctx context.Context, req *testkitv1.ListMyAudi
 // SetOwnerQuota / AddOwnerQuota carry the target owner_type + owner_id on the
 // request (the business being billed), NOT the caller. Forwarded unchanged.
 
-// SetOwnerQuota sets an owner's total quota. The target owner is forwarded from
-// the request — no ctx injection.
-func (s *Service) SetOwnerQuota(ctx context.Context, req *testkitv1.SetOwnerQuotaRequest) (*testkitv1.QuotaInfo, error) {
-	q, err := s.storage.SetOwnerQuota(ctx, &storagev1.SetOwnerQuotaRequest{
-		OwnerType:  storagev1.OwnerType(req.GetOwnerType()),
-		OwnerId:    req.GetOwnerId(),
-		TotalBytes: req.GetTotalBytes(),
-		RequestId:  req.GetRequestId(),
-	})
-	if err != nil {
-		return nil, err
-	}
-	return toTestkitQuotaInfo(q), nil
-}
 
-// AddOwnerQuota adjusts an owner's quota by a (possibly negative) delta. The
-// target owner is forwarded from the request — no ctx injection.
-func (s *Service) AddOwnerQuota(ctx context.Context, req *testkitv1.AddOwnerQuotaRequest) (*testkitv1.QuotaInfo, error) {
-	q, err := s.storage.AddOwnerQuota(ctx, &storagev1.AddOwnerQuotaRequest{
-		OwnerType:  storagev1.OwnerType(req.GetOwnerType()),
-		OwnerId:    req.GetOwnerId(),
-		DeltaBytes: req.GetDeltaBytes(),
-		RequestId:  req.GetRequestId(),
-	})
-	if err != nil {
-		return nil, err
-	}
-	return toTestkitQuotaInfo(q), nil
-}
 
 // --- Admin (target owner kept on request) ---
 //

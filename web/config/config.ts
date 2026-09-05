@@ -32,6 +32,13 @@ export default defineConfig({
         { path: "/user/register", component: "./User/Register" },
       ],
     },
+    // Anonymous file-link landing page — the token in the path is the
+    // credential; recipients arrive from links embedded in sent emails.
+    {
+      path: "/link",
+      layout: false,
+      routes: [{ path: "/link/:token", component: "./Link/Download" }],
+    },
     // --- Nav grouped one top-level menu item per embedded service (user /
     // storage / message / gid) plus testkit's own surfaces (dashboard / system).
     // Group parents are PATHLESS routes (no `path`) — umi/react-router require

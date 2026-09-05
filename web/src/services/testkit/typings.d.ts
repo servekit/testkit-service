@@ -116,6 +116,10 @@ declare namespace API {
     userId: string;
   };
 
+  type CreateFileLinkParams = {
+    fileId: string;
+  };
+
   type CreateSigningKeyParams = {
     slug: string;
   };
@@ -199,6 +203,10 @@ declare namespace API {
       | "EMAIL_SCENE_VERIFY_EMAIL";
     startTime?: string;
     endTime?: string;
+  };
+
+  type GetFileLinkDownloadParams = {
+    linkToken: string;
   };
 
   type GetGroupParams = {
@@ -776,6 +784,12 @@ declare namespace API {
     roleId?: string;
   };
 
+  type TestkitServiceCreateFileLinkBody = {
+    /** retention_ttl_seconds, when > 0, (re)sets the retention window
+(renewal keeps the token stable). 0 keeps the current value. */
+    retentionTtlSeconds?: number;
+  };
+
   type TestkitServiceCreateSigningKeyBody = {
     keyId?: string;
   };
@@ -938,16 +952,6 @@ declare namespace API {
     payload?: string;
     signature?: string;
     slots?: v1SlotSummary;
-  };
-
-  type v1AddOwnerQuotaRequest = {
-    ownerType?: v1OwnerType;
-    ownerId?: string;
-    /** positive = purchase, negative = refund */
-    deltaBytes?: string;
-    /** request_id is optional; recorded in audit logs for traceability
-(mirror of storage-service *Request.request_id). */
-    requestId?: string;
   };
 
   type v1AdminDeleteOwnerRequest = {
@@ -1121,6 +1125,7 @@ declare namespace API {
     bucket?: string;
     ttl?: string;
     allowedExtensions?: string[];
+    visibility?: v1Visibility;
     /** request_id is optional; recorded in audit logs for traceability
 (mirror of storage-service *Request.request_id). */
     requestId?: string;
@@ -1218,6 +1223,12 @@ declare namespace API {
   type v1CreateAppResponse = {
     app?: v1App;
     token?: string;
+  };
+
+  type v1CreateFileLinkResponse = {
+    linkToken?: string;
+    /** unix seconds, 0 = permanent */
+    retainUntil?: string;
   };
 
   type v1CreateGroupRequest = {
@@ -1490,6 +1501,7 @@ declare namespace API {
     description?: string;
     metadata?: Record<string, any>;
     vendor?: v1Vendor;
+    visibility?: v1Visibility;
     /** request_id is optional; recorded in audit logs for traceability
 (mirror of storage-service *Request.request_id). */
     requestId?: string;
@@ -1517,6 +1529,17 @@ declare namespace API {
     days?: v1DailyStat[];
     drops?: Record<string, any>;
     sigFails?: Record<string, any>;
+  };
+
+  type v1GetFileLinkDownloadResponse = {
+    /** expired = true: render an "attachment expired" page, download_url empty. */
+    expired?: boolean;
+    filename?: string;
+    sizeBytes?: string;
+    /** freshly presigned short-TTL URL */
+    downloadUrl?: string;
+    /** unix seconds, 0 = permanent */
+    retainUntil?: string;
   };
 
   type v1GetLoginLogsResponse = {
@@ -1553,6 +1576,7 @@ declare namespace API {
     vendor?: v1Vendor;
     ttl?: string;
     allowedExtensions?: string[];
+    visibility?: v1Visibility;
     /** request_id is optional; recorded in audit logs for traceability
 (mirror of storage-service *Request.request_id). */
     requestId?: string;
@@ -2132,15 +2156,6 @@ exactly one of sms_template_id / sms_content. */
     current?: boolean;
   };
 
-  type v1SetOwnerQuotaRequest = {
-    ownerType?: v1OwnerType;
-    ownerId?: string;
-    totalBytes?: string;
-    /** request_id is optional; recorded in audit logs for traceability
-(mirror of storage-service *Request.request_id). */
-    requestId?: string;
-  };
-
   type v1SetVersionBlockedResponse = true;
 
   type v1ShowKeyResponse = {
@@ -2424,4 +2439,9 @@ empty for password/code logins). */
     seenCount?: string;
     lastSeenAt?: string;
   };
+
+  type v1Visibility =
+    | "VISIBILITY_UNSPECIFIED"
+    | "VISIBILITY_PUBLIC"
+    | "VISIBILITY_PRIVATE";
 }

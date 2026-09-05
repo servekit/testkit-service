@@ -99,7 +99,7 @@ enum UserType {
   USER_TYPE_INTERNAL = 2; // Platform internal user (staff, operations, etc.).
 }
 
-// ==================== P2 shared enums (mirror user-service name-for-name,
+// ==================== P2 linkd enums (mirror user-service name-for-name,
 // number-for-number) ====================
 //
 // Conversion in internal/service/user is a plain int cast, e.g.
@@ -263,7 +263,7 @@ message User {
   google.protobuf.Timestamp updated_at = 19;
 }
 
-// ---- P2 shared entity messages (curated frontend-facing shapes) ----
+// ---- P2 linkd entity messages (curated frontend-facing shapes) ----
 
 // Identity is a login method linked to a user (email, phone, each OAuth
 // provider, miniprogram openid).
@@ -544,7 +544,7 @@ message MiniProgramPhoneLoginRequest {
   string avatar_url = 4 [(buf.validate.field).string.max_len = 512];
 }
 
-// SocialLoginResponse is the shared response for all social-login RPCs.
+// SocialLoginResponse is the linkd response for all social-login RPCs.
 // token = testkit-issued JWT (consumes the downstream session_id); session_id
 // is ALSO returned so testers can target the session (RevokeSession /
 // GetSession) without decoding the JWT.
@@ -857,7 +857,7 @@ message ListPermissionGroupsResponse {
   int32 total = 3;
 }
 
-// ==================== P3 shared enums (mirror storage-service name-for-name,
+// ==================== P3 linkd enums (mirror storage-service name-for-name,
 // number-for-number) ====================
 //
 // testkit.proto stays self-contained (design spec v2 §3.1): it imports NO
@@ -962,6 +962,15 @@ enum UploadSessionStatus {
   UPLOAD_SESSION_STATUS_CANCELLED = 4;
 }
 
+// Visibility mirrors storage-service: PUBLIC uploads (avatar / cover style
+// public resources) land in the configured public bucket; PRIVATE (and
+// UNSPECIFIED, for backward compatibility) keep the requested/default bucket.
+enum Visibility {
+  VISIBILITY_UNSPECIFIED = 0;
+  VISIBILITY_PUBLIC = 1;
+  VISIBILITY_PRIVATE = 2;
+}
+
 // AuditLogStatus represents the result of an audited operation.
 enum AuditLogStatus {
   AUDIT_LOG_STATUS_UNSPECIFIED = 0;
@@ -991,7 +1000,7 @@ enum ImageProcessType {
   IMAGE_PROCESS_TYPE_ROTATE = 6;
 }
 
-// ==================== P3 shared entities (curated frontend-facing shapes) ====================
+// ==================== P3 linkd entities (curated frontend-facing shapes) ====================
 //
 // Curation (design spec §3.2 + P3 plan decisions): "my" RPC request messages
 // carry NO owner/owner_type/owner_id — the BFF is the sole trust boundary and
@@ -1170,6 +1179,9 @@ message GenerateUploadURLRequest {
   string description = 7;
   map<string, string> metadata = 8;
   Vendor vendor = 10; // optional; validates bucket vendor when non-UNSPECIFIED
+  // visibility=PUBLIC overrides `bucket` with the configured public bucket
+  // (public resources like avatars); UNSPECIFIED/PRIVATE keep bucket in charge.
+  Visibility visibility = 14;
   // request_id is optional; recorded in audit logs for traceability
   // (mirror of storage-service *Request.request_id).
   string request_id = 11;
@@ -1196,6 +1208,8 @@ message GetSTSCredentialRequest {
   Vendor vendor = 10;
   google.protobuf.Duration ttl = 11;
   repeated string allowed_extensions = 12;
+  // Same semantics as GenerateUploadURLRequest.visibility.
+  Visibility visibility = 14;
   // request_id is optional; recorded in audit logs for traceability
   // (mirror of storage-service *Request.request_id).
   string request_id = 13;
@@ -1219,6 +1233,8 @@ message BatchGetSTSCredentialRequest {
   string bucket = 2;
   google.protobuf.Duration ttl = 3;
   repeated string allowed_extensions = 4;
+  // Batch-level; same semantics as GenerateUploadURLRequest.visibility.
+  Visibility visibility = 6;
   // request_id is optional; recorded in audit logs for traceability
   // (mirror of storage-service *Request.request_id).
   string request_id = 5;
@@ -1261,6 +1277,31 @@ message GenerateDownloadURLRequest {
 message GenerateDownloadURLResponse {
   string download_url = 1;
   int64 expires_at = 2;
+}
+
+message CreateFileLinkRequest {
+  int64 file_id = 1 [(buf.validate.field).int64.gt = 0];
+  // retention_ttl_seconds, when > 0, (re)sets the retention window
+  // (renewal keeps the token stable). 0 keeps the current value.
+  int32 retention_ttl_seconds = 2;
+}
+
+message CreateFileLinkResponse {
+  string link_token = 1;
+  int64 retain_until = 2; // unix seconds, 0 = permanent
+}
+
+message GetFileLinkDownloadRequest {
+  string link_token = 1 [(buf.validate.field).string = {min_len: 1, max_len: 64}];
+}
+
+message GetFileLinkDownloadResponse {
+  // expired = true: render an "attachment expired" page, download_url empty.
+  bool expired = 1;
+  string filename = 2;
+  int64 size_bytes = 3;
+  string download_url = 4; // freshly presigned short-TTL URL
+  int64 retain_until = 5; // unix seconds, 0 = permanent
 }
 
 message GenerateProcessURLRequest {
@@ -1369,24 +1410,11 @@ message ListMyAuditLogsResponse {
   string next_page_token = 3;
 }
 
-// ---- Owner quota (BFF-internal orchestration; owner_type+owner_id = target) ----
-
-message SetOwnerQuotaRequest {
-  OwnerType owner_type = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
-  int64 owner_id = 2 [(buf.validate.field).int64.gt = 0];
-  int64 total_bytes = 3 [(buf.validate.field).int64.gt = 0];
-  // request_id is optional; recorded in audit logs for traceability
-  // (mirror of storage-service *Request.request_id).
-  string request_id = 4;
-}
-message AddOwnerQuotaRequest {
-  OwnerType owner_type = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
-  int64 owner_id = 2 [(buf.validate.field).int64.gt = 0];
-  int64 delta_bytes = 3; // positive = purchase, negative = refund
-  // request_id is optional; recorded in audit logs for traceability
-  // (mirror of storage-service *Request.request_id).
-  string request_id = 4;
-}
+// ---- Owner quota ----
+// SetOwnerQuota / AddOwnerQuota are intentionally NOT exposed on testkit:
+// they are business-service RPCs (e.g. pay-service plan changes) that belong
+// on a trusted service-to-service boundary, not on a human-facing BFF. Admin
+// scenarios use AdminSetQuota.
 
 // ---- Admin (owner_type+owner_id = query/op target, NOT caller identity) ----
 
@@ -1521,7 +1549,7 @@ message AdminListAuditLogsResponse {
 //   - EmailRecord/SMSRecord keep full fidelity for ops triage (decision 7);
 //     sender_id is a read-only echo of what the caller injected.
 
-// SortField is shared with the storage domain (defined above, P3). The message
+// SortField is linkd with the storage domain (defined above, P3). The message
 // UI only offers CREATED_AT; the storage-only FILENAME/SIZE values are never
 // sent for message lists. The int cast to messagev1.SortField is unaffected
 // (message-service defines only UNSPECIFIED + CREATED_AT).
@@ -1578,7 +1606,7 @@ enum SmsScene {
   SMS_SCENE_VERIFY_PHONE = 6;
 }
 
-// ---- Message shared entities (P4) ----
+// ---- Message linkd entities (P4) ----
 // Nested messages are redefined in testkit (decision 5), not imported.
 
 // EmailAddress mirrors the downstream message (email + display_name).
@@ -1588,7 +1616,9 @@ message EmailAddress {
 }
 
 // EmailAttachment drops the downstream `reserved` placeholders and renumbers
-// cleanly. url/content are XOR (enforced downstream); DB stores metadata only
+// cleanly. url = caller-managed download reference (never fetched, metadata
+// only); content = inline bytes embedded as a real MIME part. Both may be
+// set (content embeds, url is record metadata). DB stores metadata only
 // (content is not persisted, so record echoes have it empty).
 message EmailAttachment {
   string filename = 1 [(buf.validate.field).string.min_len = 1];
@@ -2889,6 +2919,22 @@ service TestkitService {
     };
   }
 
+  // ---- Sharing (anonymous download surface for external links) ----
+  // CreateFileLink mints / renews an anonymous link token (owner from ctx).
+  rpc CreateFileLink(CreateFileLinkRequest) returns (CreateFileLinkResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/files/{file_id}/links"
+      body: "*"
+    };
+  }
+  // GetFileLinkDownload is the anonymous backend for file links embedded in
+  // emails etc. — the token IS the credential, no login required.
+  rpc GetFileLinkDownload(GetFileLinkDownloadRequest) returns (GetFileLinkDownloadResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/links/{link_token}/download"
+    };
+  }
+
   // ---- My Files (owner from ctx) ----
   rpc ListMyFiles(ListMyFilesRequest) returns (ListMyFilesResponse) {
     option (google.api.http) = { get: "/api/v1/files" };
@@ -2921,20 +2967,6 @@ service TestkitService {
   }
   rpc ListMyAuditLogs(ListMyAuditLogsRequest) returns (ListMyAuditLogsResponse) {
     option (google.api.http) = { get: "/api/v1/storage/audit-logs" };
-  }
-
-  // ---- Owner quota (owner_type+owner_id = target via body) ----
-  rpc SetOwnerQuota(SetOwnerQuotaRequest) returns (QuotaInfo) {
-    option (google.api.http) = {
-      put: "/api/v1/storage/owners/quota"
-      body: "*"
-    };
-  }
-  rpc AddOwnerQuota(AddOwnerQuotaRequest) returns (QuotaInfo) {
-    option (google.api.http) = {
-      post: "/api/v1/storage/owners/quota:add"
-      body: "*"
-    };
   }
 
   // ---- Admin (owner_type+owner_id = query/op target via body/query, not path) ----

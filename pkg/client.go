@@ -422,15 +422,7 @@ func (c *Client) ListMyAuditLogs(ctx context.Context, in *testkitv1.ListMyAuditL
 	return c.cli.ListMyAuditLogs(ctx, in)
 }
 
-// SetOwnerQuota delegates to the remote testkit-service.
-func (c *Client) SetOwnerQuota(ctx context.Context, in *testkitv1.SetOwnerQuotaRequest) (*testkitv1.QuotaInfo, error) {
-	return c.cli.SetOwnerQuota(ctx, in)
-}
 
-// AddOwnerQuota delegates to the remote testkit-service.
-func (c *Client) AddOwnerQuota(ctx context.Context, in *testkitv1.AddOwnerQuotaRequest) (*testkitv1.QuotaInfo, error) {
-	return c.cli.AddOwnerQuota(ctx, in)
-}
 
 // AdminListFiles delegates to the remote testkit-service.
 func (c *Client) AdminListFiles(ctx context.Context, in *testkitv1.AdminListFilesRequest) (*testkitv1.AdminListFilesResponse, error) {

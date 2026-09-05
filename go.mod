@@ -214,3 +214,7 @@ replace github.com/servekit/user-service => ../user-service
 replace github.com/servekit/license-service => ../license-service
 
 replace github.com/servekit/telemetry-service => ../telemetry-service
+
+// TEMP local iteration wiring (same as user-service above — drop + bump
+// require when storage-service is re-published with the share/retention RPCs).
+replace github.com/servekit/storage-service => ../storage-service

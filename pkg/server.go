@@ -97,6 +97,9 @@ func NewServer(cfg *config.Config) (*Server, error) {
 			"/testkit.v1.TestkitService/SocialLogin",
 			"/testkit.v1.TestkitService/MiniProgramLogin",
 			"/testkit.v1.TestkitService/MiniProgramPhoneLogin",
+			// File-link recipients are anonymous external users (links
+			// embedded in sent emails) — the link token is the credential.
+			"/testkit.v1.TestkitService/GetFileLinkDownload",
 			// grpcx auto-registers grpc.health.v1.Health; health probes carry
 			// no token, so the Check RPC must stay public.
 			"/grpc.health.v1.Health/Check",

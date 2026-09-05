@@ -87,6 +87,8 @@ const (
 	TestkitService_GenerateDownloadURL_FullMethodName       = "/testkit.v1.TestkitService/GenerateDownloadURL"
 	TestkitService_GenerateProcessURL_FullMethodName        = "/testkit.v1.TestkitService/GenerateProcessURL"
 	TestkitService_GenerateCDNURL_FullMethodName            = "/testkit.v1.TestkitService/GenerateCDNURL"
+	TestkitService_CreateFileLink_FullMethodName            = "/testkit.v1.TestkitService/CreateFileLink"
+	TestkitService_GetFileLinkDownload_FullMethodName       = "/testkit.v1.TestkitService/GetFileLinkDownload"
 	TestkitService_ListMyFiles_FullMethodName               = "/testkit.v1.TestkitService/ListMyFiles"
 	TestkitService_ListMyFilesPaged_FullMethodName          = "/testkit.v1.TestkitService/ListMyFilesPaged"
 	TestkitService_GetMyFile_FullMethodName                 = "/testkit.v1.TestkitService/GetMyFile"
@@ -95,8 +97,6 @@ const (
 	TestkitService_BatchDeleteMyFiles_FullMethodName        = "/testkit.v1.TestkitService/BatchDeleteMyFiles"
 	TestkitService_GetMyQuota_FullMethodName                = "/testkit.v1.TestkitService/GetMyQuota"
 	TestkitService_ListMyAuditLogs_FullMethodName           = "/testkit.v1.TestkitService/ListMyAuditLogs"
-	TestkitService_SetOwnerQuota_FullMethodName             = "/testkit.v1.TestkitService/SetOwnerQuota"
-	TestkitService_AddOwnerQuota_FullMethodName             = "/testkit.v1.TestkitService/AddOwnerQuota"
 	TestkitService_AdminListFiles_FullMethodName            = "/testkit.v1.TestkitService/AdminListFiles"
 	TestkitService_AdminGetFile_FullMethodName              = "/testkit.v1.TestkitService/AdminGetFile"
 	TestkitService_AdminDeleteFile_FullMethodName           = "/testkit.v1.TestkitService/AdminDeleteFile"
@@ -240,6 +240,12 @@ type TestkitServiceClient interface {
 	GenerateDownloadURL(ctx context.Context, in *GenerateDownloadURLRequest, opts ...grpc.CallOption) (*GenerateDownloadURLResponse, error)
 	GenerateProcessURL(ctx context.Context, in *GenerateProcessURLRequest, opts ...grpc.CallOption) (*GenerateProcessURLResponse, error)
 	GenerateCDNURL(ctx context.Context, in *GenerateCDNURLRequest, opts ...grpc.CallOption) (*GenerateCDNURLResponse, error)
+	// ---- Sharing (anonymous download surface for external links) ----
+	// CreateFileLink mints / renews an anonymous link token (owner from ctx).
+	CreateFileLink(ctx context.Context, in *CreateFileLinkRequest, opts ...grpc.CallOption) (*CreateFileLinkResponse, error)
+	// GetFileLinkDownload is the anonymous backend for file links embedded in
+	// emails etc. — the token IS the credential, no login required.
+	GetFileLinkDownload(ctx context.Context, in *GetFileLinkDownloadRequest, opts ...grpc.CallOption) (*GetFileLinkDownloadResponse, error)
 	// ---- My Files (owner from ctx) ----
 	ListMyFiles(ctx context.Context, in *ListMyFilesRequest, opts ...grpc.CallOption) (*ListMyFilesResponse, error)
 	ListMyFilesPaged(ctx context.Context, in *ListMyFilesPagedRequest, opts ...grpc.CallOption) (*ListMyFilesPagedResponse, error)
@@ -250,9 +256,6 @@ type TestkitServiceClient interface {
 	// ---- My Quota / Audit (owner from ctx) ----
 	GetMyQuota(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*QuotaInfo, error)
 	ListMyAuditLogs(ctx context.Context, in *ListMyAuditLogsRequest, opts ...grpc.CallOption) (*ListMyAuditLogsResponse, error)
-	// ---- Owner quota (owner_type+owner_id = target via body) ----
-	SetOwnerQuota(ctx context.Context, in *SetOwnerQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error)
-	AddOwnerQuota(ctx context.Context, in *AddOwnerQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error)
 	// ---- Admin (owner_type+owner_id = query/op target via body/query, not path) ----
 	AdminListFiles(ctx context.Context, in *AdminListFilesRequest, opts ...grpc.CallOption) (*AdminListFilesResponse, error)
 	AdminGetFile(ctx context.Context, in *AdminGetFileRequest, opts ...grpc.CallOption) (*AdminFileInfo, error)
@@ -996,6 +999,26 @@ func (c *testkitServiceClient) GenerateCDNURL(ctx context.Context, in *GenerateC
 	return out, nil
 }
 
+func (c *testkitServiceClient) CreateFileLink(ctx context.Context, in *CreateFileLinkRequest, opts ...grpc.CallOption) (*CreateFileLinkResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateFileLinkResponse)
+	err := c.cc.Invoke(ctx, TestkitService_CreateFileLink_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetFileLinkDownload(ctx context.Context, in *GetFileLinkDownloadRequest, opts ...grpc.CallOption) (*GetFileLinkDownloadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetFileLinkDownloadResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetFileLinkDownload_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *testkitServiceClient) ListMyFiles(ctx context.Context, in *ListMyFilesRequest, opts ...grpc.CallOption) (*ListMyFilesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListMyFilesResponse)
@@ -1070,26 +1093,6 @@ func (c *testkitServiceClient) ListMyAuditLogs(ctx context.Context, in *ListMyAu
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListMyAuditLogsResponse)
 	err := c.cc.Invoke(ctx, TestkitService_ListMyAuditLogs_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *testkitServiceClient) SetOwnerQuota(ctx context.Context, in *SetOwnerQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(QuotaInfo)
-	err := c.cc.Invoke(ctx, TestkitService_SetOwnerQuota_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *testkitServiceClient) AddOwnerQuota(ctx context.Context, in *AddOwnerQuotaRequest, opts ...grpc.CallOption) (*QuotaInfo, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(QuotaInfo)
-	err := c.cc.Invoke(ctx, TestkitService_AddOwnerQuota_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1750,6 +1753,12 @@ type TestkitServiceServer interface {
 	GenerateDownloadURL(context.Context, *GenerateDownloadURLRequest) (*GenerateDownloadURLResponse, error)
 	GenerateProcessURL(context.Context, *GenerateProcessURLRequest) (*GenerateProcessURLResponse, error)
 	GenerateCDNURL(context.Context, *GenerateCDNURLRequest) (*GenerateCDNURLResponse, error)
+	// ---- Sharing (anonymous download surface for external links) ----
+	// CreateFileLink mints / renews an anonymous link token (owner from ctx).
+	CreateFileLink(context.Context, *CreateFileLinkRequest) (*CreateFileLinkResponse, error)
+	// GetFileLinkDownload is the anonymous backend for file links embedded in
+	// emails etc. — the token IS the credential, no login required.
+	GetFileLinkDownload(context.Context, *GetFileLinkDownloadRequest) (*GetFileLinkDownloadResponse, error)
 	// ---- My Files (owner from ctx) ----
 	ListMyFiles(context.Context, *ListMyFilesRequest) (*ListMyFilesResponse, error)
 	ListMyFilesPaged(context.Context, *ListMyFilesPagedRequest) (*ListMyFilesPagedResponse, error)
@@ -1760,9 +1769,6 @@ type TestkitServiceServer interface {
 	// ---- My Quota / Audit (owner from ctx) ----
 	GetMyQuota(context.Context, *emptypb.Empty) (*QuotaInfo, error)
 	ListMyAuditLogs(context.Context, *ListMyAuditLogsRequest) (*ListMyAuditLogsResponse, error)
-	// ---- Owner quota (owner_type+owner_id = target via body) ----
-	SetOwnerQuota(context.Context, *SetOwnerQuotaRequest) (*QuotaInfo, error)
-	AddOwnerQuota(context.Context, *AddOwnerQuotaRequest) (*QuotaInfo, error)
 	// ---- Admin (owner_type+owner_id = query/op target via body/query, not path) ----
 	AdminListFiles(context.Context, *AdminListFilesRequest) (*AdminListFilesResponse, error)
 	AdminGetFile(context.Context, *AdminGetFileRequest) (*AdminFileInfo, error)
@@ -2037,6 +2043,12 @@ func (UnimplementedTestkitServiceServer) GenerateProcessURL(context.Context, *Ge
 func (UnimplementedTestkitServiceServer) GenerateCDNURL(context.Context, *GenerateCDNURLRequest) (*GenerateCDNURLResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GenerateCDNURL not implemented")
 }
+func (UnimplementedTestkitServiceServer) CreateFileLink(context.Context, *CreateFileLinkRequest) (*CreateFileLinkResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateFileLink not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetFileLinkDownload(context.Context, *GetFileLinkDownloadRequest) (*GetFileLinkDownloadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetFileLinkDownload not implemented")
+}
 func (UnimplementedTestkitServiceServer) ListMyFiles(context.Context, *ListMyFilesRequest) (*ListMyFilesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListMyFiles not implemented")
 }
@@ -2060,12 +2072,6 @@ func (UnimplementedTestkitServiceServer) GetMyQuota(context.Context, *emptypb.Em
 }
 func (UnimplementedTestkitServiceServer) ListMyAuditLogs(context.Context, *ListMyAuditLogsRequest) (*ListMyAuditLogsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListMyAuditLogs not implemented")
-}
-func (UnimplementedTestkitServiceServer) SetOwnerQuota(context.Context, *SetOwnerQuotaRequest) (*QuotaInfo, error) {
-	return nil, status.Error(codes.Unimplemented, "method SetOwnerQuota not implemented")
-}
-func (UnimplementedTestkitServiceServer) AddOwnerQuota(context.Context, *AddOwnerQuotaRequest) (*QuotaInfo, error) {
-	return nil, status.Error(codes.Unimplemented, "method AddOwnerQuota not implemented")
 }
 func (UnimplementedTestkitServiceServer) AdminListFiles(context.Context, *AdminListFilesRequest) (*AdminListFilesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AdminListFiles not implemented")
@@ -3465,6 +3471,42 @@ func _TestkitService_GenerateCDNURL_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestkitService_CreateFileLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateFileLinkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CreateFileLink(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CreateFileLink_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CreateFileLink(ctx, req.(*CreateFileLinkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetFileLinkDownload_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFileLinkDownloadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetFileLinkDownload(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetFileLinkDownload_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetFileLinkDownload(ctx, req.(*GetFileLinkDownloadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TestkitService_ListMyFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListMyFilesRequest)
 	if err := dec(in); err != nil {
@@ -3605,42 +3647,6 @@ func _TestkitService_ListMyAuditLogs_Handler(srv interface{}, ctx context.Contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TestkitServiceServer).ListMyAuditLogs(ctx, req.(*ListMyAuditLogsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TestkitService_SetOwnerQuota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetOwnerQuotaRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TestkitServiceServer).SetOwnerQuota(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TestkitService_SetOwnerQuota_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TestkitServiceServer).SetOwnerQuota(ctx, req.(*SetOwnerQuotaRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TestkitService_AddOwnerQuota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddOwnerQuotaRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TestkitServiceServer).AddOwnerQuota(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TestkitService_AddOwnerQuota_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TestkitServiceServer).AddOwnerQuota(ctx, req.(*AddOwnerQuotaRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -4947,6 +4953,14 @@ var TestkitService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TestkitService_GenerateCDNURL_Handler,
 		},
 		{
+			MethodName: "CreateFileLink",
+			Handler:    _TestkitService_CreateFileLink_Handler,
+		},
+		{
+			MethodName: "GetFileLinkDownload",
+			Handler:    _TestkitService_GetFileLinkDownload_Handler,
+		},
+		{
 			MethodName: "ListMyFiles",
 			Handler:    _TestkitService_ListMyFiles_Handler,
 		},
@@ -4977,14 +4991,6 @@ var TestkitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListMyAuditLogs",
 			Handler:    _TestkitService_ListMyAuditLogs_Handler,
-		},
-		{
-			MethodName: "SetOwnerQuota",
-			Handler:    _TestkitService_SetOwnerQuota_Handler,
-		},
-		{
-			MethodName: "AddOwnerQuota",
-			Handler:    _TestkitService_AddOwnerQuota_Handler,
 		},
 		{
 			MethodName: "AdminListFiles",

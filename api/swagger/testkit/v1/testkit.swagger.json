@@ -1506,6 +1506,46 @@
         ]
       }
     },
+    "/api/v1/files/{fileId}/links": {
+      "post": {
+        "summary": "---- Sharing (anonymous download surface for external links) ----\nCreateFileLink mints / renews an anonymous link token (owner from ctx).",
+        "operationId": "CreateFileLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateFileLinkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fileId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceCreateFileLinkBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
     "/api/v1/files/{fileId}:cdnUrl": {
       "post": {
         "operationId": "GenerateCDNURL",
@@ -2581,6 +2621,37 @@
             "schema": {
               "$ref": "#/definitions/v1TrialStartRequest"
             }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/links/{linkToken}/download": {
+      "get": {
+        "summary": "GetFileLinkDownload is the anonymous backend for file links embedded in\nemails etc. — the token IS the credential, no login required.",
+        "operationId": "GetFileLinkDownload",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetFileLinkDownloadResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "linkToken",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -4592,71 +4663,6 @@
         ]
       }
     },
-    "/api/v1/storage/owners/quota": {
-      "put": {
-        "summary": "---- Owner quota (owner_type+owner_id = target via body) ----",
-        "operationId": "SetOwnerQuota",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1QuotaInfo"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1SetOwnerQuotaRequest"
-            }
-          }
-        ],
-        "tags": [
-          "TestkitService"
-        ]
-      }
-    },
-    "/api/v1/storage/owners/quota:add": {
-      "post": {
-        "operationId": "AddOwnerQuota",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1QuotaInfo"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1AddOwnerQuotaRequest"
-            }
-          }
-        ],
-        "tags": [
-          "TestkitService"
-        ]
-      }
-    },
     "/api/v1/storage/quota": {
       "get": {
         "summary": "---- My Quota / Audit (owner from ctx) ----",
@@ -5759,6 +5765,16 @@
         }
       }
     },
+    "TestkitServiceCreateFileLinkBody": {
+      "type": "object",
+      "properties": {
+        "retentionTtlSeconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "retention_ttl_seconds, when \u003e 0, (re)sets the retention window\n(renewal keeps the token stable). 0 keeps the current value."
+        }
+      }
+    },
     "TestkitServiceCreateSigningKeyBody": {
       "type": "object",
       "properties": {
@@ -6106,27 +6122,6 @@
         },
         "slots": {
           "$ref": "#/definitions/v1SlotSummary"
-        }
-      }
-    },
-    "v1AddOwnerQuotaRequest": {
-      "type": "object",
-      "properties": {
-        "ownerType": {
-          "$ref": "#/definitions/v1OwnerType"
-        },
-        "ownerId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "deltaBytes": {
-          "type": "string",
-          "format": "int64",
-          "title": "positive = purchase, negative = refund"
-        },
-        "requestId": {
-          "type": "string",
-          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -6586,6 +6581,10 @@
             "type": "string"
           }
         },
+        "visibility": {
+          "$ref": "#/definitions/v1Visibility",
+          "description": "Batch-level; same semantics as GenerateUploadURLRequest.visibility."
+        },
         "requestId": {
           "type": "string",
           "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
@@ -6811,6 +6810,19 @@
         },
         "token": {
           "type": "string"
+        }
+      }
+    },
+    "v1CreateFileLinkResponse": {
+      "type": "object",
+      "properties": {
+        "linkToken": {
+          "type": "string"
+        },
+        "retainUntil": {
+          "type": "string",
+          "format": "int64",
+          "title": "unix seconds, 0 = permanent"
         }
       }
     },
@@ -7125,7 +7137,7 @@
           "format": "int64"
         }
       },
-      "description": "EmailAttachment drops the downstream `reserved` placeholders and renumbers\ncleanly. url/content are XOR (enforced downstream); DB stores metadata only\n(content is not persisted, so record echoes have it empty)."
+      "description": "EmailAttachment drops the downstream `reserved` placeholders and renumbers\ncleanly. url = caller-managed download reference (never fetched, metadata\nonly); content = inline bytes embedded as a real MIME part. Both may be\nset (content embeds, url is record metadata). DB stores metadata only\n(content is not persisted, so record echoes have it empty)."
     },
     "v1EmailRecord": {
       "type": "object",
@@ -7538,6 +7550,10 @@
           "$ref": "#/definitions/v1Vendor",
           "title": "optional; validates bucket vendor when non-UNSPECIFIED"
         },
+        "visibility": {
+          "$ref": "#/definitions/v1Visibility",
+          "description": "visibility=PUBLIC overrides `bucket` with the configured public bucket\n(public resources like avatars); UNSPECIFIED/PRIVATE keep bucket in charge."
+        },
         "requestId": {
           "type": "string",
           "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
@@ -7636,6 +7652,31 @@
         }
       }
     },
+    "v1GetFileLinkDownloadResponse": {
+      "type": "object",
+      "properties": {
+        "expired": {
+          "type": "boolean",
+          "description": "expired = true: render an \"attachment expired\" page, download_url empty."
+        },
+        "filename": {
+          "type": "string"
+        },
+        "sizeBytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "downloadUrl": {
+          "type": "string",
+          "title": "freshly presigned short-TTL URL"
+        },
+        "retainUntil": {
+          "type": "string",
+          "format": "int64",
+          "title": "unix seconds, 0 = permanent"
+        }
+      }
+    },
     "v1GetLoginLogsResponse": {
       "type": "object",
       "properties": {
@@ -7708,6 +7749,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "visibility": {
+          "$ref": "#/definitions/v1Visibility",
+          "description": "Same semantics as GenerateUploadURLRequest.visibility."
         },
         "requestId": {
           "type": "string",
@@ -9393,26 +9438,6 @@
       },
       "description": "Session is an active login session for the \"manage devices\" UI."
     },
-    "v1SetOwnerQuotaRequest": {
-      "type": "object",
-      "properties": {
-        "ownerType": {
-          "$ref": "#/definitions/v1OwnerType"
-        },
-        "ownerId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "totalBytes": {
-          "type": "string",
-          "format": "int64"
-        },
-        "requestId": {
-          "type": "string",
-          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
-        }
-      }
-    },
     "v1SetVersionBlockedResponse": {
       "type": "object"
     },
@@ -9561,7 +9586,7 @@
           "type": "string"
         }
       },
-      "description": "SocialLoginResponse is the shared response for all social-login RPCs.\ntoken = testkit-issued JWT (consumes the downstream session_id); session_id\nis ALSO returned so testers can target the session (RevokeSession /\nGetSession) without decoding the JWT."
+      "description": "SocialLoginResponse is the linkd response for all social-login RPCs.\ntoken = testkit-issued JWT (consumes the downstream session_id); session_id\nis ALSO returned so testers can target the session (RevokeSession /\nGetSession) without decoding the JWT."
     },
     "v1SortDirection": {
       "type": "string",
@@ -9992,6 +10017,16 @@
           "format": "date-time"
         }
       }
+    },
+    "v1Visibility": {
+      "type": "string",
+      "enum": [
+        "VISIBILITY_UNSPECIFIED",
+        "VISIBILITY_PUBLIC",
+        "VISIBILITY_PRIVATE"
+      ],
+      "default": "VISIBILITY_UNSPECIFIED",
+      "description": "Visibility mirrors storage-service: PUBLIC uploads (avatar / cover style\npublic resources) land in the configured public bucket; PRIVATE (and\nUNSPECIFIED, for backward compatibility) keep the requested/default bucket."
     }
   }
 }

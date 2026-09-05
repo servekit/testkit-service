@@ -1156,6 +1156,58 @@ func (UploadSessionStatus) EnumDescriptor() ([]byte, []int) {
 	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{18}
 }
 
+// Visibility mirrors storage-service: PUBLIC uploads (avatar / cover style
+// public resources) land in the configured public bucket; PRIVATE (and
+// UNSPECIFIED, for backward compatibility) keep the requested/default bucket.
+type Visibility int32
+
+const (
+	Visibility_VISIBILITY_UNSPECIFIED Visibility = 0
+	Visibility_VISIBILITY_PUBLIC      Visibility = 1
+	Visibility_VISIBILITY_PRIVATE     Visibility = 2
+)
+
+// Enum value maps for Visibility.
+var (
+	Visibility_name = map[int32]string{
+		0: "VISIBILITY_UNSPECIFIED",
+		1: "VISIBILITY_PUBLIC",
+		2: "VISIBILITY_PRIVATE",
+	}
+	Visibility_value = map[string]int32{
+		"VISIBILITY_UNSPECIFIED": 0,
+		"VISIBILITY_PUBLIC":      1,
+		"VISIBILITY_PRIVATE":     2,
+	}
+)
+
+func (x Visibility) Enum() *Visibility {
+	p := new(Visibility)
+	*p = x
+	return p
+}
+
+func (x Visibility) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Visibility) Descriptor() protoreflect.EnumDescriptor {
+	return file_testkit_v1_testkit_proto_enumTypes[19].Descriptor()
+}
+
+func (Visibility) Type() protoreflect.EnumType {
+	return &file_testkit_v1_testkit_proto_enumTypes[19]
+}
+
+func (x Visibility) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Visibility.Descriptor instead.
+func (Visibility) EnumDescriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{19}
+}
+
 // AuditLogStatus represents the result of an audited operation.
 type AuditLogStatus int32
 
@@ -1190,11 +1242,11 @@ func (x AuditLogStatus) String() string {
 }
 
 func (AuditLogStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[19].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[20].Descriptor()
 }
 
 func (AuditLogStatus) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[19]
+	return &file_testkit_v1_testkit_proto_enumTypes[20]
 }
 
 func (x AuditLogStatus) Number() protoreflect.EnumNumber {
@@ -1203,7 +1255,7 @@ func (x AuditLogStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AuditLogStatus.Descriptor instead.
 func (AuditLogStatus) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{19}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{20}
 }
 
 // AuditLogTargetType represents the kind of resource an audited operation touched.
@@ -1243,11 +1295,11 @@ func (x AuditLogTargetType) String() string {
 }
 
 func (AuditLogTargetType) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[20].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[21].Descriptor()
 }
 
 func (AuditLogTargetType) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[20]
+	return &file_testkit_v1_testkit_proto_enumTypes[21]
 }
 
 func (x AuditLogTargetType) Number() protoreflect.EnumNumber {
@@ -1256,7 +1308,7 @@ func (x AuditLogTargetType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AuditLogTargetType.Descriptor instead.
 func (AuditLogTargetType) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{20}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{21}
 }
 
 // ImageProcessType mirrors the nested storage-service ImageProcessOp.Type enum,
@@ -1308,11 +1360,11 @@ func (x ImageProcessType) String() string {
 }
 
 func (ImageProcessType) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[21].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[22].Descriptor()
 }
 
 func (ImageProcessType) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[21]
+	return &file_testkit_v1_testkit_proto_enumTypes[22]
 }
 
 func (x ImageProcessType) Number() protoreflect.EnumNumber {
@@ -1321,7 +1373,7 @@ func (x ImageProcessType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ImageProcessType.Descriptor instead.
 func (ImageProcessType) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{21}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{22}
 }
 
 // SortDirection selects ascending or descending order for message lists.
@@ -1359,11 +1411,11 @@ func (x SortDirection) String() string {
 }
 
 func (SortDirection) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[22].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[23].Descriptor()
 }
 
 func (SortDirection) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[22]
+	return &file_testkit_v1_testkit_proto_enumTypes[23]
 }
 
 func (x SortDirection) Number() protoreflect.EnumNumber {
@@ -1372,7 +1424,7 @@ func (x SortDirection) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SortDirection.Descriptor instead.
 func (SortDirection) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{22}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{23}
 }
 
 type MessageStatus int32
@@ -1411,11 +1463,11 @@ func (x MessageStatus) String() string {
 }
 
 func (MessageStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[23].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[24].Descriptor()
 }
 
 func (MessageStatus) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[23]
+	return &file_testkit_v1_testkit_proto_enumTypes[24]
 }
 
 func (x MessageStatus) Number() protoreflect.EnumNumber {
@@ -1424,7 +1476,7 @@ func (x MessageStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MessageStatus.Descriptor instead.
 func (MessageStatus) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{23}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{24}
 }
 
 type EmailVendor int32
@@ -1463,11 +1515,11 @@ func (x EmailVendor) String() string {
 }
 
 func (EmailVendor) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[24].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[25].Descriptor()
 }
 
 func (EmailVendor) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[24]
+	return &file_testkit_v1_testkit_proto_enumTypes[25]
 }
 
 func (x EmailVendor) Number() protoreflect.EnumNumber {
@@ -1476,7 +1528,7 @@ func (x EmailVendor) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use EmailVendor.Descriptor instead.
 func (EmailVendor) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{24}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{25}
 }
 
 type SmsVendor int32
@@ -1521,11 +1573,11 @@ func (x SmsVendor) String() string {
 }
 
 func (SmsVendor) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[25].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[26].Descriptor()
 }
 
 func (SmsVendor) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[25]
+	return &file_testkit_v1_testkit_proto_enumTypes[26]
 }
 
 func (x SmsVendor) Number() protoreflect.EnumNumber {
@@ -1534,7 +1586,7 @@ func (x SmsVendor) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SmsVendor.Descriptor instead.
 func (SmsVendor) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{25}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{26}
 }
 
 type EmailScene int32
@@ -1585,11 +1637,11 @@ func (x EmailScene) String() string {
 }
 
 func (EmailScene) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[26].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[27].Descriptor()
 }
 
 func (EmailScene) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[26]
+	return &file_testkit_v1_testkit_proto_enumTypes[27]
 }
 
 func (x EmailScene) Number() protoreflect.EnumNumber {
@@ -1598,7 +1650,7 @@ func (x EmailScene) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use EmailScene.Descriptor instead.
 func (EmailScene) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{26}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{27}
 }
 
 type SmsScene int32
@@ -1646,11 +1698,11 @@ func (x SmsScene) String() string {
 }
 
 func (SmsScene) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[27].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[28].Descriptor()
 }
 
 func (SmsScene) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[27]
+	return &file_testkit_v1_testkit_proto_enumTypes[28]
 }
 
 func (x SmsScene) Number() protoreflect.EnumNumber {
@@ -1659,7 +1711,7 @@ func (x SmsScene) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SmsScene.Descriptor instead.
 func (SmsScene) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{27}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{28}
 }
 
 // ==================== license-service domain (P6) ====================
@@ -1700,11 +1752,11 @@ func (x Module) String() string {
 }
 
 func (Module) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[28].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[29].Descriptor()
 }
 
 func (Module) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[28]
+	return &file_testkit_v1_testkit_proto_enumTypes[29]
 }
 
 func (x Module) Number() protoreflect.EnumNumber {
@@ -1713,7 +1765,7 @@ func (x Module) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Module.Descriptor instead.
 func (Module) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{28}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{29}
 }
 
 type EntitlementKind int32
@@ -1752,11 +1804,11 @@ func (x EntitlementKind) String() string {
 }
 
 func (EntitlementKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[29].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[30].Descriptor()
 }
 
 func (EntitlementKind) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[29]
+	return &file_testkit_v1_testkit_proto_enumTypes[30]
 }
 
 func (x EntitlementKind) Number() protoreflect.EnumNumber {
@@ -1765,7 +1817,7 @@ func (x EntitlementKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use EntitlementKind.Descriptor instead.
 func (EntitlementKind) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{29}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{30}
 }
 
 type KeyStatus int32
@@ -1801,11 +1853,11 @@ func (x KeyStatus) String() string {
 }
 
 func (KeyStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[30].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[31].Descriptor()
 }
 
 func (KeyStatus) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[30]
+	return &file_testkit_v1_testkit_proto_enumTypes[31]
 }
 
 func (x KeyStatus) Number() protoreflect.EnumNumber {
@@ -1814,7 +1866,7 @@ func (x KeyStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use KeyStatus.Descriptor instead.
 func (KeyStatus) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{30}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{31}
 }
 
 // ==================== telemetry-service domain (P6) ====================
@@ -1855,11 +1907,11 @@ func (x AuthMode) String() string {
 }
 
 func (AuthMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_testkit_v1_testkit_proto_enumTypes[31].Descriptor()
+	return file_testkit_v1_testkit_proto_enumTypes[32].Descriptor()
 }
 
 func (AuthMode) Type() protoreflect.EnumType {
-	return &file_testkit_v1_testkit_proto_enumTypes[31]
+	return &file_testkit_v1_testkit_proto_enumTypes[32]
 }
 
 func (x AuthMode) Number() protoreflect.EnumNumber {
@@ -1868,7 +1920,7 @@ func (x AuthMode) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AuthMode.Descriptor instead.
 func (AuthMode) EnumDescriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{31}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{32}
 }
 
 // Pong is the health-check response — only public, non-sensitive info
@@ -4980,7 +5032,7 @@ func (x *MiniProgramPhoneLoginRequest) GetAvatarUrl() string {
 	return ""
 }
 
-// SocialLoginResponse is the shared response for all social-login RPCs.
+// SocialLoginResponse is the linkd response for all social-login RPCs.
 // token = testkit-issued JWT (consumes the downstream session_id); session_id
 // is ALSO returned so testers can target the session (RevokeSession /
 // GetSession) without decoding the JWT.
@@ -9271,6 +9323,9 @@ type GenerateUploadURLRequest struct {
 	Description string                 `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
 	Metadata    map[string]string      `protobuf:"bytes,8,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Vendor      Vendor                 `protobuf:"varint,10,opt,name=vendor,proto3,enum=testkit.v1.Vendor" json:"vendor,omitempty"` // optional; validates bucket vendor when non-UNSPECIFIED
+	// visibility=PUBLIC overrides `bucket` with the configured public bucket
+	// (public resources like avatars); UNSPECIFIED/PRIVATE keep bucket in charge.
+	Visibility Visibility `protobuf:"varint,14,opt,name=visibility,proto3,enum=testkit.v1.Visibility" json:"visibility,omitempty"`
 	// request_id is optional; recorded in audit logs for traceability
 	// (mirror of storage-service *Request.request_id).
 	RequestId     string `protobuf:"bytes,11,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
@@ -9369,6 +9424,13 @@ func (x *GenerateUploadURLRequest) GetVendor() Vendor {
 		return x.Vendor
 	}
 	return Vendor_VENDOR_UNSPECIFIED
+}
+
+func (x *GenerateUploadURLRequest) GetVisibility() Visibility {
+	if x != nil {
+		return x.Visibility
+	}
+	return Visibility_VISIBILITY_UNSPECIFIED
 }
 
 func (x *GenerateUploadURLRequest) GetRequestId() string {
@@ -9483,6 +9545,8 @@ type GetSTSCredentialRequest struct {
 	Vendor            Vendor                 `protobuf:"varint,10,opt,name=vendor,proto3,enum=testkit.v1.Vendor" json:"vendor,omitempty"`
 	Ttl               *durationpb.Duration   `protobuf:"bytes,11,opt,name=ttl,proto3" json:"ttl,omitempty"`
 	AllowedExtensions []string               `protobuf:"bytes,12,rep,name=allowed_extensions,json=allowedExtensions,proto3" json:"allowed_extensions,omitempty"`
+	// Same semantics as GenerateUploadURLRequest.visibility.
+	Visibility Visibility `protobuf:"varint,14,opt,name=visibility,proto3,enum=testkit.v1.Visibility" json:"visibility,omitempty"`
 	// request_id is optional; recorded in audit logs for traceability
 	// (mirror of storage-service *Request.request_id).
 	RequestId     string `protobuf:"bytes,13,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
@@ -9595,6 +9659,13 @@ func (x *GetSTSCredentialRequest) GetAllowedExtensions() []string {
 		return x.AllowedExtensions
 	}
 	return nil
+}
+
+func (x *GetSTSCredentialRequest) GetVisibility() Visibility {
+	if x != nil {
+		return x.Visibility
+	}
+	return Visibility_VISIBILITY_UNSPECIFIED
 }
 
 func (x *GetSTSCredentialRequest) GetRequestId() string {
@@ -9734,6 +9805,8 @@ type BatchGetSTSCredentialRequest struct {
 	Bucket            string                 `protobuf:"bytes,2,opt,name=bucket,proto3" json:"bucket,omitempty"`
 	Ttl               *durationpb.Duration   `protobuf:"bytes,3,opt,name=ttl,proto3" json:"ttl,omitempty"`
 	AllowedExtensions []string               `protobuf:"bytes,4,rep,name=allowed_extensions,json=allowedExtensions,proto3" json:"allowed_extensions,omitempty"`
+	// Batch-level; same semantics as GenerateUploadURLRequest.visibility.
+	Visibility Visibility `protobuf:"varint,6,opt,name=visibility,proto3,enum=testkit.v1.Visibility" json:"visibility,omitempty"`
 	// request_id is optional; recorded in audit logs for traceability
 	// (mirror of storage-service *Request.request_id).
 	RequestId     string `protobuf:"bytes,5,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
@@ -9797,6 +9870,13 @@ func (x *BatchGetSTSCredentialRequest) GetAllowedExtensions() []string {
 		return x.AllowedExtensions
 	}
 	return nil
+}
+
+func (x *BatchGetSTSCredentialRequest) GetVisibility() Visibility {
+	if x != nil {
+		return x.Visibility
+	}
+	return Visibility_VISIBILITY_UNSPECIFIED
 }
 
 func (x *BatchGetSTSCredentialRequest) GetRequestId() string {
@@ -10170,6 +10250,233 @@ func (x *GenerateDownloadURLResponse) GetExpiresAt() int64 {
 	return 0
 }
 
+type CreateFileLinkRequest struct {
+	state  protoimpl.MessageState `protogen:"open.v1"`
+	FileId int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	// retention_ttl_seconds, when > 0, (re)sets the retention window
+	// (renewal keeps the token stable). 0 keeps the current value.
+	RetentionTtlSeconds int32 `protobuf:"varint,2,opt,name=retention_ttl_seconds,json=retentionTtlSeconds,proto3" json:"retention_ttl_seconds,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *CreateFileLinkRequest) Reset() {
+	*x = CreateFileLinkRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[114]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateFileLinkRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateFileLinkRequest) ProtoMessage() {}
+
+func (x *CreateFileLinkRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[114]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateFileLinkRequest.ProtoReflect.Descriptor instead.
+func (*CreateFileLinkRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{114}
+}
+
+func (x *CreateFileLinkRequest) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *CreateFileLinkRequest) GetRetentionTtlSeconds() int32 {
+	if x != nil {
+		return x.RetentionTtlSeconds
+	}
+	return 0
+}
+
+type CreateFileLinkResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	LinkToken     string                 `protobuf:"bytes,1,opt,name=link_token,json=linkToken,proto3" json:"link_token,omitempty"`
+	RetainUntil   int64                  `protobuf:"varint,2,opt,name=retain_until,json=retainUntil,proto3" json:"retain_until,omitempty"` // unix seconds, 0 = permanent
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateFileLinkResponse) Reset() {
+	*x = CreateFileLinkResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[115]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateFileLinkResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateFileLinkResponse) ProtoMessage() {}
+
+func (x *CreateFileLinkResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[115]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateFileLinkResponse.ProtoReflect.Descriptor instead.
+func (*CreateFileLinkResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{115}
+}
+
+func (x *CreateFileLinkResponse) GetLinkToken() string {
+	if x != nil {
+		return x.LinkToken
+	}
+	return ""
+}
+
+func (x *CreateFileLinkResponse) GetRetainUntil() int64 {
+	if x != nil {
+		return x.RetainUntil
+	}
+	return 0
+}
+
+type GetFileLinkDownloadRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	LinkToken     string                 `protobuf:"bytes,1,opt,name=link_token,json=linkToken,proto3" json:"link_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFileLinkDownloadRequest) Reset() {
+	*x = GetFileLinkDownloadRequest{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[116]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFileLinkDownloadRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFileLinkDownloadRequest) ProtoMessage() {}
+
+func (x *GetFileLinkDownloadRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[116]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFileLinkDownloadRequest.ProtoReflect.Descriptor instead.
+func (*GetFileLinkDownloadRequest) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{116}
+}
+
+func (x *GetFileLinkDownloadRequest) GetLinkToken() string {
+	if x != nil {
+		return x.LinkToken
+	}
+	return ""
+}
+
+type GetFileLinkDownloadResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// expired = true: render an "attachment expired" page, download_url empty.
+	Expired       bool   `protobuf:"varint,1,opt,name=expired,proto3" json:"expired,omitempty"`
+	Filename      string `protobuf:"bytes,2,opt,name=filename,proto3" json:"filename,omitempty"`
+	SizeBytes     int64  `protobuf:"varint,3,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
+	DownloadUrl   string `protobuf:"bytes,4,opt,name=download_url,json=downloadUrl,proto3" json:"download_url,omitempty"`  // freshly presigned short-TTL URL
+	RetainUntil   int64  `protobuf:"varint,5,opt,name=retain_until,json=retainUntil,proto3" json:"retain_until,omitempty"` // unix seconds, 0 = permanent
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFileLinkDownloadResponse) Reset() {
+	*x = GetFileLinkDownloadResponse{}
+	mi := &file_testkit_v1_testkit_proto_msgTypes[117]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFileLinkDownloadResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFileLinkDownloadResponse) ProtoMessage() {}
+
+func (x *GetFileLinkDownloadResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_testkit_v1_testkit_proto_msgTypes[117]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFileLinkDownloadResponse.ProtoReflect.Descriptor instead.
+func (*GetFileLinkDownloadResponse) Descriptor() ([]byte, []int) {
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{117}
+}
+
+func (x *GetFileLinkDownloadResponse) GetExpired() bool {
+	if x != nil {
+		return x.Expired
+	}
+	return false
+}
+
+func (x *GetFileLinkDownloadResponse) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *GetFileLinkDownloadResponse) GetSizeBytes() int64 {
+	if x != nil {
+		return x.SizeBytes
+	}
+	return 0
+}
+
+func (x *GetFileLinkDownloadResponse) GetDownloadUrl() string {
+	if x != nil {
+		return x.DownloadUrl
+	}
+	return ""
+}
+
+func (x *GetFileLinkDownloadResponse) GetRetainUntil() int64 {
+	if x != nil {
+		return x.RetainUntil
+	}
+	return 0
+}
+
 type GenerateProcessURLRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
@@ -10181,7 +10488,7 @@ type GenerateProcessURLRequest struct {
 
 func (x *GenerateProcessURLRequest) Reset() {
 	*x = GenerateProcessURLRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[114]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[118]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10193,7 +10500,7 @@ func (x *GenerateProcessURLRequest) String() string {
 func (*GenerateProcessURLRequest) ProtoMessage() {}
 
 func (x *GenerateProcessURLRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[114]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[118]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10206,7 +10513,7 @@ func (x *GenerateProcessURLRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateProcessURLRequest.ProtoReflect.Descriptor instead.
 func (*GenerateProcessURLRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{114}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{118}
 }
 
 func (x *GenerateProcessURLRequest) GetFileId() int64 {
@@ -10240,7 +10547,7 @@ type GenerateProcessURLResponse struct {
 
 func (x *GenerateProcessURLResponse) Reset() {
 	*x = GenerateProcessURLResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[115]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[119]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10252,7 +10559,7 @@ func (x *GenerateProcessURLResponse) String() string {
 func (*GenerateProcessURLResponse) ProtoMessage() {}
 
 func (x *GenerateProcessURLResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[115]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[119]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10265,7 +10572,7 @@ func (x *GenerateProcessURLResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateProcessURLResponse.ProtoReflect.Descriptor instead.
 func (*GenerateProcessURLResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{115}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{119}
 }
 
 func (x *GenerateProcessURLResponse) GetUrl() string {
@@ -10298,7 +10605,7 @@ type GenerateCDNURLRequest struct {
 
 func (x *GenerateCDNURLRequest) Reset() {
 	*x = GenerateCDNURLRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[116]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[120]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10310,7 +10617,7 @@ func (x *GenerateCDNURLRequest) String() string {
 func (*GenerateCDNURLRequest) ProtoMessage() {}
 
 func (x *GenerateCDNURLRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[116]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[120]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10323,7 +10630,7 @@ func (x *GenerateCDNURLRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateCDNURLRequest.ProtoReflect.Descriptor instead.
 func (*GenerateCDNURLRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{116}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{120}
 }
 
 func (x *GenerateCDNURLRequest) GetFileId() int64 {
@@ -10378,7 +10685,7 @@ type GenerateCDNURLResponse struct {
 
 func (x *GenerateCDNURLResponse) Reset() {
 	*x = GenerateCDNURLResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[117]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[121]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10390,7 +10697,7 @@ func (x *GenerateCDNURLResponse) String() string {
 func (*GenerateCDNURLResponse) ProtoMessage() {}
 
 func (x *GenerateCDNURLResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[117]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[121]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10403,7 +10710,7 @@ func (x *GenerateCDNURLResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateCDNURLResponse.ProtoReflect.Descriptor instead.
 func (*GenerateCDNURLResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{117}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{121}
 }
 
 func (x *GenerateCDNURLResponse) GetUrl() string {
@@ -10435,7 +10742,7 @@ type ListMyFilesRequest struct {
 
 func (x *ListMyFilesRequest) Reset() {
 	*x = ListMyFilesRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[118]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[122]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10447,7 +10754,7 @@ func (x *ListMyFilesRequest) String() string {
 func (*ListMyFilesRequest) ProtoMessage() {}
 
 func (x *ListMyFilesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[118]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[122]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10460,7 +10767,7 @@ func (x *ListMyFilesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyFilesRequest.ProtoReflect.Descriptor instead.
 func (*ListMyFilesRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{118}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{122}
 }
 
 func (x *ListMyFilesRequest) GetPathPrefix() string {
@@ -10522,7 +10829,7 @@ type ListMyFilesResponse struct {
 
 func (x *ListMyFilesResponse) Reset() {
 	*x = ListMyFilesResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[119]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[123]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10534,7 +10841,7 @@ func (x *ListMyFilesResponse) String() string {
 func (*ListMyFilesResponse) ProtoMessage() {}
 
 func (x *ListMyFilesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[119]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[123]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10547,7 +10854,7 @@ func (x *ListMyFilesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyFilesResponse.ProtoReflect.Descriptor instead.
 func (*ListMyFilesResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{119}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *ListMyFilesResponse) GetFiles() []*FileInfo {
@@ -10579,7 +10886,7 @@ type ListMyFilesPagedRequest struct {
 
 func (x *ListMyFilesPagedRequest) Reset() {
 	*x = ListMyFilesPagedRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[120]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[124]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10591,7 +10898,7 @@ func (x *ListMyFilesPagedRequest) String() string {
 func (*ListMyFilesPagedRequest) ProtoMessage() {}
 
 func (x *ListMyFilesPagedRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[120]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[124]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10604,7 +10911,7 @@ func (x *ListMyFilesPagedRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyFilesPagedRequest.ProtoReflect.Descriptor instead.
 func (*ListMyFilesPagedRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{120}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *ListMyFilesPagedRequest) GetPage() int32 {
@@ -10669,7 +10976,7 @@ type ListMyFilesPagedResponse struct {
 
 func (x *ListMyFilesPagedResponse) Reset() {
 	*x = ListMyFilesPagedResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[121]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[125]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10681,7 +10988,7 @@ func (x *ListMyFilesPagedResponse) String() string {
 func (*ListMyFilesPagedResponse) ProtoMessage() {}
 
 func (x *ListMyFilesPagedResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[121]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[125]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10694,7 +11001,7 @@ func (x *ListMyFilesPagedResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyFilesPagedResponse.ProtoReflect.Descriptor instead.
 func (*ListMyFilesPagedResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{121}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{125}
 }
 
 func (x *ListMyFilesPagedResponse) GetFiles() []*FileInfo {
@@ -10741,7 +11048,7 @@ type GetMyFileRequest struct {
 
 func (x *GetMyFileRequest) Reset() {
 	*x = GetMyFileRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[122]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[126]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10753,7 +11060,7 @@ func (x *GetMyFileRequest) String() string {
 func (*GetMyFileRequest) ProtoMessage() {}
 
 func (x *GetMyFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[122]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[126]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10766,7 +11073,7 @@ func (x *GetMyFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMyFileRequest.ProtoReflect.Descriptor instead.
 func (*GetMyFileRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{122}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{126}
 }
 
 func (x *GetMyFileRequest) GetFileId() int64 {
@@ -10793,7 +11100,7 @@ type UpdateMyFileRequest struct {
 
 func (x *UpdateMyFileRequest) Reset() {
 	*x = UpdateMyFileRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[123]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[127]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10805,7 +11112,7 @@ func (x *UpdateMyFileRequest) String() string {
 func (*UpdateMyFileRequest) ProtoMessage() {}
 
 func (x *UpdateMyFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[123]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[127]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10818,7 +11125,7 @@ func (x *UpdateMyFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMyFileRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMyFileRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{123}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{127}
 }
 
 func (x *UpdateMyFileRequest) GetFileId() int64 {
@@ -10882,7 +11189,7 @@ type DeleteMyFileRequest struct {
 
 func (x *DeleteMyFileRequest) Reset() {
 	*x = DeleteMyFileRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[124]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[128]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10894,7 +11201,7 @@ func (x *DeleteMyFileRequest) String() string {
 func (*DeleteMyFileRequest) ProtoMessage() {}
 
 func (x *DeleteMyFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[124]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[128]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10907,7 +11214,7 @@ func (x *DeleteMyFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMyFileRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMyFileRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{124}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{128}
 }
 
 func (x *DeleteMyFileRequest) GetFileId() int64 {
@@ -10936,7 +11243,7 @@ type BatchDeleteMyFilesRequest struct {
 
 func (x *BatchDeleteMyFilesRequest) Reset() {
 	*x = BatchDeleteMyFilesRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[125]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[129]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10948,7 +11255,7 @@ func (x *BatchDeleteMyFilesRequest) String() string {
 func (*BatchDeleteMyFilesRequest) ProtoMessage() {}
 
 func (x *BatchDeleteMyFilesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[125]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[129]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10961,7 +11268,7 @@ func (x *BatchDeleteMyFilesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchDeleteMyFilesRequest.ProtoReflect.Descriptor instead.
 func (*BatchDeleteMyFilesRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{125}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{129}
 }
 
 func (x *BatchDeleteMyFilesRequest) GetFileIds() []int64 {
@@ -10988,7 +11295,7 @@ type BatchDeleteMyFilesResponse struct {
 
 func (x *BatchDeleteMyFilesResponse) Reset() {
 	*x = BatchDeleteMyFilesResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[126]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[130]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11000,7 +11307,7 @@ func (x *BatchDeleteMyFilesResponse) String() string {
 func (*BatchDeleteMyFilesResponse) ProtoMessage() {}
 
 func (x *BatchDeleteMyFilesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[126]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[130]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11013,7 +11320,7 @@ func (x *BatchDeleteMyFilesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchDeleteMyFilesResponse.ProtoReflect.Descriptor instead.
 func (*BatchDeleteMyFilesResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{126}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{130}
 }
 
 func (x *BatchDeleteMyFilesResponse) GetDeletedCount() int32 {
@@ -11045,7 +11352,7 @@ type ListMyAuditLogsRequest struct {
 
 func (x *ListMyAuditLogsRequest) Reset() {
 	*x = ListMyAuditLogsRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[127]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[131]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11057,7 +11364,7 @@ func (x *ListMyAuditLogsRequest) String() string {
 func (*ListMyAuditLogsRequest) ProtoMessage() {}
 
 func (x *ListMyAuditLogsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[127]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[131]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11070,7 +11377,7 @@ func (x *ListMyAuditLogsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyAuditLogsRequest.ProtoReflect.Descriptor instead.
 func (*ListMyAuditLogsRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{127}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{131}
 }
 
 func (x *ListMyAuditLogsRequest) GetAction() AuditAction {
@@ -11126,7 +11433,7 @@ type ListMyAuditLogsResponse struct {
 
 func (x *ListMyAuditLogsResponse) Reset() {
 	*x = ListMyAuditLogsResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[128]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[132]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11138,7 +11445,7 @@ func (x *ListMyAuditLogsResponse) String() string {
 func (*ListMyAuditLogsResponse) ProtoMessage() {}
 
 func (x *ListMyAuditLogsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[128]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[132]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11151,7 +11458,7 @@ func (x *ListMyAuditLogsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyAuditLogsResponse.ProtoReflect.Descriptor instead.
 func (*ListMyAuditLogsResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{128}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{132}
 }
 
 func (x *ListMyAuditLogsResponse) GetLogs() []*AuditLogEntry {
@@ -11175,146 +11482,6 @@ func (x *ListMyAuditLogsResponse) GetNextPageToken() string {
 	return ""
 }
 
-type SetOwnerQuotaRequest struct {
-	state      protoimpl.MessageState `protogen:"open.v1"`
-	OwnerType  OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
-	OwnerId    int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
-	TotalBytes int64                  `protobuf:"varint,3,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
-	// request_id is optional; recorded in audit logs for traceability
-	// (mirror of storage-service *Request.request_id).
-	RequestId     string `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SetOwnerQuotaRequest) Reset() {
-	*x = SetOwnerQuotaRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[129]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SetOwnerQuotaRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SetOwnerQuotaRequest) ProtoMessage() {}
-
-func (x *SetOwnerQuotaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[129]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SetOwnerQuotaRequest.ProtoReflect.Descriptor instead.
-func (*SetOwnerQuotaRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{129}
-}
-
-func (x *SetOwnerQuotaRequest) GetOwnerType() OwnerType {
-	if x != nil {
-		return x.OwnerType
-	}
-	return OwnerType_OWNER_TYPE_UNSPECIFIED
-}
-
-func (x *SetOwnerQuotaRequest) GetOwnerId() int64 {
-	if x != nil {
-		return x.OwnerId
-	}
-	return 0
-}
-
-func (x *SetOwnerQuotaRequest) GetTotalBytes() int64 {
-	if x != nil {
-		return x.TotalBytes
-	}
-	return 0
-}
-
-func (x *SetOwnerQuotaRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-type AddOwnerQuotaRequest struct {
-	state      protoimpl.MessageState `protogen:"open.v1"`
-	OwnerType  OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
-	OwnerId    int64                  `protobuf:"varint,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
-	DeltaBytes int64                  `protobuf:"varint,3,opt,name=delta_bytes,json=deltaBytes,proto3" json:"delta_bytes,omitempty"` // positive = purchase, negative = refund
-	// request_id is optional; recorded in audit logs for traceability
-	// (mirror of storage-service *Request.request_id).
-	RequestId     string `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AddOwnerQuotaRequest) Reset() {
-	*x = AddOwnerQuotaRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[130]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AddOwnerQuotaRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AddOwnerQuotaRequest) ProtoMessage() {}
-
-func (x *AddOwnerQuotaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[130]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AddOwnerQuotaRequest.ProtoReflect.Descriptor instead.
-func (*AddOwnerQuotaRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{130}
-}
-
-func (x *AddOwnerQuotaRequest) GetOwnerType() OwnerType {
-	if x != nil {
-		return x.OwnerType
-	}
-	return OwnerType_OWNER_TYPE_UNSPECIFIED
-}
-
-func (x *AddOwnerQuotaRequest) GetOwnerId() int64 {
-	if x != nil {
-		return x.OwnerId
-	}
-	return 0
-}
-
-func (x *AddOwnerQuotaRequest) GetDeltaBytes() int64 {
-	if x != nil {
-		return x.DeltaBytes
-	}
-	return 0
-}
-
-func (x *AddOwnerQuotaRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
 type AdminListFilesRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	OwnerType         OwnerType              `protobuf:"varint,1,opt,name=owner_type,json=ownerType,proto3,enum=testkit.v1.OwnerType" json:"owner_type,omitempty"`
@@ -11334,7 +11501,7 @@ type AdminListFilesRequest struct {
 
 func (x *AdminListFilesRequest) Reset() {
 	*x = AdminListFilesRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[131]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[133]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11346,7 +11513,7 @@ func (x *AdminListFilesRequest) String() string {
 func (*AdminListFilesRequest) ProtoMessage() {}
 
 func (x *AdminListFilesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[131]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[133]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11359,7 +11526,7 @@ func (x *AdminListFilesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminListFilesRequest.ProtoReflect.Descriptor instead.
 func (*AdminListFilesRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{131}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{133}
 }
 
 func (x *AdminListFilesRequest) GetOwnerType() OwnerType {
@@ -11450,7 +11617,7 @@ type AdminListFilesResponse struct {
 
 func (x *AdminListFilesResponse) Reset() {
 	*x = AdminListFilesResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[132]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[134]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11462,7 +11629,7 @@ func (x *AdminListFilesResponse) String() string {
 func (*AdminListFilesResponse) ProtoMessage() {}
 
 func (x *AdminListFilesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[132]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[134]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11475,7 +11642,7 @@ func (x *AdminListFilesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminListFilesResponse.ProtoReflect.Descriptor instead.
 func (*AdminListFilesResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{132}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{134}
 }
 
 func (x *AdminListFilesResponse) GetFiles() []*AdminFileInfo {
@@ -11508,7 +11675,7 @@ type AdminGetFileRequest struct {
 
 func (x *AdminGetFileRequest) Reset() {
 	*x = AdminGetFileRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[133]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[135]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11520,7 +11687,7 @@ func (x *AdminGetFileRequest) String() string {
 func (*AdminGetFileRequest) ProtoMessage() {}
 
 func (x *AdminGetFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[133]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[135]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11533,7 +11700,7 @@ func (x *AdminGetFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminGetFileRequest.ProtoReflect.Descriptor instead.
 func (*AdminGetFileRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{133}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{135}
 }
 
 func (x *AdminGetFileRequest) GetFileId() int64 {
@@ -11555,7 +11722,7 @@ type AdminDeleteFileRequest struct {
 
 func (x *AdminDeleteFileRequest) Reset() {
 	*x = AdminDeleteFileRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[134]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[136]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11567,7 +11734,7 @@ func (x *AdminDeleteFileRequest) String() string {
 func (*AdminDeleteFileRequest) ProtoMessage() {}
 
 func (x *AdminDeleteFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[134]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[136]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11580,7 +11747,7 @@ func (x *AdminDeleteFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminDeleteFileRequest.ProtoReflect.Descriptor instead.
 func (*AdminDeleteFileRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{134}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{136}
 }
 
 func (x *AdminDeleteFileRequest) GetFileId() int64 {
@@ -11607,7 +11774,7 @@ type AdminGetQuotaRequest struct {
 
 func (x *AdminGetQuotaRequest) Reset() {
 	*x = AdminGetQuotaRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[135]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[137]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11619,7 +11786,7 @@ func (x *AdminGetQuotaRequest) String() string {
 func (*AdminGetQuotaRequest) ProtoMessage() {}
 
 func (x *AdminGetQuotaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[135]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[137]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11632,7 +11799,7 @@ func (x *AdminGetQuotaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminGetQuotaRequest.ProtoReflect.Descriptor instead.
 func (*AdminGetQuotaRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{135}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{137}
 }
 
 func (x *AdminGetQuotaRequest) GetOwnerType() OwnerType {
@@ -11663,7 +11830,7 @@ type AdminSetQuotaRequest struct {
 
 func (x *AdminSetQuotaRequest) Reset() {
 	*x = AdminSetQuotaRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[136]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[138]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11675,7 +11842,7 @@ func (x *AdminSetQuotaRequest) String() string {
 func (*AdminSetQuotaRequest) ProtoMessage() {}
 
 func (x *AdminSetQuotaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[136]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[138]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11688,7 +11855,7 @@ func (x *AdminSetQuotaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminSetQuotaRequest.ProtoReflect.Descriptor instead.
 func (*AdminSetQuotaRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{136}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{138}
 }
 
 func (x *AdminSetQuotaRequest) GetOwnerType() OwnerType {
@@ -11729,7 +11896,7 @@ type AdminGetStatsRequest struct {
 
 func (x *AdminGetStatsRequest) Reset() {
 	*x = AdminGetStatsRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[137]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[139]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11741,7 +11908,7 @@ func (x *AdminGetStatsRequest) String() string {
 func (*AdminGetStatsRequest) ProtoMessage() {}
 
 func (x *AdminGetStatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[137]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[139]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11754,7 +11921,7 @@ func (x *AdminGetStatsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminGetStatsRequest.ProtoReflect.Descriptor instead.
 func (*AdminGetStatsRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{137}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{139}
 }
 
 func (x *AdminGetStatsRequest) GetOwnerType() OwnerType {
@@ -11786,7 +11953,7 @@ type AdminGetStatsResponse struct {
 
 func (x *AdminGetStatsResponse) Reset() {
 	*x = AdminGetStatsResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[138]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[140]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11798,7 +11965,7 @@ func (x *AdminGetStatsResponse) String() string {
 func (*AdminGetStatsResponse) ProtoMessage() {}
 
 func (x *AdminGetStatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[138]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[140]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11811,7 +11978,7 @@ func (x *AdminGetStatsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminGetStatsResponse.ProtoReflect.Descriptor instead.
 func (*AdminGetStatsResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{138}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{140}
 }
 
 func (x *AdminGetStatsResponse) GetTotalObjects() int64 {
@@ -11872,7 +12039,7 @@ type AdminListProvidersResponse struct {
 
 func (x *AdminListProvidersResponse) Reset() {
 	*x = AdminListProvidersResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[139]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[141]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11884,7 +12051,7 @@ func (x *AdminListProvidersResponse) String() string {
 func (*AdminListProvidersResponse) ProtoMessage() {}
 
 func (x *AdminListProvidersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[139]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[141]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11897,7 +12064,7 @@ func (x *AdminListProvidersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminListProvidersResponse.ProtoReflect.Descriptor instead.
 func (*AdminListProvidersResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{139}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{141}
 }
 
 func (x *AdminListProvidersResponse) GetProviders() []*ProviderInfo {
@@ -11916,7 +12083,7 @@ type AdminListBucketsResponse struct {
 
 func (x *AdminListBucketsResponse) Reset() {
 	*x = AdminListBucketsResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[140]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[142]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11928,7 +12095,7 @@ func (x *AdminListBucketsResponse) String() string {
 func (*AdminListBucketsResponse) ProtoMessage() {}
 
 func (x *AdminListBucketsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[140]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[142]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11941,7 +12108,7 @@ func (x *AdminListBucketsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminListBucketsResponse.ProtoReflect.Descriptor instead.
 func (*AdminListBucketsResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{140}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{142}
 }
 
 func (x *AdminListBucketsResponse) GetBuckets() []*BucketInfo {
@@ -11964,7 +12131,7 @@ type AdminSoftDeleteOwnerFilesRequest struct {
 
 func (x *AdminSoftDeleteOwnerFilesRequest) Reset() {
 	*x = AdminSoftDeleteOwnerFilesRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[141]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[143]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11976,7 +12143,7 @@ func (x *AdminSoftDeleteOwnerFilesRequest) String() string {
 func (*AdminSoftDeleteOwnerFilesRequest) ProtoMessage() {}
 
 func (x *AdminSoftDeleteOwnerFilesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[141]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[143]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11989,7 +12156,7 @@ func (x *AdminSoftDeleteOwnerFilesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminSoftDeleteOwnerFilesRequest.ProtoReflect.Descriptor instead.
 func (*AdminSoftDeleteOwnerFilesRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{141}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{143}
 }
 
 func (x *AdminSoftDeleteOwnerFilesRequest) GetOwnerType() OwnerType {
@@ -12023,7 +12190,7 @@ type AdminSoftDeleteOwnerFilesResponse struct {
 
 func (x *AdminSoftDeleteOwnerFilesResponse) Reset() {
 	*x = AdminSoftDeleteOwnerFilesResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[142]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[144]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12035,7 +12202,7 @@ func (x *AdminSoftDeleteOwnerFilesResponse) String() string {
 func (*AdminSoftDeleteOwnerFilesResponse) ProtoMessage() {}
 
 func (x *AdminSoftDeleteOwnerFilesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[142]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[144]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12048,7 +12215,7 @@ func (x *AdminSoftDeleteOwnerFilesResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use AdminSoftDeleteOwnerFilesResponse.ProtoReflect.Descriptor instead.
 func (*AdminSoftDeleteOwnerFilesResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{142}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{144}
 }
 
 func (x *AdminSoftDeleteOwnerFilesResponse) GetFilesDeleted() int64 {
@@ -12078,7 +12245,7 @@ type AdminDeleteOwnerRequest struct {
 
 func (x *AdminDeleteOwnerRequest) Reset() {
 	*x = AdminDeleteOwnerRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[143]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[145]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12090,7 +12257,7 @@ func (x *AdminDeleteOwnerRequest) String() string {
 func (*AdminDeleteOwnerRequest) ProtoMessage() {}
 
 func (x *AdminDeleteOwnerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[143]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[145]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12103,7 +12270,7 @@ func (x *AdminDeleteOwnerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminDeleteOwnerRequest.ProtoReflect.Descriptor instead.
 func (*AdminDeleteOwnerRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{143}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{145}
 }
 
 func (x *AdminDeleteOwnerRequest) GetOwnerType() OwnerType {
@@ -12137,7 +12304,7 @@ type AdminDeleteOwnerResponse struct {
 
 func (x *AdminDeleteOwnerResponse) Reset() {
 	*x = AdminDeleteOwnerResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[144]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[146]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12149,7 +12316,7 @@ func (x *AdminDeleteOwnerResponse) String() string {
 func (*AdminDeleteOwnerResponse) ProtoMessage() {}
 
 func (x *AdminDeleteOwnerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[144]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[146]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12162,7 +12329,7 @@ func (x *AdminDeleteOwnerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminDeleteOwnerResponse.ProtoReflect.Descriptor instead.
 func (*AdminDeleteOwnerResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{144}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{146}
 }
 
 func (x *AdminDeleteOwnerResponse) GetFilesDeleted() int64 {
@@ -12201,7 +12368,7 @@ type AdminListAuditLogsRequest struct {
 
 func (x *AdminListAuditLogsRequest) Reset() {
 	*x = AdminListAuditLogsRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[145]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[147]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12213,7 +12380,7 @@ func (x *AdminListAuditLogsRequest) String() string {
 func (*AdminListAuditLogsRequest) ProtoMessage() {}
 
 func (x *AdminListAuditLogsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[145]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[147]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12226,7 +12393,7 @@ func (x *AdminListAuditLogsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminListAuditLogsRequest.ProtoReflect.Descriptor instead.
 func (*AdminListAuditLogsRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{145}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{147}
 }
 
 func (x *AdminListAuditLogsRequest) GetAction() AuditAction {
@@ -12317,7 +12484,7 @@ type AdminListAuditLogsResponse struct {
 
 func (x *AdminListAuditLogsResponse) Reset() {
 	*x = AdminListAuditLogsResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[146]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[148]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12329,7 +12496,7 @@ func (x *AdminListAuditLogsResponse) String() string {
 func (*AdminListAuditLogsResponse) ProtoMessage() {}
 
 func (x *AdminListAuditLogsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[146]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[148]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12342,7 +12509,7 @@ func (x *AdminListAuditLogsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminListAuditLogsResponse.ProtoReflect.Descriptor instead.
 func (*AdminListAuditLogsResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{146}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{148}
 }
 
 func (x *AdminListAuditLogsResponse) GetLogs() []*AuditLogEntry {
@@ -12377,7 +12544,7 @@ type EmailAddress struct {
 
 func (x *EmailAddress) Reset() {
 	*x = EmailAddress{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[147]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[149]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12389,7 +12556,7 @@ func (x *EmailAddress) String() string {
 func (*EmailAddress) ProtoMessage() {}
 
 func (x *EmailAddress) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[147]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[149]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12402,7 +12569,7 @@ func (x *EmailAddress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailAddress.ProtoReflect.Descriptor instead.
 func (*EmailAddress) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{147}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{149}
 }
 
 func (x *EmailAddress) GetEmail() string {
@@ -12420,7 +12587,9 @@ func (x *EmailAddress) GetDisplayName() string {
 }
 
 // EmailAttachment drops the downstream `reserved` placeholders and renumbers
-// cleanly. url/content are XOR (enforced downstream); DB stores metadata only
+// cleanly. url = caller-managed download reference (never fetched, metadata
+// only); content = inline bytes embedded as a real MIME part. Both may be
+// set (content embeds, url is record metadata). DB stores metadata only
 // (content is not persisted, so record echoes have it empty).
 type EmailAttachment struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -12436,7 +12605,7 @@ type EmailAttachment struct {
 
 func (x *EmailAttachment) Reset() {
 	*x = EmailAttachment{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[148]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[150]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12448,7 +12617,7 @@ func (x *EmailAttachment) String() string {
 func (*EmailAttachment) ProtoMessage() {}
 
 func (x *EmailAttachment) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[148]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[150]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12461,7 +12630,7 @@ func (x *EmailAttachment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailAttachment.ProtoReflect.Descriptor instead.
 func (*EmailAttachment) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{148}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{150}
 }
 
 func (x *EmailAttachment) GetFilename() string {
@@ -12519,7 +12688,7 @@ type EmailVendorStats struct {
 
 func (x *EmailVendorStats) Reset() {
 	*x = EmailVendorStats{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[149]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[151]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12531,7 +12700,7 @@ func (x *EmailVendorStats) String() string {
 func (*EmailVendorStats) ProtoMessage() {}
 
 func (x *EmailVendorStats) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[149]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[151]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12544,7 +12713,7 @@ func (x *EmailVendorStats) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailVendorStats.ProtoReflect.Descriptor instead.
 func (*EmailVendorStats) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{149}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{151}
 }
 
 func (x *EmailVendorStats) GetVendor() EmailVendor {
@@ -12587,7 +12756,7 @@ type SmsVendorStats struct {
 
 func (x *SmsVendorStats) Reset() {
 	*x = SmsVendorStats{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[150]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[152]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12599,7 +12768,7 @@ func (x *SmsVendorStats) String() string {
 func (*SmsVendorStats) ProtoMessage() {}
 
 func (x *SmsVendorStats) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[150]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[152]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12612,7 +12781,7 @@ func (x *SmsVendorStats) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SmsVendorStats.ProtoReflect.Descriptor instead.
 func (*SmsVendorStats) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{150}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{152}
 }
 
 func (x *SmsVendorStats) GetVendor() SmsVendor {
@@ -12667,7 +12836,7 @@ type SendEmailRequest struct {
 
 func (x *SendEmailRequest) Reset() {
 	*x = SendEmailRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[151]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[153]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12679,7 +12848,7 @@ func (x *SendEmailRequest) String() string {
 func (*SendEmailRequest) ProtoMessage() {}
 
 func (x *SendEmailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[151]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[153]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12692,7 +12861,7 @@ func (x *SendEmailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendEmailRequest.ProtoReflect.Descriptor instead.
 func (*SendEmailRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{151}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{153}
 }
 
 func (x *SendEmailRequest) GetTo() []*EmailAddress {
@@ -12819,7 +12988,7 @@ type SendSMSRequest struct {
 
 func (x *SendSMSRequest) Reset() {
 	*x = SendSMSRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[152]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[154]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12831,7 +13000,7 @@ func (x *SendSMSRequest) String() string {
 func (*SendSMSRequest) ProtoMessage() {}
 
 func (x *SendSMSRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[152]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[154]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12844,7 +13013,7 @@ func (x *SendSMSRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendSMSRequest.ProtoReflect.Descriptor instead.
 func (*SendSMSRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{152}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{154}
 }
 
 func (x *SendSMSRequest) GetRegionCode() string {
@@ -12931,7 +13100,7 @@ type SendResponse struct {
 
 func (x *SendResponse) Reset() {
 	*x = SendResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[153]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[155]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12943,7 +13112,7 @@ func (x *SendResponse) String() string {
 func (*SendResponse) ProtoMessage() {}
 
 func (x *SendResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[153]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[155]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12956,7 +13125,7 @@ func (x *SendResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendResponse.ProtoReflect.Descriptor instead.
 func (*SendResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{153}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{155}
 }
 
 func (x *SendResponse) GetId() int64 {
@@ -13016,7 +13185,7 @@ type EmailRecord struct {
 
 func (x *EmailRecord) Reset() {
 	*x = EmailRecord{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[154]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[156]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13028,7 +13197,7 @@ func (x *EmailRecord) String() string {
 func (*EmailRecord) ProtoMessage() {}
 
 func (x *EmailRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[154]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[156]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13041,7 +13210,7 @@ func (x *EmailRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailRecord.ProtoReflect.Descriptor instead.
 func (*EmailRecord) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{154}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{156}
 }
 
 func (x *EmailRecord) GetId() int64 {
@@ -13215,7 +13384,7 @@ type SMSRecord struct {
 
 func (x *SMSRecord) Reset() {
 	*x = SMSRecord{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[155]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[157]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13227,7 +13396,7 @@ func (x *SMSRecord) String() string {
 func (*SMSRecord) ProtoMessage() {}
 
 func (x *SMSRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[155]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[157]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13240,7 +13409,7 @@ func (x *SMSRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SMSRecord.ProtoReflect.Descriptor instead.
 func (*SMSRecord) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{155}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{157}
 }
 
 func (x *SMSRecord) GetId() int64 {
@@ -13364,7 +13533,7 @@ type GetEmailRequest struct {
 
 func (x *GetEmailRequest) Reset() {
 	*x = GetEmailRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[156]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[158]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13376,7 +13545,7 @@ func (x *GetEmailRequest) String() string {
 func (*GetEmailRequest) ProtoMessage() {}
 
 func (x *GetEmailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[156]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[158]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13389,7 +13558,7 @@ func (x *GetEmailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEmailRequest.ProtoReflect.Descriptor instead.
 func (*GetEmailRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{156}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{158}
 }
 
 func (x *GetEmailRequest) GetId() int64 {
@@ -13408,7 +13577,7 @@ type GetSMSRequest struct {
 
 func (x *GetSMSRequest) Reset() {
 	*x = GetSMSRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[157]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[159]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13420,7 +13589,7 @@ func (x *GetSMSRequest) String() string {
 func (*GetSMSRequest) ProtoMessage() {}
 
 func (x *GetSMSRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[157]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[159]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13433,7 +13602,7 @@ func (x *GetSMSRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSMSRequest.ProtoReflect.Descriptor instead.
 func (*GetSMSRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{157}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{159}
 }
 
 func (x *GetSMSRequest) GetId() int64 {
@@ -13464,7 +13633,7 @@ type ListEmailsRequest struct {
 
 func (x *ListEmailsRequest) Reset() {
 	*x = ListEmailsRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[158]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[160]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13476,7 +13645,7 @@ func (x *ListEmailsRequest) String() string {
 func (*ListEmailsRequest) ProtoMessage() {}
 
 func (x *ListEmailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[158]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[160]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13489,7 +13658,7 @@ func (x *ListEmailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmailsRequest.ProtoReflect.Descriptor instead.
 func (*ListEmailsRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{158}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{160}
 }
 
 func (x *ListEmailsRequest) GetVendor() EmailVendor {
@@ -13581,7 +13750,7 @@ type ListEmailsResponse struct {
 
 func (x *ListEmailsResponse) Reset() {
 	*x = ListEmailsResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[159]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[161]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13593,7 +13762,7 @@ func (x *ListEmailsResponse) String() string {
 func (*ListEmailsResponse) ProtoMessage() {}
 
 func (x *ListEmailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[159]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[161]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13606,7 +13775,7 @@ func (x *ListEmailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmailsResponse.ProtoReflect.Descriptor instead.
 func (*ListEmailsResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{159}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{161}
 }
 
 func (x *ListEmailsResponse) GetRecords() []*EmailRecord {
@@ -13658,7 +13827,7 @@ type ListSMSRequest struct {
 
 func (x *ListSMSRequest) Reset() {
 	*x = ListSMSRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[160]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[162]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13670,7 +13839,7 @@ func (x *ListSMSRequest) String() string {
 func (*ListSMSRequest) ProtoMessage() {}
 
 func (x *ListSMSRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[160]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[162]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13683,7 +13852,7 @@ func (x *ListSMSRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSMSRequest.ProtoReflect.Descriptor instead.
 func (*ListSMSRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{160}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{162}
 }
 
 func (x *ListSMSRequest) GetVendor() SmsVendor {
@@ -13782,7 +13951,7 @@ type ListSMSResponse struct {
 
 func (x *ListSMSResponse) Reset() {
 	*x = ListSMSResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[161]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[163]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13794,7 +13963,7 @@ func (x *ListSMSResponse) String() string {
 func (*ListSMSResponse) ProtoMessage() {}
 
 func (x *ListSMSResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[161]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[163]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13807,7 +13976,7 @@ func (x *ListSMSResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSMSResponse.ProtoReflect.Descriptor instead.
 func (*ListSMSResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{161}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{163}
 }
 
 func (x *ListSMSResponse) GetRecords() []*SMSRecord {
@@ -13859,7 +14028,7 @@ type ListEmailsByCursorRequest struct {
 
 func (x *ListEmailsByCursorRequest) Reset() {
 	*x = ListEmailsByCursorRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[162]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[164]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13871,7 +14040,7 @@ func (x *ListEmailsByCursorRequest) String() string {
 func (*ListEmailsByCursorRequest) ProtoMessage() {}
 
 func (x *ListEmailsByCursorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[162]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[164]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13884,7 +14053,7 @@ func (x *ListEmailsByCursorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmailsByCursorRequest.ProtoReflect.Descriptor instead.
 func (*ListEmailsByCursorRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{162}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{164}
 }
 
 func (x *ListEmailsByCursorRequest) GetVendor() EmailVendor {
@@ -13982,7 +14151,7 @@ type ListEmailsByCursorResponse struct {
 
 func (x *ListEmailsByCursorResponse) Reset() {
 	*x = ListEmailsByCursorResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[163]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[165]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13994,7 +14163,7 @@ func (x *ListEmailsByCursorResponse) String() string {
 func (*ListEmailsByCursorResponse) ProtoMessage() {}
 
 func (x *ListEmailsByCursorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[163]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[165]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14007,7 +14176,7 @@ func (x *ListEmailsByCursorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmailsByCursorResponse.ProtoReflect.Descriptor instead.
 func (*ListEmailsByCursorResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{163}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{165}
 }
 
 func (x *ListEmailsByCursorResponse) GetRecords() []*EmailRecord {
@@ -14053,7 +14222,7 @@ type ListSMSByCursorRequest struct {
 
 func (x *ListSMSByCursorRequest) Reset() {
 	*x = ListSMSByCursorRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[164]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[166]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14065,7 +14234,7 @@ func (x *ListSMSByCursorRequest) String() string {
 func (*ListSMSByCursorRequest) ProtoMessage() {}
 
 func (x *ListSMSByCursorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[164]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[166]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14078,7 +14247,7 @@ func (x *ListSMSByCursorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSMSByCursorRequest.ProtoReflect.Descriptor instead.
 func (*ListSMSByCursorRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{164}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{166}
 }
 
 func (x *ListSMSByCursorRequest) GetVendor() SmsVendor {
@@ -14183,7 +14352,7 @@ type ListSMSByCursorResponse struct {
 
 func (x *ListSMSByCursorResponse) Reset() {
 	*x = ListSMSByCursorResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[165]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[167]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14195,7 +14364,7 @@ func (x *ListSMSByCursorResponse) String() string {
 func (*ListSMSByCursorResponse) ProtoMessage() {}
 
 func (x *ListSMSByCursorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[165]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[167]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14208,7 +14377,7 @@ func (x *ListSMSByCursorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSMSByCursorResponse.ProtoReflect.Descriptor instead.
 func (*ListSMSByCursorResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{165}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{167}
 }
 
 func (x *ListSMSByCursorResponse) GetRecords() []*SMSRecord {
@@ -14244,7 +14413,7 @@ type GetEmailStatsRequest struct {
 
 func (x *GetEmailStatsRequest) Reset() {
 	*x = GetEmailStatsRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[166]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[168]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14256,7 +14425,7 @@ func (x *GetEmailStatsRequest) String() string {
 func (*GetEmailStatsRequest) ProtoMessage() {}
 
 func (x *GetEmailStatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[166]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[168]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14269,7 +14438,7 @@ func (x *GetEmailStatsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEmailStatsRequest.ProtoReflect.Descriptor instead.
 func (*GetEmailStatsRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{166}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{168}
 }
 
 func (x *GetEmailStatsRequest) GetVendor() EmailVendor {
@@ -14313,7 +14482,7 @@ type EmailStatsResponse struct {
 
 func (x *EmailStatsResponse) Reset() {
 	*x = EmailStatsResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[167]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[169]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14325,7 +14494,7 @@ func (x *EmailStatsResponse) String() string {
 func (*EmailStatsResponse) ProtoMessage() {}
 
 func (x *EmailStatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[167]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[169]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14338,7 +14507,7 @@ func (x *EmailStatsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailStatsResponse.ProtoReflect.Descriptor instead.
 func (*EmailStatsResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{167}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{169}
 }
 
 func (x *EmailStatsResponse) GetTotal() int64 {
@@ -14388,7 +14557,7 @@ type GetSMSStatsRequest struct {
 
 func (x *GetSMSStatsRequest) Reset() {
 	*x = GetSMSStatsRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[168]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[170]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14400,7 +14569,7 @@ func (x *GetSMSStatsRequest) String() string {
 func (*GetSMSStatsRequest) ProtoMessage() {}
 
 func (x *GetSMSStatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[168]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[170]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14413,7 +14582,7 @@ func (x *GetSMSStatsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSMSStatsRequest.ProtoReflect.Descriptor instead.
 func (*GetSMSStatsRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{168}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{170}
 }
 
 func (x *GetSMSStatsRequest) GetVendor() SmsVendor {
@@ -14457,7 +14626,7 @@ type SMSStatsResponse struct {
 
 func (x *SMSStatsResponse) Reset() {
 	*x = SMSStatsResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[169]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[171]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14469,7 +14638,7 @@ func (x *SMSStatsResponse) String() string {
 func (*SMSStatsResponse) ProtoMessage() {}
 
 func (x *SMSStatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[169]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[171]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14482,7 +14651,7 @@ func (x *SMSStatsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SMSStatsResponse.ProtoReflect.Descriptor instead.
 func (*SMSStatsResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{169}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{171}
 }
 
 func (x *SMSStatsResponse) GetTotal() int64 {
@@ -14528,7 +14697,7 @@ type ListEmailSendersRequest struct {
 
 func (x *ListEmailSendersRequest) Reset() {
 	*x = ListEmailSendersRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[170]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[172]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14540,7 +14709,7 @@ func (x *ListEmailSendersRequest) String() string {
 func (*ListEmailSendersRequest) ProtoMessage() {}
 
 func (x *ListEmailSendersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[170]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[172]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14553,7 +14722,7 @@ func (x *ListEmailSendersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmailSendersRequest.ProtoReflect.Descriptor instead.
 func (*ListEmailSendersRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{170}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{172}
 }
 
 type ListEmailSendersResponse struct {
@@ -14565,7 +14734,7 @@ type ListEmailSendersResponse struct {
 
 func (x *ListEmailSendersResponse) Reset() {
 	*x = ListEmailSendersResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[171]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[173]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14577,7 +14746,7 @@ func (x *ListEmailSendersResponse) String() string {
 func (*ListEmailSendersResponse) ProtoMessage() {}
 
 func (x *ListEmailSendersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[171]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[173]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14590,7 +14759,7 @@ func (x *ListEmailSendersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmailSendersResponse.ProtoReflect.Descriptor instead.
 func (*ListEmailSendersResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{171}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{173}
 }
 
 func (x *ListEmailSendersResponse) GetSenderIds() []string {
@@ -14608,7 +14777,7 @@ type ListSMSSendersRequest struct {
 
 func (x *ListSMSSendersRequest) Reset() {
 	*x = ListSMSSendersRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[172]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[174]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14620,7 +14789,7 @@ func (x *ListSMSSendersRequest) String() string {
 func (*ListSMSSendersRequest) ProtoMessage() {}
 
 func (x *ListSMSSendersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[172]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[174]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14633,7 +14802,7 @@ func (x *ListSMSSendersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSMSSendersRequest.ProtoReflect.Descriptor instead.
 func (*ListSMSSendersRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{172}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{174}
 }
 
 type ListSMSSendersResponse struct {
@@ -14645,7 +14814,7 @@ type ListSMSSendersResponse struct {
 
 func (x *ListSMSSendersResponse) Reset() {
 	*x = ListSMSSendersResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[173]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[175]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14657,7 +14826,7 @@ func (x *ListSMSSendersResponse) String() string {
 func (*ListSMSSendersResponse) ProtoMessage() {}
 
 func (x *ListSMSSendersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[173]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[175]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14670,7 +14839,7 @@ func (x *ListSMSSendersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSMSSendersResponse.ProtoReflect.Descriptor instead.
 func (*ListSMSSendersResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{173}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{175}
 }
 
 func (x *ListSMSSendersResponse) GetSenderIds() []string {
@@ -14688,7 +14857,7 @@ type ListSMSRegionsRequest struct {
 
 func (x *ListSMSRegionsRequest) Reset() {
 	*x = ListSMSRegionsRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[174]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[176]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14700,7 +14869,7 @@ func (x *ListSMSRegionsRequest) String() string {
 func (*ListSMSRegionsRequest) ProtoMessage() {}
 
 func (x *ListSMSRegionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[174]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[176]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14713,7 +14882,7 @@ func (x *ListSMSRegionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSMSRegionsRequest.ProtoReflect.Descriptor instead.
 func (*ListSMSRegionsRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{174}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{176}
 }
 
 type ListSMSRegionsResponse struct {
@@ -14725,7 +14894,7 @@ type ListSMSRegionsResponse struct {
 
 func (x *ListSMSRegionsResponse) Reset() {
 	*x = ListSMSRegionsResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[175]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[177]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14737,7 +14906,7 @@ func (x *ListSMSRegionsResponse) String() string {
 func (*ListSMSRegionsResponse) ProtoMessage() {}
 
 func (x *ListSMSRegionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[175]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[177]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14750,7 +14919,7 @@ func (x *ListSMSRegionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSMSRegionsResponse.ProtoReflect.Descriptor instead.
 func (*ListSMSRegionsResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{175}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{177}
 }
 
 func (x *ListSMSRegionsResponse) GetRegionCodes() []string {
@@ -14768,7 +14937,7 @@ type NextIDRequest struct {
 
 func (x *NextIDRequest) Reset() {
 	*x = NextIDRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[176]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[178]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14780,7 +14949,7 @@ func (x *NextIDRequest) String() string {
 func (*NextIDRequest) ProtoMessage() {}
 
 func (x *NextIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[176]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[178]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14793,7 +14962,7 @@ func (x *NextIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NextIDRequest.ProtoReflect.Descriptor instead.
 func (*NextIDRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{176}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{178}
 }
 
 type NextIDResponse struct {
@@ -14805,7 +14974,7 @@ type NextIDResponse struct {
 
 func (x *NextIDResponse) Reset() {
 	*x = NextIDResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[177]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[179]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14817,7 +14986,7 @@ func (x *NextIDResponse) String() string {
 func (*NextIDResponse) ProtoMessage() {}
 
 func (x *NextIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[177]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[179]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14830,7 +14999,7 @@ func (x *NextIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NextIDResponse.ProtoReflect.Descriptor instead.
 func (*NextIDResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{177}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{179}
 }
 
 func (x *NextIDResponse) GetId() int64 {
@@ -14849,7 +15018,7 @@ type BatchNextIDRequest struct {
 
 func (x *BatchNextIDRequest) Reset() {
 	*x = BatchNextIDRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[178]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[180]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14861,7 +15030,7 @@ func (x *BatchNextIDRequest) String() string {
 func (*BatchNextIDRequest) ProtoMessage() {}
 
 func (x *BatchNextIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[178]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[180]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14874,7 +15043,7 @@ func (x *BatchNextIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchNextIDRequest.ProtoReflect.Descriptor instead.
 func (*BatchNextIDRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{178}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{180}
 }
 
 func (x *BatchNextIDRequest) GetCount() int32 {
@@ -14893,7 +15062,7 @@ type BatchNextIDResponse struct {
 
 func (x *BatchNextIDResponse) Reset() {
 	*x = BatchNextIDResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[179]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[181]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14905,7 +15074,7 @@ func (x *BatchNextIDResponse) String() string {
 func (*BatchNextIDResponse) ProtoMessage() {}
 
 func (x *BatchNextIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[179]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[181]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14918,7 +15087,7 @@ func (x *BatchNextIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchNextIDResponse.ProtoReflect.Descriptor instead.
 func (*BatchNextIDResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{179}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{181}
 }
 
 func (x *BatchNextIDResponse) GetIds() []int64 {
@@ -14937,7 +15106,7 @@ type DecomposeRequest struct {
 
 func (x *DecomposeRequest) Reset() {
 	*x = DecomposeRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[180]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[182]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14949,7 +15118,7 @@ func (x *DecomposeRequest) String() string {
 func (*DecomposeRequest) ProtoMessage() {}
 
 func (x *DecomposeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[180]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[182]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14962,7 +15131,7 @@ func (x *DecomposeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DecomposeRequest.ProtoReflect.Descriptor instead.
 func (*DecomposeRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{180}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{182}
 }
 
 func (x *DecomposeRequest) GetId() int64 {
@@ -14984,7 +15153,7 @@ type DecomposeResponse struct {
 
 func (x *DecomposeResponse) Reset() {
 	*x = DecomposeResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[181]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[183]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14996,7 +15165,7 @@ func (x *DecomposeResponse) String() string {
 func (*DecomposeResponse) ProtoMessage() {}
 
 func (x *DecomposeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[181]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[183]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15009,7 +15178,7 @@ func (x *DecomposeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DecomposeResponse.ProtoReflect.Descriptor instead.
 func (*DecomposeResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{181}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{183}
 }
 
 func (x *DecomposeResponse) GetTime() int64 {
@@ -15048,7 +15217,7 @@ type GetDashboardRequest struct {
 
 func (x *GetDashboardRequest) Reset() {
 	*x = GetDashboardRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[182]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[184]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15060,7 +15229,7 @@ func (x *GetDashboardRequest) String() string {
 func (*GetDashboardRequest) ProtoMessage() {}
 
 func (x *GetDashboardRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[182]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[184]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15073,7 +15242,7 @@ func (x *GetDashboardRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDashboardRequest.ProtoReflect.Descriptor instead.
 func (*GetDashboardRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{182}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{184}
 }
 
 // EmailStats mirrors message.EmailStatsResponse (read-only snapshot).
@@ -15091,7 +15260,7 @@ type EmailStats struct {
 
 func (x *EmailStats) Reset() {
 	*x = EmailStats{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[183]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[185]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15103,7 +15272,7 @@ func (x *EmailStats) String() string {
 func (*EmailStats) ProtoMessage() {}
 
 func (x *EmailStats) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[183]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[185]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15116,7 +15285,7 @@ func (x *EmailStats) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailStats.ProtoReflect.Descriptor instead.
 func (*EmailStats) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{183}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{185}
 }
 
 func (x *EmailStats) GetTotal() int64 {
@@ -15168,7 +15337,7 @@ type SMSStats struct {
 
 func (x *SMSStats) Reset() {
 	*x = SMSStats{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[184]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[186]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15180,7 +15349,7 @@ func (x *SMSStats) String() string {
 func (*SMSStats) ProtoMessage() {}
 
 func (x *SMSStats) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[184]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[186]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15193,7 +15362,7 @@ func (x *SMSStats) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SMSStats.ProtoReflect.Descriptor instead.
 func (*SMSStats) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{184}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{186}
 }
 
 func (x *SMSStats) GetTotal() int64 {
@@ -15244,7 +15413,7 @@ type MyQuota struct {
 
 func (x *MyQuota) Reset() {
 	*x = MyQuota{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[185]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[187]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15256,7 +15425,7 @@ func (x *MyQuota) String() string {
 func (*MyQuota) ProtoMessage() {}
 
 func (x *MyQuota) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[185]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[187]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15269,7 +15438,7 @@ func (x *MyQuota) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MyQuota.ProtoReflect.Descriptor instead.
 func (*MyQuota) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{185}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{187}
 }
 
 func (x *MyQuota) GetTotalBytes() int64 {
@@ -15310,7 +15479,7 @@ type UsersSummary struct {
 
 func (x *UsersSummary) Reset() {
 	*x = UsersSummary{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[186]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[188]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15322,7 +15491,7 @@ func (x *UsersSummary) String() string {
 func (*UsersSummary) ProtoMessage() {}
 
 func (x *UsersSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[186]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[188]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15335,7 +15504,7 @@ func (x *UsersSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersSummary.ProtoReflect.Descriptor instead.
 func (*UsersSummary) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{186}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{188}
 }
 
 func (x *UsersSummary) GetTotal() int64 {
@@ -15357,7 +15526,7 @@ type DashboardResponse struct {
 
 func (x *DashboardResponse) Reset() {
 	*x = DashboardResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[187]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[189]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15369,7 +15538,7 @@ func (x *DashboardResponse) String() string {
 func (*DashboardResponse) ProtoMessage() {}
 
 func (x *DashboardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[187]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[189]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15382,7 +15551,7 @@ func (x *DashboardResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DashboardResponse.ProtoReflect.Descriptor instead.
 func (*DashboardResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{187}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{189}
 }
 
 func (x *DashboardResponse) GetEmailStats() *EmailStats {
@@ -15426,7 +15595,7 @@ type ActivateRequest struct {
 
 func (x *ActivateRequest) Reset() {
 	*x = ActivateRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[188]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[190]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15438,7 +15607,7 @@ func (x *ActivateRequest) String() string {
 func (*ActivateRequest) ProtoMessage() {}
 
 func (x *ActivateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[188]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[190]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15451,7 +15620,7 @@ func (x *ActivateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActivateRequest.ProtoReflect.Descriptor instead.
 func (*ActivateRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{188}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{190}
 }
 
 func (x *ActivateRequest) GetKey() string {
@@ -15502,7 +15671,7 @@ type DeviceSlotInfo struct {
 
 func (x *DeviceSlotInfo) Reset() {
 	*x = DeviceSlotInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[189]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[191]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15514,7 +15683,7 @@ func (x *DeviceSlotInfo) String() string {
 func (*DeviceSlotInfo) ProtoMessage() {}
 
 func (x *DeviceSlotInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[189]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[191]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15527,7 +15696,7 @@ func (x *DeviceSlotInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeviceSlotInfo.ProtoReflect.Descriptor instead.
 func (*DeviceSlotInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{189}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{191}
 }
 
 func (x *DeviceSlotInfo) GetDeviceToken() string {
@@ -15576,7 +15745,7 @@ type SlotSummary struct {
 
 func (x *SlotSummary) Reset() {
 	*x = SlotSummary{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[190]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[192]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15588,7 +15757,7 @@ func (x *SlotSummary) String() string {
 func (*SlotSummary) ProtoMessage() {}
 
 func (x *SlotSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[190]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[192]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15601,7 +15770,7 @@ func (x *SlotSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SlotSummary.ProtoReflect.Descriptor instead.
 func (*SlotSummary) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{190}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{192}
 }
 
 func (x *SlotSummary) GetUsed() int32 {
@@ -15636,7 +15805,7 @@ type ActivateResponse struct {
 
 func (x *ActivateResponse) Reset() {
 	*x = ActivateResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[191]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[193]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15648,7 +15817,7 @@ func (x *ActivateResponse) String() string {
 func (*ActivateResponse) ProtoMessage() {}
 
 func (x *ActivateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[191]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[193]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15661,7 +15830,7 @@ func (x *ActivateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActivateResponse.ProtoReflect.Descriptor instead.
 func (*ActivateResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{191}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{193}
 }
 
 func (x *ActivateResponse) GetPayload() string {
@@ -15696,7 +15865,7 @@ type DeactivateRequest struct {
 
 func (x *DeactivateRequest) Reset() {
 	*x = DeactivateRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[192]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[194]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15708,7 +15877,7 @@ func (x *DeactivateRequest) String() string {
 func (*DeactivateRequest) ProtoMessage() {}
 
 func (x *DeactivateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[192]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[194]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15721,7 +15890,7 @@ func (x *DeactivateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeactivateRequest.ProtoReflect.Descriptor instead.
 func (*DeactivateRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{192}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{194}
 }
 
 func (x *DeactivateRequest) GetKey() string {
@@ -15754,7 +15923,7 @@ type DeactivateResponse struct {
 
 func (x *DeactivateResponse) Reset() {
 	*x = DeactivateResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[193]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[195]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15766,7 +15935,7 @@ func (x *DeactivateResponse) String() string {
 func (*DeactivateResponse) ProtoMessage() {}
 
 func (x *DeactivateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[193]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[195]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15779,7 +15948,7 @@ func (x *DeactivateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeactivateResponse.ProtoReflect.Descriptor instead.
 func (*DeactivateResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{193}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{195}
 }
 
 func (x *DeactivateResponse) GetReleased() bool {
@@ -15801,7 +15970,7 @@ type TrialStartRequest struct {
 
 func (x *TrialStartRequest) Reset() {
 	*x = TrialStartRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[194]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[196]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15813,7 +15982,7 @@ func (x *TrialStartRequest) String() string {
 func (*TrialStartRequest) ProtoMessage() {}
 
 func (x *TrialStartRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[194]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[196]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15826,7 +15995,7 @@ func (x *TrialStartRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrialStartRequest.ProtoReflect.Descriptor instead.
 func (*TrialStartRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{194}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{196}
 }
 
 func (x *TrialStartRequest) GetModule() string {
@@ -15868,7 +16037,7 @@ type TrialStartResponse struct {
 
 func (x *TrialStartResponse) Reset() {
 	*x = TrialStartResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[195]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[197]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15880,7 +16049,7 @@ func (x *TrialStartResponse) String() string {
 func (*TrialStartResponse) ProtoMessage() {}
 
 func (x *TrialStartResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[195]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[197]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15893,7 +16062,7 @@ func (x *TrialStartResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrialStartResponse.ProtoReflect.Descriptor instead.
 func (*TrialStartResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{195}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{197}
 }
 
 func (x *TrialStartResponse) GetPayload() string {
@@ -15925,7 +16094,7 @@ type HealthRequest struct {
 
 func (x *HealthRequest) Reset() {
 	*x = HealthRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[196]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[198]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15937,7 +16106,7 @@ func (x *HealthRequest) String() string {
 func (*HealthRequest) ProtoMessage() {}
 
 func (x *HealthRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[196]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[198]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15950,7 +16119,7 @@ func (x *HealthRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HealthRequest.ProtoReflect.Descriptor instead.
 func (*HealthRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{196}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{198}
 }
 
 type HealthChecks struct {
@@ -15963,7 +16132,7 @@ type HealthChecks struct {
 
 func (x *HealthChecks) Reset() {
 	*x = HealthChecks{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[197]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[199]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15975,7 +16144,7 @@ func (x *HealthChecks) String() string {
 func (*HealthChecks) ProtoMessage() {}
 
 func (x *HealthChecks) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[197]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[199]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15988,7 +16157,7 @@ func (x *HealthChecks) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HealthChecks.ProtoReflect.Descriptor instead.
 func (*HealthChecks) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{197}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{199}
 }
 
 func (x *HealthChecks) GetDb() bool {
@@ -16015,7 +16184,7 @@ type HealthResponse struct {
 
 func (x *HealthResponse) Reset() {
 	*x = HealthResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[198]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[200]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16027,7 +16196,7 @@ func (x *HealthResponse) String() string {
 func (*HealthResponse) ProtoMessage() {}
 
 func (x *HealthResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[198]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[200]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16040,7 +16209,7 @@ func (x *HealthResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HealthResponse.ProtoReflect.Descriptor instead.
 func (*HealthResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{198}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{200}
 }
 
 func (x *HealthResponse) GetStatus() string {
@@ -16067,7 +16236,7 @@ type SlotLimitInfo struct {
 
 func (x *SlotLimitInfo) Reset() {
 	*x = SlotLimitInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[199]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[201]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16079,7 +16248,7 @@ func (x *SlotLimitInfo) String() string {
 func (*SlotLimitInfo) ProtoMessage() {}
 
 func (x *SlotLimitInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[199]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[201]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16092,7 +16261,7 @@ func (x *SlotLimitInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SlotLimitInfo.ProtoReflect.Descriptor instead.
 func (*SlotLimitInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{199}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{201}
 }
 
 func (x *SlotLimitInfo) GetMaxSlots() int32 {
@@ -16118,7 +16287,7 @@ type RetryAfterInfo struct {
 
 func (x *RetryAfterInfo) Reset() {
 	*x = RetryAfterInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[200]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[202]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16130,7 +16299,7 @@ func (x *RetryAfterInfo) String() string {
 func (*RetryAfterInfo) ProtoMessage() {}
 
 func (x *RetryAfterInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[200]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[202]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16143,7 +16312,7 @@ func (x *RetryAfterInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RetryAfterInfo.ProtoReflect.Descriptor instead.
 func (*RetryAfterInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{200}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{202}
 }
 
 func (x *RetryAfterInfo) GetSeconds() int32 {
@@ -16165,7 +16334,7 @@ type EntitlementInput struct {
 
 func (x *EntitlementInput) Reset() {
 	*x = EntitlementInput{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[201]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[203]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16177,7 +16346,7 @@ func (x *EntitlementInput) String() string {
 func (*EntitlementInput) ProtoMessage() {}
 
 func (x *EntitlementInput) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[201]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[203]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16190,7 +16359,7 @@ func (x *EntitlementInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EntitlementInput.ProtoReflect.Descriptor instead.
 func (*EntitlementInput) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{201}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{203}
 }
 
 func (x *EntitlementInput) GetModule() Module {
@@ -16233,7 +16402,7 @@ type EntitlementInfo struct {
 
 func (x *EntitlementInfo) Reset() {
 	*x = EntitlementInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[202]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[204]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16245,7 +16414,7 @@ func (x *EntitlementInfo) String() string {
 func (*EntitlementInfo) ProtoMessage() {}
 
 func (x *EntitlementInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[202]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[204]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16258,7 +16427,7 @@ func (x *EntitlementInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EntitlementInfo.ProtoReflect.Descriptor instead.
 func (*EntitlementInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{202}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{204}
 }
 
 func (x *EntitlementInfo) GetModule() Module {
@@ -16307,7 +16476,7 @@ type KeyInfo struct {
 
 func (x *KeyInfo) Reset() {
 	*x = KeyInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[203]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[205]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16319,7 +16488,7 @@ func (x *KeyInfo) String() string {
 func (*KeyInfo) ProtoMessage() {}
 
 func (x *KeyInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[203]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[205]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16332,7 +16501,7 @@ func (x *KeyInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KeyInfo.ProtoReflect.Descriptor instead.
 func (*KeyInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{203}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{205}
 }
 
 func (x *KeyInfo) GetLicenseId() string {
@@ -16416,7 +16585,7 @@ type CreateKeyRequest struct {
 
 func (x *CreateKeyRequest) Reset() {
 	*x = CreateKeyRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[204]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[206]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16428,7 +16597,7 @@ func (x *CreateKeyRequest) String() string {
 func (*CreateKeyRequest) ProtoMessage() {}
 
 func (x *CreateKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[204]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[206]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16441,7 +16610,7 @@ func (x *CreateKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateKeyRequest.ProtoReflect.Descriptor instead.
 func (*CreateKeyRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{204}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{206}
 }
 
 func (x *CreateKeyRequest) GetLabel() string {
@@ -16475,7 +16644,7 @@ type CreateKeyResponse struct {
 
 func (x *CreateKeyResponse) Reset() {
 	*x = CreateKeyResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[205]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[207]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16487,7 +16656,7 @@ func (x *CreateKeyResponse) String() string {
 func (*CreateKeyResponse) ProtoMessage() {}
 
 func (x *CreateKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[205]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[207]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16500,7 +16669,7 @@ func (x *CreateKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateKeyResponse.ProtoReflect.Descriptor instead.
 func (*CreateKeyResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{205}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{207}
 }
 
 func (x *CreateKeyResponse) GetKey() *KeyInfo {
@@ -16526,7 +16695,7 @@ type ShowKeyRequest struct {
 
 func (x *ShowKeyRequest) Reset() {
 	*x = ShowKeyRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[206]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[208]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16538,7 +16707,7 @@ func (x *ShowKeyRequest) String() string {
 func (*ShowKeyRequest) ProtoMessage() {}
 
 func (x *ShowKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[206]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[208]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16551,7 +16720,7 @@ func (x *ShowKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShowKeyRequest.ProtoReflect.Descriptor instead.
 func (*ShowKeyRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{206}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{208}
 }
 
 func (x *ShowKeyRequest) GetKeyId() string {
@@ -16570,7 +16739,7 @@ type ShowKeyResponse struct {
 
 func (x *ShowKeyResponse) Reset() {
 	*x = ShowKeyResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[207]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[209]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16582,7 +16751,7 @@ func (x *ShowKeyResponse) String() string {
 func (*ShowKeyResponse) ProtoMessage() {}
 
 func (x *ShowKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[207]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[209]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16595,7 +16764,7 @@ func (x *ShowKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShowKeyResponse.ProtoReflect.Descriptor instead.
 func (*ShowKeyResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{207}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{209}
 }
 
 func (x *ShowKeyResponse) GetKey() *KeyInfo {
@@ -16615,7 +16784,7 @@ type ListKeysRequest struct {
 
 func (x *ListKeysRequest) Reset() {
 	*x = ListKeysRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[208]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[210]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16627,7 +16796,7 @@ func (x *ListKeysRequest) String() string {
 func (*ListKeysRequest) ProtoMessage() {}
 
 func (x *ListKeysRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[208]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[210]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16640,7 +16809,7 @@ func (x *ListKeysRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListKeysRequest.ProtoReflect.Descriptor instead.
 func (*ListKeysRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{208}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{210}
 }
 
 func (x *ListKeysRequest) GetStatus() KeyStatus {
@@ -16666,7 +16835,7 @@ type ListKeysResponse struct {
 
 func (x *ListKeysResponse) Reset() {
 	*x = ListKeysResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[209]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[211]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16678,7 +16847,7 @@ func (x *ListKeysResponse) String() string {
 func (*ListKeysResponse) ProtoMessage() {}
 
 func (x *ListKeysResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[209]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[211]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16691,7 +16860,7 @@ func (x *ListKeysResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListKeysResponse.ProtoReflect.Descriptor instead.
 func (*ListKeysResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{209}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{211}
 }
 
 func (x *ListKeysResponse) GetKeys() []*KeyInfo {
@@ -16712,7 +16881,7 @@ type UpdateKeyRequest struct {
 
 func (x *UpdateKeyRequest) Reset() {
 	*x = UpdateKeyRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[210]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[212]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16724,7 +16893,7 @@ func (x *UpdateKeyRequest) String() string {
 func (*UpdateKeyRequest) ProtoMessage() {}
 
 func (x *UpdateKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[210]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[212]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16737,7 +16906,7 @@ func (x *UpdateKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateKeyRequest.ProtoReflect.Descriptor instead.
 func (*UpdateKeyRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{210}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{212}
 }
 
 func (x *UpdateKeyRequest) GetKeyId() string {
@@ -16770,7 +16939,7 @@ type UpdateKeyResponse struct {
 
 func (x *UpdateKeyResponse) Reset() {
 	*x = UpdateKeyResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[211]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[213]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16782,7 +16951,7 @@ func (x *UpdateKeyResponse) String() string {
 func (*UpdateKeyResponse) ProtoMessage() {}
 
 func (x *UpdateKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[211]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[213]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16795,7 +16964,7 @@ func (x *UpdateKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateKeyResponse.ProtoReflect.Descriptor instead.
 func (*UpdateKeyResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{211}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{213}
 }
 
 func (x *UpdateKeyResponse) GetKey() *KeyInfo {
@@ -16815,7 +16984,7 @@ type RevokeKeyRequest struct {
 
 func (x *RevokeKeyRequest) Reset() {
 	*x = RevokeKeyRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[212]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[214]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16827,7 +16996,7 @@ func (x *RevokeKeyRequest) String() string {
 func (*RevokeKeyRequest) ProtoMessage() {}
 
 func (x *RevokeKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[212]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[214]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16840,7 +17009,7 @@ func (x *RevokeKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeKeyRequest.ProtoReflect.Descriptor instead.
 func (*RevokeKeyRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{212}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{214}
 }
 
 func (x *RevokeKeyRequest) GetKeyId() string {
@@ -16866,7 +17035,7 @@ type RevokeKeyResponse struct {
 
 func (x *RevokeKeyResponse) Reset() {
 	*x = RevokeKeyResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[213]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[215]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16878,7 +17047,7 @@ func (x *RevokeKeyResponse) String() string {
 func (*RevokeKeyResponse) ProtoMessage() {}
 
 func (x *RevokeKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[213]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[215]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16891,7 +17060,7 @@ func (x *RevokeKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeKeyResponse.ProtoReflect.Descriptor instead.
 func (*RevokeKeyResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{213}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{215}
 }
 
 func (x *RevokeKeyResponse) GetKey() *KeyInfo {
@@ -16910,7 +17079,7 @@ type UnrevokeKeyRequest struct {
 
 func (x *UnrevokeKeyRequest) Reset() {
 	*x = UnrevokeKeyRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[214]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[216]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16922,7 +17091,7 @@ func (x *UnrevokeKeyRequest) String() string {
 func (*UnrevokeKeyRequest) ProtoMessage() {}
 
 func (x *UnrevokeKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[214]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[216]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16935,7 +17104,7 @@ func (x *UnrevokeKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnrevokeKeyRequest.ProtoReflect.Descriptor instead.
 func (*UnrevokeKeyRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{214}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{216}
 }
 
 func (x *UnrevokeKeyRequest) GetKeyId() string {
@@ -16954,7 +17123,7 @@ type UnrevokeKeyResponse struct {
 
 func (x *UnrevokeKeyResponse) Reset() {
 	*x = UnrevokeKeyResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[215]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[217]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16966,7 +17135,7 @@ func (x *UnrevokeKeyResponse) String() string {
 func (*UnrevokeKeyResponse) ProtoMessage() {}
 
 func (x *UnrevokeKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[215]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[217]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16979,7 +17148,7 @@ func (x *UnrevokeKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnrevokeKeyResponse.ProtoReflect.Descriptor instead.
 func (*UnrevokeKeyResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{215}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{217}
 }
 
 func (x *UnrevokeKeyResponse) GetKey() *KeyInfo {
@@ -16999,7 +17168,7 @@ type DeleteKeyRequest struct {
 
 func (x *DeleteKeyRequest) Reset() {
 	*x = DeleteKeyRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[216]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[218]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17011,7 +17180,7 @@ func (x *DeleteKeyRequest) String() string {
 func (*DeleteKeyRequest) ProtoMessage() {}
 
 func (x *DeleteKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[216]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[218]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17024,7 +17193,7 @@ func (x *DeleteKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteKeyRequest.ProtoReflect.Descriptor instead.
 func (*DeleteKeyRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{216}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{218}
 }
 
 func (x *DeleteKeyRequest) GetKeyId() string {
@@ -17049,7 +17218,7 @@ type DeleteKeyResponse struct {
 
 func (x *DeleteKeyResponse) Reset() {
 	*x = DeleteKeyResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[217]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[219]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17061,7 +17230,7 @@ func (x *DeleteKeyResponse) String() string {
 func (*DeleteKeyResponse) ProtoMessage() {}
 
 func (x *DeleteKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[217]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[219]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17074,7 +17243,7 @@ func (x *DeleteKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteKeyResponse.ProtoReflect.Descriptor instead.
 func (*DeleteKeyResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{217}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{219}
 }
 
 type GrantModuleRequest struct {
@@ -17090,7 +17259,7 @@ type GrantModuleRequest struct {
 
 func (x *GrantModuleRequest) Reset() {
 	*x = GrantModuleRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[218]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[220]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17102,7 +17271,7 @@ func (x *GrantModuleRequest) String() string {
 func (*GrantModuleRequest) ProtoMessage() {}
 
 func (x *GrantModuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[218]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[220]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17115,7 +17284,7 @@ func (x *GrantModuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GrantModuleRequest.ProtoReflect.Descriptor instead.
 func (*GrantModuleRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{218}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{220}
 }
 
 func (x *GrantModuleRequest) GetKeyId() string {
@@ -17162,7 +17331,7 @@ type GrantModuleResponse struct {
 
 func (x *GrantModuleResponse) Reset() {
 	*x = GrantModuleResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[219]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[221]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17174,7 +17343,7 @@ func (x *GrantModuleResponse) String() string {
 func (*GrantModuleResponse) ProtoMessage() {}
 
 func (x *GrantModuleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[219]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[221]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17187,7 +17356,7 @@ func (x *GrantModuleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GrantModuleResponse.ProtoReflect.Descriptor instead.
 func (*GrantModuleResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{219}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{221}
 }
 
 func (x *GrantModuleResponse) GetEntitlement() *EntitlementInfo {
@@ -17208,7 +17377,7 @@ type RevokeModuleRequest struct {
 
 func (x *RevokeModuleRequest) Reset() {
 	*x = RevokeModuleRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[220]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[222]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17220,7 +17389,7 @@ func (x *RevokeModuleRequest) String() string {
 func (*RevokeModuleRequest) ProtoMessage() {}
 
 func (x *RevokeModuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[220]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[222]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17233,7 +17402,7 @@ func (x *RevokeModuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeModuleRequest.ProtoReflect.Descriptor instead.
 func (*RevokeModuleRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{220}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{222}
 }
 
 func (x *RevokeModuleRequest) GetKeyId() string {
@@ -17265,7 +17434,7 @@ type RevokeModuleResponse struct {
 
 func (x *RevokeModuleResponse) Reset() {
 	*x = RevokeModuleResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[221]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[223]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17277,7 +17446,7 @@ func (x *RevokeModuleResponse) String() string {
 func (*RevokeModuleResponse) ProtoMessage() {}
 
 func (x *RevokeModuleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[221]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[223]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17290,7 +17459,7 @@ func (x *RevokeModuleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeModuleResponse.ProtoReflect.Descriptor instead.
 func (*RevokeModuleResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{221}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{223}
 }
 
 type ListKeyDevicesRequest struct {
@@ -17302,7 +17471,7 @@ type ListKeyDevicesRequest struct {
 
 func (x *ListKeyDevicesRequest) Reset() {
 	*x = ListKeyDevicesRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[222]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[224]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17314,7 +17483,7 @@ func (x *ListKeyDevicesRequest) String() string {
 func (*ListKeyDevicesRequest) ProtoMessage() {}
 
 func (x *ListKeyDevicesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[222]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[224]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17327,7 +17496,7 @@ func (x *ListKeyDevicesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListKeyDevicesRequest.ProtoReflect.Descriptor instead.
 func (*ListKeyDevicesRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{222}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{224}
 }
 
 func (x *ListKeyDevicesRequest) GetKeyId() string {
@@ -17346,7 +17515,7 @@ type ListKeyDevicesResponse struct {
 
 func (x *ListKeyDevicesResponse) Reset() {
 	*x = ListKeyDevicesResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[223]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[225]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17358,7 +17527,7 @@ func (x *ListKeyDevicesResponse) String() string {
 func (*ListKeyDevicesResponse) ProtoMessage() {}
 
 func (x *ListKeyDevicesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[223]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[225]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17371,7 +17540,7 @@ func (x *ListKeyDevicesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListKeyDevicesResponse.ProtoReflect.Descriptor instead.
 func (*ListKeyDevicesResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{223}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{225}
 }
 
 func (x *ListKeyDevicesResponse) GetDevices() []*DeviceSlotInfo {
@@ -17392,7 +17561,7 @@ type KickDeviceRequest struct {
 
 func (x *KickDeviceRequest) Reset() {
 	*x = KickDeviceRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[224]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[226]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17404,7 +17573,7 @@ func (x *KickDeviceRequest) String() string {
 func (*KickDeviceRequest) ProtoMessage() {}
 
 func (x *KickDeviceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[224]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[226]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17417,7 +17586,7 @@ func (x *KickDeviceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KickDeviceRequest.ProtoReflect.Descriptor instead.
 func (*KickDeviceRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{224}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{226}
 }
 
 func (x *KickDeviceRequest) GetKeyId() string {
@@ -17450,7 +17619,7 @@ type KickDeviceResponse struct {
 
 func (x *KickDeviceResponse) Reset() {
 	*x = KickDeviceResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[225]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[227]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17462,7 +17631,7 @@ func (x *KickDeviceResponse) String() string {
 func (*KickDeviceResponse) ProtoMessage() {}
 
 func (x *KickDeviceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[225]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[227]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17475,7 +17644,7 @@ func (x *KickDeviceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KickDeviceResponse.ProtoReflect.Descriptor instead.
 func (*KickDeviceResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{225}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{227}
 }
 
 func (x *KickDeviceResponse) GetKicked() bool {
@@ -17498,7 +17667,7 @@ type TrialInfo struct {
 
 func (x *TrialInfo) Reset() {
 	*x = TrialInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[226]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[228]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17510,7 +17679,7 @@ func (x *TrialInfo) String() string {
 func (*TrialInfo) ProtoMessage() {}
 
 func (x *TrialInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[226]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[228]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17523,7 +17692,7 @@ func (x *TrialInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrialInfo.ProtoReflect.Descriptor instead.
 func (*TrialInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{226}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{228}
 }
 
 func (x *TrialInfo) GetFingerprintId() string {
@@ -17571,7 +17740,7 @@ type ShowTrialRequest struct {
 
 func (x *ShowTrialRequest) Reset() {
 	*x = ShowTrialRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[227]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[229]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17583,7 +17752,7 @@ func (x *ShowTrialRequest) String() string {
 func (*ShowTrialRequest) ProtoMessage() {}
 
 func (x *ShowTrialRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[227]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[229]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17596,7 +17765,7 @@ func (x *ShowTrialRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShowTrialRequest.ProtoReflect.Descriptor instead.
 func (*ShowTrialRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{227}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{229}
 }
 
 func (x *ShowTrialRequest) GetFingerprintId() string {
@@ -17622,7 +17791,7 @@ type ShowTrialResponse struct {
 
 func (x *ShowTrialResponse) Reset() {
 	*x = ShowTrialResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[228]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[230]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17634,7 +17803,7 @@ func (x *ShowTrialResponse) String() string {
 func (*ShowTrialResponse) ProtoMessage() {}
 
 func (x *ShowTrialResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[228]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[230]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17647,7 +17816,7 @@ func (x *ShowTrialResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShowTrialResponse.ProtoReflect.Descriptor instead.
 func (*ShowTrialResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{228}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{230}
 }
 
 func (x *ShowTrialResponse) GetTrials() []*TrialInfo {
@@ -17668,7 +17837,7 @@ type ResetTrialRequest struct {
 
 func (x *ResetTrialRequest) Reset() {
 	*x = ResetTrialRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[229]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[231]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17680,7 +17849,7 @@ func (x *ResetTrialRequest) String() string {
 func (*ResetTrialRequest) ProtoMessage() {}
 
 func (x *ResetTrialRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[229]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[231]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17693,7 +17862,7 @@ func (x *ResetTrialRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResetTrialRequest.ProtoReflect.Descriptor instead.
 func (*ResetTrialRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{229}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{231}
 }
 
 func (x *ResetTrialRequest) GetFingerprintId() string {
@@ -17726,7 +17895,7 @@ type ResetTrialResponse struct {
 
 func (x *ResetTrialResponse) Reset() {
 	*x = ResetTrialResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[230]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[232]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17738,7 +17907,7 @@ func (x *ResetTrialResponse) String() string {
 func (*ResetTrialResponse) ProtoMessage() {}
 
 func (x *ResetTrialResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[230]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[232]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17751,7 +17920,7 @@ func (x *ResetTrialResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResetTrialResponse.ProtoReflect.Descriptor instead.
 func (*ResetTrialResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{230}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{232}
 }
 
 func (x *ResetTrialResponse) GetReset_() bool {
@@ -17769,7 +17938,7 @@ type ShowPubKeyRequest struct {
 
 func (x *ShowPubKeyRequest) Reset() {
 	*x = ShowPubKeyRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[231]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[233]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17781,7 +17950,7 @@ func (x *ShowPubKeyRequest) String() string {
 func (*ShowPubKeyRequest) ProtoMessage() {}
 
 func (x *ShowPubKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[231]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[233]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17794,7 +17963,7 @@ func (x *ShowPubKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShowPubKeyRequest.ProtoReflect.Descriptor instead.
 func (*ShowPubKeyRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{231}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{233}
 }
 
 type SigningKeyInfo struct {
@@ -17807,7 +17976,7 @@ type SigningKeyInfo struct {
 
 func (x *SigningKeyInfo) Reset() {
 	*x = SigningKeyInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[232]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[234]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17819,7 +17988,7 @@ func (x *SigningKeyInfo) String() string {
 func (*SigningKeyInfo) ProtoMessage() {}
 
 func (x *SigningKeyInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[232]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[234]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17832,7 +18001,7 @@ func (x *SigningKeyInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKeyInfo.ProtoReflect.Descriptor instead.
 func (*SigningKeyInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{232}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{234}
 }
 
 func (x *SigningKeyInfo) GetKeyId() string {
@@ -17859,7 +18028,7 @@ type ShowPubKeyResponse struct {
 
 func (x *ShowPubKeyResponse) Reset() {
 	*x = ShowPubKeyResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[233]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[235]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17871,7 +18040,7 @@ func (x *ShowPubKeyResponse) String() string {
 func (*ShowPubKeyResponse) ProtoMessage() {}
 
 func (x *ShowPubKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[233]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[235]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17884,7 +18053,7 @@ func (x *ShowPubKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShowPubKeyResponse.ProtoReflect.Descriptor instead.
 func (*ShowPubKeyResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{233}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{235}
 }
 
 func (x *ShowPubKeyResponse) GetActiveKeyId() string {
@@ -17912,7 +18081,7 @@ type IngestRequest struct {
 
 func (x *IngestRequest) Reset() {
 	*x = IngestRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[234]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[236]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17924,7 +18093,7 @@ func (x *IngestRequest) String() string {
 func (*IngestRequest) ProtoMessage() {}
 
 func (x *IngestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[234]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[236]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17937,7 +18106,7 @@ func (x *IngestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngestRequest.ProtoReflect.Descriptor instead.
 func (*IngestRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{234}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{236}
 }
 
 func (x *IngestRequest) GetToken() string {
@@ -17975,7 +18144,7 @@ type IngestResponse struct {
 
 func (x *IngestResponse) Reset() {
 	*x = IngestResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[235]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[237]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17987,7 +18156,7 @@ func (x *IngestResponse) String() string {
 func (*IngestResponse) ProtoMessage() {}
 
 func (x *IngestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[235]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[237]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18000,7 +18169,7 @@ func (x *IngestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngestResponse.ProtoReflect.Descriptor instead.
 func (*IngestResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{235}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{237}
 }
 
 func (x *IngestResponse) GetHttpCode() int32 {
@@ -18058,7 +18227,7 @@ type ValidateEventResult struct {
 
 func (x *ValidateEventResult) Reset() {
 	*x = ValidateEventResult{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[236]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[238]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18070,7 +18239,7 @@ func (x *ValidateEventResult) String() string {
 func (*ValidateEventResult) ProtoMessage() {}
 
 func (x *ValidateEventResult) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[236]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[238]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18083,7 +18252,7 @@ func (x *ValidateEventResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateEventResult.ProtoReflect.Descriptor instead.
 func (*ValidateEventResult) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{236}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{238}
 }
 
 func (x *ValidateEventResult) GetIndex() int32 {
@@ -18136,7 +18305,7 @@ type ValidateBatchResponse struct {
 
 func (x *ValidateBatchResponse) Reset() {
 	*x = ValidateBatchResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[237]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[239]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18148,7 +18317,7 @@ func (x *ValidateBatchResponse) String() string {
 func (*ValidateBatchResponse) ProtoMessage() {}
 
 func (x *ValidateBatchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[237]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[239]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18161,7 +18330,7 @@ func (x *ValidateBatchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateBatchResponse.ProtoReflect.Descriptor instead.
 func (*ValidateBatchResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{237}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{239}
 }
 
 func (x *ValidateBatchResponse) GetHttpCode() int32 {
@@ -18234,7 +18403,7 @@ type App struct {
 
 func (x *App) Reset() {
 	*x = App{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[238]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[240]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18246,7 +18415,7 @@ func (x *App) String() string {
 func (*App) ProtoMessage() {}
 
 func (x *App) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[238]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[240]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18259,7 +18428,7 @@ func (x *App) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use App.ProtoReflect.Descriptor instead.
 func (*App) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{238}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{240}
 }
 
 func (x *App) GetId() string {
@@ -18364,7 +18533,7 @@ type EventRule struct {
 
 func (x *EventRule) Reset() {
 	*x = EventRule{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[239]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[241]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18376,7 +18545,7 @@ func (x *EventRule) String() string {
 func (*EventRule) ProtoMessage() {}
 
 func (x *EventRule) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[239]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[241]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18389,7 +18558,7 @@ func (x *EventRule) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventRule.ProtoReflect.Descriptor instead.
 func (*EventRule) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{239}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{241}
 }
 
 func (x *EventRule) GetEventName() string {
@@ -18425,7 +18594,7 @@ type IngestTokenInfo struct {
 
 func (x *IngestTokenInfo) Reset() {
 	*x = IngestTokenInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[240]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[242]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18437,7 +18606,7 @@ func (x *IngestTokenInfo) String() string {
 func (*IngestTokenInfo) ProtoMessage() {}
 
 func (x *IngestTokenInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[240]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[242]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18450,7 +18619,7 @@ func (x *IngestTokenInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngestTokenInfo.ProtoReflect.Descriptor instead.
 func (*IngestTokenInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{240}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{242}
 }
 
 func (x *IngestTokenInfo) GetPrefix() string {
@@ -18493,7 +18662,7 @@ type TelemetrySigningKeyInfo struct {
 
 func (x *TelemetrySigningKeyInfo) Reset() {
 	*x = TelemetrySigningKeyInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[241]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[243]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18505,7 +18674,7 @@ func (x *TelemetrySigningKeyInfo) String() string {
 func (*TelemetrySigningKeyInfo) ProtoMessage() {}
 
 func (x *TelemetrySigningKeyInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[241]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[243]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18518,7 +18687,7 @@ func (x *TelemetrySigningKeyInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TelemetrySigningKeyInfo.ProtoReflect.Descriptor instead.
 func (*TelemetrySigningKeyInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{241}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{243}
 }
 
 func (x *TelemetrySigningKeyInfo) GetKeyId() string {
@@ -18561,7 +18730,7 @@ type VersionInfo struct {
 
 func (x *VersionInfo) Reset() {
 	*x = VersionInfo{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[242]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[244]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18573,7 +18742,7 @@ func (x *VersionInfo) String() string {
 func (*VersionInfo) ProtoMessage() {}
 
 func (x *VersionInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[242]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[244]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18586,7 +18755,7 @@ func (x *VersionInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VersionInfo.ProtoReflect.Descriptor instead.
 func (*VersionInfo) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{242}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{244}
 }
 
 func (x *VersionInfo) GetVersion() string {
@@ -18628,7 +18797,7 @@ type DailyStat struct {
 
 func (x *DailyStat) Reset() {
 	*x = DailyStat{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[243]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[245]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18640,7 +18809,7 @@ func (x *DailyStat) String() string {
 func (*DailyStat) ProtoMessage() {}
 
 func (x *DailyStat) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[243]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[245]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18653,7 +18822,7 @@ func (x *DailyStat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DailyStat.ProtoReflect.Descriptor instead.
 func (*DailyStat) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{243}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{245}
 }
 
 func (x *DailyStat) GetDay() string {
@@ -18688,7 +18857,7 @@ type CreateAppRequest struct {
 
 func (x *CreateAppRequest) Reset() {
 	*x = CreateAppRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[244]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[246]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18700,7 +18869,7 @@ func (x *CreateAppRequest) String() string {
 func (*CreateAppRequest) ProtoMessage() {}
 
 func (x *CreateAppRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[244]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[246]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18713,7 +18882,7 @@ func (x *CreateAppRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAppRequest.ProtoReflect.Descriptor instead.
 func (*CreateAppRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{244}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{246}
 }
 
 func (x *CreateAppRequest) GetSlug() string {
@@ -18747,7 +18916,7 @@ type CreateAppResponse struct {
 
 func (x *CreateAppResponse) Reset() {
 	*x = CreateAppResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[245]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[247]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18759,7 +18928,7 @@ func (x *CreateAppResponse) String() string {
 func (*CreateAppResponse) ProtoMessage() {}
 
 func (x *CreateAppResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[245]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[247]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18772,7 +18941,7 @@ func (x *CreateAppResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAppResponse.ProtoReflect.Descriptor instead.
 func (*CreateAppResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{245}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{247}
 }
 
 func (x *CreateAppResponse) GetApp() *App {
@@ -18798,7 +18967,7 @@ type GetAppRequest struct {
 
 func (x *GetAppRequest) Reset() {
 	*x = GetAppRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[246]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[248]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18810,7 +18979,7 @@ func (x *GetAppRequest) String() string {
 func (*GetAppRequest) ProtoMessage() {}
 
 func (x *GetAppRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[246]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[248]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18823,7 +18992,7 @@ func (x *GetAppRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAppRequest.ProtoReflect.Descriptor instead.
 func (*GetAppRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{246}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{248}
 }
 
 func (x *GetAppRequest) GetSlug() string {
@@ -18846,7 +19015,7 @@ type GetAppResponse struct {
 
 func (x *GetAppResponse) Reset() {
 	*x = GetAppResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[247]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[249]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18858,7 +19027,7 @@ func (x *GetAppResponse) String() string {
 func (*GetAppResponse) ProtoMessage() {}
 
 func (x *GetAppResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[247]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[249]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18871,7 +19040,7 @@ func (x *GetAppResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAppResponse.ProtoReflect.Descriptor instead.
 func (*GetAppResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{247}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{249}
 }
 
 func (x *GetAppResponse) GetApp() *App {
@@ -18928,7 +19097,7 @@ type UpdateAppRequest struct {
 
 func (x *UpdateAppRequest) Reset() {
 	*x = UpdateAppRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[248]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[250]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18940,7 +19109,7 @@ func (x *UpdateAppRequest) String() string {
 func (*UpdateAppRequest) ProtoMessage() {}
 
 func (x *UpdateAppRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[248]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[250]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18953,7 +19122,7 @@ func (x *UpdateAppRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAppRequest.ProtoReflect.Descriptor instead.
 func (*UpdateAppRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{248}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{250}
 }
 
 func (x *UpdateAppRequest) GetSlug() string {
@@ -19042,7 +19211,7 @@ type UpdateAppResponse struct {
 
 func (x *UpdateAppResponse) Reset() {
 	*x = UpdateAppResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[249]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[251]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19054,7 +19223,7 @@ func (x *UpdateAppResponse) String() string {
 func (*UpdateAppResponse) ProtoMessage() {}
 
 func (x *UpdateAppResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[249]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[251]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19067,7 +19236,7 @@ func (x *UpdateAppResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAppResponse.ProtoReflect.Descriptor instead.
 func (*UpdateAppResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{249}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{251}
 }
 
 func (x *UpdateAppResponse) GetApp() *App {
@@ -19086,7 +19255,7 @@ type RotateTokenRequest struct {
 
 func (x *RotateTokenRequest) Reset() {
 	*x = RotateTokenRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[250]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[252]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19098,7 +19267,7 @@ func (x *RotateTokenRequest) String() string {
 func (*RotateTokenRequest) ProtoMessage() {}
 
 func (x *RotateTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[250]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[252]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19111,7 +19280,7 @@ func (x *RotateTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RotateTokenRequest.ProtoReflect.Descriptor instead.
 func (*RotateTokenRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{250}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{252}
 }
 
 func (x *RotateTokenRequest) GetSlug() string {
@@ -19130,7 +19299,7 @@ type RotateTokenResponse struct {
 
 func (x *RotateTokenResponse) Reset() {
 	*x = RotateTokenResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[251]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[253]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19142,7 +19311,7 @@ func (x *RotateTokenResponse) String() string {
 func (*RotateTokenResponse) ProtoMessage() {}
 
 func (x *RotateTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[251]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[253]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19155,7 +19324,7 @@ func (x *RotateTokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RotateTokenResponse.ProtoReflect.Descriptor instead.
 func (*RotateTokenResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{251}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{253}
 }
 
 func (x *RotateTokenResponse) GetToken() string {
@@ -19175,7 +19344,7 @@ type RevokeTokenRequest struct {
 
 func (x *RevokeTokenRequest) Reset() {
 	*x = RevokeTokenRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[252]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[254]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19187,7 +19356,7 @@ func (x *RevokeTokenRequest) String() string {
 func (*RevokeTokenRequest) ProtoMessage() {}
 
 func (x *RevokeTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[252]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[254]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19200,7 +19369,7 @@ func (x *RevokeTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeTokenRequest.ProtoReflect.Descriptor instead.
 func (*RevokeTokenRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{252}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{254}
 }
 
 func (x *RevokeTokenRequest) GetSlug() string {
@@ -19225,7 +19394,7 @@ type RevokeTokenResponse struct {
 
 func (x *RevokeTokenResponse) Reset() {
 	*x = RevokeTokenResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[253]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[255]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19237,7 +19406,7 @@ func (x *RevokeTokenResponse) String() string {
 func (*RevokeTokenResponse) ProtoMessage() {}
 
 func (x *RevokeTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[253]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[255]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19250,7 +19419,7 @@ func (x *RevokeTokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeTokenResponse.ProtoReflect.Descriptor instead.
 func (*RevokeTokenResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{253}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{255}
 }
 
 type CreateSigningKeyRequest struct {
@@ -19263,7 +19432,7 @@ type CreateSigningKeyRequest struct {
 
 func (x *CreateSigningKeyRequest) Reset() {
 	*x = CreateSigningKeyRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[254]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[256]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19275,7 +19444,7 @@ func (x *CreateSigningKeyRequest) String() string {
 func (*CreateSigningKeyRequest) ProtoMessage() {}
 
 func (x *CreateSigningKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[254]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[256]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19288,7 +19457,7 @@ func (x *CreateSigningKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSigningKeyRequest.ProtoReflect.Descriptor instead.
 func (*CreateSigningKeyRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{254}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{256}
 }
 
 func (x *CreateSigningKeyRequest) GetSlug() string {
@@ -19315,7 +19484,7 @@ type CreateSigningKeyResponse struct {
 
 func (x *CreateSigningKeyResponse) Reset() {
 	*x = CreateSigningKeyResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[255]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[257]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19327,7 +19496,7 @@ func (x *CreateSigningKeyResponse) String() string {
 func (*CreateSigningKeyResponse) ProtoMessage() {}
 
 func (x *CreateSigningKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[255]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[257]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19340,7 +19509,7 @@ func (x *CreateSigningKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSigningKeyResponse.ProtoReflect.Descriptor instead.
 func (*CreateSigningKeyResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{255}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{257}
 }
 
 func (x *CreateSigningKeyResponse) GetKeyId() string {
@@ -19367,7 +19536,7 @@ type RevokeSigningKeyRequest struct {
 
 func (x *RevokeSigningKeyRequest) Reset() {
 	*x = RevokeSigningKeyRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[256]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[258]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19379,7 +19548,7 @@ func (x *RevokeSigningKeyRequest) String() string {
 func (*RevokeSigningKeyRequest) ProtoMessage() {}
 
 func (x *RevokeSigningKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[256]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[258]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19392,7 +19561,7 @@ func (x *RevokeSigningKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeSigningKeyRequest.ProtoReflect.Descriptor instead.
 func (*RevokeSigningKeyRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{256}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{258}
 }
 
 func (x *RevokeSigningKeyRequest) GetSlug() string {
@@ -19417,7 +19586,7 @@ type RevokeSigningKeyResponse struct {
 
 func (x *RevokeSigningKeyResponse) Reset() {
 	*x = RevokeSigningKeyResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[257]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[259]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19429,7 +19598,7 @@ func (x *RevokeSigningKeyResponse) String() string {
 func (*RevokeSigningKeyResponse) ProtoMessage() {}
 
 func (x *RevokeSigningKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[257]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[259]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19442,7 +19611,7 @@ func (x *RevokeSigningKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeSigningKeyResponse.ProtoReflect.Descriptor instead.
 func (*RevokeSigningKeyResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{257}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{259}
 }
 
 type ReplaceEventRulesRequest struct {
@@ -19455,7 +19624,7 @@ type ReplaceEventRulesRequest struct {
 
 func (x *ReplaceEventRulesRequest) Reset() {
 	*x = ReplaceEventRulesRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[258]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[260]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19467,7 +19636,7 @@ func (x *ReplaceEventRulesRequest) String() string {
 func (*ReplaceEventRulesRequest) ProtoMessage() {}
 
 func (x *ReplaceEventRulesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[258]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[260]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19480,7 +19649,7 @@ func (x *ReplaceEventRulesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplaceEventRulesRequest.ProtoReflect.Descriptor instead.
 func (*ReplaceEventRulesRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{258}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{260}
 }
 
 func (x *ReplaceEventRulesRequest) GetSlug() string {
@@ -19506,7 +19675,7 @@ type ReplaceEventRulesResponse struct {
 
 func (x *ReplaceEventRulesResponse) Reset() {
 	*x = ReplaceEventRulesResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[259]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[261]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19518,7 +19687,7 @@ func (x *ReplaceEventRulesResponse) String() string {
 func (*ReplaceEventRulesResponse) ProtoMessage() {}
 
 func (x *ReplaceEventRulesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[259]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[261]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19531,7 +19700,7 @@ func (x *ReplaceEventRulesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplaceEventRulesResponse.ProtoReflect.Descriptor instead.
 func (*ReplaceEventRulesResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{259}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{261}
 }
 
 func (x *ReplaceEventRulesResponse) GetRules() []*EventRule {
@@ -19552,7 +19721,7 @@ type SetVersionBlockedRequest struct {
 
 func (x *SetVersionBlockedRequest) Reset() {
 	*x = SetVersionBlockedRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[260]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[262]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19564,7 +19733,7 @@ func (x *SetVersionBlockedRequest) String() string {
 func (*SetVersionBlockedRequest) ProtoMessage() {}
 
 func (x *SetVersionBlockedRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[260]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[262]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19577,7 +19746,7 @@ func (x *SetVersionBlockedRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetVersionBlockedRequest.ProtoReflect.Descriptor instead.
 func (*SetVersionBlockedRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{260}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{262}
 }
 
 func (x *SetVersionBlockedRequest) GetSlug() string {
@@ -19609,7 +19778,7 @@ type SetVersionBlockedResponse struct {
 
 func (x *SetVersionBlockedResponse) Reset() {
 	*x = SetVersionBlockedResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[261]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[263]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19621,7 +19790,7 @@ func (x *SetVersionBlockedResponse) String() string {
 func (*SetVersionBlockedResponse) ProtoMessage() {}
 
 func (x *SetVersionBlockedResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[261]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[263]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19634,7 +19803,7 @@ func (x *SetVersionBlockedResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetVersionBlockedResponse.ProtoReflect.Descriptor instead.
 func (*SetVersionBlockedResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{261}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{263}
 }
 
 type GetAppStatsRequest struct {
@@ -19647,7 +19816,7 @@ type GetAppStatsRequest struct {
 
 func (x *GetAppStatsRequest) Reset() {
 	*x = GetAppStatsRequest{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[262]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[264]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19659,7 +19828,7 @@ func (x *GetAppStatsRequest) String() string {
 func (*GetAppStatsRequest) ProtoMessage() {}
 
 func (x *GetAppStatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[262]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[264]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19672,7 +19841,7 @@ func (x *GetAppStatsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAppStatsRequest.ProtoReflect.Descriptor instead.
 func (*GetAppStatsRequest) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{262}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{264}
 }
 
 func (x *GetAppStatsRequest) GetSlug() string {
@@ -19700,7 +19869,7 @@ type GetAppStatsResponse struct {
 
 func (x *GetAppStatsResponse) Reset() {
 	*x = GetAppStatsResponse{}
-	mi := &file_testkit_v1_testkit_proto_msgTypes[263]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[265]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19712,7 +19881,7 @@ func (x *GetAppStatsResponse) String() string {
 func (*GetAppStatsResponse) ProtoMessage() {}
 
 func (x *GetAppStatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_testkit_v1_testkit_proto_msgTypes[263]
+	mi := &file_testkit_v1_testkit_proto_msgTypes[265]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19725,7 +19894,7 @@ func (x *GetAppStatsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAppStatsResponse.ProtoReflect.Descriptor instead.
 func (*GetAppStatsResponse) Descriptor() ([]byte, []int) {
-	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{263}
+	return file_testkit_v1_testkit_proto_rawDescGZIP(), []int{265}
 }
 
 func (x *GetAppStatsResponse) GetDays() []*DailyStat {
@@ -20453,7 +20622,7 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\n" +
 	"key_prefix\x18\x03 \x01(\tR\tkeyPrefix\x12'\n" +
 	"\x03acl\x18\x04 \x01(\x0e2\x15.testkit.v1.BucketACLR\x03acl\x12*\n" +
-	"\x06vendor\x18\x05 \x01(\x0e2\x12.testkit.v1.VendorR\x06vendor\"\xd6\x03\n" +
+	"\x06vendor\x18\x05 \x01(\x0e2\x12.testkit.v1.VendorR\x06vendor\"\x8e\x04\n" +
 	"\x18GenerateUploadURLRequest\x12&\n" +
 	"\bfilename\x18\x01 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\x80\x02R\bfilename\x12\x1b\n" +
@@ -20465,7 +20634,10 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\vdescription\x18\a \x01(\tR\vdescription\x12N\n" +
 	"\bmetadata\x18\b \x03(\v22.testkit.v1.GenerateUploadURLRequest.MetadataEntryR\bmetadata\x12*\n" +
 	"\x06vendor\x18\n" +
-	" \x01(\x0e2\x12.testkit.v1.VendorR\x06vendor\x12\x1d\n" +
+	" \x01(\x0e2\x12.testkit.v1.VendorR\x06vendor\x126\n" +
+	"\n" +
+	"visibility\x18\x0e \x01(\x0e2\x16.testkit.v1.VisibilityR\n" +
+	"visibility\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\v \x01(\tR\trequestId\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
@@ -20484,7 +20656,7 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\aheaders\x18\r \x03(\v22.testkit.v1.GenerateUploadURLResponse.HeadersEntryR\aheaders\x1a:\n" +
 	"\fHeadersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xae\x04\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xe6\x04\n" +
 	"\x17GetSTSCredentialRequest\x12\x16\n" +
 	"\x06bucket\x18\x01 \x01(\tR\x06bucket\x12\x19\n" +
 	"\bmax_size\x18\x02 \x01(\x03R\amaxSize\x12&\n" +
@@ -20498,7 +20670,10 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x06vendor\x18\n" +
 	" \x01(\x0e2\x12.testkit.v1.VendorR\x06vendor\x12+\n" +
 	"\x03ttl\x18\v \x01(\v2\x19.google.protobuf.DurationR\x03ttl\x12-\n" +
-	"\x12allowed_extensions\x18\f \x03(\tR\x11allowedExtensions\x12\x1d\n" +
+	"\x12allowed_extensions\x18\f \x03(\tR\x11allowedExtensions\x126\n" +
+	"\n" +
+	"visibility\x18\x0e \x01(\x0e2\x16.testkit.v1.VisibilityR\n" +
+	"visibility\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\r \x01(\tR\trequestId\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
@@ -20520,13 +20695,16 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\n" +
 	"object_key\x18\x10 \x01(\tR\tobjectKey\x12\x1d\n" +
 	"\n" +
-	"expires_at\x18\x11 \x01(\x03R\texpiresAt\"\xef\x01\n" +
+	"expires_at\x18\x11 \x01(\x03R\texpiresAt\"\xa7\x02\n" +
 	"\x1cBatchGetSTSCredentialRequest\x12<\n" +
 	"\x05files\x18\x01 \x03(\v2\x1a.testkit.v1.UploadFileMetaB\n" +
 	"\xbaH\a\x92\x01\x04\b\x01\x10dR\x05files\x12\x16\n" +
 	"\x06bucket\x18\x02 \x01(\tR\x06bucket\x12+\n" +
 	"\x03ttl\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\x03ttl\x12-\n" +
-	"\x12allowed_extensions\x18\x04 \x03(\tR\x11allowedExtensions\x12\x1d\n" +
+	"\x12allowed_extensions\x18\x04 \x03(\tR\x11allowedExtensions\x126\n" +
+	"\n" +
+	"visibility\x18\x06 \x01(\x0e2\x16.testkit.v1.VisibilityR\n" +
+	"visibility\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x05 \x01(\tR\trequestId\"\x8f\x02\n" +
 	"\x1dBatchGetSTSCredentialResponse\x12\x1d\n" +
@@ -20560,7 +20738,24 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x1bGenerateDownloadURLResponse\x12!\n" +
 	"\fdownload_url\x18\x01 \x01(\tR\vdownloadUrl\x12\x1d\n" +
 	"\n" +
-	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"\x96\x01\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"m\n" +
+	"\x15CreateFileLinkRequest\x12 \n" +
+	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\x122\n" +
+	"\x15retention_ttl_seconds\x18\x02 \x01(\x05R\x13retentionTtlSeconds\"Z\n" +
+	"\x16CreateFileLinkResponse\x12\x1d\n" +
+	"\n" +
+	"link_token\x18\x01 \x01(\tR\tlinkToken\x12!\n" +
+	"\fretain_until\x18\x02 \x01(\x03R\vretainUntil\"F\n" +
+	"\x1aGetFileLinkDownloadRequest\x12(\n" +
+	"\n" +
+	"link_token\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18@R\tlinkToken\"\xb8\x01\n" +
+	"\x1bGetFileLinkDownloadResponse\x12\x18\n" +
+	"\aexpired\x18\x01 \x01(\bR\aexpired\x12\x1a\n" +
+	"\bfilename\x18\x02 \x01(\tR\bfilename\x12\x1d\n" +
+	"\n" +
+	"size_bytes\x18\x03 \x01(\x03R\tsizeBytes\x12!\n" +
+	"\fdownload_url\x18\x04 \x01(\tR\vdownloadUrl\x12!\n" +
+	"\fretain_until\x18\x05 \x01(\x03R\vretainUntil\"\x96\x01\n" +
 	"\x19GenerateProcessURLRequest\x12 \n" +
 	"\afile_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x06fileId\x126\n" +
 	"\x03ops\x18\x02 \x03(\v2\x1a.testkit.v1.ImageProcessOpB\b\xbaH\x05\x92\x01\x02\b\x01R\x03ops\x12\x1f\n" +
@@ -20663,25 +20858,7 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x04logs\x18\x01 \x03(\v2\x19.testkit.v1.AuditLogEntryR\x04logs\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12&\n" +
-	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"\xc5\x01\n" +
-	"\x14SetOwnerQuotaRequest\x12@\n" +
-	"\n" +
-	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\townerType\x12\"\n" +
-	"\bowner_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aownerId\x12(\n" +
-	"\vtotal_bytes\x18\x03 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\n" +
-	"totalBytes\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x04 \x01(\tR\trequestId\"\xbc\x01\n" +
-	"\x14AddOwnerQuotaRequest\x12@\n" +
-	"\n" +
-	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\townerType\x12\"\n" +
-	"\bowner_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aownerId\x12\x1f\n" +
-	"\vdelta_bytes\x18\x03 \x01(\x03R\n" +
-	"deltaBytes\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x04 \x01(\tR\trequestId\"\x99\x03\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"\x99\x03\n" +
 	"\x15AdminListFilesRequest\x124\n" +
 	"\n" +
 	"owner_type\x18\x01 \x01(\x0e2\x15.testkit.v1.OwnerTypeR\townerType\x12\x19\n" +
@@ -21577,7 +21754,12 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x1dUPLOAD_SESSION_STATUS_PENDING\x10\x01\x12#\n" +
 	"\x1fUPLOAD_SESSION_STATUS_CONFIRMED\x10\x02\x12!\n" +
 	"\x1dUPLOAD_SESSION_STATUS_EXPIRED\x10\x03\x12#\n" +
-	"\x1fUPLOAD_SESSION_STATUS_CANCELLED\x10\x04*m\n" +
+	"\x1fUPLOAD_SESSION_STATUS_CANCELLED\x10\x04*W\n" +
+	"\n" +
+	"Visibility\x12\x1a\n" +
+	"\x16VISIBILITY_UNSPECIFIED\x10\x00\x12\x15\n" +
+	"\x11VISIBILITY_PUBLIC\x10\x01\x12\x16\n" +
+	"\x12VISIBILITY_PRIVATE\x10\x02*m\n" +
 	"\x0eAuditLogStatus\x12 \n" +
 	"\x1cAUDIT_LOG_STATUS_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18AUDIT_LOG_STATUS_SUCCESS\x10\x01\x12\x1b\n" +
@@ -21650,7 +21832,7 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\bAuthMode\x12\x19\n" +
 	"\x15AUTH_MODE_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eAUTH_MODE_NONE\x10\x01\x12\x12\n" +
-	"\x0eAUTH_MODE_HMAC\x10\x022\xc1~\n" +
+	"\x0eAUTH_MODE_HMAC\x10\x022\xf1~\n" +
 	"\x0eTestkitService\x12?\n" +
 	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x10.testkit.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/ping\x12[\n" +
 	"\x05Login\x12\x18.testkit.v1.LoginRequest\x1a\x19.testkit.v1.TokenResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/auth/login\x12d\n" +
@@ -21727,7 +21909,9 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\fCancelUpload\x12\x1f.testkit.v1.CancelUploadRequest\x1a\x16.google.protobuf.Empty\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/v1/files/uploads:cancel\x12\x96\x01\n" +
 	"\x13GenerateDownloadURL\x12&.testkit.v1.GenerateDownloadURLRequest\x1a'.testkit.v1.GenerateDownloadURLResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/api/v1/files/{file_id}:downloadUrl\x12\x92\x01\n" +
 	"\x12GenerateProcessURL\x12%.testkit.v1.GenerateProcessURLRequest\x1a&.testkit.v1.GenerateProcessURLResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/v1/files/{file_id}:processUrl\x12\x82\x01\n" +
-	"\x0eGenerateCDNURL\x12!.testkit.v1.GenerateCDNURLRequest\x1a\".testkit.v1.GenerateCDNURLResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/v1/files/{file_id}:cdnUrl\x12e\n" +
+	"\x0eGenerateCDNURL\x12!.testkit.v1.GenerateCDNURLRequest\x1a\".testkit.v1.GenerateCDNURLResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/v1/files/{file_id}:cdnUrl\x12\x81\x01\n" +
+	"\x0eCreateFileLink\x12!.testkit.v1.CreateFileLinkRequest\x1a\".testkit.v1.CreateFileLinkResponse\"(\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/api/v1/files/{file_id}/links\x12\x93\x01\n" +
+	"\x13GetFileLinkDownload\x12&.testkit.v1.GetFileLinkDownloadRequest\x1a'.testkit.v1.GetFileLinkDownloadResponse\"+\x82\xd3\xe4\x93\x02%\x12#/api/v1/links/{link_token}/download\x12e\n" +
 	"\vListMyFiles\x12\x1e.testkit.v1.ListMyFilesRequest\x1a\x1f.testkit.v1.ListMyFilesResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/api/v1/files\x12y\n" +
 	"\x10ListMyFilesPaged\x12#.testkit.v1.ListMyFilesPagedRequest\x1a$.testkit.v1.ListMyFilesPagedResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/files:page\x12`\n" +
 	"\tGetMyFile\x12\x1c.testkit.v1.GetMyFileRequest\x1a\x14.testkit.v1.FileInfo\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/api/v1/files/{file_id}\x12i\n" +
@@ -21736,9 +21920,7 @@ const file_testkit_v1_testkit_proto_rawDesc = "" +
 	"\x12BatchDeleteMyFiles\x12%.testkit.v1.BatchDeleteMyFilesRequest\x1a&.testkit.v1.BatchDeleteMyFilesResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/v1/files:batchDelete\x12Z\n" +
 	"\n" +
 	"GetMyQuota\x12\x16.google.protobuf.Empty\x1a\x15.testkit.v1.QuotaInfo\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/api/v1/storage/quota\x12~\n" +
-	"\x0fListMyAuditLogs\x12\".testkit.v1.ListMyAuditLogsRequest\x1a#.testkit.v1.ListMyAuditLogsResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/api/v1/storage/audit-logs\x12q\n" +
-	"\rSetOwnerQuota\x12 .testkit.v1.SetOwnerQuotaRequest\x1a\x15.testkit.v1.QuotaInfo\"'\x82\xd3\xe4\x93\x02!:\x01*\x1a\x1c/api/v1/storage/owners/quota\x12u\n" +
-	"\rAddOwnerQuota\x12 .testkit.v1.AddOwnerQuotaRequest\x1a\x15.testkit.v1.QuotaInfo\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/v1/storage/owners/quota:add\x12t\n" +
+	"\x0fListMyAuditLogs\x12\".testkit.v1.ListMyAuditLogsRequest\x1a#.testkit.v1.ListMyAuditLogsResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/api/v1/storage/audit-logs\x12t\n" +
 	"\x0eAdminListFiles\x12!.testkit.v1.AdminListFilesRequest\x1a\".testkit.v1.AdminListFilesResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/admin/files\x12q\n" +
 	"\fAdminGetFile\x12\x1f.testkit.v1.AdminGetFileRequest\x1a\x19.testkit.v1.AdminFileInfo\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/admin/files/{file_id}\x12t\n" +
 	"\x0fAdminDeleteFile\x12\".testkit.v1.AdminDeleteFileRequest\x1a\x16.google.protobuf.Empty\"%\x82\xd3\xe4\x93\x02\x1f*\x1d/api/v1/admin/files/{file_id}\x12m\n" +
@@ -21818,8 +22000,8 @@ func file_testkit_v1_testkit_proto_rawDescGZIP() []byte {
 	return file_testkit_v1_testkit_proto_rawDescData
 }
 
-var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 32)
-var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 278)
+var file_testkit_v1_testkit_proto_enumTypes = make([]protoimpl.EnumInfo, 33)
+var file_testkit_v1_testkit_proto_msgTypes = make([]protoimpl.MessageInfo, 280)
 var file_testkit_v1_testkit_proto_goTypes = []any{
 	(LoginMethod)(0),                          // 0: testkit.v1.LoginMethod
 	(IdentityProvider)(0),                     // 1: testkit.v1.IdentityProvider
@@ -21840,301 +22022,304 @@ var file_testkit_v1_testkit_proto_goTypes = []any{
 	(SortField)(0),                            // 16: testkit.v1.SortField
 	(AuditAction)(0),                          // 17: testkit.v1.AuditAction
 	(UploadSessionStatus)(0),                  // 18: testkit.v1.UploadSessionStatus
-	(AuditLogStatus)(0),                       // 19: testkit.v1.AuditLogStatus
-	(AuditLogTargetType)(0),                   // 20: testkit.v1.AuditLogTargetType
-	(ImageProcessType)(0),                     // 21: testkit.v1.ImageProcessType
-	(SortDirection)(0),                        // 22: testkit.v1.SortDirection
-	(MessageStatus)(0),                        // 23: testkit.v1.MessageStatus
-	(EmailVendor)(0),                          // 24: testkit.v1.EmailVendor
-	(SmsVendor)(0),                            // 25: testkit.v1.SmsVendor
-	(EmailScene)(0),                           // 26: testkit.v1.EmailScene
-	(SmsScene)(0),                             // 27: testkit.v1.SmsScene
-	(Module)(0),                               // 28: testkit.v1.Module
-	(EntitlementKind)(0),                      // 29: testkit.v1.EntitlementKind
-	(KeyStatus)(0),                            // 30: testkit.v1.KeyStatus
-	(AuthMode)(0),                             // 31: testkit.v1.AuthMode
-	(*Pong)(nil),                              // 32: testkit.v1.Pong
-	(*LoginRequest)(nil),                      // 33: testkit.v1.LoginRequest
-	(*RegisterRequest)(nil),                   // 34: testkit.v1.RegisterRequest
-	(*SendVerificationCodeRequest)(nil),       // 35: testkit.v1.SendVerificationCodeRequest
-	(*SendVerificationCodeResponse)(nil),      // 36: testkit.v1.SendVerificationCodeResponse
-	(*RefreshSessionRequest)(nil),             // 37: testkit.v1.RefreshSessionRequest
-	(*User)(nil),                              // 38: testkit.v1.User
-	(*Identity)(nil),                          // 39: testkit.v1.Identity
-	(*Session)(nil),                           // 40: testkit.v1.Session
-	(*Group)(nil),                             // 41: testkit.v1.Group
-	(*Role)(nil),                              // 42: testkit.v1.Role
-	(*Permission)(nil),                        // 43: testkit.v1.Permission
-	(*PermissionGroup)(nil),                   // 44: testkit.v1.PermissionGroup
-	(*GroupMember)(nil),                       // 45: testkit.v1.GroupMember
-	(*LoginLog)(nil),                          // 46: testkit.v1.LoginLog
-	(*UserRole)(nil),                          // 47: testkit.v1.UserRole
-	(*TokenResponse)(nil),                     // 48: testkit.v1.TokenResponse
-	(*GetProfileRequest)(nil),                 // 49: testkit.v1.GetProfileRequest
-	(*UpdateProfileRequest)(nil),              // 50: testkit.v1.UpdateProfileRequest
-	(*ChangePasswordRequest)(nil),             // 51: testkit.v1.ChangePasswordRequest
-	(*ResetPasswordRequest)(nil),              // 52: testkit.v1.ResetPasswordRequest
-	(*ListIdentitiesRequest)(nil),             // 53: testkit.v1.ListIdentitiesRequest
-	(*ListIdentitiesResponse)(nil),            // 54: testkit.v1.ListIdentitiesResponse
-	(*BindIdentityRequest)(nil),               // 55: testkit.v1.BindIdentityRequest
-	(*BindOAuthIdentityRequest)(nil),          // 56: testkit.v1.BindOAuthIdentityRequest
-	(*BindOAuthIdentityResponse)(nil),         // 57: testkit.v1.BindOAuthIdentityResponse
-	(*UnbindIdentityRequest)(nil),             // 58: testkit.v1.UnbindIdentityRequest
-	(*ListSessionsRequest)(nil),               // 59: testkit.v1.ListSessionsRequest
-	(*ListSessionsResponse)(nil),              // 60: testkit.v1.ListSessionsResponse
-	(*RevokeSessionRequest)(nil),              // 61: testkit.v1.RevokeSessionRequest
-	(*RevokeAllSessionsRequest)(nil),          // 62: testkit.v1.RevokeAllSessionsRequest
-	(*GetSessionRequest)(nil),                 // 63: testkit.v1.GetSessionRequest
-	(*GetSessionResponse)(nil),                // 64: testkit.v1.GetSessionResponse
-	(*IssueSessionCodeRequest)(nil),           // 65: testkit.v1.IssueSessionCodeRequest
-	(*IssueSessionCodeResponse)(nil),          // 66: testkit.v1.IssueSessionCodeResponse
-	(*ExchangeSessionCodeRequest)(nil),        // 67: testkit.v1.ExchangeSessionCodeRequest
-	(*ExchangeSessionCodeResponse)(nil),       // 68: testkit.v1.ExchangeSessionCodeResponse
-	(*GetOAuthURLRequest)(nil),                // 69: testkit.v1.GetOAuthURLRequest
-	(*GetOAuthURLResponse)(nil),               // 70: testkit.v1.GetOAuthURLResponse
-	(*SocialLoginRequest)(nil),                // 71: testkit.v1.SocialLoginRequest
-	(*MiniProgramLoginRequest)(nil),           // 72: testkit.v1.MiniProgramLoginRequest
-	(*MiniProgramPhoneLoginRequest)(nil),      // 73: testkit.v1.MiniProgramPhoneLoginRequest
-	(*SocialLoginResponse)(nil),               // 74: testkit.v1.SocialLoginResponse
-	(*CreateUserRequest)(nil),                 // 75: testkit.v1.CreateUserRequest
-	(*CreateUserResponse)(nil),                // 76: testkit.v1.CreateUserResponse
-	(*GetUserRequest)(nil),                    // 77: testkit.v1.GetUserRequest
-	(*DisableUserRequest)(nil),                // 78: testkit.v1.DisableUserRequest
-	(*ListUsersRequest)(nil),                  // 79: testkit.v1.ListUsersRequest
-	(*ListUsersResponse)(nil),                 // 80: testkit.v1.ListUsersResponse
-	(*ListUsersPagedRequest)(nil),             // 81: testkit.v1.ListUsersPagedRequest
-	(*ListUsersPagedResponse)(nil),            // 82: testkit.v1.ListUsersPagedResponse
-	(*GetLoginLogsRequest)(nil),               // 83: testkit.v1.GetLoginLogsRequest
-	(*GetLoginLogsResponse)(nil),              // 84: testkit.v1.GetLoginLogsResponse
-	(*CreateGroupRequest)(nil),                // 85: testkit.v1.CreateGroupRequest
-	(*GetGroupRequest)(nil),                   // 86: testkit.v1.GetGroupRequest
-	(*UpdateGroupRequest)(nil),                // 87: testkit.v1.UpdateGroupRequest
-	(*ListGroupsRequest)(nil),                 // 88: testkit.v1.ListGroupsRequest
-	(*ListGroupsResponse)(nil),                // 89: testkit.v1.ListGroupsResponse
-	(*DeleteGroupRequest)(nil),                // 90: testkit.v1.DeleteGroupRequest
-	(*AddGroupMemberRequest)(nil),             // 91: testkit.v1.AddGroupMemberRequest
-	(*RemoveGroupMemberRequest)(nil),          // 92: testkit.v1.RemoveGroupMemberRequest
-	(*ListGroupMembersRequest)(nil),           // 93: testkit.v1.ListGroupMembersRequest
-	(*ListGroupMembersResponse)(nil),          // 94: testkit.v1.ListGroupMembersResponse
-	(*AddGroupRoleRequest)(nil),               // 95: testkit.v1.AddGroupRoleRequest
-	(*RemoveGroupRoleRequest)(nil),            // 96: testkit.v1.RemoveGroupRoleRequest
-	(*ListGroupRolesRequest)(nil),             // 97: testkit.v1.ListGroupRolesRequest
-	(*ListGroupRolesResponse)(nil),            // 98: testkit.v1.ListGroupRolesResponse
-	(*CreateRoleRequest)(nil),                 // 99: testkit.v1.CreateRoleRequest
-	(*GetRoleRequest)(nil),                    // 100: testkit.v1.GetRoleRequest
-	(*UpdateRoleRequest)(nil),                 // 101: testkit.v1.UpdateRoleRequest
-	(*DeleteRoleRequest)(nil),                 // 102: testkit.v1.DeleteRoleRequest
-	(*ListRolesRequest)(nil),                  // 103: testkit.v1.ListRolesRequest
-	(*ListRolesResponse)(nil),                 // 104: testkit.v1.ListRolesResponse
-	(*AssignRoleRequest)(nil),                 // 105: testkit.v1.AssignRoleRequest
-	(*RevokeRoleRequest)(nil),                 // 106: testkit.v1.RevokeRoleRequest
-	(*ListUserRolesRequest)(nil),              // 107: testkit.v1.ListUserRolesRequest
-	(*ListUserRolesResponse)(nil),             // 108: testkit.v1.ListUserRolesResponse
-	(*ListPermissionsRequest)(nil),            // 109: testkit.v1.ListPermissionsRequest
-	(*ListPermissionsResponse)(nil),           // 110: testkit.v1.ListPermissionsResponse
-	(*CreatePermissionRequest)(nil),           // 111: testkit.v1.CreatePermissionRequest
-	(*GetPermissionRequest)(nil),              // 112: testkit.v1.GetPermissionRequest
-	(*UpdatePermissionRequest)(nil),           // 113: testkit.v1.UpdatePermissionRequest
-	(*DeletePermissionRequest)(nil),           // 114: testkit.v1.DeletePermissionRequest
-	(*CreatePermissionGroupRequest)(nil),      // 115: testkit.v1.CreatePermissionGroupRequest
-	(*GetPermissionGroupRequest)(nil),         // 116: testkit.v1.GetPermissionGroupRequest
-	(*UpdatePermissionGroupRequest)(nil),      // 117: testkit.v1.UpdatePermissionGroupRequest
-	(*DeletePermissionGroupRequest)(nil),      // 118: testkit.v1.DeletePermissionGroupRequest
-	(*ListPermissionGroupsRequest)(nil),       // 119: testkit.v1.ListPermissionGroupsRequest
-	(*ListPermissionGroupsResponse)(nil),      // 120: testkit.v1.ListPermissionGroupsResponse
-	(*FileInfo)(nil),                          // 121: testkit.v1.FileInfo
-	(*AdminFileInfo)(nil),                     // 122: testkit.v1.AdminFileInfo
-	(*QuotaInfo)(nil),                         // 123: testkit.v1.QuotaInfo
-	(*ImageProcessOp)(nil),                    // 124: testkit.v1.ImageProcessOp
-	(*UploadFileMeta)(nil),                    // 125: testkit.v1.UploadFileMeta
-	(*UploadTokenInfo)(nil),                   // 126: testkit.v1.UploadTokenInfo
-	(*ItemError)(nil),                         // 127: testkit.v1.ItemError
-	(*UploadCredentialItem)(nil),              // 128: testkit.v1.UploadCredentialItem
-	(*AuditLogEntry)(nil),                     // 129: testkit.v1.AuditLogEntry
-	(*OwnerStats)(nil),                        // 130: testkit.v1.OwnerStats
-	(*ProviderStats)(nil),                     // 131: testkit.v1.ProviderStats
-	(*BucketStats)(nil),                       // 132: testkit.v1.BucketStats
-	(*ProviderInfo)(nil),                      // 133: testkit.v1.ProviderInfo
-	(*BucketInfo)(nil),                        // 134: testkit.v1.BucketInfo
-	(*GenerateUploadURLRequest)(nil),          // 135: testkit.v1.GenerateUploadURLRequest
-	(*GenerateUploadURLResponse)(nil),         // 136: testkit.v1.GenerateUploadURLResponse
-	(*GetSTSCredentialRequest)(nil),           // 137: testkit.v1.GetSTSCredentialRequest
-	(*GetSTSCredentialResponse)(nil),          // 138: testkit.v1.GetSTSCredentialResponse
-	(*BatchGetSTSCredentialRequest)(nil),      // 139: testkit.v1.BatchGetSTSCredentialRequest
-	(*BatchGetSTSCredentialResponse)(nil),     // 140: testkit.v1.BatchGetSTSCredentialResponse
-	(*ConfirmUploadRequest)(nil),              // 141: testkit.v1.ConfirmUploadRequest
-	(*ConfirmUploadResponse)(nil),             // 142: testkit.v1.ConfirmUploadResponse
-	(*CancelUploadRequest)(nil),               // 143: testkit.v1.CancelUploadRequest
-	(*GenerateDownloadURLRequest)(nil),        // 144: testkit.v1.GenerateDownloadURLRequest
-	(*GenerateDownloadURLResponse)(nil),       // 145: testkit.v1.GenerateDownloadURLResponse
-	(*GenerateProcessURLRequest)(nil),         // 146: testkit.v1.GenerateProcessURLRequest
-	(*GenerateProcessURLResponse)(nil),        // 147: testkit.v1.GenerateProcessURLResponse
-	(*GenerateCDNURLRequest)(nil),             // 148: testkit.v1.GenerateCDNURLRequest
-	(*GenerateCDNURLResponse)(nil),            // 149: testkit.v1.GenerateCDNURLResponse
-	(*ListMyFilesRequest)(nil),                // 150: testkit.v1.ListMyFilesRequest
-	(*ListMyFilesResponse)(nil),               // 151: testkit.v1.ListMyFilesResponse
-	(*ListMyFilesPagedRequest)(nil),           // 152: testkit.v1.ListMyFilesPagedRequest
-	(*ListMyFilesPagedResponse)(nil),          // 153: testkit.v1.ListMyFilesPagedResponse
-	(*GetMyFileRequest)(nil),                  // 154: testkit.v1.GetMyFileRequest
-	(*UpdateMyFileRequest)(nil),               // 155: testkit.v1.UpdateMyFileRequest
-	(*DeleteMyFileRequest)(nil),               // 156: testkit.v1.DeleteMyFileRequest
-	(*BatchDeleteMyFilesRequest)(nil),         // 157: testkit.v1.BatchDeleteMyFilesRequest
-	(*BatchDeleteMyFilesResponse)(nil),        // 158: testkit.v1.BatchDeleteMyFilesResponse
-	(*ListMyAuditLogsRequest)(nil),            // 159: testkit.v1.ListMyAuditLogsRequest
-	(*ListMyAuditLogsResponse)(nil),           // 160: testkit.v1.ListMyAuditLogsResponse
-	(*SetOwnerQuotaRequest)(nil),              // 161: testkit.v1.SetOwnerQuotaRequest
-	(*AddOwnerQuotaRequest)(nil),              // 162: testkit.v1.AddOwnerQuotaRequest
-	(*AdminListFilesRequest)(nil),             // 163: testkit.v1.AdminListFilesRequest
-	(*AdminListFilesResponse)(nil),            // 164: testkit.v1.AdminListFilesResponse
-	(*AdminGetFileRequest)(nil),               // 165: testkit.v1.AdminGetFileRequest
-	(*AdminDeleteFileRequest)(nil),            // 166: testkit.v1.AdminDeleteFileRequest
-	(*AdminGetQuotaRequest)(nil),              // 167: testkit.v1.AdminGetQuotaRequest
-	(*AdminSetQuotaRequest)(nil),              // 168: testkit.v1.AdminSetQuotaRequest
-	(*AdminGetStatsRequest)(nil),              // 169: testkit.v1.AdminGetStatsRequest
-	(*AdminGetStatsResponse)(nil),             // 170: testkit.v1.AdminGetStatsResponse
-	(*AdminListProvidersResponse)(nil),        // 171: testkit.v1.AdminListProvidersResponse
-	(*AdminListBucketsResponse)(nil),          // 172: testkit.v1.AdminListBucketsResponse
-	(*AdminSoftDeleteOwnerFilesRequest)(nil),  // 173: testkit.v1.AdminSoftDeleteOwnerFilesRequest
-	(*AdminSoftDeleteOwnerFilesResponse)(nil), // 174: testkit.v1.AdminSoftDeleteOwnerFilesResponse
-	(*AdminDeleteOwnerRequest)(nil),           // 175: testkit.v1.AdminDeleteOwnerRequest
-	(*AdminDeleteOwnerResponse)(nil),          // 176: testkit.v1.AdminDeleteOwnerResponse
-	(*AdminListAuditLogsRequest)(nil),         // 177: testkit.v1.AdminListAuditLogsRequest
-	(*AdminListAuditLogsResponse)(nil),        // 178: testkit.v1.AdminListAuditLogsResponse
-	(*EmailAddress)(nil),                      // 179: testkit.v1.EmailAddress
-	(*EmailAttachment)(nil),                   // 180: testkit.v1.EmailAttachment
-	(*EmailVendorStats)(nil),                  // 181: testkit.v1.EmailVendorStats
-	(*SmsVendorStats)(nil),                    // 182: testkit.v1.SmsVendorStats
-	(*SendEmailRequest)(nil),                  // 183: testkit.v1.SendEmailRequest
-	(*SendSMSRequest)(nil),                    // 184: testkit.v1.SendSMSRequest
-	(*SendResponse)(nil),                      // 185: testkit.v1.SendResponse
-	(*EmailRecord)(nil),                       // 186: testkit.v1.EmailRecord
-	(*SMSRecord)(nil),                         // 187: testkit.v1.SMSRecord
-	(*GetEmailRequest)(nil),                   // 188: testkit.v1.GetEmailRequest
-	(*GetSMSRequest)(nil),                     // 189: testkit.v1.GetSMSRequest
-	(*ListEmailsRequest)(nil),                 // 190: testkit.v1.ListEmailsRequest
-	(*ListEmailsResponse)(nil),                // 191: testkit.v1.ListEmailsResponse
-	(*ListSMSRequest)(nil),                    // 192: testkit.v1.ListSMSRequest
-	(*ListSMSResponse)(nil),                   // 193: testkit.v1.ListSMSResponse
-	(*ListEmailsByCursorRequest)(nil),         // 194: testkit.v1.ListEmailsByCursorRequest
-	(*ListEmailsByCursorResponse)(nil),        // 195: testkit.v1.ListEmailsByCursorResponse
-	(*ListSMSByCursorRequest)(nil),            // 196: testkit.v1.ListSMSByCursorRequest
-	(*ListSMSByCursorResponse)(nil),           // 197: testkit.v1.ListSMSByCursorResponse
-	(*GetEmailStatsRequest)(nil),              // 198: testkit.v1.GetEmailStatsRequest
-	(*EmailStatsResponse)(nil),                // 199: testkit.v1.EmailStatsResponse
-	(*GetSMSStatsRequest)(nil),                // 200: testkit.v1.GetSMSStatsRequest
-	(*SMSStatsResponse)(nil),                  // 201: testkit.v1.SMSStatsResponse
-	(*ListEmailSendersRequest)(nil),           // 202: testkit.v1.ListEmailSendersRequest
-	(*ListEmailSendersResponse)(nil),          // 203: testkit.v1.ListEmailSendersResponse
-	(*ListSMSSendersRequest)(nil),             // 204: testkit.v1.ListSMSSendersRequest
-	(*ListSMSSendersResponse)(nil),            // 205: testkit.v1.ListSMSSendersResponse
-	(*ListSMSRegionsRequest)(nil),             // 206: testkit.v1.ListSMSRegionsRequest
-	(*ListSMSRegionsResponse)(nil),            // 207: testkit.v1.ListSMSRegionsResponse
-	(*NextIDRequest)(nil),                     // 208: testkit.v1.NextIDRequest
-	(*NextIDResponse)(nil),                    // 209: testkit.v1.NextIDResponse
-	(*BatchNextIDRequest)(nil),                // 210: testkit.v1.BatchNextIDRequest
-	(*BatchNextIDResponse)(nil),               // 211: testkit.v1.BatchNextIDResponse
-	(*DecomposeRequest)(nil),                  // 212: testkit.v1.DecomposeRequest
-	(*DecomposeResponse)(nil),                 // 213: testkit.v1.DecomposeResponse
-	(*GetDashboardRequest)(nil),               // 214: testkit.v1.GetDashboardRequest
-	(*EmailStats)(nil),                        // 215: testkit.v1.EmailStats
-	(*SMSStats)(nil),                          // 216: testkit.v1.SMSStats
-	(*MyQuota)(nil),                           // 217: testkit.v1.MyQuota
-	(*UsersSummary)(nil),                      // 218: testkit.v1.UsersSummary
-	(*DashboardResponse)(nil),                 // 219: testkit.v1.DashboardResponse
-	(*ActivateRequest)(nil),                   // 220: testkit.v1.ActivateRequest
-	(*DeviceSlotInfo)(nil),                    // 221: testkit.v1.DeviceSlotInfo
-	(*SlotSummary)(nil),                       // 222: testkit.v1.SlotSummary
-	(*ActivateResponse)(nil),                  // 223: testkit.v1.ActivateResponse
-	(*DeactivateRequest)(nil),                 // 224: testkit.v1.DeactivateRequest
-	(*DeactivateResponse)(nil),                // 225: testkit.v1.DeactivateResponse
-	(*TrialStartRequest)(nil),                 // 226: testkit.v1.TrialStartRequest
-	(*TrialStartResponse)(nil),                // 227: testkit.v1.TrialStartResponse
-	(*HealthRequest)(nil),                     // 228: testkit.v1.HealthRequest
-	(*HealthChecks)(nil),                      // 229: testkit.v1.HealthChecks
-	(*HealthResponse)(nil),                    // 230: testkit.v1.HealthResponse
-	(*SlotLimitInfo)(nil),                     // 231: testkit.v1.SlotLimitInfo
-	(*RetryAfterInfo)(nil),                    // 232: testkit.v1.RetryAfterInfo
-	(*EntitlementInput)(nil),                  // 233: testkit.v1.EntitlementInput
-	(*EntitlementInfo)(nil),                   // 234: testkit.v1.EntitlementInfo
-	(*KeyInfo)(nil),                           // 235: testkit.v1.KeyInfo
-	(*CreateKeyRequest)(nil),                  // 236: testkit.v1.CreateKeyRequest
-	(*CreateKeyResponse)(nil),                 // 237: testkit.v1.CreateKeyResponse
-	(*ShowKeyRequest)(nil),                    // 238: testkit.v1.ShowKeyRequest
-	(*ShowKeyResponse)(nil),                   // 239: testkit.v1.ShowKeyResponse
-	(*ListKeysRequest)(nil),                   // 240: testkit.v1.ListKeysRequest
-	(*ListKeysResponse)(nil),                  // 241: testkit.v1.ListKeysResponse
-	(*UpdateKeyRequest)(nil),                  // 242: testkit.v1.UpdateKeyRequest
-	(*UpdateKeyResponse)(nil),                 // 243: testkit.v1.UpdateKeyResponse
-	(*RevokeKeyRequest)(nil),                  // 244: testkit.v1.RevokeKeyRequest
-	(*RevokeKeyResponse)(nil),                 // 245: testkit.v1.RevokeKeyResponse
-	(*UnrevokeKeyRequest)(nil),                // 246: testkit.v1.UnrevokeKeyRequest
-	(*UnrevokeKeyResponse)(nil),               // 247: testkit.v1.UnrevokeKeyResponse
-	(*DeleteKeyRequest)(nil),                  // 248: testkit.v1.DeleteKeyRequest
-	(*DeleteKeyResponse)(nil),                 // 249: testkit.v1.DeleteKeyResponse
-	(*GrantModuleRequest)(nil),                // 250: testkit.v1.GrantModuleRequest
-	(*GrantModuleResponse)(nil),               // 251: testkit.v1.GrantModuleResponse
-	(*RevokeModuleRequest)(nil),               // 252: testkit.v1.RevokeModuleRequest
-	(*RevokeModuleResponse)(nil),              // 253: testkit.v1.RevokeModuleResponse
-	(*ListKeyDevicesRequest)(nil),             // 254: testkit.v1.ListKeyDevicesRequest
-	(*ListKeyDevicesResponse)(nil),            // 255: testkit.v1.ListKeyDevicesResponse
-	(*KickDeviceRequest)(nil),                 // 256: testkit.v1.KickDeviceRequest
-	(*KickDeviceResponse)(nil),                // 257: testkit.v1.KickDeviceResponse
-	(*TrialInfo)(nil),                         // 258: testkit.v1.TrialInfo
-	(*ShowTrialRequest)(nil),                  // 259: testkit.v1.ShowTrialRequest
-	(*ShowTrialResponse)(nil),                 // 260: testkit.v1.ShowTrialResponse
-	(*ResetTrialRequest)(nil),                 // 261: testkit.v1.ResetTrialRequest
-	(*ResetTrialResponse)(nil),                // 262: testkit.v1.ResetTrialResponse
-	(*ShowPubKeyRequest)(nil),                 // 263: testkit.v1.ShowPubKeyRequest
-	(*SigningKeyInfo)(nil),                    // 264: testkit.v1.SigningKeyInfo
-	(*ShowPubKeyResponse)(nil),                // 265: testkit.v1.ShowPubKeyResponse
-	(*IngestRequest)(nil),                     // 266: testkit.v1.IngestRequest
-	(*IngestResponse)(nil),                    // 267: testkit.v1.IngestResponse
-	(*ValidateEventResult)(nil),               // 268: testkit.v1.ValidateEventResult
-	(*ValidateBatchResponse)(nil),             // 269: testkit.v1.ValidateBatchResponse
-	(*App)(nil),                               // 270: testkit.v1.App
-	(*EventRule)(nil),                         // 271: testkit.v1.EventRule
-	(*IngestTokenInfo)(nil),                   // 272: testkit.v1.IngestTokenInfo
-	(*TelemetrySigningKeyInfo)(nil),           // 273: testkit.v1.TelemetrySigningKeyInfo
-	(*VersionInfo)(nil),                       // 274: testkit.v1.VersionInfo
-	(*DailyStat)(nil),                         // 275: testkit.v1.DailyStat
-	(*CreateAppRequest)(nil),                  // 276: testkit.v1.CreateAppRequest
-	(*CreateAppResponse)(nil),                 // 277: testkit.v1.CreateAppResponse
-	(*GetAppRequest)(nil),                     // 278: testkit.v1.GetAppRequest
-	(*GetAppResponse)(nil),                    // 279: testkit.v1.GetAppResponse
-	(*UpdateAppRequest)(nil),                  // 280: testkit.v1.UpdateAppRequest
-	(*UpdateAppResponse)(nil),                 // 281: testkit.v1.UpdateAppResponse
-	(*RotateTokenRequest)(nil),                // 282: testkit.v1.RotateTokenRequest
-	(*RotateTokenResponse)(nil),               // 283: testkit.v1.RotateTokenResponse
-	(*RevokeTokenRequest)(nil),                // 284: testkit.v1.RevokeTokenRequest
-	(*RevokeTokenResponse)(nil),               // 285: testkit.v1.RevokeTokenResponse
-	(*CreateSigningKeyRequest)(nil),           // 286: testkit.v1.CreateSigningKeyRequest
-	(*CreateSigningKeyResponse)(nil),          // 287: testkit.v1.CreateSigningKeyResponse
-	(*RevokeSigningKeyRequest)(nil),           // 288: testkit.v1.RevokeSigningKeyRequest
-	(*RevokeSigningKeyResponse)(nil),          // 289: testkit.v1.RevokeSigningKeyResponse
-	(*ReplaceEventRulesRequest)(nil),          // 290: testkit.v1.ReplaceEventRulesRequest
-	(*ReplaceEventRulesResponse)(nil),         // 291: testkit.v1.ReplaceEventRulesResponse
-	(*SetVersionBlockedRequest)(nil),          // 292: testkit.v1.SetVersionBlockedRequest
-	(*SetVersionBlockedResponse)(nil),         // 293: testkit.v1.SetVersionBlockedResponse
-	(*GetAppStatsRequest)(nil),                // 294: testkit.v1.GetAppStatsRequest
-	(*GetAppStatsResponse)(nil),               // 295: testkit.v1.GetAppStatsResponse
-	nil,                                       // 296: testkit.v1.FileInfo.MetadataEntry
-	nil,                                       // 297: testkit.v1.AdminFileInfo.MetadataEntry
-	nil,                                       // 298: testkit.v1.UploadFileMeta.MetadataEntry
-	nil,                                       // 299: testkit.v1.GenerateUploadURLRequest.MetadataEntry
-	nil,                                       // 300: testkit.v1.GenerateUploadURLResponse.HeadersEntry
-	nil,                                       // 301: testkit.v1.GetSTSCredentialRequest.MetadataEntry
-	nil,                                       // 302: testkit.v1.UpdateMyFileRequest.MetadataEntry
-	nil,                                       // 303: testkit.v1.SendEmailRequest.TemplateParamsEntry
-	nil,                                       // 304: testkit.v1.SendSMSRequest.TemplateParamsEntry
-	nil,                                       // 305: testkit.v1.EmailRecord.TemplateParamsEntry
-	nil,                                       // 306: testkit.v1.SMSRecord.TemplateParamsEntry
-	nil,                                       // 307: testkit.v1.IngestResponse.DropsEntry
-	nil,                                       // 308: testkit.v1.GetAppStatsResponse.DropsEntry
-	nil,                                       // 309: testkit.v1.GetAppStatsResponse.SigFailsEntry
-	(*timestamppb.Timestamp)(nil),             // 310: google.protobuf.Timestamp
-	(*structpb.Struct)(nil),                   // 311: google.protobuf.Struct
-	(*durationpb.Duration)(nil),               // 312: google.protobuf.Duration
-	(*emptypb.Empty)(nil),                     // 313: google.protobuf.Empty
+	(Visibility)(0),                           // 19: testkit.v1.Visibility
+	(AuditLogStatus)(0),                       // 20: testkit.v1.AuditLogStatus
+	(AuditLogTargetType)(0),                   // 21: testkit.v1.AuditLogTargetType
+	(ImageProcessType)(0),                     // 22: testkit.v1.ImageProcessType
+	(SortDirection)(0),                        // 23: testkit.v1.SortDirection
+	(MessageStatus)(0),                        // 24: testkit.v1.MessageStatus
+	(EmailVendor)(0),                          // 25: testkit.v1.EmailVendor
+	(SmsVendor)(0),                            // 26: testkit.v1.SmsVendor
+	(EmailScene)(0),                           // 27: testkit.v1.EmailScene
+	(SmsScene)(0),                             // 28: testkit.v1.SmsScene
+	(Module)(0),                               // 29: testkit.v1.Module
+	(EntitlementKind)(0),                      // 30: testkit.v1.EntitlementKind
+	(KeyStatus)(0),                            // 31: testkit.v1.KeyStatus
+	(AuthMode)(0),                             // 32: testkit.v1.AuthMode
+	(*Pong)(nil),                              // 33: testkit.v1.Pong
+	(*LoginRequest)(nil),                      // 34: testkit.v1.LoginRequest
+	(*RegisterRequest)(nil),                   // 35: testkit.v1.RegisterRequest
+	(*SendVerificationCodeRequest)(nil),       // 36: testkit.v1.SendVerificationCodeRequest
+	(*SendVerificationCodeResponse)(nil),      // 37: testkit.v1.SendVerificationCodeResponse
+	(*RefreshSessionRequest)(nil),             // 38: testkit.v1.RefreshSessionRequest
+	(*User)(nil),                              // 39: testkit.v1.User
+	(*Identity)(nil),                          // 40: testkit.v1.Identity
+	(*Session)(nil),                           // 41: testkit.v1.Session
+	(*Group)(nil),                             // 42: testkit.v1.Group
+	(*Role)(nil),                              // 43: testkit.v1.Role
+	(*Permission)(nil),                        // 44: testkit.v1.Permission
+	(*PermissionGroup)(nil),                   // 45: testkit.v1.PermissionGroup
+	(*GroupMember)(nil),                       // 46: testkit.v1.GroupMember
+	(*LoginLog)(nil),                          // 47: testkit.v1.LoginLog
+	(*UserRole)(nil),                          // 48: testkit.v1.UserRole
+	(*TokenResponse)(nil),                     // 49: testkit.v1.TokenResponse
+	(*GetProfileRequest)(nil),                 // 50: testkit.v1.GetProfileRequest
+	(*UpdateProfileRequest)(nil),              // 51: testkit.v1.UpdateProfileRequest
+	(*ChangePasswordRequest)(nil),             // 52: testkit.v1.ChangePasswordRequest
+	(*ResetPasswordRequest)(nil),              // 53: testkit.v1.ResetPasswordRequest
+	(*ListIdentitiesRequest)(nil),             // 54: testkit.v1.ListIdentitiesRequest
+	(*ListIdentitiesResponse)(nil),            // 55: testkit.v1.ListIdentitiesResponse
+	(*BindIdentityRequest)(nil),               // 56: testkit.v1.BindIdentityRequest
+	(*BindOAuthIdentityRequest)(nil),          // 57: testkit.v1.BindOAuthIdentityRequest
+	(*BindOAuthIdentityResponse)(nil),         // 58: testkit.v1.BindOAuthIdentityResponse
+	(*UnbindIdentityRequest)(nil),             // 59: testkit.v1.UnbindIdentityRequest
+	(*ListSessionsRequest)(nil),               // 60: testkit.v1.ListSessionsRequest
+	(*ListSessionsResponse)(nil),              // 61: testkit.v1.ListSessionsResponse
+	(*RevokeSessionRequest)(nil),              // 62: testkit.v1.RevokeSessionRequest
+	(*RevokeAllSessionsRequest)(nil),          // 63: testkit.v1.RevokeAllSessionsRequest
+	(*GetSessionRequest)(nil),                 // 64: testkit.v1.GetSessionRequest
+	(*GetSessionResponse)(nil),                // 65: testkit.v1.GetSessionResponse
+	(*IssueSessionCodeRequest)(nil),           // 66: testkit.v1.IssueSessionCodeRequest
+	(*IssueSessionCodeResponse)(nil),          // 67: testkit.v1.IssueSessionCodeResponse
+	(*ExchangeSessionCodeRequest)(nil),        // 68: testkit.v1.ExchangeSessionCodeRequest
+	(*ExchangeSessionCodeResponse)(nil),       // 69: testkit.v1.ExchangeSessionCodeResponse
+	(*GetOAuthURLRequest)(nil),                // 70: testkit.v1.GetOAuthURLRequest
+	(*GetOAuthURLResponse)(nil),               // 71: testkit.v1.GetOAuthURLResponse
+	(*SocialLoginRequest)(nil),                // 72: testkit.v1.SocialLoginRequest
+	(*MiniProgramLoginRequest)(nil),           // 73: testkit.v1.MiniProgramLoginRequest
+	(*MiniProgramPhoneLoginRequest)(nil),      // 74: testkit.v1.MiniProgramPhoneLoginRequest
+	(*SocialLoginResponse)(nil),               // 75: testkit.v1.SocialLoginResponse
+	(*CreateUserRequest)(nil),                 // 76: testkit.v1.CreateUserRequest
+	(*CreateUserResponse)(nil),                // 77: testkit.v1.CreateUserResponse
+	(*GetUserRequest)(nil),                    // 78: testkit.v1.GetUserRequest
+	(*DisableUserRequest)(nil),                // 79: testkit.v1.DisableUserRequest
+	(*ListUsersRequest)(nil),                  // 80: testkit.v1.ListUsersRequest
+	(*ListUsersResponse)(nil),                 // 81: testkit.v1.ListUsersResponse
+	(*ListUsersPagedRequest)(nil),             // 82: testkit.v1.ListUsersPagedRequest
+	(*ListUsersPagedResponse)(nil),            // 83: testkit.v1.ListUsersPagedResponse
+	(*GetLoginLogsRequest)(nil),               // 84: testkit.v1.GetLoginLogsRequest
+	(*GetLoginLogsResponse)(nil),              // 85: testkit.v1.GetLoginLogsResponse
+	(*CreateGroupRequest)(nil),                // 86: testkit.v1.CreateGroupRequest
+	(*GetGroupRequest)(nil),                   // 87: testkit.v1.GetGroupRequest
+	(*UpdateGroupRequest)(nil),                // 88: testkit.v1.UpdateGroupRequest
+	(*ListGroupsRequest)(nil),                 // 89: testkit.v1.ListGroupsRequest
+	(*ListGroupsResponse)(nil),                // 90: testkit.v1.ListGroupsResponse
+	(*DeleteGroupRequest)(nil),                // 91: testkit.v1.DeleteGroupRequest
+	(*AddGroupMemberRequest)(nil),             // 92: testkit.v1.AddGroupMemberRequest
+	(*RemoveGroupMemberRequest)(nil),          // 93: testkit.v1.RemoveGroupMemberRequest
+	(*ListGroupMembersRequest)(nil),           // 94: testkit.v1.ListGroupMembersRequest
+	(*ListGroupMembersResponse)(nil),          // 95: testkit.v1.ListGroupMembersResponse
+	(*AddGroupRoleRequest)(nil),               // 96: testkit.v1.AddGroupRoleRequest
+	(*RemoveGroupRoleRequest)(nil),            // 97: testkit.v1.RemoveGroupRoleRequest
+	(*ListGroupRolesRequest)(nil),             // 98: testkit.v1.ListGroupRolesRequest
+	(*ListGroupRolesResponse)(nil),            // 99: testkit.v1.ListGroupRolesResponse
+	(*CreateRoleRequest)(nil),                 // 100: testkit.v1.CreateRoleRequest
+	(*GetRoleRequest)(nil),                    // 101: testkit.v1.GetRoleRequest
+	(*UpdateRoleRequest)(nil),                 // 102: testkit.v1.UpdateRoleRequest
+	(*DeleteRoleRequest)(nil),                 // 103: testkit.v1.DeleteRoleRequest
+	(*ListRolesRequest)(nil),                  // 104: testkit.v1.ListRolesRequest
+	(*ListRolesResponse)(nil),                 // 105: testkit.v1.ListRolesResponse
+	(*AssignRoleRequest)(nil),                 // 106: testkit.v1.AssignRoleRequest
+	(*RevokeRoleRequest)(nil),                 // 107: testkit.v1.RevokeRoleRequest
+	(*ListUserRolesRequest)(nil),              // 108: testkit.v1.ListUserRolesRequest
+	(*ListUserRolesResponse)(nil),             // 109: testkit.v1.ListUserRolesResponse
+	(*ListPermissionsRequest)(nil),            // 110: testkit.v1.ListPermissionsRequest
+	(*ListPermissionsResponse)(nil),           // 111: testkit.v1.ListPermissionsResponse
+	(*CreatePermissionRequest)(nil),           // 112: testkit.v1.CreatePermissionRequest
+	(*GetPermissionRequest)(nil),              // 113: testkit.v1.GetPermissionRequest
+	(*UpdatePermissionRequest)(nil),           // 114: testkit.v1.UpdatePermissionRequest
+	(*DeletePermissionRequest)(nil),           // 115: testkit.v1.DeletePermissionRequest
+	(*CreatePermissionGroupRequest)(nil),      // 116: testkit.v1.CreatePermissionGroupRequest
+	(*GetPermissionGroupRequest)(nil),         // 117: testkit.v1.GetPermissionGroupRequest
+	(*UpdatePermissionGroupRequest)(nil),      // 118: testkit.v1.UpdatePermissionGroupRequest
+	(*DeletePermissionGroupRequest)(nil),      // 119: testkit.v1.DeletePermissionGroupRequest
+	(*ListPermissionGroupsRequest)(nil),       // 120: testkit.v1.ListPermissionGroupsRequest
+	(*ListPermissionGroupsResponse)(nil),      // 121: testkit.v1.ListPermissionGroupsResponse
+	(*FileInfo)(nil),                          // 122: testkit.v1.FileInfo
+	(*AdminFileInfo)(nil),                     // 123: testkit.v1.AdminFileInfo
+	(*QuotaInfo)(nil),                         // 124: testkit.v1.QuotaInfo
+	(*ImageProcessOp)(nil),                    // 125: testkit.v1.ImageProcessOp
+	(*UploadFileMeta)(nil),                    // 126: testkit.v1.UploadFileMeta
+	(*UploadTokenInfo)(nil),                   // 127: testkit.v1.UploadTokenInfo
+	(*ItemError)(nil),                         // 128: testkit.v1.ItemError
+	(*UploadCredentialItem)(nil),              // 129: testkit.v1.UploadCredentialItem
+	(*AuditLogEntry)(nil),                     // 130: testkit.v1.AuditLogEntry
+	(*OwnerStats)(nil),                        // 131: testkit.v1.OwnerStats
+	(*ProviderStats)(nil),                     // 132: testkit.v1.ProviderStats
+	(*BucketStats)(nil),                       // 133: testkit.v1.BucketStats
+	(*ProviderInfo)(nil),                      // 134: testkit.v1.ProviderInfo
+	(*BucketInfo)(nil),                        // 135: testkit.v1.BucketInfo
+	(*GenerateUploadURLRequest)(nil),          // 136: testkit.v1.GenerateUploadURLRequest
+	(*GenerateUploadURLResponse)(nil),         // 137: testkit.v1.GenerateUploadURLResponse
+	(*GetSTSCredentialRequest)(nil),           // 138: testkit.v1.GetSTSCredentialRequest
+	(*GetSTSCredentialResponse)(nil),          // 139: testkit.v1.GetSTSCredentialResponse
+	(*BatchGetSTSCredentialRequest)(nil),      // 140: testkit.v1.BatchGetSTSCredentialRequest
+	(*BatchGetSTSCredentialResponse)(nil),     // 141: testkit.v1.BatchGetSTSCredentialResponse
+	(*ConfirmUploadRequest)(nil),              // 142: testkit.v1.ConfirmUploadRequest
+	(*ConfirmUploadResponse)(nil),             // 143: testkit.v1.ConfirmUploadResponse
+	(*CancelUploadRequest)(nil),               // 144: testkit.v1.CancelUploadRequest
+	(*GenerateDownloadURLRequest)(nil),        // 145: testkit.v1.GenerateDownloadURLRequest
+	(*GenerateDownloadURLResponse)(nil),       // 146: testkit.v1.GenerateDownloadURLResponse
+	(*CreateFileLinkRequest)(nil),             // 147: testkit.v1.CreateFileLinkRequest
+	(*CreateFileLinkResponse)(nil),            // 148: testkit.v1.CreateFileLinkResponse
+	(*GetFileLinkDownloadRequest)(nil),        // 149: testkit.v1.GetFileLinkDownloadRequest
+	(*GetFileLinkDownloadResponse)(nil),       // 150: testkit.v1.GetFileLinkDownloadResponse
+	(*GenerateProcessURLRequest)(nil),         // 151: testkit.v1.GenerateProcessURLRequest
+	(*GenerateProcessURLResponse)(nil),        // 152: testkit.v1.GenerateProcessURLResponse
+	(*GenerateCDNURLRequest)(nil),             // 153: testkit.v1.GenerateCDNURLRequest
+	(*GenerateCDNURLResponse)(nil),            // 154: testkit.v1.GenerateCDNURLResponse
+	(*ListMyFilesRequest)(nil),                // 155: testkit.v1.ListMyFilesRequest
+	(*ListMyFilesResponse)(nil),               // 156: testkit.v1.ListMyFilesResponse
+	(*ListMyFilesPagedRequest)(nil),           // 157: testkit.v1.ListMyFilesPagedRequest
+	(*ListMyFilesPagedResponse)(nil),          // 158: testkit.v1.ListMyFilesPagedResponse
+	(*GetMyFileRequest)(nil),                  // 159: testkit.v1.GetMyFileRequest
+	(*UpdateMyFileRequest)(nil),               // 160: testkit.v1.UpdateMyFileRequest
+	(*DeleteMyFileRequest)(nil),               // 161: testkit.v1.DeleteMyFileRequest
+	(*BatchDeleteMyFilesRequest)(nil),         // 162: testkit.v1.BatchDeleteMyFilesRequest
+	(*BatchDeleteMyFilesResponse)(nil),        // 163: testkit.v1.BatchDeleteMyFilesResponse
+	(*ListMyAuditLogsRequest)(nil),            // 164: testkit.v1.ListMyAuditLogsRequest
+	(*ListMyAuditLogsResponse)(nil),           // 165: testkit.v1.ListMyAuditLogsResponse
+	(*AdminListFilesRequest)(nil),             // 166: testkit.v1.AdminListFilesRequest
+	(*AdminListFilesResponse)(nil),            // 167: testkit.v1.AdminListFilesResponse
+	(*AdminGetFileRequest)(nil),               // 168: testkit.v1.AdminGetFileRequest
+	(*AdminDeleteFileRequest)(nil),            // 169: testkit.v1.AdminDeleteFileRequest
+	(*AdminGetQuotaRequest)(nil),              // 170: testkit.v1.AdminGetQuotaRequest
+	(*AdminSetQuotaRequest)(nil),              // 171: testkit.v1.AdminSetQuotaRequest
+	(*AdminGetStatsRequest)(nil),              // 172: testkit.v1.AdminGetStatsRequest
+	(*AdminGetStatsResponse)(nil),             // 173: testkit.v1.AdminGetStatsResponse
+	(*AdminListProvidersResponse)(nil),        // 174: testkit.v1.AdminListProvidersResponse
+	(*AdminListBucketsResponse)(nil),          // 175: testkit.v1.AdminListBucketsResponse
+	(*AdminSoftDeleteOwnerFilesRequest)(nil),  // 176: testkit.v1.AdminSoftDeleteOwnerFilesRequest
+	(*AdminSoftDeleteOwnerFilesResponse)(nil), // 177: testkit.v1.AdminSoftDeleteOwnerFilesResponse
+	(*AdminDeleteOwnerRequest)(nil),           // 178: testkit.v1.AdminDeleteOwnerRequest
+	(*AdminDeleteOwnerResponse)(nil),          // 179: testkit.v1.AdminDeleteOwnerResponse
+	(*AdminListAuditLogsRequest)(nil),         // 180: testkit.v1.AdminListAuditLogsRequest
+	(*AdminListAuditLogsResponse)(nil),        // 181: testkit.v1.AdminListAuditLogsResponse
+	(*EmailAddress)(nil),                      // 182: testkit.v1.EmailAddress
+	(*EmailAttachment)(nil),                   // 183: testkit.v1.EmailAttachment
+	(*EmailVendorStats)(nil),                  // 184: testkit.v1.EmailVendorStats
+	(*SmsVendorStats)(nil),                    // 185: testkit.v1.SmsVendorStats
+	(*SendEmailRequest)(nil),                  // 186: testkit.v1.SendEmailRequest
+	(*SendSMSRequest)(nil),                    // 187: testkit.v1.SendSMSRequest
+	(*SendResponse)(nil),                      // 188: testkit.v1.SendResponse
+	(*EmailRecord)(nil),                       // 189: testkit.v1.EmailRecord
+	(*SMSRecord)(nil),                         // 190: testkit.v1.SMSRecord
+	(*GetEmailRequest)(nil),                   // 191: testkit.v1.GetEmailRequest
+	(*GetSMSRequest)(nil),                     // 192: testkit.v1.GetSMSRequest
+	(*ListEmailsRequest)(nil),                 // 193: testkit.v1.ListEmailsRequest
+	(*ListEmailsResponse)(nil),                // 194: testkit.v1.ListEmailsResponse
+	(*ListSMSRequest)(nil),                    // 195: testkit.v1.ListSMSRequest
+	(*ListSMSResponse)(nil),                   // 196: testkit.v1.ListSMSResponse
+	(*ListEmailsByCursorRequest)(nil),         // 197: testkit.v1.ListEmailsByCursorRequest
+	(*ListEmailsByCursorResponse)(nil),        // 198: testkit.v1.ListEmailsByCursorResponse
+	(*ListSMSByCursorRequest)(nil),            // 199: testkit.v1.ListSMSByCursorRequest
+	(*ListSMSByCursorResponse)(nil),           // 200: testkit.v1.ListSMSByCursorResponse
+	(*GetEmailStatsRequest)(nil),              // 201: testkit.v1.GetEmailStatsRequest
+	(*EmailStatsResponse)(nil),                // 202: testkit.v1.EmailStatsResponse
+	(*GetSMSStatsRequest)(nil),                // 203: testkit.v1.GetSMSStatsRequest
+	(*SMSStatsResponse)(nil),                  // 204: testkit.v1.SMSStatsResponse
+	(*ListEmailSendersRequest)(nil),           // 205: testkit.v1.ListEmailSendersRequest
+	(*ListEmailSendersResponse)(nil),          // 206: testkit.v1.ListEmailSendersResponse
+	(*ListSMSSendersRequest)(nil),             // 207: testkit.v1.ListSMSSendersRequest
+	(*ListSMSSendersResponse)(nil),            // 208: testkit.v1.ListSMSSendersResponse
+	(*ListSMSRegionsRequest)(nil),             // 209: testkit.v1.ListSMSRegionsRequest
+	(*ListSMSRegionsResponse)(nil),            // 210: testkit.v1.ListSMSRegionsResponse
+	(*NextIDRequest)(nil),                     // 211: testkit.v1.NextIDRequest
+	(*NextIDResponse)(nil),                    // 212: testkit.v1.NextIDResponse
+	(*BatchNextIDRequest)(nil),                // 213: testkit.v1.BatchNextIDRequest
+	(*BatchNextIDResponse)(nil),               // 214: testkit.v1.BatchNextIDResponse
+	(*DecomposeRequest)(nil),                  // 215: testkit.v1.DecomposeRequest
+	(*DecomposeResponse)(nil),                 // 216: testkit.v1.DecomposeResponse
+	(*GetDashboardRequest)(nil),               // 217: testkit.v1.GetDashboardRequest
+	(*EmailStats)(nil),                        // 218: testkit.v1.EmailStats
+	(*SMSStats)(nil),                          // 219: testkit.v1.SMSStats
+	(*MyQuota)(nil),                           // 220: testkit.v1.MyQuota
+	(*UsersSummary)(nil),                      // 221: testkit.v1.UsersSummary
+	(*DashboardResponse)(nil),                 // 222: testkit.v1.DashboardResponse
+	(*ActivateRequest)(nil),                   // 223: testkit.v1.ActivateRequest
+	(*DeviceSlotInfo)(nil),                    // 224: testkit.v1.DeviceSlotInfo
+	(*SlotSummary)(nil),                       // 225: testkit.v1.SlotSummary
+	(*ActivateResponse)(nil),                  // 226: testkit.v1.ActivateResponse
+	(*DeactivateRequest)(nil),                 // 227: testkit.v1.DeactivateRequest
+	(*DeactivateResponse)(nil),                // 228: testkit.v1.DeactivateResponse
+	(*TrialStartRequest)(nil),                 // 229: testkit.v1.TrialStartRequest
+	(*TrialStartResponse)(nil),                // 230: testkit.v1.TrialStartResponse
+	(*HealthRequest)(nil),                     // 231: testkit.v1.HealthRequest
+	(*HealthChecks)(nil),                      // 232: testkit.v1.HealthChecks
+	(*HealthResponse)(nil),                    // 233: testkit.v1.HealthResponse
+	(*SlotLimitInfo)(nil),                     // 234: testkit.v1.SlotLimitInfo
+	(*RetryAfterInfo)(nil),                    // 235: testkit.v1.RetryAfterInfo
+	(*EntitlementInput)(nil),                  // 236: testkit.v1.EntitlementInput
+	(*EntitlementInfo)(nil),                   // 237: testkit.v1.EntitlementInfo
+	(*KeyInfo)(nil),                           // 238: testkit.v1.KeyInfo
+	(*CreateKeyRequest)(nil),                  // 239: testkit.v1.CreateKeyRequest
+	(*CreateKeyResponse)(nil),                 // 240: testkit.v1.CreateKeyResponse
+	(*ShowKeyRequest)(nil),                    // 241: testkit.v1.ShowKeyRequest
+	(*ShowKeyResponse)(nil),                   // 242: testkit.v1.ShowKeyResponse
+	(*ListKeysRequest)(nil),                   // 243: testkit.v1.ListKeysRequest
+	(*ListKeysResponse)(nil),                  // 244: testkit.v1.ListKeysResponse
+	(*UpdateKeyRequest)(nil),                  // 245: testkit.v1.UpdateKeyRequest
+	(*UpdateKeyResponse)(nil),                 // 246: testkit.v1.UpdateKeyResponse
+	(*RevokeKeyRequest)(nil),                  // 247: testkit.v1.RevokeKeyRequest
+	(*RevokeKeyResponse)(nil),                 // 248: testkit.v1.RevokeKeyResponse
+	(*UnrevokeKeyRequest)(nil),                // 249: testkit.v1.UnrevokeKeyRequest
+	(*UnrevokeKeyResponse)(nil),               // 250: testkit.v1.UnrevokeKeyResponse
+	(*DeleteKeyRequest)(nil),                  // 251: testkit.v1.DeleteKeyRequest
+	(*DeleteKeyResponse)(nil),                 // 252: testkit.v1.DeleteKeyResponse
+	(*GrantModuleRequest)(nil),                // 253: testkit.v1.GrantModuleRequest
+	(*GrantModuleResponse)(nil),               // 254: testkit.v1.GrantModuleResponse
+	(*RevokeModuleRequest)(nil),               // 255: testkit.v1.RevokeModuleRequest
+	(*RevokeModuleResponse)(nil),              // 256: testkit.v1.RevokeModuleResponse
+	(*ListKeyDevicesRequest)(nil),             // 257: testkit.v1.ListKeyDevicesRequest
+	(*ListKeyDevicesResponse)(nil),            // 258: testkit.v1.ListKeyDevicesResponse
+	(*KickDeviceRequest)(nil),                 // 259: testkit.v1.KickDeviceRequest
+	(*KickDeviceResponse)(nil),                // 260: testkit.v1.KickDeviceResponse
+	(*TrialInfo)(nil),                         // 261: testkit.v1.TrialInfo
+	(*ShowTrialRequest)(nil),                  // 262: testkit.v1.ShowTrialRequest
+	(*ShowTrialResponse)(nil),                 // 263: testkit.v1.ShowTrialResponse
+	(*ResetTrialRequest)(nil),                 // 264: testkit.v1.ResetTrialRequest
+	(*ResetTrialResponse)(nil),                // 265: testkit.v1.ResetTrialResponse
+	(*ShowPubKeyRequest)(nil),                 // 266: testkit.v1.ShowPubKeyRequest
+	(*SigningKeyInfo)(nil),                    // 267: testkit.v1.SigningKeyInfo
+	(*ShowPubKeyResponse)(nil),                // 268: testkit.v1.ShowPubKeyResponse
+	(*IngestRequest)(nil),                     // 269: testkit.v1.IngestRequest
+	(*IngestResponse)(nil),                    // 270: testkit.v1.IngestResponse
+	(*ValidateEventResult)(nil),               // 271: testkit.v1.ValidateEventResult
+	(*ValidateBatchResponse)(nil),             // 272: testkit.v1.ValidateBatchResponse
+	(*App)(nil),                               // 273: testkit.v1.App
+	(*EventRule)(nil),                         // 274: testkit.v1.EventRule
+	(*IngestTokenInfo)(nil),                   // 275: testkit.v1.IngestTokenInfo
+	(*TelemetrySigningKeyInfo)(nil),           // 276: testkit.v1.TelemetrySigningKeyInfo
+	(*VersionInfo)(nil),                       // 277: testkit.v1.VersionInfo
+	(*DailyStat)(nil),                         // 278: testkit.v1.DailyStat
+	(*CreateAppRequest)(nil),                  // 279: testkit.v1.CreateAppRequest
+	(*CreateAppResponse)(nil),                 // 280: testkit.v1.CreateAppResponse
+	(*GetAppRequest)(nil),                     // 281: testkit.v1.GetAppRequest
+	(*GetAppResponse)(nil),                    // 282: testkit.v1.GetAppResponse
+	(*UpdateAppRequest)(nil),                  // 283: testkit.v1.UpdateAppRequest
+	(*UpdateAppResponse)(nil),                 // 284: testkit.v1.UpdateAppResponse
+	(*RotateTokenRequest)(nil),                // 285: testkit.v1.RotateTokenRequest
+	(*RotateTokenResponse)(nil),               // 286: testkit.v1.RotateTokenResponse
+	(*RevokeTokenRequest)(nil),                // 287: testkit.v1.RevokeTokenRequest
+	(*RevokeTokenResponse)(nil),               // 288: testkit.v1.RevokeTokenResponse
+	(*CreateSigningKeyRequest)(nil),           // 289: testkit.v1.CreateSigningKeyRequest
+	(*CreateSigningKeyResponse)(nil),          // 290: testkit.v1.CreateSigningKeyResponse
+	(*RevokeSigningKeyRequest)(nil),           // 291: testkit.v1.RevokeSigningKeyRequest
+	(*RevokeSigningKeyResponse)(nil),          // 292: testkit.v1.RevokeSigningKeyResponse
+	(*ReplaceEventRulesRequest)(nil),          // 293: testkit.v1.ReplaceEventRulesRequest
+	(*ReplaceEventRulesResponse)(nil),         // 294: testkit.v1.ReplaceEventRulesResponse
+	(*SetVersionBlockedRequest)(nil),          // 295: testkit.v1.SetVersionBlockedRequest
+	(*SetVersionBlockedResponse)(nil),         // 296: testkit.v1.SetVersionBlockedResponse
+	(*GetAppStatsRequest)(nil),                // 297: testkit.v1.GetAppStatsRequest
+	(*GetAppStatsResponse)(nil),               // 298: testkit.v1.GetAppStatsResponse
+	nil,                                       // 299: testkit.v1.FileInfo.MetadataEntry
+	nil,                                       // 300: testkit.v1.AdminFileInfo.MetadataEntry
+	nil,                                       // 301: testkit.v1.UploadFileMeta.MetadataEntry
+	nil,                                       // 302: testkit.v1.GenerateUploadURLRequest.MetadataEntry
+	nil,                                       // 303: testkit.v1.GenerateUploadURLResponse.HeadersEntry
+	nil,                                       // 304: testkit.v1.GetSTSCredentialRequest.MetadataEntry
+	nil,                                       // 305: testkit.v1.UpdateMyFileRequest.MetadataEntry
+	nil,                                       // 306: testkit.v1.SendEmailRequest.TemplateParamsEntry
+	nil,                                       // 307: testkit.v1.SendSMSRequest.TemplateParamsEntry
+	nil,                                       // 308: testkit.v1.EmailRecord.TemplateParamsEntry
+	nil,                                       // 309: testkit.v1.SMSRecord.TemplateParamsEntry
+	nil,                                       // 310: testkit.v1.IngestResponse.DropsEntry
+	nil,                                       // 311: testkit.v1.GetAppStatsResponse.DropsEntry
+	nil,                                       // 312: testkit.v1.GetAppStatsResponse.SigFailsEntry
+	(*timestamppb.Timestamp)(nil),             // 313: google.protobuf.Timestamp
+	(*structpb.Struct)(nil),                   // 314: google.protobuf.Struct
+	(*durationpb.Duration)(nil),               // 315: google.protobuf.Duration
+	(*emptypb.Empty)(nil),                     // 316: google.protobuf.Empty
 }
 var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	0,   // 0: testkit.v1.LoginRequest.method:type_name -> testkit.v1.LoginMethod
@@ -22146,539 +22331,540 @@ var file_testkit_v1_testkit_proto_depIdxs = []int32{
 	5,   // 6: testkit.v1.User.status:type_name -> testkit.v1.UserStatus
 	1,   // 7: testkit.v1.User.register_source:type_name -> testkit.v1.IdentityProvider
 	4,   // 8: testkit.v1.User.user_type:type_name -> testkit.v1.UserType
-	310, // 9: testkit.v1.User.last_login_at:type_name -> google.protobuf.Timestamp
-	310, // 10: testkit.v1.User.created_at:type_name -> google.protobuf.Timestamp
-	310, // 11: testkit.v1.User.updated_at:type_name -> google.protobuf.Timestamp
+	313, // 9: testkit.v1.User.last_login_at:type_name -> google.protobuf.Timestamp
+	313, // 10: testkit.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	313, // 11: testkit.v1.User.updated_at:type_name -> google.protobuf.Timestamp
 	1,   // 12: testkit.v1.Identity.provider:type_name -> testkit.v1.IdentityProvider
-	310, // 13: testkit.v1.Identity.created_at:type_name -> google.protobuf.Timestamp
+	313, // 13: testkit.v1.Identity.created_at:type_name -> google.protobuf.Timestamp
 	7,   // 14: testkit.v1.Session.device_type:type_name -> testkit.v1.DeviceType
-	310, // 15: testkit.v1.Session.created_at:type_name -> google.protobuf.Timestamp
-	310, // 16: testkit.v1.Session.last_active_at:type_name -> google.protobuf.Timestamp
-	310, // 17: testkit.v1.Group.created_at:type_name -> google.protobuf.Timestamp
-	310, // 18: testkit.v1.Group.updated_at:type_name -> google.protobuf.Timestamp
-	43,  // 19: testkit.v1.Role.permissions:type_name -> testkit.v1.Permission
-	44,  // 20: testkit.v1.Role.perm_groups:type_name -> testkit.v1.PermissionGroup
-	310, // 21: testkit.v1.Role.created_at:type_name -> google.protobuf.Timestamp
-	310, // 22: testkit.v1.Role.updated_at:type_name -> google.protobuf.Timestamp
-	43,  // 23: testkit.v1.PermissionGroup.permissions:type_name -> testkit.v1.Permission
-	310, // 24: testkit.v1.GroupMember.created_at:type_name -> google.protobuf.Timestamp
+	313, // 15: testkit.v1.Session.created_at:type_name -> google.protobuf.Timestamp
+	313, // 16: testkit.v1.Session.last_active_at:type_name -> google.protobuf.Timestamp
+	313, // 17: testkit.v1.Group.created_at:type_name -> google.protobuf.Timestamp
+	313, // 18: testkit.v1.Group.updated_at:type_name -> google.protobuf.Timestamp
+	44,  // 19: testkit.v1.Role.permissions:type_name -> testkit.v1.Permission
+	45,  // 20: testkit.v1.Role.perm_groups:type_name -> testkit.v1.PermissionGroup
+	313, // 21: testkit.v1.Role.created_at:type_name -> google.protobuf.Timestamp
+	313, // 22: testkit.v1.Role.updated_at:type_name -> google.protobuf.Timestamp
+	44,  // 23: testkit.v1.PermissionGroup.permissions:type_name -> testkit.v1.Permission
+	313, // 24: testkit.v1.GroupMember.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 25: testkit.v1.LoginLog.provider:type_name -> testkit.v1.IdentityProvider
 	8,   // 26: testkit.v1.LoginLog.action:type_name -> testkit.v1.LoginAction
 	7,   // 27: testkit.v1.LoginLog.device_type:type_name -> testkit.v1.DeviceType
-	310, // 28: testkit.v1.LoginLog.created_at:type_name -> google.protobuf.Timestamp
-	310, // 29: testkit.v1.UserRole.created_at:type_name -> google.protobuf.Timestamp
-	38,  // 30: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
+	313, // 28: testkit.v1.LoginLog.created_at:type_name -> google.protobuf.Timestamp
+	313, // 29: testkit.v1.UserRole.created_at:type_name -> google.protobuf.Timestamp
+	39,  // 30: testkit.v1.TokenResponse.user:type_name -> testkit.v1.User
 	6,   // 31: testkit.v1.UpdateProfileRequest.gender:type_name -> testkit.v1.Gender
-	39,  // 32: testkit.v1.ListIdentitiesResponse.identities:type_name -> testkit.v1.Identity
+	40,  // 32: testkit.v1.ListIdentitiesResponse.identities:type_name -> testkit.v1.Identity
 	1,   // 33: testkit.v1.BindIdentityRequest.provider:type_name -> testkit.v1.IdentityProvider
 	1,   // 34: testkit.v1.BindOAuthIdentityRequest.provider:type_name -> testkit.v1.IdentityProvider
-	39,  // 35: testkit.v1.BindOAuthIdentityResponse.identity:type_name -> testkit.v1.Identity
-	40,  // 36: testkit.v1.ListSessionsResponse.sessions:type_name -> testkit.v1.Session
-	310, // 37: testkit.v1.GetSessionResponse.expires_at:type_name -> google.protobuf.Timestamp
-	310, // 38: testkit.v1.GetSessionResponse.created_at:type_name -> google.protobuf.Timestamp
+	40,  // 35: testkit.v1.BindOAuthIdentityResponse.identity:type_name -> testkit.v1.Identity
+	41,  // 36: testkit.v1.ListSessionsResponse.sessions:type_name -> testkit.v1.Session
+	313, // 37: testkit.v1.GetSessionResponse.expires_at:type_name -> google.protobuf.Timestamp
+	313, // 38: testkit.v1.GetSessionResponse.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 39: testkit.v1.GetOAuthURLRequest.provider:type_name -> testkit.v1.IdentityProvider
 	1,   // 40: testkit.v1.SocialLoginRequest.provider:type_name -> testkit.v1.IdentityProvider
-	38,  // 41: testkit.v1.SocialLoginResponse.user:type_name -> testkit.v1.User
+	39,  // 41: testkit.v1.SocialLoginResponse.user:type_name -> testkit.v1.User
 	4,   // 42: testkit.v1.CreateUserRequest.user_type:type_name -> testkit.v1.UserType
 	6,   // 43: testkit.v1.CreateUserRequest.gender:type_name -> testkit.v1.Gender
-	38,  // 44: testkit.v1.CreateUserResponse.user:type_name -> testkit.v1.User
+	39,  // 44: testkit.v1.CreateUserResponse.user:type_name -> testkit.v1.User
 	5,   // 45: testkit.v1.ListUsersRequest.status:type_name -> testkit.v1.UserStatus
 	6,   // 46: testkit.v1.ListUsersRequest.gender:type_name -> testkit.v1.Gender
 	1,   // 47: testkit.v1.ListUsersRequest.register_source:type_name -> testkit.v1.IdentityProvider
 	7,   // 48: testkit.v1.ListUsersRequest.register_device:type_name -> testkit.v1.DeviceType
-	310, // 49: testkit.v1.ListUsersRequest.created_at_start:type_name -> google.protobuf.Timestamp
-	310, // 50: testkit.v1.ListUsersRequest.created_at_end:type_name -> google.protobuf.Timestamp
-	310, // 51: testkit.v1.ListUsersRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
-	310, // 52: testkit.v1.ListUsersRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	313, // 49: testkit.v1.ListUsersRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	313, // 50: testkit.v1.ListUsersRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	313, // 51: testkit.v1.ListUsersRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	313, // 52: testkit.v1.ListUsersRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
 	4,   // 53: testkit.v1.ListUsersRequest.user_type:type_name -> testkit.v1.UserType
 	9,   // 54: testkit.v1.ListUsersRequest.order_by:type_name -> testkit.v1.UserSortField
-	38,  // 55: testkit.v1.ListUsersResponse.users:type_name -> testkit.v1.User
+	39,  // 55: testkit.v1.ListUsersResponse.users:type_name -> testkit.v1.User
 	5,   // 56: testkit.v1.ListUsersPagedRequest.status:type_name -> testkit.v1.UserStatus
 	6,   // 57: testkit.v1.ListUsersPagedRequest.gender:type_name -> testkit.v1.Gender
 	1,   // 58: testkit.v1.ListUsersPagedRequest.register_source:type_name -> testkit.v1.IdentityProvider
 	7,   // 59: testkit.v1.ListUsersPagedRequest.register_device:type_name -> testkit.v1.DeviceType
 	4,   // 60: testkit.v1.ListUsersPagedRequest.user_type:type_name -> testkit.v1.UserType
-	310, // 61: testkit.v1.ListUsersPagedRequest.created_at_start:type_name -> google.protobuf.Timestamp
-	310, // 62: testkit.v1.ListUsersPagedRequest.created_at_end:type_name -> google.protobuf.Timestamp
-	310, // 63: testkit.v1.ListUsersPagedRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
-	310, // 64: testkit.v1.ListUsersPagedRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
+	313, // 61: testkit.v1.ListUsersPagedRequest.created_at_start:type_name -> google.protobuf.Timestamp
+	313, // 62: testkit.v1.ListUsersPagedRequest.created_at_end:type_name -> google.protobuf.Timestamp
+	313, // 63: testkit.v1.ListUsersPagedRequest.last_login_at_start:type_name -> google.protobuf.Timestamp
+	313, // 64: testkit.v1.ListUsersPagedRequest.last_login_at_end:type_name -> google.protobuf.Timestamp
 	9,   // 65: testkit.v1.ListUsersPagedRequest.order_by:type_name -> testkit.v1.UserSortField
-	38,  // 66: testkit.v1.ListUsersPagedResponse.users:type_name -> testkit.v1.User
+	39,  // 66: testkit.v1.ListUsersPagedResponse.users:type_name -> testkit.v1.User
 	1,   // 67: testkit.v1.GetLoginLogsRequest.provider:type_name -> testkit.v1.IdentityProvider
-	46,  // 68: testkit.v1.GetLoginLogsResponse.logs:type_name -> testkit.v1.LoginLog
-	41,  // 69: testkit.v1.ListGroupsResponse.groups:type_name -> testkit.v1.Group
-	45,  // 70: testkit.v1.ListGroupMembersResponse.members:type_name -> testkit.v1.GroupMember
-	42,  // 71: testkit.v1.ListGroupRolesResponse.roles:type_name -> testkit.v1.Role
-	42,  // 72: testkit.v1.ListRolesResponse.roles:type_name -> testkit.v1.Role
-	47,  // 73: testkit.v1.ListUserRolesResponse.roles:type_name -> testkit.v1.UserRole
-	43,  // 74: testkit.v1.ListPermissionsResponse.permissions:type_name -> testkit.v1.Permission
-	44,  // 75: testkit.v1.ListPermissionGroupsResponse.groups:type_name -> testkit.v1.PermissionGroup
-	296, // 76: testkit.v1.FileInfo.metadata:type_name -> testkit.v1.FileInfo.MetadataEntry
+	47,  // 68: testkit.v1.GetLoginLogsResponse.logs:type_name -> testkit.v1.LoginLog
+	42,  // 69: testkit.v1.ListGroupsResponse.groups:type_name -> testkit.v1.Group
+	46,  // 70: testkit.v1.ListGroupMembersResponse.members:type_name -> testkit.v1.GroupMember
+	43,  // 71: testkit.v1.ListGroupRolesResponse.roles:type_name -> testkit.v1.Role
+	43,  // 72: testkit.v1.ListRolesResponse.roles:type_name -> testkit.v1.Role
+	48,  // 73: testkit.v1.ListUserRolesResponse.roles:type_name -> testkit.v1.UserRole
+	44,  // 74: testkit.v1.ListPermissionsResponse.permissions:type_name -> testkit.v1.Permission
+	45,  // 75: testkit.v1.ListPermissionGroupsResponse.groups:type_name -> testkit.v1.PermissionGroup
+	299, // 76: testkit.v1.FileInfo.metadata:type_name -> testkit.v1.FileInfo.MetadataEntry
 	10,  // 77: testkit.v1.FileInfo.owner_type:type_name -> testkit.v1.OwnerType
 	10,  // 78: testkit.v1.AdminFileInfo.owner_type:type_name -> testkit.v1.OwnerType
-	297, // 79: testkit.v1.AdminFileInfo.metadata:type_name -> testkit.v1.AdminFileInfo.MetadataEntry
-	21,  // 80: testkit.v1.ImageProcessOp.type:type_name -> testkit.v1.ImageProcessType
+	300, // 79: testkit.v1.AdminFileInfo.metadata:type_name -> testkit.v1.AdminFileInfo.MetadataEntry
+	22,  // 80: testkit.v1.ImageProcessOp.type:type_name -> testkit.v1.ImageProcessType
 	15,  // 81: testkit.v1.ImageProcessOp.format:type_name -> testkit.v1.ImageFormat
 	14,  // 82: testkit.v1.ImageProcessOp.resize_mode:type_name -> testkit.v1.ImageResizeMode
-	298, // 83: testkit.v1.UploadFileMeta.metadata:type_name -> testkit.v1.UploadFileMeta.MetadataEntry
-	126, // 84: testkit.v1.UploadCredentialItem.token:type_name -> testkit.v1.UploadTokenInfo
-	127, // 85: testkit.v1.UploadCredentialItem.error:type_name -> testkit.v1.ItemError
+	301, // 83: testkit.v1.UploadFileMeta.metadata:type_name -> testkit.v1.UploadFileMeta.MetadataEntry
+	127, // 84: testkit.v1.UploadCredentialItem.token:type_name -> testkit.v1.UploadTokenInfo
+	128, // 85: testkit.v1.UploadCredentialItem.error:type_name -> testkit.v1.ItemError
 	17,  // 86: testkit.v1.AuditLogEntry.action:type_name -> testkit.v1.AuditAction
 	10,  // 87: testkit.v1.AuditLogEntry.owner_type:type_name -> testkit.v1.OwnerType
-	20,  // 88: testkit.v1.AuditLogEntry.target_type:type_name -> testkit.v1.AuditLogTargetType
-	311, // 89: testkit.v1.AuditLogEntry.before:type_name -> google.protobuf.Struct
-	311, // 90: testkit.v1.AuditLogEntry.after:type_name -> google.protobuf.Struct
-	19,  // 91: testkit.v1.AuditLogEntry.status:type_name -> testkit.v1.AuditLogStatus
+	21,  // 88: testkit.v1.AuditLogEntry.target_type:type_name -> testkit.v1.AuditLogTargetType
+	314, // 89: testkit.v1.AuditLogEntry.before:type_name -> google.protobuf.Struct
+	314, // 90: testkit.v1.AuditLogEntry.after:type_name -> google.protobuf.Struct
+	20,  // 91: testkit.v1.AuditLogEntry.status:type_name -> testkit.v1.AuditLogStatus
 	10,  // 92: testkit.v1.OwnerStats.owner_type:type_name -> testkit.v1.OwnerType
 	11,  // 93: testkit.v1.ProviderInfo.vendor:type_name -> testkit.v1.Vendor
 	13,  // 94: testkit.v1.BucketInfo.acl:type_name -> testkit.v1.BucketACL
 	11,  // 95: testkit.v1.BucketInfo.vendor:type_name -> testkit.v1.Vendor
-	299, // 96: testkit.v1.GenerateUploadURLRequest.metadata:type_name -> testkit.v1.GenerateUploadURLRequest.MetadataEntry
+	302, // 96: testkit.v1.GenerateUploadURLRequest.metadata:type_name -> testkit.v1.GenerateUploadURLRequest.MetadataEntry
 	11,  // 97: testkit.v1.GenerateUploadURLRequest.vendor:type_name -> testkit.v1.Vendor
-	121, // 98: testkit.v1.GenerateUploadURLResponse.file_info:type_name -> testkit.v1.FileInfo
-	300, // 99: testkit.v1.GenerateUploadURLResponse.headers:type_name -> testkit.v1.GenerateUploadURLResponse.HeadersEntry
-	301, // 100: testkit.v1.GetSTSCredentialRequest.metadata:type_name -> testkit.v1.GetSTSCredentialRequest.MetadataEntry
-	11,  // 101: testkit.v1.GetSTSCredentialRequest.vendor:type_name -> testkit.v1.Vendor
-	312, // 102: testkit.v1.GetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
-	121, // 103: testkit.v1.GetSTSCredentialResponse.file_info:type_name -> testkit.v1.FileInfo
-	125, // 104: testkit.v1.BatchGetSTSCredentialRequest.files:type_name -> testkit.v1.UploadFileMeta
-	312, // 105: testkit.v1.BatchGetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
-	128, // 106: testkit.v1.BatchGetSTSCredentialResponse.items:type_name -> testkit.v1.UploadCredentialItem
-	121, // 107: testkit.v1.ConfirmUploadResponse.file_info:type_name -> testkit.v1.FileInfo
-	124, // 108: testkit.v1.GenerateProcessURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
-	124, // 109: testkit.v1.GenerateCDNURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
-	312, // 110: testkit.v1.GenerateCDNURLRequest.ttl:type_name -> google.protobuf.Duration
-	16,  // 111: testkit.v1.ListMyFilesRequest.order_by:type_name -> testkit.v1.SortField
-	121, // 112: testkit.v1.ListMyFilesResponse.files:type_name -> testkit.v1.FileInfo
-	16,  // 113: testkit.v1.ListMyFilesPagedRequest.order_by:type_name -> testkit.v1.SortField
-	121, // 114: testkit.v1.ListMyFilesPagedResponse.files:type_name -> testkit.v1.FileInfo
-	302, // 115: testkit.v1.UpdateMyFileRequest.metadata:type_name -> testkit.v1.UpdateMyFileRequest.MetadataEntry
-	17,  // 116: testkit.v1.ListMyAuditLogsRequest.action:type_name -> testkit.v1.AuditAction
-	20,  // 117: testkit.v1.ListMyAuditLogsRequest.target_type:type_name -> testkit.v1.AuditLogTargetType
-	129, // 118: testkit.v1.ListMyAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
-	10,  // 119: testkit.v1.SetOwnerQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
-	10,  // 120: testkit.v1.AddOwnerQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
-	10,  // 121: testkit.v1.AdminListFilesRequest.owner_type:type_name -> testkit.v1.OwnerType
-	16,  // 122: testkit.v1.AdminListFilesRequest.order_by:type_name -> testkit.v1.SortField
-	122, // 123: testkit.v1.AdminListFilesResponse.files:type_name -> testkit.v1.AdminFileInfo
-	10,  // 124: testkit.v1.AdminGetQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
-	10,  // 125: testkit.v1.AdminSetQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
-	10,  // 126: testkit.v1.AdminGetStatsRequest.owner_type:type_name -> testkit.v1.OwnerType
-	130, // 127: testkit.v1.AdminGetStatsResponse.owner_stats:type_name -> testkit.v1.OwnerStats
-	131, // 128: testkit.v1.AdminGetStatsResponse.provider_stats:type_name -> testkit.v1.ProviderStats
-	132, // 129: testkit.v1.AdminGetStatsResponse.bucket_stats:type_name -> testkit.v1.BucketStats
-	133, // 130: testkit.v1.AdminListProvidersResponse.providers:type_name -> testkit.v1.ProviderInfo
-	134, // 131: testkit.v1.AdminListBucketsResponse.buckets:type_name -> testkit.v1.BucketInfo
-	10,  // 132: testkit.v1.AdminSoftDeleteOwnerFilesRequest.owner_type:type_name -> testkit.v1.OwnerType
-	10,  // 133: testkit.v1.AdminDeleteOwnerRequest.owner_type:type_name -> testkit.v1.OwnerType
-	17,  // 134: testkit.v1.AdminListAuditLogsRequest.action:type_name -> testkit.v1.AuditAction
-	20,  // 135: testkit.v1.AdminListAuditLogsRequest.target_type:type_name -> testkit.v1.AuditLogTargetType
-	19,  // 136: testkit.v1.AdminListAuditLogsRequest.status:type_name -> testkit.v1.AuditLogStatus
-	10,  // 137: testkit.v1.AdminListAuditLogsRequest.owner_type:type_name -> testkit.v1.OwnerType
-	129, // 138: testkit.v1.AdminListAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
-	24,  // 139: testkit.v1.EmailVendorStats.vendor:type_name -> testkit.v1.EmailVendor
-	25,  // 140: testkit.v1.SmsVendorStats.vendor:type_name -> testkit.v1.SmsVendor
-	179, // 141: testkit.v1.SendEmailRequest.to:type_name -> testkit.v1.EmailAddress
-	179, // 142: testkit.v1.SendEmailRequest.cc:type_name -> testkit.v1.EmailAddress
-	179, // 143: testkit.v1.SendEmailRequest.bcc:type_name -> testkit.v1.EmailAddress
-	179, // 144: testkit.v1.SendEmailRequest.reply_to:type_name -> testkit.v1.EmailAddress
-	24,  // 145: testkit.v1.SendEmailRequest.vendor:type_name -> testkit.v1.EmailVendor
-	303, // 146: testkit.v1.SendEmailRequest.template_params:type_name -> testkit.v1.SendEmailRequest.TemplateParamsEntry
-	26,  // 147: testkit.v1.SendEmailRequest.scene:type_name -> testkit.v1.EmailScene
-	179, // 148: testkit.v1.SendEmailRequest.from:type_name -> testkit.v1.EmailAddress
-	180, // 149: testkit.v1.SendEmailRequest.attachments:type_name -> testkit.v1.EmailAttachment
-	304, // 150: testkit.v1.SendSMSRequest.template_params:type_name -> testkit.v1.SendSMSRequest.TemplateParamsEntry
-	25,  // 151: testkit.v1.SendSMSRequest.vendor:type_name -> testkit.v1.SmsVendor
-	27,  // 152: testkit.v1.SendSMSRequest.scene:type_name -> testkit.v1.SmsScene
-	23,  // 153: testkit.v1.SendResponse.status:type_name -> testkit.v1.MessageStatus
-	24,  // 154: testkit.v1.SendResponse.email_vendor:type_name -> testkit.v1.EmailVendor
-	25,  // 155: testkit.v1.SendResponse.sms_vendor:type_name -> testkit.v1.SmsVendor
-	24,  // 156: testkit.v1.EmailRecord.vendor:type_name -> testkit.v1.EmailVendor
-	26,  // 157: testkit.v1.EmailRecord.scene:type_name -> testkit.v1.EmailScene
-	23,  // 158: testkit.v1.EmailRecord.status:type_name -> testkit.v1.MessageStatus
-	179, // 159: testkit.v1.EmailRecord.target:type_name -> testkit.v1.EmailAddress
-	179, // 160: testkit.v1.EmailRecord.cc:type_name -> testkit.v1.EmailAddress
-	179, // 161: testkit.v1.EmailRecord.bcc:type_name -> testkit.v1.EmailAddress
-	179, // 162: testkit.v1.EmailRecord.reply_to:type_name -> testkit.v1.EmailAddress
-	305, // 163: testkit.v1.EmailRecord.template_params:type_name -> testkit.v1.EmailRecord.TemplateParamsEntry
-	180, // 164: testkit.v1.EmailRecord.attachments:type_name -> testkit.v1.EmailAttachment
-	25,  // 165: testkit.v1.SMSRecord.vendor:type_name -> testkit.v1.SmsVendor
-	27,  // 166: testkit.v1.SMSRecord.scene:type_name -> testkit.v1.SmsScene
-	23,  // 167: testkit.v1.SMSRecord.status:type_name -> testkit.v1.MessageStatus
-	306, // 168: testkit.v1.SMSRecord.template_params:type_name -> testkit.v1.SMSRecord.TemplateParamsEntry
-	24,  // 169: testkit.v1.ListEmailsRequest.vendor:type_name -> testkit.v1.EmailVendor
-	26,  // 170: testkit.v1.ListEmailsRequest.scene:type_name -> testkit.v1.EmailScene
-	23,  // 171: testkit.v1.ListEmailsRequest.status:type_name -> testkit.v1.MessageStatus
-	16,  // 172: testkit.v1.ListEmailsRequest.sort_field:type_name -> testkit.v1.SortField
-	22,  // 173: testkit.v1.ListEmailsRequest.sort_direction:type_name -> testkit.v1.SortDirection
-	186, // 174: testkit.v1.ListEmailsResponse.records:type_name -> testkit.v1.EmailRecord
-	25,  // 175: testkit.v1.ListSMSRequest.vendor:type_name -> testkit.v1.SmsVendor
-	27,  // 176: testkit.v1.ListSMSRequest.scene:type_name -> testkit.v1.SmsScene
-	23,  // 177: testkit.v1.ListSMSRequest.status:type_name -> testkit.v1.MessageStatus
-	16,  // 178: testkit.v1.ListSMSRequest.sort_field:type_name -> testkit.v1.SortField
-	22,  // 179: testkit.v1.ListSMSRequest.sort_direction:type_name -> testkit.v1.SortDirection
-	187, // 180: testkit.v1.ListSMSResponse.records:type_name -> testkit.v1.SMSRecord
-	24,  // 181: testkit.v1.ListEmailsByCursorRequest.vendor:type_name -> testkit.v1.EmailVendor
-	26,  // 182: testkit.v1.ListEmailsByCursorRequest.scene:type_name -> testkit.v1.EmailScene
-	23,  // 183: testkit.v1.ListEmailsByCursorRequest.status:type_name -> testkit.v1.MessageStatus
-	16,  // 184: testkit.v1.ListEmailsByCursorRequest.sort_field:type_name -> testkit.v1.SortField
-	22,  // 185: testkit.v1.ListEmailsByCursorRequest.sort_direction:type_name -> testkit.v1.SortDirection
-	186, // 186: testkit.v1.ListEmailsByCursorResponse.records:type_name -> testkit.v1.EmailRecord
-	25,  // 187: testkit.v1.ListSMSByCursorRequest.vendor:type_name -> testkit.v1.SmsVendor
-	27,  // 188: testkit.v1.ListSMSByCursorRequest.scene:type_name -> testkit.v1.SmsScene
-	23,  // 189: testkit.v1.ListSMSByCursorRequest.status:type_name -> testkit.v1.MessageStatus
-	16,  // 190: testkit.v1.ListSMSByCursorRequest.sort_field:type_name -> testkit.v1.SortField
-	22,  // 191: testkit.v1.ListSMSByCursorRequest.sort_direction:type_name -> testkit.v1.SortDirection
-	187, // 192: testkit.v1.ListSMSByCursorResponse.records:type_name -> testkit.v1.SMSRecord
-	24,  // 193: testkit.v1.GetEmailStatsRequest.vendor:type_name -> testkit.v1.EmailVendor
-	26,  // 194: testkit.v1.GetEmailStatsRequest.scene:type_name -> testkit.v1.EmailScene
-	181, // 195: testkit.v1.EmailStatsResponse.vendors:type_name -> testkit.v1.EmailVendorStats
-	25,  // 196: testkit.v1.GetSMSStatsRequest.vendor:type_name -> testkit.v1.SmsVendor
-	27,  // 197: testkit.v1.GetSMSStatsRequest.scene:type_name -> testkit.v1.SmsScene
-	182, // 198: testkit.v1.SMSStatsResponse.vendors:type_name -> testkit.v1.SmsVendorStats
-	181, // 199: testkit.v1.EmailStats.vendors:type_name -> testkit.v1.EmailVendorStats
-	182, // 200: testkit.v1.SMSStats.vendors:type_name -> testkit.v1.SmsVendorStats
-	215, // 201: testkit.v1.DashboardResponse.email_stats:type_name -> testkit.v1.EmailStats
-	216, // 202: testkit.v1.DashboardResponse.sms_stats:type_name -> testkit.v1.SMSStats
-	217, // 203: testkit.v1.DashboardResponse.quota:type_name -> testkit.v1.MyQuota
-	218, // 204: testkit.v1.DashboardResponse.users:type_name -> testkit.v1.UsersSummary
-	310, // 205: testkit.v1.DeviceSlotInfo.first_seen_at:type_name -> google.protobuf.Timestamp
-	310, // 206: testkit.v1.DeviceSlotInfo.last_seen_at:type_name -> google.protobuf.Timestamp
-	221, // 207: testkit.v1.SlotSummary.devices:type_name -> testkit.v1.DeviceSlotInfo
-	222, // 208: testkit.v1.ActivateResponse.slots:type_name -> testkit.v1.SlotSummary
-	229, // 209: testkit.v1.HealthResponse.checks:type_name -> testkit.v1.HealthChecks
-	221, // 210: testkit.v1.SlotLimitInfo.devices:type_name -> testkit.v1.DeviceSlotInfo
-	28,  // 211: testkit.v1.EntitlementInput.module:type_name -> testkit.v1.Module
-	29,  // 212: testkit.v1.EntitlementInput.kind:type_name -> testkit.v1.EntitlementKind
-	310, // 213: testkit.v1.EntitlementInput.expires_at:type_name -> google.protobuf.Timestamp
-	28,  // 214: testkit.v1.EntitlementInfo.module:type_name -> testkit.v1.Module
-	29,  // 215: testkit.v1.EntitlementInfo.kind:type_name -> testkit.v1.EntitlementKind
-	310, // 216: testkit.v1.EntitlementInfo.expires_at:type_name -> google.protobuf.Timestamp
-	310, // 217: testkit.v1.EntitlementInfo.granted_at:type_name -> google.protobuf.Timestamp
-	30,  // 218: testkit.v1.KeyInfo.status:type_name -> testkit.v1.KeyStatus
-	310, // 219: testkit.v1.KeyInfo.created_at:type_name -> google.protobuf.Timestamp
-	310, // 220: testkit.v1.KeyInfo.revoked_at:type_name -> google.protobuf.Timestamp
-	234, // 221: testkit.v1.KeyInfo.entitlements:type_name -> testkit.v1.EntitlementInfo
-	221, // 222: testkit.v1.KeyInfo.devices:type_name -> testkit.v1.DeviceSlotInfo
-	233, // 223: testkit.v1.CreateKeyRequest.grants:type_name -> testkit.v1.EntitlementInput
-	235, // 224: testkit.v1.CreateKeyResponse.key:type_name -> testkit.v1.KeyInfo
-	235, // 225: testkit.v1.ShowKeyResponse.key:type_name -> testkit.v1.KeyInfo
-	30,  // 226: testkit.v1.ListKeysRequest.status:type_name -> testkit.v1.KeyStatus
-	235, // 227: testkit.v1.ListKeysResponse.keys:type_name -> testkit.v1.KeyInfo
-	235, // 228: testkit.v1.UpdateKeyResponse.key:type_name -> testkit.v1.KeyInfo
-	235, // 229: testkit.v1.RevokeKeyResponse.key:type_name -> testkit.v1.KeyInfo
-	235, // 230: testkit.v1.UnrevokeKeyResponse.key:type_name -> testkit.v1.KeyInfo
-	28,  // 231: testkit.v1.GrantModuleRequest.module:type_name -> testkit.v1.Module
-	29,  // 232: testkit.v1.GrantModuleRequest.kind:type_name -> testkit.v1.EntitlementKind
-	310, // 233: testkit.v1.GrantModuleRequest.expires_at:type_name -> google.protobuf.Timestamp
-	234, // 234: testkit.v1.GrantModuleResponse.entitlement:type_name -> testkit.v1.EntitlementInfo
-	28,  // 235: testkit.v1.RevokeModuleRequest.module:type_name -> testkit.v1.Module
-	221, // 236: testkit.v1.ListKeyDevicesResponse.devices:type_name -> testkit.v1.DeviceSlotInfo
-	28,  // 237: testkit.v1.TrialInfo.module:type_name -> testkit.v1.Module
-	310, // 238: testkit.v1.TrialInfo.started_at:type_name -> google.protobuf.Timestamp
-	310, // 239: testkit.v1.TrialInfo.expires_at:type_name -> google.protobuf.Timestamp
-	28,  // 240: testkit.v1.ShowTrialRequest.module:type_name -> testkit.v1.Module
-	258, // 241: testkit.v1.ShowTrialResponse.trials:type_name -> testkit.v1.TrialInfo
-	28,  // 242: testkit.v1.ResetTrialRequest.module:type_name -> testkit.v1.Module
-	264, // 243: testkit.v1.ShowPubKeyResponse.keys:type_name -> testkit.v1.SigningKeyInfo
-	307, // 244: testkit.v1.IngestResponse.drops:type_name -> testkit.v1.IngestResponse.DropsEntry
-	268, // 245: testkit.v1.ValidateBatchResponse.events:type_name -> testkit.v1.ValidateEventResult
-	31,  // 246: testkit.v1.App.auth_mode:type_name -> testkit.v1.AuthMode
-	310, // 247: testkit.v1.App.auth_grace_until:type_name -> google.protobuf.Timestamp
-	310, // 248: testkit.v1.App.created_at:type_name -> google.protobuf.Timestamp
-	310, // 249: testkit.v1.App.updated_at:type_name -> google.protobuf.Timestamp
-	310, // 250: testkit.v1.IngestTokenInfo.created_at:type_name -> google.protobuf.Timestamp
-	310, // 251: testkit.v1.IngestTokenInfo.last_used_at:type_name -> google.protobuf.Timestamp
-	310, // 252: testkit.v1.TelemetrySigningKeyInfo.created_at:type_name -> google.protobuf.Timestamp
-	310, // 253: testkit.v1.TelemetrySigningKeyInfo.last_used_at:type_name -> google.protobuf.Timestamp
-	310, // 254: testkit.v1.VersionInfo.last_seen_at:type_name -> google.protobuf.Timestamp
-	270, // 255: testkit.v1.CreateAppResponse.app:type_name -> testkit.v1.App
-	270, // 256: testkit.v1.GetAppResponse.app:type_name -> testkit.v1.App
-	272, // 257: testkit.v1.GetAppResponse.tokens:type_name -> testkit.v1.IngestTokenInfo
-	273, // 258: testkit.v1.GetAppResponse.signing_keys:type_name -> testkit.v1.TelemetrySigningKeyInfo
-	271, // 259: testkit.v1.GetAppResponse.rules:type_name -> testkit.v1.EventRule
-	274, // 260: testkit.v1.GetAppResponse.versions:type_name -> testkit.v1.VersionInfo
-	31,  // 261: testkit.v1.UpdateAppRequest.auth_mode:type_name -> testkit.v1.AuthMode
-	310, // 262: testkit.v1.UpdateAppRequest.auth_grace_until:type_name -> google.protobuf.Timestamp
-	270, // 263: testkit.v1.UpdateAppResponse.app:type_name -> testkit.v1.App
-	271, // 264: testkit.v1.ReplaceEventRulesRequest.rules:type_name -> testkit.v1.EventRule
-	271, // 265: testkit.v1.ReplaceEventRulesResponse.rules:type_name -> testkit.v1.EventRule
-	275, // 266: testkit.v1.GetAppStatsResponse.days:type_name -> testkit.v1.DailyStat
-	308, // 267: testkit.v1.GetAppStatsResponse.drops:type_name -> testkit.v1.GetAppStatsResponse.DropsEntry
-	309, // 268: testkit.v1.GetAppStatsResponse.sig_fails:type_name -> testkit.v1.GetAppStatsResponse.SigFailsEntry
-	313, // 269: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
-	33,  // 270: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
-	34,  // 271: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
-	35,  // 272: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
-	313, // 273: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
-	37,  // 274: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
-	49,  // 275: testkit.v1.TestkitService.GetProfile:input_type -> testkit.v1.GetProfileRequest
-	50,  // 276: testkit.v1.TestkitService.UpdateProfile:input_type -> testkit.v1.UpdateProfileRequest
-	51,  // 277: testkit.v1.TestkitService.ChangePassword:input_type -> testkit.v1.ChangePasswordRequest
-	52,  // 278: testkit.v1.TestkitService.ResetPassword:input_type -> testkit.v1.ResetPasswordRequest
-	53,  // 279: testkit.v1.TestkitService.ListIdentities:input_type -> testkit.v1.ListIdentitiesRequest
-	55,  // 280: testkit.v1.TestkitService.BindIdentity:input_type -> testkit.v1.BindIdentityRequest
-	56,  // 281: testkit.v1.TestkitService.BindOAuthIdentity:input_type -> testkit.v1.BindOAuthIdentityRequest
-	58,  // 282: testkit.v1.TestkitService.UnbindIdentity:input_type -> testkit.v1.UnbindIdentityRequest
-	59,  // 283: testkit.v1.TestkitService.ListSessions:input_type -> testkit.v1.ListSessionsRequest
-	61,  // 284: testkit.v1.TestkitService.RevokeSession:input_type -> testkit.v1.RevokeSessionRequest
-	62,  // 285: testkit.v1.TestkitService.RevokeAllSessions:input_type -> testkit.v1.RevokeAllSessionsRequest
-	63,  // 286: testkit.v1.TestkitService.GetSession:input_type -> testkit.v1.GetSessionRequest
-	65,  // 287: testkit.v1.TestkitService.IssueSessionCode:input_type -> testkit.v1.IssueSessionCodeRequest
-	67,  // 288: testkit.v1.TestkitService.ExchangeSessionCode:input_type -> testkit.v1.ExchangeSessionCodeRequest
-	69,  // 289: testkit.v1.TestkitService.GetOAuthURL:input_type -> testkit.v1.GetOAuthURLRequest
-	71,  // 290: testkit.v1.TestkitService.SocialLogin:input_type -> testkit.v1.SocialLoginRequest
-	72,  // 291: testkit.v1.TestkitService.MiniProgramLogin:input_type -> testkit.v1.MiniProgramLoginRequest
-	73,  // 292: testkit.v1.TestkitService.MiniProgramPhoneLogin:input_type -> testkit.v1.MiniProgramPhoneLoginRequest
-	75,  // 293: testkit.v1.TestkitService.CreateUser:input_type -> testkit.v1.CreateUserRequest
-	77,  // 294: testkit.v1.TestkitService.GetUser:input_type -> testkit.v1.GetUserRequest
-	79,  // 295: testkit.v1.TestkitService.ListUsers:input_type -> testkit.v1.ListUsersRequest
-	81,  // 296: testkit.v1.TestkitService.ListUsersPaged:input_type -> testkit.v1.ListUsersPagedRequest
-	78,  // 297: testkit.v1.TestkitService.DisableUser:input_type -> testkit.v1.DisableUserRequest
-	83,  // 298: testkit.v1.TestkitService.GetLoginLogs:input_type -> testkit.v1.GetLoginLogsRequest
-	85,  // 299: testkit.v1.TestkitService.CreateGroup:input_type -> testkit.v1.CreateGroupRequest
-	86,  // 300: testkit.v1.TestkitService.GetGroup:input_type -> testkit.v1.GetGroupRequest
-	87,  // 301: testkit.v1.TestkitService.UpdateGroup:input_type -> testkit.v1.UpdateGroupRequest
-	88,  // 302: testkit.v1.TestkitService.ListGroups:input_type -> testkit.v1.ListGroupsRequest
-	90,  // 303: testkit.v1.TestkitService.DeleteGroup:input_type -> testkit.v1.DeleteGroupRequest
-	91,  // 304: testkit.v1.TestkitService.AddGroupMember:input_type -> testkit.v1.AddGroupMemberRequest
-	92,  // 305: testkit.v1.TestkitService.RemoveGroupMember:input_type -> testkit.v1.RemoveGroupMemberRequest
-	93,  // 306: testkit.v1.TestkitService.ListGroupMembers:input_type -> testkit.v1.ListGroupMembersRequest
-	95,  // 307: testkit.v1.TestkitService.AddGroupRole:input_type -> testkit.v1.AddGroupRoleRequest
-	96,  // 308: testkit.v1.TestkitService.RemoveGroupRole:input_type -> testkit.v1.RemoveGroupRoleRequest
-	97,  // 309: testkit.v1.TestkitService.ListGroupRoles:input_type -> testkit.v1.ListGroupRolesRequest
-	99,  // 310: testkit.v1.TestkitService.CreateRole:input_type -> testkit.v1.CreateRoleRequest
-	100, // 311: testkit.v1.TestkitService.GetRole:input_type -> testkit.v1.GetRoleRequest
-	101, // 312: testkit.v1.TestkitService.UpdateRole:input_type -> testkit.v1.UpdateRoleRequest
-	102, // 313: testkit.v1.TestkitService.DeleteRole:input_type -> testkit.v1.DeleteRoleRequest
-	103, // 314: testkit.v1.TestkitService.ListRoles:input_type -> testkit.v1.ListRolesRequest
-	105, // 315: testkit.v1.TestkitService.AssignRole:input_type -> testkit.v1.AssignRoleRequest
-	106, // 316: testkit.v1.TestkitService.RevokeRole:input_type -> testkit.v1.RevokeRoleRequest
-	107, // 317: testkit.v1.TestkitService.ListUserRoles:input_type -> testkit.v1.ListUserRolesRequest
-	109, // 318: testkit.v1.TestkitService.ListPermissions:input_type -> testkit.v1.ListPermissionsRequest
-	111, // 319: testkit.v1.TestkitService.CreatePermission:input_type -> testkit.v1.CreatePermissionRequest
-	112, // 320: testkit.v1.TestkitService.GetPermission:input_type -> testkit.v1.GetPermissionRequest
-	113, // 321: testkit.v1.TestkitService.UpdatePermission:input_type -> testkit.v1.UpdatePermissionRequest
-	114, // 322: testkit.v1.TestkitService.DeletePermission:input_type -> testkit.v1.DeletePermissionRequest
-	115, // 323: testkit.v1.TestkitService.CreatePermissionGroup:input_type -> testkit.v1.CreatePermissionGroupRequest
-	116, // 324: testkit.v1.TestkitService.GetPermissionGroup:input_type -> testkit.v1.GetPermissionGroupRequest
-	117, // 325: testkit.v1.TestkitService.UpdatePermissionGroup:input_type -> testkit.v1.UpdatePermissionGroupRequest
-	118, // 326: testkit.v1.TestkitService.DeletePermissionGroup:input_type -> testkit.v1.DeletePermissionGroupRequest
-	119, // 327: testkit.v1.TestkitService.ListPermissionGroups:input_type -> testkit.v1.ListPermissionGroupsRequest
-	135, // 328: testkit.v1.TestkitService.GenerateUploadURL:input_type -> testkit.v1.GenerateUploadURLRequest
-	137, // 329: testkit.v1.TestkitService.GetSTSCredential:input_type -> testkit.v1.GetSTSCredentialRequest
-	139, // 330: testkit.v1.TestkitService.BatchGetSTSCredential:input_type -> testkit.v1.BatchGetSTSCredentialRequest
-	141, // 331: testkit.v1.TestkitService.ConfirmUpload:input_type -> testkit.v1.ConfirmUploadRequest
-	143, // 332: testkit.v1.TestkitService.CancelUpload:input_type -> testkit.v1.CancelUploadRequest
-	144, // 333: testkit.v1.TestkitService.GenerateDownloadURL:input_type -> testkit.v1.GenerateDownloadURLRequest
-	146, // 334: testkit.v1.TestkitService.GenerateProcessURL:input_type -> testkit.v1.GenerateProcessURLRequest
-	148, // 335: testkit.v1.TestkitService.GenerateCDNURL:input_type -> testkit.v1.GenerateCDNURLRequest
-	150, // 336: testkit.v1.TestkitService.ListMyFiles:input_type -> testkit.v1.ListMyFilesRequest
-	152, // 337: testkit.v1.TestkitService.ListMyFilesPaged:input_type -> testkit.v1.ListMyFilesPagedRequest
-	154, // 338: testkit.v1.TestkitService.GetMyFile:input_type -> testkit.v1.GetMyFileRequest
-	155, // 339: testkit.v1.TestkitService.UpdateMyFile:input_type -> testkit.v1.UpdateMyFileRequest
-	156, // 340: testkit.v1.TestkitService.DeleteMyFile:input_type -> testkit.v1.DeleteMyFileRequest
-	157, // 341: testkit.v1.TestkitService.BatchDeleteMyFiles:input_type -> testkit.v1.BatchDeleteMyFilesRequest
-	313, // 342: testkit.v1.TestkitService.GetMyQuota:input_type -> google.protobuf.Empty
-	159, // 343: testkit.v1.TestkitService.ListMyAuditLogs:input_type -> testkit.v1.ListMyAuditLogsRequest
-	161, // 344: testkit.v1.TestkitService.SetOwnerQuota:input_type -> testkit.v1.SetOwnerQuotaRequest
-	162, // 345: testkit.v1.TestkitService.AddOwnerQuota:input_type -> testkit.v1.AddOwnerQuotaRequest
-	163, // 346: testkit.v1.TestkitService.AdminListFiles:input_type -> testkit.v1.AdminListFilesRequest
-	165, // 347: testkit.v1.TestkitService.AdminGetFile:input_type -> testkit.v1.AdminGetFileRequest
-	166, // 348: testkit.v1.TestkitService.AdminDeleteFile:input_type -> testkit.v1.AdminDeleteFileRequest
-	167, // 349: testkit.v1.TestkitService.AdminGetQuota:input_type -> testkit.v1.AdminGetQuotaRequest
-	168, // 350: testkit.v1.TestkitService.AdminSetQuota:input_type -> testkit.v1.AdminSetQuotaRequest
-	169, // 351: testkit.v1.TestkitService.AdminGetStats:input_type -> testkit.v1.AdminGetStatsRequest
-	313, // 352: testkit.v1.TestkitService.AdminListProviders:input_type -> google.protobuf.Empty
-	313, // 353: testkit.v1.TestkitService.AdminListBuckets:input_type -> google.protobuf.Empty
-	173, // 354: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:input_type -> testkit.v1.AdminSoftDeleteOwnerFilesRequest
-	175, // 355: testkit.v1.TestkitService.AdminDeleteOwner:input_type -> testkit.v1.AdminDeleteOwnerRequest
-	177, // 356: testkit.v1.TestkitService.AdminListAuditLogs:input_type -> testkit.v1.AdminListAuditLogsRequest
-	183, // 357: testkit.v1.TestkitService.SendEmail:input_type -> testkit.v1.SendEmailRequest
-	184, // 358: testkit.v1.TestkitService.SendSMS:input_type -> testkit.v1.SendSMSRequest
-	188, // 359: testkit.v1.TestkitService.GetEmail:input_type -> testkit.v1.GetEmailRequest
-	190, // 360: testkit.v1.TestkitService.ListEmails:input_type -> testkit.v1.ListEmailsRequest
-	194, // 361: testkit.v1.TestkitService.ListEmailsByCursor:input_type -> testkit.v1.ListEmailsByCursorRequest
-	198, // 362: testkit.v1.TestkitService.GetEmailStats:input_type -> testkit.v1.GetEmailStatsRequest
-	202, // 363: testkit.v1.TestkitService.ListEmailSenders:input_type -> testkit.v1.ListEmailSendersRequest
-	189, // 364: testkit.v1.TestkitService.GetSMS:input_type -> testkit.v1.GetSMSRequest
-	192, // 365: testkit.v1.TestkitService.ListSMS:input_type -> testkit.v1.ListSMSRequest
-	196, // 366: testkit.v1.TestkitService.ListSMSByCursor:input_type -> testkit.v1.ListSMSByCursorRequest
-	200, // 367: testkit.v1.TestkitService.GetSMSStats:input_type -> testkit.v1.GetSMSStatsRequest
-	206, // 368: testkit.v1.TestkitService.ListSMSRegions:input_type -> testkit.v1.ListSMSRegionsRequest
-	204, // 369: testkit.v1.TestkitService.ListSMSSenders:input_type -> testkit.v1.ListSMSSendersRequest
-	208, // 370: testkit.v1.TestkitService.NextID:input_type -> testkit.v1.NextIDRequest
-	210, // 371: testkit.v1.TestkitService.BatchNextID:input_type -> testkit.v1.BatchNextIDRequest
-	212, // 372: testkit.v1.TestkitService.Decompose:input_type -> testkit.v1.DecomposeRequest
-	214, // 373: testkit.v1.TestkitService.GetDashboard:input_type -> testkit.v1.GetDashboardRequest
-	220, // 374: testkit.v1.TestkitService.Activate:input_type -> testkit.v1.ActivateRequest
-	224, // 375: testkit.v1.TestkitService.Deactivate:input_type -> testkit.v1.DeactivateRequest
-	226, // 376: testkit.v1.TestkitService.TrialStart:input_type -> testkit.v1.TrialStartRequest
-	228, // 377: testkit.v1.TestkitService.Health:input_type -> testkit.v1.HealthRequest
-	236, // 378: testkit.v1.TestkitService.CreateKey:input_type -> testkit.v1.CreateKeyRequest
-	238, // 379: testkit.v1.TestkitService.ShowKey:input_type -> testkit.v1.ShowKeyRequest
-	240, // 380: testkit.v1.TestkitService.ListKeys:input_type -> testkit.v1.ListKeysRequest
-	242, // 381: testkit.v1.TestkitService.UpdateKey:input_type -> testkit.v1.UpdateKeyRequest
-	244, // 382: testkit.v1.TestkitService.RevokeKey:input_type -> testkit.v1.RevokeKeyRequest
-	246, // 383: testkit.v1.TestkitService.UnrevokeKey:input_type -> testkit.v1.UnrevokeKeyRequest
-	248, // 384: testkit.v1.TestkitService.DeleteKey:input_type -> testkit.v1.DeleteKeyRequest
-	250, // 385: testkit.v1.TestkitService.GrantModule:input_type -> testkit.v1.GrantModuleRequest
-	252, // 386: testkit.v1.TestkitService.RevokeModule:input_type -> testkit.v1.RevokeModuleRequest
-	254, // 387: testkit.v1.TestkitService.ListKeyDevices:input_type -> testkit.v1.ListKeyDevicesRequest
-	256, // 388: testkit.v1.TestkitService.KickDevice:input_type -> testkit.v1.KickDeviceRequest
-	259, // 389: testkit.v1.TestkitService.ShowTrial:input_type -> testkit.v1.ShowTrialRequest
-	261, // 390: testkit.v1.TestkitService.ResetTrial:input_type -> testkit.v1.ResetTrialRequest
-	263, // 391: testkit.v1.TestkitService.ShowPubKey:input_type -> testkit.v1.ShowPubKeyRequest
-	266, // 392: testkit.v1.TestkitService.Ingest:input_type -> testkit.v1.IngestRequest
-	276, // 393: testkit.v1.TestkitService.CreateApp:input_type -> testkit.v1.CreateAppRequest
-	278, // 394: testkit.v1.TestkitService.GetApp:input_type -> testkit.v1.GetAppRequest
-	280, // 395: testkit.v1.TestkitService.UpdateApp:input_type -> testkit.v1.UpdateAppRequest
-	282, // 396: testkit.v1.TestkitService.RotateToken:input_type -> testkit.v1.RotateTokenRequest
-	284, // 397: testkit.v1.TestkitService.RevokeToken:input_type -> testkit.v1.RevokeTokenRequest
-	286, // 398: testkit.v1.TestkitService.CreateSigningKey:input_type -> testkit.v1.CreateSigningKeyRequest
-	288, // 399: testkit.v1.TestkitService.RevokeSigningKey:input_type -> testkit.v1.RevokeSigningKeyRequest
-	290, // 400: testkit.v1.TestkitService.ReplaceEventRules:input_type -> testkit.v1.ReplaceEventRulesRequest
-	292, // 401: testkit.v1.TestkitService.SetVersionBlocked:input_type -> testkit.v1.SetVersionBlockedRequest
-	294, // 402: testkit.v1.TestkitService.GetAppStats:input_type -> testkit.v1.GetAppStatsRequest
-	32,  // 403: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
-	48,  // 404: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
-	48,  // 405: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
-	36,  // 406: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
-	313, // 407: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
-	48,  // 408: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
-	38,  // 409: testkit.v1.TestkitService.GetProfile:output_type -> testkit.v1.User
-	38,  // 410: testkit.v1.TestkitService.UpdateProfile:output_type -> testkit.v1.User
-	313, // 411: testkit.v1.TestkitService.ChangePassword:output_type -> google.protobuf.Empty
-	313, // 412: testkit.v1.TestkitService.ResetPassword:output_type -> google.protobuf.Empty
-	54,  // 413: testkit.v1.TestkitService.ListIdentities:output_type -> testkit.v1.ListIdentitiesResponse
-	39,  // 414: testkit.v1.TestkitService.BindIdentity:output_type -> testkit.v1.Identity
-	57,  // 415: testkit.v1.TestkitService.BindOAuthIdentity:output_type -> testkit.v1.BindOAuthIdentityResponse
-	313, // 416: testkit.v1.TestkitService.UnbindIdentity:output_type -> google.protobuf.Empty
-	60,  // 417: testkit.v1.TestkitService.ListSessions:output_type -> testkit.v1.ListSessionsResponse
-	313, // 418: testkit.v1.TestkitService.RevokeSession:output_type -> google.protobuf.Empty
-	313, // 419: testkit.v1.TestkitService.RevokeAllSessions:output_type -> google.protobuf.Empty
-	64,  // 420: testkit.v1.TestkitService.GetSession:output_type -> testkit.v1.GetSessionResponse
-	66,  // 421: testkit.v1.TestkitService.IssueSessionCode:output_type -> testkit.v1.IssueSessionCodeResponse
-	68,  // 422: testkit.v1.TestkitService.ExchangeSessionCode:output_type -> testkit.v1.ExchangeSessionCodeResponse
-	70,  // 423: testkit.v1.TestkitService.GetOAuthURL:output_type -> testkit.v1.GetOAuthURLResponse
-	74,  // 424: testkit.v1.TestkitService.SocialLogin:output_type -> testkit.v1.SocialLoginResponse
-	74,  // 425: testkit.v1.TestkitService.MiniProgramLogin:output_type -> testkit.v1.SocialLoginResponse
-	74,  // 426: testkit.v1.TestkitService.MiniProgramPhoneLogin:output_type -> testkit.v1.SocialLoginResponse
-	76,  // 427: testkit.v1.TestkitService.CreateUser:output_type -> testkit.v1.CreateUserResponse
-	38,  // 428: testkit.v1.TestkitService.GetUser:output_type -> testkit.v1.User
-	80,  // 429: testkit.v1.TestkitService.ListUsers:output_type -> testkit.v1.ListUsersResponse
-	82,  // 430: testkit.v1.TestkitService.ListUsersPaged:output_type -> testkit.v1.ListUsersPagedResponse
-	38,  // 431: testkit.v1.TestkitService.DisableUser:output_type -> testkit.v1.User
-	84,  // 432: testkit.v1.TestkitService.GetLoginLogs:output_type -> testkit.v1.GetLoginLogsResponse
-	41,  // 433: testkit.v1.TestkitService.CreateGroup:output_type -> testkit.v1.Group
-	41,  // 434: testkit.v1.TestkitService.GetGroup:output_type -> testkit.v1.Group
-	41,  // 435: testkit.v1.TestkitService.UpdateGroup:output_type -> testkit.v1.Group
-	89,  // 436: testkit.v1.TestkitService.ListGroups:output_type -> testkit.v1.ListGroupsResponse
-	313, // 437: testkit.v1.TestkitService.DeleteGroup:output_type -> google.protobuf.Empty
-	313, // 438: testkit.v1.TestkitService.AddGroupMember:output_type -> google.protobuf.Empty
-	313, // 439: testkit.v1.TestkitService.RemoveGroupMember:output_type -> google.protobuf.Empty
-	94,  // 440: testkit.v1.TestkitService.ListGroupMembers:output_type -> testkit.v1.ListGroupMembersResponse
-	313, // 441: testkit.v1.TestkitService.AddGroupRole:output_type -> google.protobuf.Empty
-	313, // 442: testkit.v1.TestkitService.RemoveGroupRole:output_type -> google.protobuf.Empty
-	98,  // 443: testkit.v1.TestkitService.ListGroupRoles:output_type -> testkit.v1.ListGroupRolesResponse
-	42,  // 444: testkit.v1.TestkitService.CreateRole:output_type -> testkit.v1.Role
-	42,  // 445: testkit.v1.TestkitService.GetRole:output_type -> testkit.v1.Role
-	42,  // 446: testkit.v1.TestkitService.UpdateRole:output_type -> testkit.v1.Role
-	313, // 447: testkit.v1.TestkitService.DeleteRole:output_type -> google.protobuf.Empty
-	104, // 448: testkit.v1.TestkitService.ListRoles:output_type -> testkit.v1.ListRolesResponse
-	313, // 449: testkit.v1.TestkitService.AssignRole:output_type -> google.protobuf.Empty
-	313, // 450: testkit.v1.TestkitService.RevokeRole:output_type -> google.protobuf.Empty
-	108, // 451: testkit.v1.TestkitService.ListUserRoles:output_type -> testkit.v1.ListUserRolesResponse
-	110, // 452: testkit.v1.TestkitService.ListPermissions:output_type -> testkit.v1.ListPermissionsResponse
-	43,  // 453: testkit.v1.TestkitService.CreatePermission:output_type -> testkit.v1.Permission
-	43,  // 454: testkit.v1.TestkitService.GetPermission:output_type -> testkit.v1.Permission
-	43,  // 455: testkit.v1.TestkitService.UpdatePermission:output_type -> testkit.v1.Permission
-	313, // 456: testkit.v1.TestkitService.DeletePermission:output_type -> google.protobuf.Empty
-	44,  // 457: testkit.v1.TestkitService.CreatePermissionGroup:output_type -> testkit.v1.PermissionGroup
-	44,  // 458: testkit.v1.TestkitService.GetPermissionGroup:output_type -> testkit.v1.PermissionGroup
-	44,  // 459: testkit.v1.TestkitService.UpdatePermissionGroup:output_type -> testkit.v1.PermissionGroup
-	313, // 460: testkit.v1.TestkitService.DeletePermissionGroup:output_type -> google.protobuf.Empty
-	120, // 461: testkit.v1.TestkitService.ListPermissionGroups:output_type -> testkit.v1.ListPermissionGroupsResponse
-	136, // 462: testkit.v1.TestkitService.GenerateUploadURL:output_type -> testkit.v1.GenerateUploadURLResponse
-	138, // 463: testkit.v1.TestkitService.GetSTSCredential:output_type -> testkit.v1.GetSTSCredentialResponse
-	140, // 464: testkit.v1.TestkitService.BatchGetSTSCredential:output_type -> testkit.v1.BatchGetSTSCredentialResponse
-	142, // 465: testkit.v1.TestkitService.ConfirmUpload:output_type -> testkit.v1.ConfirmUploadResponse
-	313, // 466: testkit.v1.TestkitService.CancelUpload:output_type -> google.protobuf.Empty
-	145, // 467: testkit.v1.TestkitService.GenerateDownloadURL:output_type -> testkit.v1.GenerateDownloadURLResponse
-	147, // 468: testkit.v1.TestkitService.GenerateProcessURL:output_type -> testkit.v1.GenerateProcessURLResponse
-	149, // 469: testkit.v1.TestkitService.GenerateCDNURL:output_type -> testkit.v1.GenerateCDNURLResponse
-	151, // 470: testkit.v1.TestkitService.ListMyFiles:output_type -> testkit.v1.ListMyFilesResponse
-	153, // 471: testkit.v1.TestkitService.ListMyFilesPaged:output_type -> testkit.v1.ListMyFilesPagedResponse
-	121, // 472: testkit.v1.TestkitService.GetMyFile:output_type -> testkit.v1.FileInfo
-	121, // 473: testkit.v1.TestkitService.UpdateMyFile:output_type -> testkit.v1.FileInfo
-	313, // 474: testkit.v1.TestkitService.DeleteMyFile:output_type -> google.protobuf.Empty
-	158, // 475: testkit.v1.TestkitService.BatchDeleteMyFiles:output_type -> testkit.v1.BatchDeleteMyFilesResponse
-	123, // 476: testkit.v1.TestkitService.GetMyQuota:output_type -> testkit.v1.QuotaInfo
-	160, // 477: testkit.v1.TestkitService.ListMyAuditLogs:output_type -> testkit.v1.ListMyAuditLogsResponse
-	123, // 478: testkit.v1.TestkitService.SetOwnerQuota:output_type -> testkit.v1.QuotaInfo
-	123, // 479: testkit.v1.TestkitService.AddOwnerQuota:output_type -> testkit.v1.QuotaInfo
-	164, // 480: testkit.v1.TestkitService.AdminListFiles:output_type -> testkit.v1.AdminListFilesResponse
-	122, // 481: testkit.v1.TestkitService.AdminGetFile:output_type -> testkit.v1.AdminFileInfo
-	313, // 482: testkit.v1.TestkitService.AdminDeleteFile:output_type -> google.protobuf.Empty
-	123, // 483: testkit.v1.TestkitService.AdminGetQuota:output_type -> testkit.v1.QuotaInfo
-	123, // 484: testkit.v1.TestkitService.AdminSetQuota:output_type -> testkit.v1.QuotaInfo
-	170, // 485: testkit.v1.TestkitService.AdminGetStats:output_type -> testkit.v1.AdminGetStatsResponse
-	171, // 486: testkit.v1.TestkitService.AdminListProviders:output_type -> testkit.v1.AdminListProvidersResponse
-	172, // 487: testkit.v1.TestkitService.AdminListBuckets:output_type -> testkit.v1.AdminListBucketsResponse
-	174, // 488: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:output_type -> testkit.v1.AdminSoftDeleteOwnerFilesResponse
-	176, // 489: testkit.v1.TestkitService.AdminDeleteOwner:output_type -> testkit.v1.AdminDeleteOwnerResponse
-	178, // 490: testkit.v1.TestkitService.AdminListAuditLogs:output_type -> testkit.v1.AdminListAuditLogsResponse
-	185, // 491: testkit.v1.TestkitService.SendEmail:output_type -> testkit.v1.SendResponse
-	185, // 492: testkit.v1.TestkitService.SendSMS:output_type -> testkit.v1.SendResponse
-	186, // 493: testkit.v1.TestkitService.GetEmail:output_type -> testkit.v1.EmailRecord
-	191, // 494: testkit.v1.TestkitService.ListEmails:output_type -> testkit.v1.ListEmailsResponse
-	195, // 495: testkit.v1.TestkitService.ListEmailsByCursor:output_type -> testkit.v1.ListEmailsByCursorResponse
-	199, // 496: testkit.v1.TestkitService.GetEmailStats:output_type -> testkit.v1.EmailStatsResponse
-	203, // 497: testkit.v1.TestkitService.ListEmailSenders:output_type -> testkit.v1.ListEmailSendersResponse
-	187, // 498: testkit.v1.TestkitService.GetSMS:output_type -> testkit.v1.SMSRecord
-	193, // 499: testkit.v1.TestkitService.ListSMS:output_type -> testkit.v1.ListSMSResponse
-	197, // 500: testkit.v1.TestkitService.ListSMSByCursor:output_type -> testkit.v1.ListSMSByCursorResponse
-	201, // 501: testkit.v1.TestkitService.GetSMSStats:output_type -> testkit.v1.SMSStatsResponse
-	207, // 502: testkit.v1.TestkitService.ListSMSRegions:output_type -> testkit.v1.ListSMSRegionsResponse
-	205, // 503: testkit.v1.TestkitService.ListSMSSenders:output_type -> testkit.v1.ListSMSSendersResponse
-	209, // 504: testkit.v1.TestkitService.NextID:output_type -> testkit.v1.NextIDResponse
-	211, // 505: testkit.v1.TestkitService.BatchNextID:output_type -> testkit.v1.BatchNextIDResponse
-	213, // 506: testkit.v1.TestkitService.Decompose:output_type -> testkit.v1.DecomposeResponse
-	219, // 507: testkit.v1.TestkitService.GetDashboard:output_type -> testkit.v1.DashboardResponse
-	223, // 508: testkit.v1.TestkitService.Activate:output_type -> testkit.v1.ActivateResponse
-	225, // 509: testkit.v1.TestkitService.Deactivate:output_type -> testkit.v1.DeactivateResponse
-	227, // 510: testkit.v1.TestkitService.TrialStart:output_type -> testkit.v1.TrialStartResponse
-	230, // 511: testkit.v1.TestkitService.Health:output_type -> testkit.v1.HealthResponse
-	237, // 512: testkit.v1.TestkitService.CreateKey:output_type -> testkit.v1.CreateKeyResponse
-	239, // 513: testkit.v1.TestkitService.ShowKey:output_type -> testkit.v1.ShowKeyResponse
-	241, // 514: testkit.v1.TestkitService.ListKeys:output_type -> testkit.v1.ListKeysResponse
-	243, // 515: testkit.v1.TestkitService.UpdateKey:output_type -> testkit.v1.UpdateKeyResponse
-	245, // 516: testkit.v1.TestkitService.RevokeKey:output_type -> testkit.v1.RevokeKeyResponse
-	247, // 517: testkit.v1.TestkitService.UnrevokeKey:output_type -> testkit.v1.UnrevokeKeyResponse
-	249, // 518: testkit.v1.TestkitService.DeleteKey:output_type -> testkit.v1.DeleteKeyResponse
-	251, // 519: testkit.v1.TestkitService.GrantModule:output_type -> testkit.v1.GrantModuleResponse
-	253, // 520: testkit.v1.TestkitService.RevokeModule:output_type -> testkit.v1.RevokeModuleResponse
-	255, // 521: testkit.v1.TestkitService.ListKeyDevices:output_type -> testkit.v1.ListKeyDevicesResponse
-	257, // 522: testkit.v1.TestkitService.KickDevice:output_type -> testkit.v1.KickDeviceResponse
-	260, // 523: testkit.v1.TestkitService.ShowTrial:output_type -> testkit.v1.ShowTrialResponse
-	262, // 524: testkit.v1.TestkitService.ResetTrial:output_type -> testkit.v1.ResetTrialResponse
-	265, // 525: testkit.v1.TestkitService.ShowPubKey:output_type -> testkit.v1.ShowPubKeyResponse
-	267, // 526: testkit.v1.TestkitService.Ingest:output_type -> testkit.v1.IngestResponse
-	277, // 527: testkit.v1.TestkitService.CreateApp:output_type -> testkit.v1.CreateAppResponse
-	279, // 528: testkit.v1.TestkitService.GetApp:output_type -> testkit.v1.GetAppResponse
-	281, // 529: testkit.v1.TestkitService.UpdateApp:output_type -> testkit.v1.UpdateAppResponse
-	283, // 530: testkit.v1.TestkitService.RotateToken:output_type -> testkit.v1.RotateTokenResponse
-	285, // 531: testkit.v1.TestkitService.RevokeToken:output_type -> testkit.v1.RevokeTokenResponse
-	287, // 532: testkit.v1.TestkitService.CreateSigningKey:output_type -> testkit.v1.CreateSigningKeyResponse
-	289, // 533: testkit.v1.TestkitService.RevokeSigningKey:output_type -> testkit.v1.RevokeSigningKeyResponse
-	291, // 534: testkit.v1.TestkitService.ReplaceEventRules:output_type -> testkit.v1.ReplaceEventRulesResponse
-	293, // 535: testkit.v1.TestkitService.SetVersionBlocked:output_type -> testkit.v1.SetVersionBlockedResponse
-	295, // 536: testkit.v1.TestkitService.GetAppStats:output_type -> testkit.v1.GetAppStatsResponse
-	403, // [403:537] is the sub-list for method output_type
-	269, // [269:403] is the sub-list for method input_type
-	269, // [269:269] is the sub-list for extension type_name
-	269, // [269:269] is the sub-list for extension extendee
-	0,   // [0:269] is the sub-list for field type_name
+	19,  // 98: testkit.v1.GenerateUploadURLRequest.visibility:type_name -> testkit.v1.Visibility
+	122, // 99: testkit.v1.GenerateUploadURLResponse.file_info:type_name -> testkit.v1.FileInfo
+	303, // 100: testkit.v1.GenerateUploadURLResponse.headers:type_name -> testkit.v1.GenerateUploadURLResponse.HeadersEntry
+	304, // 101: testkit.v1.GetSTSCredentialRequest.metadata:type_name -> testkit.v1.GetSTSCredentialRequest.MetadataEntry
+	11,  // 102: testkit.v1.GetSTSCredentialRequest.vendor:type_name -> testkit.v1.Vendor
+	315, // 103: testkit.v1.GetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
+	19,  // 104: testkit.v1.GetSTSCredentialRequest.visibility:type_name -> testkit.v1.Visibility
+	122, // 105: testkit.v1.GetSTSCredentialResponse.file_info:type_name -> testkit.v1.FileInfo
+	126, // 106: testkit.v1.BatchGetSTSCredentialRequest.files:type_name -> testkit.v1.UploadFileMeta
+	315, // 107: testkit.v1.BatchGetSTSCredentialRequest.ttl:type_name -> google.protobuf.Duration
+	19,  // 108: testkit.v1.BatchGetSTSCredentialRequest.visibility:type_name -> testkit.v1.Visibility
+	129, // 109: testkit.v1.BatchGetSTSCredentialResponse.items:type_name -> testkit.v1.UploadCredentialItem
+	122, // 110: testkit.v1.ConfirmUploadResponse.file_info:type_name -> testkit.v1.FileInfo
+	125, // 111: testkit.v1.GenerateProcessURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
+	125, // 112: testkit.v1.GenerateCDNURLRequest.ops:type_name -> testkit.v1.ImageProcessOp
+	315, // 113: testkit.v1.GenerateCDNURLRequest.ttl:type_name -> google.protobuf.Duration
+	16,  // 114: testkit.v1.ListMyFilesRequest.order_by:type_name -> testkit.v1.SortField
+	122, // 115: testkit.v1.ListMyFilesResponse.files:type_name -> testkit.v1.FileInfo
+	16,  // 116: testkit.v1.ListMyFilesPagedRequest.order_by:type_name -> testkit.v1.SortField
+	122, // 117: testkit.v1.ListMyFilesPagedResponse.files:type_name -> testkit.v1.FileInfo
+	305, // 118: testkit.v1.UpdateMyFileRequest.metadata:type_name -> testkit.v1.UpdateMyFileRequest.MetadataEntry
+	17,  // 119: testkit.v1.ListMyAuditLogsRequest.action:type_name -> testkit.v1.AuditAction
+	21,  // 120: testkit.v1.ListMyAuditLogsRequest.target_type:type_name -> testkit.v1.AuditLogTargetType
+	130, // 121: testkit.v1.ListMyAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
+	10,  // 122: testkit.v1.AdminListFilesRequest.owner_type:type_name -> testkit.v1.OwnerType
+	16,  // 123: testkit.v1.AdminListFilesRequest.order_by:type_name -> testkit.v1.SortField
+	123, // 124: testkit.v1.AdminListFilesResponse.files:type_name -> testkit.v1.AdminFileInfo
+	10,  // 125: testkit.v1.AdminGetQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
+	10,  // 126: testkit.v1.AdminSetQuotaRequest.owner_type:type_name -> testkit.v1.OwnerType
+	10,  // 127: testkit.v1.AdminGetStatsRequest.owner_type:type_name -> testkit.v1.OwnerType
+	131, // 128: testkit.v1.AdminGetStatsResponse.owner_stats:type_name -> testkit.v1.OwnerStats
+	132, // 129: testkit.v1.AdminGetStatsResponse.provider_stats:type_name -> testkit.v1.ProviderStats
+	133, // 130: testkit.v1.AdminGetStatsResponse.bucket_stats:type_name -> testkit.v1.BucketStats
+	134, // 131: testkit.v1.AdminListProvidersResponse.providers:type_name -> testkit.v1.ProviderInfo
+	135, // 132: testkit.v1.AdminListBucketsResponse.buckets:type_name -> testkit.v1.BucketInfo
+	10,  // 133: testkit.v1.AdminSoftDeleteOwnerFilesRequest.owner_type:type_name -> testkit.v1.OwnerType
+	10,  // 134: testkit.v1.AdminDeleteOwnerRequest.owner_type:type_name -> testkit.v1.OwnerType
+	17,  // 135: testkit.v1.AdminListAuditLogsRequest.action:type_name -> testkit.v1.AuditAction
+	21,  // 136: testkit.v1.AdminListAuditLogsRequest.target_type:type_name -> testkit.v1.AuditLogTargetType
+	20,  // 137: testkit.v1.AdminListAuditLogsRequest.status:type_name -> testkit.v1.AuditLogStatus
+	10,  // 138: testkit.v1.AdminListAuditLogsRequest.owner_type:type_name -> testkit.v1.OwnerType
+	130, // 139: testkit.v1.AdminListAuditLogsResponse.logs:type_name -> testkit.v1.AuditLogEntry
+	25,  // 140: testkit.v1.EmailVendorStats.vendor:type_name -> testkit.v1.EmailVendor
+	26,  // 141: testkit.v1.SmsVendorStats.vendor:type_name -> testkit.v1.SmsVendor
+	182, // 142: testkit.v1.SendEmailRequest.to:type_name -> testkit.v1.EmailAddress
+	182, // 143: testkit.v1.SendEmailRequest.cc:type_name -> testkit.v1.EmailAddress
+	182, // 144: testkit.v1.SendEmailRequest.bcc:type_name -> testkit.v1.EmailAddress
+	182, // 145: testkit.v1.SendEmailRequest.reply_to:type_name -> testkit.v1.EmailAddress
+	25,  // 146: testkit.v1.SendEmailRequest.vendor:type_name -> testkit.v1.EmailVendor
+	306, // 147: testkit.v1.SendEmailRequest.template_params:type_name -> testkit.v1.SendEmailRequest.TemplateParamsEntry
+	27,  // 148: testkit.v1.SendEmailRequest.scene:type_name -> testkit.v1.EmailScene
+	182, // 149: testkit.v1.SendEmailRequest.from:type_name -> testkit.v1.EmailAddress
+	183, // 150: testkit.v1.SendEmailRequest.attachments:type_name -> testkit.v1.EmailAttachment
+	307, // 151: testkit.v1.SendSMSRequest.template_params:type_name -> testkit.v1.SendSMSRequest.TemplateParamsEntry
+	26,  // 152: testkit.v1.SendSMSRequest.vendor:type_name -> testkit.v1.SmsVendor
+	28,  // 153: testkit.v1.SendSMSRequest.scene:type_name -> testkit.v1.SmsScene
+	24,  // 154: testkit.v1.SendResponse.status:type_name -> testkit.v1.MessageStatus
+	25,  // 155: testkit.v1.SendResponse.email_vendor:type_name -> testkit.v1.EmailVendor
+	26,  // 156: testkit.v1.SendResponse.sms_vendor:type_name -> testkit.v1.SmsVendor
+	25,  // 157: testkit.v1.EmailRecord.vendor:type_name -> testkit.v1.EmailVendor
+	27,  // 158: testkit.v1.EmailRecord.scene:type_name -> testkit.v1.EmailScene
+	24,  // 159: testkit.v1.EmailRecord.status:type_name -> testkit.v1.MessageStatus
+	182, // 160: testkit.v1.EmailRecord.target:type_name -> testkit.v1.EmailAddress
+	182, // 161: testkit.v1.EmailRecord.cc:type_name -> testkit.v1.EmailAddress
+	182, // 162: testkit.v1.EmailRecord.bcc:type_name -> testkit.v1.EmailAddress
+	182, // 163: testkit.v1.EmailRecord.reply_to:type_name -> testkit.v1.EmailAddress
+	308, // 164: testkit.v1.EmailRecord.template_params:type_name -> testkit.v1.EmailRecord.TemplateParamsEntry
+	183, // 165: testkit.v1.EmailRecord.attachments:type_name -> testkit.v1.EmailAttachment
+	26,  // 166: testkit.v1.SMSRecord.vendor:type_name -> testkit.v1.SmsVendor
+	28,  // 167: testkit.v1.SMSRecord.scene:type_name -> testkit.v1.SmsScene
+	24,  // 168: testkit.v1.SMSRecord.status:type_name -> testkit.v1.MessageStatus
+	309, // 169: testkit.v1.SMSRecord.template_params:type_name -> testkit.v1.SMSRecord.TemplateParamsEntry
+	25,  // 170: testkit.v1.ListEmailsRequest.vendor:type_name -> testkit.v1.EmailVendor
+	27,  // 171: testkit.v1.ListEmailsRequest.scene:type_name -> testkit.v1.EmailScene
+	24,  // 172: testkit.v1.ListEmailsRequest.status:type_name -> testkit.v1.MessageStatus
+	16,  // 173: testkit.v1.ListEmailsRequest.sort_field:type_name -> testkit.v1.SortField
+	23,  // 174: testkit.v1.ListEmailsRequest.sort_direction:type_name -> testkit.v1.SortDirection
+	189, // 175: testkit.v1.ListEmailsResponse.records:type_name -> testkit.v1.EmailRecord
+	26,  // 176: testkit.v1.ListSMSRequest.vendor:type_name -> testkit.v1.SmsVendor
+	28,  // 177: testkit.v1.ListSMSRequest.scene:type_name -> testkit.v1.SmsScene
+	24,  // 178: testkit.v1.ListSMSRequest.status:type_name -> testkit.v1.MessageStatus
+	16,  // 179: testkit.v1.ListSMSRequest.sort_field:type_name -> testkit.v1.SortField
+	23,  // 180: testkit.v1.ListSMSRequest.sort_direction:type_name -> testkit.v1.SortDirection
+	190, // 181: testkit.v1.ListSMSResponse.records:type_name -> testkit.v1.SMSRecord
+	25,  // 182: testkit.v1.ListEmailsByCursorRequest.vendor:type_name -> testkit.v1.EmailVendor
+	27,  // 183: testkit.v1.ListEmailsByCursorRequest.scene:type_name -> testkit.v1.EmailScene
+	24,  // 184: testkit.v1.ListEmailsByCursorRequest.status:type_name -> testkit.v1.MessageStatus
+	16,  // 185: testkit.v1.ListEmailsByCursorRequest.sort_field:type_name -> testkit.v1.SortField
+	23,  // 186: testkit.v1.ListEmailsByCursorRequest.sort_direction:type_name -> testkit.v1.SortDirection
+	189, // 187: testkit.v1.ListEmailsByCursorResponse.records:type_name -> testkit.v1.EmailRecord
+	26,  // 188: testkit.v1.ListSMSByCursorRequest.vendor:type_name -> testkit.v1.SmsVendor
+	28,  // 189: testkit.v1.ListSMSByCursorRequest.scene:type_name -> testkit.v1.SmsScene
+	24,  // 190: testkit.v1.ListSMSByCursorRequest.status:type_name -> testkit.v1.MessageStatus
+	16,  // 191: testkit.v1.ListSMSByCursorRequest.sort_field:type_name -> testkit.v1.SortField
+	23,  // 192: testkit.v1.ListSMSByCursorRequest.sort_direction:type_name -> testkit.v1.SortDirection
+	190, // 193: testkit.v1.ListSMSByCursorResponse.records:type_name -> testkit.v1.SMSRecord
+	25,  // 194: testkit.v1.GetEmailStatsRequest.vendor:type_name -> testkit.v1.EmailVendor
+	27,  // 195: testkit.v1.GetEmailStatsRequest.scene:type_name -> testkit.v1.EmailScene
+	184, // 196: testkit.v1.EmailStatsResponse.vendors:type_name -> testkit.v1.EmailVendorStats
+	26,  // 197: testkit.v1.GetSMSStatsRequest.vendor:type_name -> testkit.v1.SmsVendor
+	28,  // 198: testkit.v1.GetSMSStatsRequest.scene:type_name -> testkit.v1.SmsScene
+	185, // 199: testkit.v1.SMSStatsResponse.vendors:type_name -> testkit.v1.SmsVendorStats
+	184, // 200: testkit.v1.EmailStats.vendors:type_name -> testkit.v1.EmailVendorStats
+	185, // 201: testkit.v1.SMSStats.vendors:type_name -> testkit.v1.SmsVendorStats
+	218, // 202: testkit.v1.DashboardResponse.email_stats:type_name -> testkit.v1.EmailStats
+	219, // 203: testkit.v1.DashboardResponse.sms_stats:type_name -> testkit.v1.SMSStats
+	220, // 204: testkit.v1.DashboardResponse.quota:type_name -> testkit.v1.MyQuota
+	221, // 205: testkit.v1.DashboardResponse.users:type_name -> testkit.v1.UsersSummary
+	313, // 206: testkit.v1.DeviceSlotInfo.first_seen_at:type_name -> google.protobuf.Timestamp
+	313, // 207: testkit.v1.DeviceSlotInfo.last_seen_at:type_name -> google.protobuf.Timestamp
+	224, // 208: testkit.v1.SlotSummary.devices:type_name -> testkit.v1.DeviceSlotInfo
+	225, // 209: testkit.v1.ActivateResponse.slots:type_name -> testkit.v1.SlotSummary
+	232, // 210: testkit.v1.HealthResponse.checks:type_name -> testkit.v1.HealthChecks
+	224, // 211: testkit.v1.SlotLimitInfo.devices:type_name -> testkit.v1.DeviceSlotInfo
+	29,  // 212: testkit.v1.EntitlementInput.module:type_name -> testkit.v1.Module
+	30,  // 213: testkit.v1.EntitlementInput.kind:type_name -> testkit.v1.EntitlementKind
+	313, // 214: testkit.v1.EntitlementInput.expires_at:type_name -> google.protobuf.Timestamp
+	29,  // 215: testkit.v1.EntitlementInfo.module:type_name -> testkit.v1.Module
+	30,  // 216: testkit.v1.EntitlementInfo.kind:type_name -> testkit.v1.EntitlementKind
+	313, // 217: testkit.v1.EntitlementInfo.expires_at:type_name -> google.protobuf.Timestamp
+	313, // 218: testkit.v1.EntitlementInfo.granted_at:type_name -> google.protobuf.Timestamp
+	31,  // 219: testkit.v1.KeyInfo.status:type_name -> testkit.v1.KeyStatus
+	313, // 220: testkit.v1.KeyInfo.created_at:type_name -> google.protobuf.Timestamp
+	313, // 221: testkit.v1.KeyInfo.revoked_at:type_name -> google.protobuf.Timestamp
+	237, // 222: testkit.v1.KeyInfo.entitlements:type_name -> testkit.v1.EntitlementInfo
+	224, // 223: testkit.v1.KeyInfo.devices:type_name -> testkit.v1.DeviceSlotInfo
+	236, // 224: testkit.v1.CreateKeyRequest.grants:type_name -> testkit.v1.EntitlementInput
+	238, // 225: testkit.v1.CreateKeyResponse.key:type_name -> testkit.v1.KeyInfo
+	238, // 226: testkit.v1.ShowKeyResponse.key:type_name -> testkit.v1.KeyInfo
+	31,  // 227: testkit.v1.ListKeysRequest.status:type_name -> testkit.v1.KeyStatus
+	238, // 228: testkit.v1.ListKeysResponse.keys:type_name -> testkit.v1.KeyInfo
+	238, // 229: testkit.v1.UpdateKeyResponse.key:type_name -> testkit.v1.KeyInfo
+	238, // 230: testkit.v1.RevokeKeyResponse.key:type_name -> testkit.v1.KeyInfo
+	238, // 231: testkit.v1.UnrevokeKeyResponse.key:type_name -> testkit.v1.KeyInfo
+	29,  // 232: testkit.v1.GrantModuleRequest.module:type_name -> testkit.v1.Module
+	30,  // 233: testkit.v1.GrantModuleRequest.kind:type_name -> testkit.v1.EntitlementKind
+	313, // 234: testkit.v1.GrantModuleRequest.expires_at:type_name -> google.protobuf.Timestamp
+	237, // 235: testkit.v1.GrantModuleResponse.entitlement:type_name -> testkit.v1.EntitlementInfo
+	29,  // 236: testkit.v1.RevokeModuleRequest.module:type_name -> testkit.v1.Module
+	224, // 237: testkit.v1.ListKeyDevicesResponse.devices:type_name -> testkit.v1.DeviceSlotInfo
+	29,  // 238: testkit.v1.TrialInfo.module:type_name -> testkit.v1.Module
+	313, // 239: testkit.v1.TrialInfo.started_at:type_name -> google.protobuf.Timestamp
+	313, // 240: testkit.v1.TrialInfo.expires_at:type_name -> google.protobuf.Timestamp
+	29,  // 241: testkit.v1.ShowTrialRequest.module:type_name -> testkit.v1.Module
+	261, // 242: testkit.v1.ShowTrialResponse.trials:type_name -> testkit.v1.TrialInfo
+	29,  // 243: testkit.v1.ResetTrialRequest.module:type_name -> testkit.v1.Module
+	267, // 244: testkit.v1.ShowPubKeyResponse.keys:type_name -> testkit.v1.SigningKeyInfo
+	310, // 245: testkit.v1.IngestResponse.drops:type_name -> testkit.v1.IngestResponse.DropsEntry
+	271, // 246: testkit.v1.ValidateBatchResponse.events:type_name -> testkit.v1.ValidateEventResult
+	32,  // 247: testkit.v1.App.auth_mode:type_name -> testkit.v1.AuthMode
+	313, // 248: testkit.v1.App.auth_grace_until:type_name -> google.protobuf.Timestamp
+	313, // 249: testkit.v1.App.created_at:type_name -> google.protobuf.Timestamp
+	313, // 250: testkit.v1.App.updated_at:type_name -> google.protobuf.Timestamp
+	313, // 251: testkit.v1.IngestTokenInfo.created_at:type_name -> google.protobuf.Timestamp
+	313, // 252: testkit.v1.IngestTokenInfo.last_used_at:type_name -> google.protobuf.Timestamp
+	313, // 253: testkit.v1.TelemetrySigningKeyInfo.created_at:type_name -> google.protobuf.Timestamp
+	313, // 254: testkit.v1.TelemetrySigningKeyInfo.last_used_at:type_name -> google.protobuf.Timestamp
+	313, // 255: testkit.v1.VersionInfo.last_seen_at:type_name -> google.protobuf.Timestamp
+	273, // 256: testkit.v1.CreateAppResponse.app:type_name -> testkit.v1.App
+	273, // 257: testkit.v1.GetAppResponse.app:type_name -> testkit.v1.App
+	275, // 258: testkit.v1.GetAppResponse.tokens:type_name -> testkit.v1.IngestTokenInfo
+	276, // 259: testkit.v1.GetAppResponse.signing_keys:type_name -> testkit.v1.TelemetrySigningKeyInfo
+	274, // 260: testkit.v1.GetAppResponse.rules:type_name -> testkit.v1.EventRule
+	277, // 261: testkit.v1.GetAppResponse.versions:type_name -> testkit.v1.VersionInfo
+	32,  // 262: testkit.v1.UpdateAppRequest.auth_mode:type_name -> testkit.v1.AuthMode
+	313, // 263: testkit.v1.UpdateAppRequest.auth_grace_until:type_name -> google.protobuf.Timestamp
+	273, // 264: testkit.v1.UpdateAppResponse.app:type_name -> testkit.v1.App
+	274, // 265: testkit.v1.ReplaceEventRulesRequest.rules:type_name -> testkit.v1.EventRule
+	274, // 266: testkit.v1.ReplaceEventRulesResponse.rules:type_name -> testkit.v1.EventRule
+	278, // 267: testkit.v1.GetAppStatsResponse.days:type_name -> testkit.v1.DailyStat
+	311, // 268: testkit.v1.GetAppStatsResponse.drops:type_name -> testkit.v1.GetAppStatsResponse.DropsEntry
+	312, // 269: testkit.v1.GetAppStatsResponse.sig_fails:type_name -> testkit.v1.GetAppStatsResponse.SigFailsEntry
+	316, // 270: testkit.v1.TestkitService.Ping:input_type -> google.protobuf.Empty
+	34,  // 271: testkit.v1.TestkitService.Login:input_type -> testkit.v1.LoginRequest
+	35,  // 272: testkit.v1.TestkitService.Register:input_type -> testkit.v1.RegisterRequest
+	36,  // 273: testkit.v1.TestkitService.SendVerificationCode:input_type -> testkit.v1.SendVerificationCodeRequest
+	316, // 274: testkit.v1.TestkitService.Logout:input_type -> google.protobuf.Empty
+	38,  // 275: testkit.v1.TestkitService.RefreshSession:input_type -> testkit.v1.RefreshSessionRequest
+	50,  // 276: testkit.v1.TestkitService.GetProfile:input_type -> testkit.v1.GetProfileRequest
+	51,  // 277: testkit.v1.TestkitService.UpdateProfile:input_type -> testkit.v1.UpdateProfileRequest
+	52,  // 278: testkit.v1.TestkitService.ChangePassword:input_type -> testkit.v1.ChangePasswordRequest
+	53,  // 279: testkit.v1.TestkitService.ResetPassword:input_type -> testkit.v1.ResetPasswordRequest
+	54,  // 280: testkit.v1.TestkitService.ListIdentities:input_type -> testkit.v1.ListIdentitiesRequest
+	56,  // 281: testkit.v1.TestkitService.BindIdentity:input_type -> testkit.v1.BindIdentityRequest
+	57,  // 282: testkit.v1.TestkitService.BindOAuthIdentity:input_type -> testkit.v1.BindOAuthIdentityRequest
+	59,  // 283: testkit.v1.TestkitService.UnbindIdentity:input_type -> testkit.v1.UnbindIdentityRequest
+	60,  // 284: testkit.v1.TestkitService.ListSessions:input_type -> testkit.v1.ListSessionsRequest
+	62,  // 285: testkit.v1.TestkitService.RevokeSession:input_type -> testkit.v1.RevokeSessionRequest
+	63,  // 286: testkit.v1.TestkitService.RevokeAllSessions:input_type -> testkit.v1.RevokeAllSessionsRequest
+	64,  // 287: testkit.v1.TestkitService.GetSession:input_type -> testkit.v1.GetSessionRequest
+	66,  // 288: testkit.v1.TestkitService.IssueSessionCode:input_type -> testkit.v1.IssueSessionCodeRequest
+	68,  // 289: testkit.v1.TestkitService.ExchangeSessionCode:input_type -> testkit.v1.ExchangeSessionCodeRequest
+	70,  // 290: testkit.v1.TestkitService.GetOAuthURL:input_type -> testkit.v1.GetOAuthURLRequest
+	72,  // 291: testkit.v1.TestkitService.SocialLogin:input_type -> testkit.v1.SocialLoginRequest
+	73,  // 292: testkit.v1.TestkitService.MiniProgramLogin:input_type -> testkit.v1.MiniProgramLoginRequest
+	74,  // 293: testkit.v1.TestkitService.MiniProgramPhoneLogin:input_type -> testkit.v1.MiniProgramPhoneLoginRequest
+	76,  // 294: testkit.v1.TestkitService.CreateUser:input_type -> testkit.v1.CreateUserRequest
+	78,  // 295: testkit.v1.TestkitService.GetUser:input_type -> testkit.v1.GetUserRequest
+	80,  // 296: testkit.v1.TestkitService.ListUsers:input_type -> testkit.v1.ListUsersRequest
+	82,  // 297: testkit.v1.TestkitService.ListUsersPaged:input_type -> testkit.v1.ListUsersPagedRequest
+	79,  // 298: testkit.v1.TestkitService.DisableUser:input_type -> testkit.v1.DisableUserRequest
+	84,  // 299: testkit.v1.TestkitService.GetLoginLogs:input_type -> testkit.v1.GetLoginLogsRequest
+	86,  // 300: testkit.v1.TestkitService.CreateGroup:input_type -> testkit.v1.CreateGroupRequest
+	87,  // 301: testkit.v1.TestkitService.GetGroup:input_type -> testkit.v1.GetGroupRequest
+	88,  // 302: testkit.v1.TestkitService.UpdateGroup:input_type -> testkit.v1.UpdateGroupRequest
+	89,  // 303: testkit.v1.TestkitService.ListGroups:input_type -> testkit.v1.ListGroupsRequest
+	91,  // 304: testkit.v1.TestkitService.DeleteGroup:input_type -> testkit.v1.DeleteGroupRequest
+	92,  // 305: testkit.v1.TestkitService.AddGroupMember:input_type -> testkit.v1.AddGroupMemberRequest
+	93,  // 306: testkit.v1.TestkitService.RemoveGroupMember:input_type -> testkit.v1.RemoveGroupMemberRequest
+	94,  // 307: testkit.v1.TestkitService.ListGroupMembers:input_type -> testkit.v1.ListGroupMembersRequest
+	96,  // 308: testkit.v1.TestkitService.AddGroupRole:input_type -> testkit.v1.AddGroupRoleRequest
+	97,  // 309: testkit.v1.TestkitService.RemoveGroupRole:input_type -> testkit.v1.RemoveGroupRoleRequest
+	98,  // 310: testkit.v1.TestkitService.ListGroupRoles:input_type -> testkit.v1.ListGroupRolesRequest
+	100, // 311: testkit.v1.TestkitService.CreateRole:input_type -> testkit.v1.CreateRoleRequest
+	101, // 312: testkit.v1.TestkitService.GetRole:input_type -> testkit.v1.GetRoleRequest
+	102, // 313: testkit.v1.TestkitService.UpdateRole:input_type -> testkit.v1.UpdateRoleRequest
+	103, // 314: testkit.v1.TestkitService.DeleteRole:input_type -> testkit.v1.DeleteRoleRequest
+	104, // 315: testkit.v1.TestkitService.ListRoles:input_type -> testkit.v1.ListRolesRequest
+	106, // 316: testkit.v1.TestkitService.AssignRole:input_type -> testkit.v1.AssignRoleRequest
+	107, // 317: testkit.v1.TestkitService.RevokeRole:input_type -> testkit.v1.RevokeRoleRequest
+	108, // 318: testkit.v1.TestkitService.ListUserRoles:input_type -> testkit.v1.ListUserRolesRequest
+	110, // 319: testkit.v1.TestkitService.ListPermissions:input_type -> testkit.v1.ListPermissionsRequest
+	112, // 320: testkit.v1.TestkitService.CreatePermission:input_type -> testkit.v1.CreatePermissionRequest
+	113, // 321: testkit.v1.TestkitService.GetPermission:input_type -> testkit.v1.GetPermissionRequest
+	114, // 322: testkit.v1.TestkitService.UpdatePermission:input_type -> testkit.v1.UpdatePermissionRequest
+	115, // 323: testkit.v1.TestkitService.DeletePermission:input_type -> testkit.v1.DeletePermissionRequest
+	116, // 324: testkit.v1.TestkitService.CreatePermissionGroup:input_type -> testkit.v1.CreatePermissionGroupRequest
+	117, // 325: testkit.v1.TestkitService.GetPermissionGroup:input_type -> testkit.v1.GetPermissionGroupRequest
+	118, // 326: testkit.v1.TestkitService.UpdatePermissionGroup:input_type -> testkit.v1.UpdatePermissionGroupRequest
+	119, // 327: testkit.v1.TestkitService.DeletePermissionGroup:input_type -> testkit.v1.DeletePermissionGroupRequest
+	120, // 328: testkit.v1.TestkitService.ListPermissionGroups:input_type -> testkit.v1.ListPermissionGroupsRequest
+	136, // 329: testkit.v1.TestkitService.GenerateUploadURL:input_type -> testkit.v1.GenerateUploadURLRequest
+	138, // 330: testkit.v1.TestkitService.GetSTSCredential:input_type -> testkit.v1.GetSTSCredentialRequest
+	140, // 331: testkit.v1.TestkitService.BatchGetSTSCredential:input_type -> testkit.v1.BatchGetSTSCredentialRequest
+	142, // 332: testkit.v1.TestkitService.ConfirmUpload:input_type -> testkit.v1.ConfirmUploadRequest
+	144, // 333: testkit.v1.TestkitService.CancelUpload:input_type -> testkit.v1.CancelUploadRequest
+	145, // 334: testkit.v1.TestkitService.GenerateDownloadURL:input_type -> testkit.v1.GenerateDownloadURLRequest
+	151, // 335: testkit.v1.TestkitService.GenerateProcessURL:input_type -> testkit.v1.GenerateProcessURLRequest
+	153, // 336: testkit.v1.TestkitService.GenerateCDNURL:input_type -> testkit.v1.GenerateCDNURLRequest
+	147, // 337: testkit.v1.TestkitService.CreateFileLink:input_type -> testkit.v1.CreateFileLinkRequest
+	149, // 338: testkit.v1.TestkitService.GetFileLinkDownload:input_type -> testkit.v1.GetFileLinkDownloadRequest
+	155, // 339: testkit.v1.TestkitService.ListMyFiles:input_type -> testkit.v1.ListMyFilesRequest
+	157, // 340: testkit.v1.TestkitService.ListMyFilesPaged:input_type -> testkit.v1.ListMyFilesPagedRequest
+	159, // 341: testkit.v1.TestkitService.GetMyFile:input_type -> testkit.v1.GetMyFileRequest
+	160, // 342: testkit.v1.TestkitService.UpdateMyFile:input_type -> testkit.v1.UpdateMyFileRequest
+	161, // 343: testkit.v1.TestkitService.DeleteMyFile:input_type -> testkit.v1.DeleteMyFileRequest
+	162, // 344: testkit.v1.TestkitService.BatchDeleteMyFiles:input_type -> testkit.v1.BatchDeleteMyFilesRequest
+	316, // 345: testkit.v1.TestkitService.GetMyQuota:input_type -> google.protobuf.Empty
+	164, // 346: testkit.v1.TestkitService.ListMyAuditLogs:input_type -> testkit.v1.ListMyAuditLogsRequest
+	166, // 347: testkit.v1.TestkitService.AdminListFiles:input_type -> testkit.v1.AdminListFilesRequest
+	168, // 348: testkit.v1.TestkitService.AdminGetFile:input_type -> testkit.v1.AdminGetFileRequest
+	169, // 349: testkit.v1.TestkitService.AdminDeleteFile:input_type -> testkit.v1.AdminDeleteFileRequest
+	170, // 350: testkit.v1.TestkitService.AdminGetQuota:input_type -> testkit.v1.AdminGetQuotaRequest
+	171, // 351: testkit.v1.TestkitService.AdminSetQuota:input_type -> testkit.v1.AdminSetQuotaRequest
+	172, // 352: testkit.v1.TestkitService.AdminGetStats:input_type -> testkit.v1.AdminGetStatsRequest
+	316, // 353: testkit.v1.TestkitService.AdminListProviders:input_type -> google.protobuf.Empty
+	316, // 354: testkit.v1.TestkitService.AdminListBuckets:input_type -> google.protobuf.Empty
+	176, // 355: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:input_type -> testkit.v1.AdminSoftDeleteOwnerFilesRequest
+	178, // 356: testkit.v1.TestkitService.AdminDeleteOwner:input_type -> testkit.v1.AdminDeleteOwnerRequest
+	180, // 357: testkit.v1.TestkitService.AdminListAuditLogs:input_type -> testkit.v1.AdminListAuditLogsRequest
+	186, // 358: testkit.v1.TestkitService.SendEmail:input_type -> testkit.v1.SendEmailRequest
+	187, // 359: testkit.v1.TestkitService.SendSMS:input_type -> testkit.v1.SendSMSRequest
+	191, // 360: testkit.v1.TestkitService.GetEmail:input_type -> testkit.v1.GetEmailRequest
+	193, // 361: testkit.v1.TestkitService.ListEmails:input_type -> testkit.v1.ListEmailsRequest
+	197, // 362: testkit.v1.TestkitService.ListEmailsByCursor:input_type -> testkit.v1.ListEmailsByCursorRequest
+	201, // 363: testkit.v1.TestkitService.GetEmailStats:input_type -> testkit.v1.GetEmailStatsRequest
+	205, // 364: testkit.v1.TestkitService.ListEmailSenders:input_type -> testkit.v1.ListEmailSendersRequest
+	192, // 365: testkit.v1.TestkitService.GetSMS:input_type -> testkit.v1.GetSMSRequest
+	195, // 366: testkit.v1.TestkitService.ListSMS:input_type -> testkit.v1.ListSMSRequest
+	199, // 367: testkit.v1.TestkitService.ListSMSByCursor:input_type -> testkit.v1.ListSMSByCursorRequest
+	203, // 368: testkit.v1.TestkitService.GetSMSStats:input_type -> testkit.v1.GetSMSStatsRequest
+	209, // 369: testkit.v1.TestkitService.ListSMSRegions:input_type -> testkit.v1.ListSMSRegionsRequest
+	207, // 370: testkit.v1.TestkitService.ListSMSSenders:input_type -> testkit.v1.ListSMSSendersRequest
+	211, // 371: testkit.v1.TestkitService.NextID:input_type -> testkit.v1.NextIDRequest
+	213, // 372: testkit.v1.TestkitService.BatchNextID:input_type -> testkit.v1.BatchNextIDRequest
+	215, // 373: testkit.v1.TestkitService.Decompose:input_type -> testkit.v1.DecomposeRequest
+	217, // 374: testkit.v1.TestkitService.GetDashboard:input_type -> testkit.v1.GetDashboardRequest
+	223, // 375: testkit.v1.TestkitService.Activate:input_type -> testkit.v1.ActivateRequest
+	227, // 376: testkit.v1.TestkitService.Deactivate:input_type -> testkit.v1.DeactivateRequest
+	229, // 377: testkit.v1.TestkitService.TrialStart:input_type -> testkit.v1.TrialStartRequest
+	231, // 378: testkit.v1.TestkitService.Health:input_type -> testkit.v1.HealthRequest
+	239, // 379: testkit.v1.TestkitService.CreateKey:input_type -> testkit.v1.CreateKeyRequest
+	241, // 380: testkit.v1.TestkitService.ShowKey:input_type -> testkit.v1.ShowKeyRequest
+	243, // 381: testkit.v1.TestkitService.ListKeys:input_type -> testkit.v1.ListKeysRequest
+	245, // 382: testkit.v1.TestkitService.UpdateKey:input_type -> testkit.v1.UpdateKeyRequest
+	247, // 383: testkit.v1.TestkitService.RevokeKey:input_type -> testkit.v1.RevokeKeyRequest
+	249, // 384: testkit.v1.TestkitService.UnrevokeKey:input_type -> testkit.v1.UnrevokeKeyRequest
+	251, // 385: testkit.v1.TestkitService.DeleteKey:input_type -> testkit.v1.DeleteKeyRequest
+	253, // 386: testkit.v1.TestkitService.GrantModule:input_type -> testkit.v1.GrantModuleRequest
+	255, // 387: testkit.v1.TestkitService.RevokeModule:input_type -> testkit.v1.RevokeModuleRequest
+	257, // 388: testkit.v1.TestkitService.ListKeyDevices:input_type -> testkit.v1.ListKeyDevicesRequest
+	259, // 389: testkit.v1.TestkitService.KickDevice:input_type -> testkit.v1.KickDeviceRequest
+	262, // 390: testkit.v1.TestkitService.ShowTrial:input_type -> testkit.v1.ShowTrialRequest
+	264, // 391: testkit.v1.TestkitService.ResetTrial:input_type -> testkit.v1.ResetTrialRequest
+	266, // 392: testkit.v1.TestkitService.ShowPubKey:input_type -> testkit.v1.ShowPubKeyRequest
+	269, // 393: testkit.v1.TestkitService.Ingest:input_type -> testkit.v1.IngestRequest
+	279, // 394: testkit.v1.TestkitService.CreateApp:input_type -> testkit.v1.CreateAppRequest
+	281, // 395: testkit.v1.TestkitService.GetApp:input_type -> testkit.v1.GetAppRequest
+	283, // 396: testkit.v1.TestkitService.UpdateApp:input_type -> testkit.v1.UpdateAppRequest
+	285, // 397: testkit.v1.TestkitService.RotateToken:input_type -> testkit.v1.RotateTokenRequest
+	287, // 398: testkit.v1.TestkitService.RevokeToken:input_type -> testkit.v1.RevokeTokenRequest
+	289, // 399: testkit.v1.TestkitService.CreateSigningKey:input_type -> testkit.v1.CreateSigningKeyRequest
+	291, // 400: testkit.v1.TestkitService.RevokeSigningKey:input_type -> testkit.v1.RevokeSigningKeyRequest
+	293, // 401: testkit.v1.TestkitService.ReplaceEventRules:input_type -> testkit.v1.ReplaceEventRulesRequest
+	295, // 402: testkit.v1.TestkitService.SetVersionBlocked:input_type -> testkit.v1.SetVersionBlockedRequest
+	297, // 403: testkit.v1.TestkitService.GetAppStats:input_type -> testkit.v1.GetAppStatsRequest
+	33,  // 404: testkit.v1.TestkitService.Ping:output_type -> testkit.v1.Pong
+	49,  // 405: testkit.v1.TestkitService.Login:output_type -> testkit.v1.TokenResponse
+	49,  // 406: testkit.v1.TestkitService.Register:output_type -> testkit.v1.TokenResponse
+	37,  // 407: testkit.v1.TestkitService.SendVerificationCode:output_type -> testkit.v1.SendVerificationCodeResponse
+	316, // 408: testkit.v1.TestkitService.Logout:output_type -> google.protobuf.Empty
+	49,  // 409: testkit.v1.TestkitService.RefreshSession:output_type -> testkit.v1.TokenResponse
+	39,  // 410: testkit.v1.TestkitService.GetProfile:output_type -> testkit.v1.User
+	39,  // 411: testkit.v1.TestkitService.UpdateProfile:output_type -> testkit.v1.User
+	316, // 412: testkit.v1.TestkitService.ChangePassword:output_type -> google.protobuf.Empty
+	316, // 413: testkit.v1.TestkitService.ResetPassword:output_type -> google.protobuf.Empty
+	55,  // 414: testkit.v1.TestkitService.ListIdentities:output_type -> testkit.v1.ListIdentitiesResponse
+	40,  // 415: testkit.v1.TestkitService.BindIdentity:output_type -> testkit.v1.Identity
+	58,  // 416: testkit.v1.TestkitService.BindOAuthIdentity:output_type -> testkit.v1.BindOAuthIdentityResponse
+	316, // 417: testkit.v1.TestkitService.UnbindIdentity:output_type -> google.protobuf.Empty
+	61,  // 418: testkit.v1.TestkitService.ListSessions:output_type -> testkit.v1.ListSessionsResponse
+	316, // 419: testkit.v1.TestkitService.RevokeSession:output_type -> google.protobuf.Empty
+	316, // 420: testkit.v1.TestkitService.RevokeAllSessions:output_type -> google.protobuf.Empty
+	65,  // 421: testkit.v1.TestkitService.GetSession:output_type -> testkit.v1.GetSessionResponse
+	67,  // 422: testkit.v1.TestkitService.IssueSessionCode:output_type -> testkit.v1.IssueSessionCodeResponse
+	69,  // 423: testkit.v1.TestkitService.ExchangeSessionCode:output_type -> testkit.v1.ExchangeSessionCodeResponse
+	71,  // 424: testkit.v1.TestkitService.GetOAuthURL:output_type -> testkit.v1.GetOAuthURLResponse
+	75,  // 425: testkit.v1.TestkitService.SocialLogin:output_type -> testkit.v1.SocialLoginResponse
+	75,  // 426: testkit.v1.TestkitService.MiniProgramLogin:output_type -> testkit.v1.SocialLoginResponse
+	75,  // 427: testkit.v1.TestkitService.MiniProgramPhoneLogin:output_type -> testkit.v1.SocialLoginResponse
+	77,  // 428: testkit.v1.TestkitService.CreateUser:output_type -> testkit.v1.CreateUserResponse
+	39,  // 429: testkit.v1.TestkitService.GetUser:output_type -> testkit.v1.User
+	81,  // 430: testkit.v1.TestkitService.ListUsers:output_type -> testkit.v1.ListUsersResponse
+	83,  // 431: testkit.v1.TestkitService.ListUsersPaged:output_type -> testkit.v1.ListUsersPagedResponse
+	39,  // 432: testkit.v1.TestkitService.DisableUser:output_type -> testkit.v1.User
+	85,  // 433: testkit.v1.TestkitService.GetLoginLogs:output_type -> testkit.v1.GetLoginLogsResponse
+	42,  // 434: testkit.v1.TestkitService.CreateGroup:output_type -> testkit.v1.Group
+	42,  // 435: testkit.v1.TestkitService.GetGroup:output_type -> testkit.v1.Group
+	42,  // 436: testkit.v1.TestkitService.UpdateGroup:output_type -> testkit.v1.Group
+	90,  // 437: testkit.v1.TestkitService.ListGroups:output_type -> testkit.v1.ListGroupsResponse
+	316, // 438: testkit.v1.TestkitService.DeleteGroup:output_type -> google.protobuf.Empty
+	316, // 439: testkit.v1.TestkitService.AddGroupMember:output_type -> google.protobuf.Empty
+	316, // 440: testkit.v1.TestkitService.RemoveGroupMember:output_type -> google.protobuf.Empty
+	95,  // 441: testkit.v1.TestkitService.ListGroupMembers:output_type -> testkit.v1.ListGroupMembersResponse
+	316, // 442: testkit.v1.TestkitService.AddGroupRole:output_type -> google.protobuf.Empty
+	316, // 443: testkit.v1.TestkitService.RemoveGroupRole:output_type -> google.protobuf.Empty
+	99,  // 444: testkit.v1.TestkitService.ListGroupRoles:output_type -> testkit.v1.ListGroupRolesResponse
+	43,  // 445: testkit.v1.TestkitService.CreateRole:output_type -> testkit.v1.Role
+	43,  // 446: testkit.v1.TestkitService.GetRole:output_type -> testkit.v1.Role
+	43,  // 447: testkit.v1.TestkitService.UpdateRole:output_type -> testkit.v1.Role
+	316, // 448: testkit.v1.TestkitService.DeleteRole:output_type -> google.protobuf.Empty
+	105, // 449: testkit.v1.TestkitService.ListRoles:output_type -> testkit.v1.ListRolesResponse
+	316, // 450: testkit.v1.TestkitService.AssignRole:output_type -> google.protobuf.Empty
+	316, // 451: testkit.v1.TestkitService.RevokeRole:output_type -> google.protobuf.Empty
+	109, // 452: testkit.v1.TestkitService.ListUserRoles:output_type -> testkit.v1.ListUserRolesResponse
+	111, // 453: testkit.v1.TestkitService.ListPermissions:output_type -> testkit.v1.ListPermissionsResponse
+	44,  // 454: testkit.v1.TestkitService.CreatePermission:output_type -> testkit.v1.Permission
+	44,  // 455: testkit.v1.TestkitService.GetPermission:output_type -> testkit.v1.Permission
+	44,  // 456: testkit.v1.TestkitService.UpdatePermission:output_type -> testkit.v1.Permission
+	316, // 457: testkit.v1.TestkitService.DeletePermission:output_type -> google.protobuf.Empty
+	45,  // 458: testkit.v1.TestkitService.CreatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	45,  // 459: testkit.v1.TestkitService.GetPermissionGroup:output_type -> testkit.v1.PermissionGroup
+	45,  // 460: testkit.v1.TestkitService.UpdatePermissionGroup:output_type -> testkit.v1.PermissionGroup
+	316, // 461: testkit.v1.TestkitService.DeletePermissionGroup:output_type -> google.protobuf.Empty
+	121, // 462: testkit.v1.TestkitService.ListPermissionGroups:output_type -> testkit.v1.ListPermissionGroupsResponse
+	137, // 463: testkit.v1.TestkitService.GenerateUploadURL:output_type -> testkit.v1.GenerateUploadURLResponse
+	139, // 464: testkit.v1.TestkitService.GetSTSCredential:output_type -> testkit.v1.GetSTSCredentialResponse
+	141, // 465: testkit.v1.TestkitService.BatchGetSTSCredential:output_type -> testkit.v1.BatchGetSTSCredentialResponse
+	143, // 466: testkit.v1.TestkitService.ConfirmUpload:output_type -> testkit.v1.ConfirmUploadResponse
+	316, // 467: testkit.v1.TestkitService.CancelUpload:output_type -> google.protobuf.Empty
+	146, // 468: testkit.v1.TestkitService.GenerateDownloadURL:output_type -> testkit.v1.GenerateDownloadURLResponse
+	152, // 469: testkit.v1.TestkitService.GenerateProcessURL:output_type -> testkit.v1.GenerateProcessURLResponse
+	154, // 470: testkit.v1.TestkitService.GenerateCDNURL:output_type -> testkit.v1.GenerateCDNURLResponse
+	148, // 471: testkit.v1.TestkitService.CreateFileLink:output_type -> testkit.v1.CreateFileLinkResponse
+	150, // 472: testkit.v1.TestkitService.GetFileLinkDownload:output_type -> testkit.v1.GetFileLinkDownloadResponse
+	156, // 473: testkit.v1.TestkitService.ListMyFiles:output_type -> testkit.v1.ListMyFilesResponse
+	158, // 474: testkit.v1.TestkitService.ListMyFilesPaged:output_type -> testkit.v1.ListMyFilesPagedResponse
+	122, // 475: testkit.v1.TestkitService.GetMyFile:output_type -> testkit.v1.FileInfo
+	122, // 476: testkit.v1.TestkitService.UpdateMyFile:output_type -> testkit.v1.FileInfo
+	316, // 477: testkit.v1.TestkitService.DeleteMyFile:output_type -> google.protobuf.Empty
+	163, // 478: testkit.v1.TestkitService.BatchDeleteMyFiles:output_type -> testkit.v1.BatchDeleteMyFilesResponse
+	124, // 479: testkit.v1.TestkitService.GetMyQuota:output_type -> testkit.v1.QuotaInfo
+	165, // 480: testkit.v1.TestkitService.ListMyAuditLogs:output_type -> testkit.v1.ListMyAuditLogsResponse
+	167, // 481: testkit.v1.TestkitService.AdminListFiles:output_type -> testkit.v1.AdminListFilesResponse
+	123, // 482: testkit.v1.TestkitService.AdminGetFile:output_type -> testkit.v1.AdminFileInfo
+	316, // 483: testkit.v1.TestkitService.AdminDeleteFile:output_type -> google.protobuf.Empty
+	124, // 484: testkit.v1.TestkitService.AdminGetQuota:output_type -> testkit.v1.QuotaInfo
+	124, // 485: testkit.v1.TestkitService.AdminSetQuota:output_type -> testkit.v1.QuotaInfo
+	173, // 486: testkit.v1.TestkitService.AdminGetStats:output_type -> testkit.v1.AdminGetStatsResponse
+	174, // 487: testkit.v1.TestkitService.AdminListProviders:output_type -> testkit.v1.AdminListProvidersResponse
+	175, // 488: testkit.v1.TestkitService.AdminListBuckets:output_type -> testkit.v1.AdminListBucketsResponse
+	177, // 489: testkit.v1.TestkitService.AdminSoftDeleteOwnerFiles:output_type -> testkit.v1.AdminSoftDeleteOwnerFilesResponse
+	179, // 490: testkit.v1.TestkitService.AdminDeleteOwner:output_type -> testkit.v1.AdminDeleteOwnerResponse
+	181, // 491: testkit.v1.TestkitService.AdminListAuditLogs:output_type -> testkit.v1.AdminListAuditLogsResponse
+	188, // 492: testkit.v1.TestkitService.SendEmail:output_type -> testkit.v1.SendResponse
+	188, // 493: testkit.v1.TestkitService.SendSMS:output_type -> testkit.v1.SendResponse
+	189, // 494: testkit.v1.TestkitService.GetEmail:output_type -> testkit.v1.EmailRecord
+	194, // 495: testkit.v1.TestkitService.ListEmails:output_type -> testkit.v1.ListEmailsResponse
+	198, // 496: testkit.v1.TestkitService.ListEmailsByCursor:output_type -> testkit.v1.ListEmailsByCursorResponse
+	202, // 497: testkit.v1.TestkitService.GetEmailStats:output_type -> testkit.v1.EmailStatsResponse
+	206, // 498: testkit.v1.TestkitService.ListEmailSenders:output_type -> testkit.v1.ListEmailSendersResponse
+	190, // 499: testkit.v1.TestkitService.GetSMS:output_type -> testkit.v1.SMSRecord
+	196, // 500: testkit.v1.TestkitService.ListSMS:output_type -> testkit.v1.ListSMSResponse
+	200, // 501: testkit.v1.TestkitService.ListSMSByCursor:output_type -> testkit.v1.ListSMSByCursorResponse
+	204, // 502: testkit.v1.TestkitService.GetSMSStats:output_type -> testkit.v1.SMSStatsResponse
+	210, // 503: testkit.v1.TestkitService.ListSMSRegions:output_type -> testkit.v1.ListSMSRegionsResponse
+	208, // 504: testkit.v1.TestkitService.ListSMSSenders:output_type -> testkit.v1.ListSMSSendersResponse
+	212, // 505: testkit.v1.TestkitService.NextID:output_type -> testkit.v1.NextIDResponse
+	214, // 506: testkit.v1.TestkitService.BatchNextID:output_type -> testkit.v1.BatchNextIDResponse
+	216, // 507: testkit.v1.TestkitService.Decompose:output_type -> testkit.v1.DecomposeResponse
+	222, // 508: testkit.v1.TestkitService.GetDashboard:output_type -> testkit.v1.DashboardResponse
+	226, // 509: testkit.v1.TestkitService.Activate:output_type -> testkit.v1.ActivateResponse
+	228, // 510: testkit.v1.TestkitService.Deactivate:output_type -> testkit.v1.DeactivateResponse
+	230, // 511: testkit.v1.TestkitService.TrialStart:output_type -> testkit.v1.TrialStartResponse
+	233, // 512: testkit.v1.TestkitService.Health:output_type -> testkit.v1.HealthResponse
+	240, // 513: testkit.v1.TestkitService.CreateKey:output_type -> testkit.v1.CreateKeyResponse
+	242, // 514: testkit.v1.TestkitService.ShowKey:output_type -> testkit.v1.ShowKeyResponse
+	244, // 515: testkit.v1.TestkitService.ListKeys:output_type -> testkit.v1.ListKeysResponse
+	246, // 516: testkit.v1.TestkitService.UpdateKey:output_type -> testkit.v1.UpdateKeyResponse
+	248, // 517: testkit.v1.TestkitService.RevokeKey:output_type -> testkit.v1.RevokeKeyResponse
+	250, // 518: testkit.v1.TestkitService.UnrevokeKey:output_type -> testkit.v1.UnrevokeKeyResponse
+	252, // 519: testkit.v1.TestkitService.DeleteKey:output_type -> testkit.v1.DeleteKeyResponse
+	254, // 520: testkit.v1.TestkitService.GrantModule:output_type -> testkit.v1.GrantModuleResponse
+	256, // 521: testkit.v1.TestkitService.RevokeModule:output_type -> testkit.v1.RevokeModuleResponse
+	258, // 522: testkit.v1.TestkitService.ListKeyDevices:output_type -> testkit.v1.ListKeyDevicesResponse
+	260, // 523: testkit.v1.TestkitService.KickDevice:output_type -> testkit.v1.KickDeviceResponse
+	263, // 524: testkit.v1.TestkitService.ShowTrial:output_type -> testkit.v1.ShowTrialResponse
+	265, // 525: testkit.v1.TestkitService.ResetTrial:output_type -> testkit.v1.ResetTrialResponse
+	268, // 526: testkit.v1.TestkitService.ShowPubKey:output_type -> testkit.v1.ShowPubKeyResponse
+	270, // 527: testkit.v1.TestkitService.Ingest:output_type -> testkit.v1.IngestResponse
+	280, // 528: testkit.v1.TestkitService.CreateApp:output_type -> testkit.v1.CreateAppResponse
+	282, // 529: testkit.v1.TestkitService.GetApp:output_type -> testkit.v1.GetAppResponse
+	284, // 530: testkit.v1.TestkitService.UpdateApp:output_type -> testkit.v1.UpdateAppResponse
+	286, // 531: testkit.v1.TestkitService.RotateToken:output_type -> testkit.v1.RotateTokenResponse
+	288, // 532: testkit.v1.TestkitService.RevokeToken:output_type -> testkit.v1.RevokeTokenResponse
+	290, // 533: testkit.v1.TestkitService.CreateSigningKey:output_type -> testkit.v1.CreateSigningKeyResponse
+	292, // 534: testkit.v1.TestkitService.RevokeSigningKey:output_type -> testkit.v1.RevokeSigningKeyResponse
+	294, // 535: testkit.v1.TestkitService.ReplaceEventRules:output_type -> testkit.v1.ReplaceEventRulesResponse
+	296, // 536: testkit.v1.TestkitService.SetVersionBlocked:output_type -> testkit.v1.SetVersionBlockedResponse
+	298, // 537: testkit.v1.TestkitService.GetAppStats:output_type -> testkit.v1.GetAppStatsResponse
+	404, // [404:538] is the sub-list for method output_type
+	270, // [270:404] is the sub-list for method input_type
+	270, // [270:270] is the sub-list for extension type_name
+	270, // [270:270] is the sub-list for extension extendee
+	0,   // [0:270] is the sub-list for field type_name
 }
 
 func init() { file_testkit_v1_testkit_proto_init() }
@@ -22691,24 +22877,24 @@ func file_testkit_v1_testkit_proto_init() {
 		(*UploadCredentialItem_Error)(nil),
 	}
 	file_testkit_v1_testkit_proto_msgTypes[112].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[116].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[123].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[188].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[189].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[210].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[120].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[127].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[190].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[191].OneofWrappers = []any{}
 	file_testkit_v1_testkit_proto_msgTypes[212].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[216].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[220].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[224].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[239].OneofWrappers = []any{}
-	file_testkit_v1_testkit_proto_msgTypes[248].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[214].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[218].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[222].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[226].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[241].OneofWrappers = []any{}
+	file_testkit_v1_testkit_proto_msgTypes[250].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_testkit_v1_testkit_proto_rawDesc), len(file_testkit_v1_testkit_proto_rawDesc)),
-			NumEnums:      32,
-			NumMessages:   278,
+			NumEnums:      33,
+			NumMessages:   280,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

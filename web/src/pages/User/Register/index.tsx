@@ -4,11 +4,13 @@ import {
   ProFormInstance,
   ProFormSelect,
   ProFormText,
+  ProFormTextArea,
 } from "@ant-design/pro-components";
 import { App, Button, Collapse, Typography } from "antd";
 import { history, useModel } from "@umijs/max";
 import { useRef, useState } from "react";
 import { GENDER_VALUE_ENUM } from "@/components/usertags";
+import { VERIFICATION_CODE_TEMPLATE } from "@/utils/emailTemplates";
 import {
   register,
   sendVerificationCode,
@@ -116,8 +118,9 @@ export default function RegisterPage() {
         ...(isEmail
           ? {
               email: vals.email,
-              emailSubject: vals.emailSubject || "Testkit 验证码",
-              emailBody: vals.emailBody || "您的验证码：{code}，5 分钟内有效。",
+              emailSubject:
+                vals.emailSubject || VERIFICATION_CODE_TEMPLATE.subject,
+              emailBody: vals.emailBody || VERIFICATION_CODE_TEMPLATE.body,
               emailHtmlBody: vals.emailHtmlBody || undefined,
             }
           : {
@@ -170,8 +173,9 @@ export default function RegisterPage() {
       initialValues={{
         channel: "email",
         regionCode: "CN",
-        emailSubject: "Testkit 验证码",
-        emailBody: "您的验证码：{code}，5 分钟内有效。",
+        emailSubject: VERIFICATION_CODE_TEMPLATE.subject,
+        emailBody: VERIFICATION_CODE_TEMPLATE.body,
+        emailHtmlBody: VERIFICATION_CODE_TEMPLATE.htmlBody,
         smsContent: "code: {code}",
         timezone: "Asia/Shanghai",
         locale: "zh-CN",
@@ -346,10 +350,11 @@ export default function RegisterPage() {
                         label="邮件正文（纯文本）"
                         placeholder="您的验证码：{code}，5 分钟内有效。"
                       />
-                      <ProFormText
+                      <ProFormTextArea
                         name="emailHtmlBody"
                         label="邮件正文（HTML，可选）"
                         placeholder="<p>验证码：{code}</p>"
+                        fieldProps={{ autoSize: { minRows: 4 } }}
                       />
                     </>
                   )

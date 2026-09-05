@@ -28,7 +28,7 @@ func (h *Handler) GetSTSCredential(ctx context.Context, req *testkitv1.GetSTSCre
 	return h.svc.Storage().GetSTSCredential(ctx, req)
 }
 
-// BatchGetSTSCredential returns one shared STS credential + per-file tokens.
+// BatchGetSTSCredential returns one linkd STS credential + per-file tokens.
 func (h *Handler) BatchGetSTSCredential(ctx context.Context, req *testkitv1.BatchGetSTSCredentialRequest) (*testkitv1.BatchGetSTSCredentialResponse, error) {
 	return h.svc.Storage().BatchGetSTSCredential(ctx, req)
 }
@@ -48,6 +48,17 @@ func (h *Handler) CancelUpload(ctx context.Context, req *testkitv1.CancelUploadR
 // GenerateDownloadURL returns a presigned download URL for the caller's file.
 func (h *Handler) GenerateDownloadURL(ctx context.Context, req *testkitv1.GenerateDownloadURLRequest) (*testkitv1.GenerateDownloadURLResponse, error) {
 	return h.svc.Storage().GenerateDownloadURL(ctx, req)
+}
+
+// CreateFileLink mints or renews an anonymous link token for a file.
+func (h *Handler) CreateFileLink(ctx context.Context, req *testkitv1.CreateFileLinkRequest) (*testkitv1.CreateFileLinkResponse, error) {
+	return h.svc.Storage().CreateFileLink(ctx, req)
+}
+
+// GetFileLinkDownload is the anonymous file-link backend — the token is
+// the credential (public method, no login required).
+func (h *Handler) GetFileLinkDownload(ctx context.Context, req *testkitv1.GetFileLinkDownloadRequest) (*testkitv1.GetFileLinkDownloadResponse, error) {
+	return h.svc.Storage().GetFileLinkDownload(ctx, req)
 }
 
 // GenerateProcessURL returns a presigned image-processing URL.
@@ -106,15 +117,7 @@ func (h *Handler) ListMyAuditLogs(ctx context.Context, req *testkitv1.ListMyAudi
 
 // --- Owner quota (target owner on request) ---
 
-// SetOwnerQuota sets a target owner's total quota.
-func (h *Handler) SetOwnerQuota(ctx context.Context, req *testkitv1.SetOwnerQuotaRequest) (*testkitv1.QuotaInfo, error) {
-	return h.svc.Storage().SetOwnerQuota(ctx, req)
-}
 
-// AddOwnerQuota adjusts a target owner's quota by a delta.
-func (h *Handler) AddOwnerQuota(ctx context.Context, req *testkitv1.AddOwnerQuotaRequest) (*testkitv1.QuotaInfo, error) {
-	return h.svc.Storage().AddOwnerQuota(ctx, req)
-}
 
 // --- Admin (target owner / file_id on request; no RBAC enforcement this stage) ---
 
