@@ -159,16 +159,19 @@ func registerGateway(svc *service.Service) grpcx.RegisterGatewayFunc {
 		if err := testkitv1.RegisterTestkitServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
 			return err
 		}
-		ingest := ingesthttp.Handler(svc.Telemetry().Backend())
-		for _, route := range []struct{ method, pattern string }{
-			{http.MethodPost, "/v1/e/{token}/events"},
-			{http.MethodPost, "/v1/collect/events"},
-		} {
-			if err := mux.HandlePath(route.method, route.pattern, func(w http.ResponseWriter, r *http.Request, _ map[string]string) {
-				ingest.ServeHTTP(w, r)
-			}); err != nil {
-				return err
-			}
+		// Ingestion routes are the gateway's own registration; grpc-gateway
+		// resolves the token path parameter and hands it to the
+		// routing-agnostic endpoint handler (no inner mux re-matching).
+		backend := svc.Telemetry().Backend()
+		if err := mux.HandlePath(http.MethodPost, "/v1/e/{token}/events", func(w http.ResponseWriter, r *http.Request, params map[string]string) {
+			ingesthttp.Endpoint(backend, params["token"]).ServeHTTP(w, r)
+		}); err != nil {
+			return err
+		}
+		if err := mux.HandlePath(http.MethodPost, "/v1/collect/events", func(w http.ResponseWriter, r *http.Request, _ map[string]string) {
+			ingesthttp.Bearer(backend).ServeHTTP(w, r)
+		}); err != nil {
+			return err
 		}
 		return mux.HandlePath(http.MethodGet, "/metrics", func(w http.ResponseWriter, r *http.Request, _ map[string]string) {
 			promhttp.Handler().ServeHTTP(w, r)
