@@ -16,14 +16,10 @@
 **/bin/
 
 # Monorepo context (servekit root): the Go build needs testkit-service plus the
-# locally replaced checkouts (go.mod replace) — user/license/telemetry-service.
-# Exclude the other siblings and everything frontend-related to keep the
-# context small.
+# locally replaced checkouts (go.mod replace) — user/license/telemetry/storage/
+# message/gid-service and the api contract repo (gen/go). Exclude the rest and
+# everything frontend-related to keep the context small.
 /download-proxy/
-/go-common/
-/gid-service/
-/message-service/
-/storage-service/
 /specs/
 /docs/
 /dev-skills/

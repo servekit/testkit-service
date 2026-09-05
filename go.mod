@@ -15,10 +15,10 @@ require (
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/servekit/gid-service v0.0.0-20260904101455-50bc5a3f8aa5
 	github.com/servekit/go-common v0.0.0-20260904101207-39630b2b22cc
-	github.com/servekit/license-service v0.0.0-00010101000000-000000000000
+	github.com/servekit/license-service v0.0.0-20260904101532-6c39c562b5e1
 	github.com/servekit/message-service v0.0.0-20260904102231-3626ecab0ab3
 	github.com/servekit/storage-service v0.0.0-20260904102237-5f9ae8502cbd
-	github.com/servekit/telemetry-service v0.0.0-00010101000000-000000000000
+	github.com/servekit/telemetry-service v0.0.0-20260904101549-e827e74d138a
 	github.com/servekit/user-service v0.0.0-20260904102326-07e6d0be6b64
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.22.0
@@ -142,7 +142,7 @@ require (
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/sagikazarmark/locafero v0.11.0 // indirect
-	github.com/servekit/api/gen/go v0.0.0-00010101000000-000000000000
+	github.com/servekit/api/gen/go v0.0.0-20260905144026-cd5d03f82c94
 	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/sony/sonyflake/v2 v2.1.0 // indirect
@@ -207,24 +207,3 @@ require (
 // volcengine SDK -> go-kit chain that clashes with the split googleapis/{api,rpc}
 // modules). Bump the require versions above and drop go.work once the downstreams
 // publish the new WithGIDHandler / WithMessageHandler API.
-
-// TEMP local iteration wiring (drop + bump require when user-service is
-// re-published): docker-compose builds with the servekit root as context so
-// this relative replace resolves inside the image build too.
-replace github.com/servekit/user-service => ../user-service
-
-// TEMP local iteration wiring (same as user-service above — drop + bump
-// require when license/telemetry are re-published).
-replace github.com/servekit/license-service => ../license-service
-
-replace github.com/servekit/telemetry-service => ../telemetry-service
-
-// TEMP local iteration wiring (same as user-service above — drop + bump
-// require when storage-service is re-published with the share/retention RPCs).
-replace github.com/servekit/storage-service => ../storage-service
-
-replace github.com/servekit/api/gen/go => ../api/gen/go
-
-replace github.com/servekit/message-service => ../message-service
-
-replace github.com/servekit/gid-service => ../gid-service
