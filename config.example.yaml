@@ -14,7 +14,7 @@
 # to config.yaml automatically when missing; for docker, the renderer copies it
 # into the image as /app/config.yaml.
 #
-# Real secrets (DB password, JWT signing key) must never be committed — keep
+# Real secrets (DB password) must never be committed — keep
 # them in .env (gitignored).
 
 server:
@@ -70,12 +70,6 @@ redis:
   max_retries: ${TESTKIT_SERVICE_REDIS_MAX_RETRIES}
   min_retry_backoff: ${TESTKIT_SERVICE_REDIS_MIN_RETRY_BACKOFF}
   max_retry_backoff: ${TESTKIT_SERVICE_REDIS_MAX_RETRY_BACKOFF}
-
-# JWT signing parameters for the tokens testkit issues. The token carries a
-# user-service session id; testkit is the only signer.
-jwt:
-  secret: ${TESTKIT_SERVICE_JWT_SECRET}
-  ttl: ${TESTKIT_SERVICE_JWT_TTL}   # token lifetime, e.g. 2h
 
 # CORS allowed origins for the grpc-gateway HTTP surface.
 # Comma-separated list (configx StringToSlice splits on ",").

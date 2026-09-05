@@ -6,22 +6,20 @@
 // (internal/service/<domain>/). handler calls service.X; service.X is a one-line
 // facade that calls s.<domain>.X in the subpackage.
 //
-// testkit is a single-process BFF: it embeds gid/message/storage/user-service
-// (module mode, in-process) or dials them (grpc mode), decided per downstream by
-// cfg.ThirdParty.<svc>.Mode. Each downstream is reached exclusively through the
-// thirdcall interface (internal/thirdcall/<svc>).
+// testkit is a single-process BFF: it embeds gid/message/storage/user/license/
+// telemetry-service (module mode, in-process) or dials them (grpc mode),
+// decided per downstream by cfg.ThirdParty.<svc>.Mode. Each downstream is
+// reached through its provider's Connect contract (pkg.Service).
 package service
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
 	commonv1 "github.com/servekit/api/gen/go/common/v1"
-	userv1 "github.com/servekit/api/gen/go/user/v1"
 	gidservice "github.com/servekit/gid-service/pkg"
 	"github.com/servekit/go-common/lifecycle"
 	licenseservice "github.com/servekit/license-service/pkg"
@@ -37,7 +35,6 @@ import (
 	telemetriesvc "github.com/servekit/testkit-service/internal/service/telemetry"
 	"github.com/servekit/testkit-service/internal/service/user"
 	"github.com/servekit/testkit-service/internal/version"
-	pkauth "github.com/servekit/testkit-service/pkg/auth"
 	"github.com/servekit/testkit-service/pkg/config"
 	userservice "github.com/servekit/user-service/pkg"
 )
@@ -98,23 +95,12 @@ func (s *Service) Ping(_ context.Context) (*commonv1.Pong, error) {
 // DB returns the shared PostgreSQL pool (used by the unified migrator).
 func (s *Service) DB() *gorm.DB { return s.db }
 
-// SessionResolver builds the auth-interceptor seam from the embedded
-// user-service: session_id -> user_id via GetSession. This is testkit's wiring
-// decision (how it uses user-service), not user-service's transport concern —
-// hence it lives on the service root, not in internal/thirdcall/user. pkg/auth
-// (aliased pkauth here to avoid clashing with the internal/service/auth domain)
-// stays gen-free.
-func (s *Service) SessionResolver() pkauth.SessionResolver {
-	return func(ctx context.Context, sessionID string) (int64, error) {
-		resp, err := s.user.GetSession(ctx, &userv1.GetSessionRequest{SessionId: sessionID})
-		if err != nil {
-			return 0, fmt.Errorf("user get-session %q: %w", sessionID, err)
-		}
-		return resp.GetUserId(), nil
-	}
-}
+// UserService exposes the embedded user-service handle (module-mode Handler or
+// gRPC Client) for the edge auth middleware (user-service pkg/auth), which
+// verifies bearer sessions via GetSession on every request.
+func (s *Service) UserService() userservice.Service { return s.user }
 
-// Auth returns the P1 auth domain (login flow + testkit JWT issue).
+// Auth returns the P1 auth domain (login flow + session token issue).
 func (s *Service) Auth() *auth.Service { return s.auth }
 
 // User returns the P2 user domain (profile + admin user CRUD over user-service).

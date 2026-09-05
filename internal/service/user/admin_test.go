@@ -93,7 +93,7 @@ func (s *stubUserClient) AssignRole(_ context.Context, req *userv1.AssignRoleReq
 
 func TestGetUser_ForwardsTargetUserID_NoCtxInjection(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	// Background ctx (no user_id) is fine — admin RPCs don't read caller identity.
 	resp, err := svc.GetUser(context.Background(), &testkitv1.GetUserRequest{UserId: 5})
@@ -105,7 +105,7 @@ func TestGetUser_ForwardsTargetUserID_NoCtxInjection(t *testing.T) {
 
 func TestDisableUser_ForwardsTargetIDAndDisableFlag(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.DisableUser(context.Background(), &testkitv1.DisableUserRequest{
 		UserId: 9, Disable: true, Reason: "spam",
@@ -124,7 +124,7 @@ func TestDisableUser_ForwardsTargetIDAndDisableFlag(t *testing.T) {
 
 func TestCreateUser_ForwardsAllFields_AndEnumIntCast(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.CreateUser(context.Background(), &testkitv1.CreateUserRequest{
 		UserType:   userv1.UserType_USER_TYPE_INTERNAL,
@@ -169,7 +169,7 @@ func TestListUsersPaged_MapsPaginationAndUsers(t *testing.T) {
 		pagedTotal:      42,
 		pagedTotalPages: 3,
 	}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.ListUsersPaged(context.Background(), &testkitv1.ListUsersPagedRequest{
 		Page: 2, PageSize: 20, Count: true,
@@ -262,7 +262,7 @@ func TestCreateRole_ForwardsPermissionIDs_AndMapsNestedPerms(t *testing.T) {
 		Permissions: []*userv1.Permission{{Id: 10, Resource: "doc", Action: "edit", IsBuiltin: false}},
 		PermGroups:  []*userv1.PermissionGroup{{Id: 20, Name: "g", Permissions: []*userv1.Permission{{Id: 100}}}},
 	}}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.CreateRole(context.Background(), &testkitv1.CreateRoleRequest{
 		Name:               "editor",
@@ -295,7 +295,7 @@ func TestListRoles_MapsCursorResponse(t *testing.T) {
 		rolesCursor: "cur-1",
 		rolesTotal:  1,
 	}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.ListRoles(context.Background(), &testkitv1.ListRolesRequest{PageSize: 10})
 	require.NoError(t, err)
@@ -317,7 +317,7 @@ func TestGetLoginLogs_MapsLogs_AndEnumIntCast(t *testing.T) {
 		DeviceType: userv1.DeviceType_DEVICE_TYPE_WEB, Os: "macOS", Browser: "Chrome",
 		Country: "CN", City: "Shanghai", CreatedAt: timestamppb.Now(),
 	}}}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.GetLoginLogs(context.Background(), &testkitv1.GetLoginLogsRequest{
 		UserId: 5, PageSize: 20,
@@ -341,7 +341,7 @@ func TestGetLoginLogs_MapsLogs_AndEnumIntCast(t *testing.T) {
 
 func TestCreateGroup_ForwardsFields_AndMapsGroup(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.CreateGroup(context.Background(), &testkitv1.CreateGroupRequest{
 		Name: "eng", Description: "engineering", ParentId: 2,
@@ -361,7 +361,7 @@ func TestCreateGroup_ForwardsFields_AndMapsGroup(t *testing.T) {
 
 func TestAssignRole_ForwardsTargetUserAndRole(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	_, err := svc.AssignRole(context.Background(), &testkitv1.AssignRoleRequest{UserId: 4, RoleId: 8})
 	require.NoError(t, err)

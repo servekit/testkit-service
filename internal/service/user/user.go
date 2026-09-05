@@ -1,8 +1,8 @@
 // Package user implements testkit's user domain: it forwards each user RPC
 // (profile / identity / session / social self-service + admin-users management
 // + RBAC group/role/permission management) to the embedded user-service and,
-// for social-login RPCs, issues a testkit-owned JWT carrying the session id
-// user-service returns.
+// for social-login RPCs, returns the user-service session id as the bearer
+// token (an opaque session token — there is no JWT layer).
 //
 // This is the ONLY package in testkit-service that imports both testkitv1 and a
 // downstream gen (userv1) — it is the testkit-msg ↔ user-msg mapping boundary
@@ -33,11 +33,11 @@
 // its own business validation.
 //
 // Social login (SocialLogin / MiniProgramLogin / MiniProgramPhoneLogin) consumes
-// the session_id returned by user-service, signs a JWT over it via the shared
-// *jwt.Manager, and returns {token, user, is_new, return_to} — the session_id
-// itself never reaches the frontend. GetOAuthURL is a plain forward (public,
-// no JWT). This mirrors the P1 auth domain's Login shape (design §3.3, decision
-// 5) but lives in the user domain.
+// the session_id returned by user-service and returns it as the bearer token
+// alongside {user, is_new, return_to} — the token IS the session id.
+// GetOAuthURL is a plain forward (public, no session). This mirrors the P1
+// auth domain's Login shape (design §3.3, decision 5) but lives in the user
+// domain.
 //
 // The enums in testkit.proto mirror user-service name-for-name and
 // number-for-number, so every enum conversion below is a plain int cast
@@ -49,7 +49,6 @@ package user
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 
@@ -58,7 +57,6 @@ import (
 
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	userv1 "github.com/servekit/api/gen/go/user/v1"
-	"github.com/servekit/testkit-service/internal/jwt"
 	userservice "github.com/servekit/user-service/pkg"
 )
 
@@ -68,7 +66,6 @@ import (
 // override the methods under test, and add a no-op Close (Task 2).
 type Service struct {
 	user userservice.Service
-	jwt  *jwt.Manager // non-nil in production; required for social-login RPCs
 }
 
 // Option configures a Service (for test injection).
@@ -80,12 +77,9 @@ func WithUserClient(c userservice.Service) Option {
 }
 
 // New constructs the user-domain service. userClient is the embedded
-// user-service handler (userservice.Service); jwtMgr is the shared JWT
-// manager used to mint tokens for social login (the same instance the auth
-// domain and the auth interceptor use). jwtMgr may be nil when the caller does
-// not exercise social-login RPCs (e.g. unit tests of profile/identity/session).
-func New(userClient userservice.Service, jwtMgr *jwt.Manager, opts ...Option) *Service {
-	s := &Service{user: userClient, jwt: jwtMgr}
+// user-service handler (userservice.Service).
+func New(userClient userservice.Service, opts ...Option) *Service {
+	s := &Service{user: userClient}
 	for _, o := range opts {
 		o(s)
 	}
@@ -299,9 +293,9 @@ func (s *Service) ExchangeSessionCode(ctx context.Context, req *testkitv1.Exchan
 // --- Social (P2 Task 9) ---
 //
 // SocialLogin / MiniProgramLogin / MiniProgramPhoneLogin forward to
-// user-service, then consume the returned session_id to mint a testkit JWT
-// (decision 5 — social login issues JWT in the USER domain, mirroring the auth
-// domain's Login). GetOAuthURL is a plain public forward (no JWT).
+// user-service, then return the session_id as the bearer token (decision 5 —
+// social login returns the session token in the USER domain, mirroring the
+// auth domain's Login). GetOAuthURL is a plain public forward (no session).
 
 // GetOAuthURL returns the provider authorization URL. Public (no caller
 // identity, no JWT).
@@ -317,8 +311,8 @@ func (s *Service) GetOAuthURL(ctx context.Context, req *testkitv1.GetOAuthURLReq
 	return &testkitv1.GetOAuthURLResponse{Url: resp.GetUrl(), State: resp.GetState()}, nil
 }
 
-// SocialLogin completes an OAuth login. user-service returns a session_id;
-// testkit signs a JWT over it and returns it (never the session_id).
+// SocialLogin completes an OAuth login. user-service returns a session_id,
+// which is returned as the bearer token.
 func (s *Service) SocialLogin(ctx context.Context, req *testkitv1.SocialLoginRequest) (*testkitv1.SocialLoginResponse, error) {
 	resp, err := s.user.SocialLogin(ctx, &userv1.SocialLoginRequest{
 		Provider: userv1.IdentityProvider(req.GetProvider()),
@@ -360,26 +354,16 @@ func (s *Service) MiniProgramPhoneLogin(ctx context.Context, req *testkitv1.Mini
 	return s.socialToTokenResponse(resp)
 }
 
-// socialToTokenResponse is the shared social-login response builder: it signs a
-// JWT over the session_id user-service returned and pairs it with the curated
-// user view + the new-user / return_to hints. The session_id itself is never
-// surfaced to the frontend — it lives only inside the JWT.
+// socialToTokenResponse is the shared social-login response builder: the
+// session_id user-service returned becomes the bearer token, paired with the
+// curated user view + the new-user / return_to hints.
 func (s *Service) socialToTokenResponse(resp *userv1.LoginResponse) (*testkitv1.SocialLoginResponse, error) {
 	sessionID := resp.GetSessionId()
 	if sessionID == "" {
 		return nil, errors.New("user: social login returned an empty session id")
 	}
-	if s.jwt == nil {
-		// Wiring bug: user.New was called without a JWT manager but a social
-		// login RPC was exercised. Surfaced as a 500.
-		return nil, xcodes.ErrInternal.New("user: jwt manager not configured for social login")
-	}
-	token, err := s.jwt.Sign(sessionID)
-	if err != nil {
-		return nil, fmt.Errorf("user: sign jwt: %w", err)
-	}
 	return &testkitv1.SocialLoginResponse{
-		Token:     token,
+		Token:     sessionID,
 		User:      toTestkitUser(resp.GetUser()),
 		IsNew:     resp.GetIsNew(),
 		ReturnTo:  resp.GetReturnTo(),

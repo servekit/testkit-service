@@ -1,6 +1,7 @@
 // Package auth implements testkit's auth domain: it forwards each auth RPC to
-// the embedded user-service and, for login-class RPCs, issues a testkit-owned
-// JWT carrying the session id user-service returns.
+// the embedded user-service and, for login-class RPCs, returns the
+// user-service session id as the bearer token (an opaque session token —
+// there is no JWT layer).
 //
 // This is the ONLY package in testkit-service that imports both testkitv1 and a
 // downstream gen (userv1) — it is the testkit-msg ↔ user-msg mapping boundary
@@ -18,20 +19,17 @@ package auth
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	userv1 "github.com/servekit/api/gen/go/user/v1"
-	"github.com/servekit/testkit-service/internal/jwt"
 	userservice "github.com/servekit/user-service/pkg"
 )
 
-// Service implements the auth domain. It holds the JWT manager (testkit is the
-// sole signer) and the user-service client it forwards to.
+// Service implements the auth domain. It holds the user-service client it
+// forwards to.
 type Service struct {
-	jwt  *jwt.Manager
 	user userservice.Service
 }
 
@@ -42,19 +40,19 @@ type Option func(*Service)
 // (a nil client is a wiring bug surfaces as a nil-dereference on first use).
 func WithUserClient(c userservice.Service) Option { return func(s *Service) { s.user = c } }
 
-// New constructs the auth service. jwtMgr must be non-nil; the user client is
-// supplied via WithUserClient (the service root wires the embedded user
-// handler; tests wire a stub).
-func New(jwtMgr *jwt.Manager, opts ...Option) *Service {
-	s := &Service{jwt: jwtMgr}
+// New constructs the auth service. The user client is supplied via
+// WithUserClient (the service root wires the embedded user handler; tests
+// wire a stub).
+func New(opts ...Option) *Service {
+	s := &Service{}
 	for _, o := range opts {
 		o(s)
 	}
 	return s
 }
 
-// Login forwards to user-service and, on success, issues a testkit JWT over the
-// returned session id. The JWT (not the session id) is what the frontend holds.
+// Login forwards to user-service and, on success, returns the new session id
+// as the bearer token. The session id is what the frontend holds.
 func (s *Service) Login(ctx context.Context, req *testkitv1.LoginRequest) (*testkitv1.TokenResponse, error) {
 	resp, err := s.user.Login(ctx, toUserLoginRequest(req))
 	if err != nil {
@@ -63,8 +61,8 @@ func (s *Service) Login(ctx context.Context, req *testkitv1.LoginRequest) (*test
 	return s.toTokenResponse(ctx, resp.GetSessionId(), resp.GetUser(), resp.GetIsNew(), resp.GetReturnTo())
 }
 
-// Register forwards to user-service and issues a testkit JWT over the new
-// session id. Same shape as Login.
+// Register forwards to user-service and returns the new session id as the
+// bearer token. Same shape as Login.
 func (s *Service) Register(ctx context.Context, req *testkitv1.RegisterRequest) (*testkitv1.TokenResponse, error) {
 	resp, err := s.user.Register(ctx, toUserRegisterRequest(req))
 	if err != nil {
@@ -95,11 +93,13 @@ func (s *Service) Logout(ctx context.Context, sessionID string) (*emptypb.Empty,
 	return s.user.Logout(ctx, &userv1.LogoutRequest{SessionId: sessionID})
 }
 
-// RefreshSession refreshes the caller's session at user-service and re-issues a
-// testkit JWT over the same session id. user-service's RefreshSession returns
-// Empty (the session id is unchanged; only its TTL is extended), so the session
-// id signed into the new JWT is the one carried on the request (populated by
-// the handler from the authenticated context when the body omits it).
+// RefreshSession refreshes the caller's session at user-service and returns
+// the same session id as the bearer token. user-service's RefreshSession
+// returns Empty (the session id is unchanged; only its TTL is extended — and
+// the edge middleware's GetSession already slides it on every request, so
+// this mostly updates PG's last_active_at), so the session id returned is the
+// one carried on the request (populated by the handler from the authenticated
+// context when the body omits it).
 func (s *Service) RefreshSession(ctx context.Context, req *testkitv1.RefreshSessionRequest) (*testkitv1.TokenResponse, error) {
 	sessionID := req.GetSessionId()
 	if sessionID == "" {
@@ -108,25 +108,21 @@ func (s *Service) RefreshSession(ctx context.Context, req *testkitv1.RefreshSess
 	if _, err := s.user.RefreshSession(ctx, &userv1.RefreshSessionRequest{SessionId: sessionID}); err != nil {
 		return nil, err
 	}
-	// No user payload comes back from RefreshSession; return only the new token.
+	// No user payload comes back from RefreshSession; return only the token.
 	return s.toTokenResponse(ctx, sessionID, nil, false, "")
 }
 
-// toTokenResponse signs a JWT over sessionID and pairs it with the curated user
-// view. A nil user (RefreshSession has no user payload) yields a token-only
-// response; the frontend already has the user from the prior login. session_id /
-// is_new / return_to mirror the downstream response so testers can target the
-// session directly without decoding the JWT.
+// toTokenResponse pairs the session id — which IS the bearer token — with the
+// curated user view. A nil user (RefreshSession has no user payload) yields a
+// token-only response; the frontend already has the user from the prior login.
+// session_id / is_new / return_to mirror the downstream response so testers
+// can target the session directly.
 func (s *Service) toTokenResponse(_ context.Context, sessionID string, u *userv1.User, isNew bool, returnTo string) (*testkitv1.TokenResponse, error) {
 	if sessionID == "" {
 		return nil, errors.New("auth: user-service returned an empty session id")
 	}
-	token, err := s.jwt.Sign(sessionID)
-	if err != nil {
-		return nil, fmt.Errorf("auth: sign jwt: %w", err)
-	}
 	return &testkitv1.TokenResponse{
-		Token:     token,
+		Token:     sessionID,
 		User:      toTestkitUser(u),
 		SessionId: sessionID,
 		IsNew:     isNew,

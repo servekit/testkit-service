@@ -2,23 +2,21 @@ module github.com/servekit/testkit-service
 
 go 1.26.6
 
-
 require (
 	buf.build/go/protovalidate v1.2.0
-	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.30.0
 	github.com/joho/godotenv v1.5.1
 	github.com/prometheus/client_golang v1.24.1
 	github.com/redis/go-redis/v9 v9.20.0
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/servekit/gid-service v0.0.0-20260904101455-50bc5a3f8aa5
-	github.com/servekit/go-common v0.0.0-20260904101207-39630b2b22cc
-	github.com/servekit/license-service v0.0.0-20260904101532-6c39c562b5e1
-	github.com/servekit/message-service v0.0.0-20260904102231-3626ecab0ab3
-	github.com/servekit/storage-service v0.0.0-20260904102237-5f9ae8502cbd
-	github.com/servekit/telemetry-service v0.0.0-20260904101549-e827e74d138a
-	github.com/servekit/user-service v0.0.0-20260904102326-07e6d0be6b64
+	github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d
+	github.com/servekit/go-common v0.0.0-20260905165851-0bd6ec4339d2
+	github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc
+	github.com/servekit/message-service v0.0.0-20260905155410-ddc3b057a308
+	github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae
+	github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5
+	github.com/servekit/user-service v0.0.0-20260905165900-d20c04d3cd14
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.22.0
 	google.golang.org/grpc v1.83.2
@@ -28,6 +26,7 @@ require (
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.12-20260825204119-511051f7f437.2 // indirect
+	github.com/golang-jwt/jwt/v5 v5.3.1 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260904194346-d0f1323225a4 // indirect
 )
 

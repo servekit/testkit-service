@@ -21,11 +21,10 @@ import (
 	"github.com/servekit/go-common/signalx"
 
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
-	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service"
-	"github.com/servekit/testkit-service/pkg/auth"
 	"github.com/servekit/testkit-service/pkg/config"
 	"github.com/servekit/testkit-service/pkg/handler"
+	usauth "github.com/servekit/user-service/pkg/auth"
 
 	"github.com/servekit/telemetry-service/pkg/ingesthttp"
 )
@@ -46,26 +45,33 @@ type Server struct {
 
 // NewServer constructs a Server with all dependencies wired.
 //
+// Authentication is edge-first: the HTTP gateway is wrapped by the
+// user-service auth middleware (user-service pkg/auth), which verifies the
+// bearer token — a user-service session id, validate-on-use so every request
+// slides the session TTL — against the embedded user-service and answers 401
+// in HTTP before the request reaches transcoding. On success it rewrites the
+// trusted identity headers, which grpc-gateway forwards as gRPC metadata;
+// the gRPC chain below only lifts that identity into the handler ctx.
+//
 // The gRPC server runs a three-interceptor chain (outermost first):
 //   - grpcx.ErrorInterceptor: maps *xerr.Error returned by inner layers to
 //     gRPC status codes (Unauthorized → Unauthenticated/401, NotFound → 404,
-//     BadRequest → InvalidArgument/400, ...). It MUST sit outside the auth
-//     gate: the auth interceptor returns xcodes.ErrUnauthorized (an *xerr.Error
-//     that has no GRPCStatus method), so without ErrorInterceptor wrapping it,
-//     auth rejections would surface to clients as codes.Unknown.
-//   - auth.Interceptor (pkg/auth): the JWT authentication gate. Skips the
-//     public whitelist (Ping/Login/Register/SendVerificationCode + the health
-//     check), then for every other RPC verifies the bearer JWT, resolves
-//     session→user via the embedded user-service GetSession, and injects
-//     user_id + session_id into the handler ctx.
+//     BadRequest → InvalidArgument/400, ...).
+//   - usauth.TrustedIdentityUnary: copies the trusted identity metadata set
+//     by the edge middleware into the handler ctx (grpcx.UserIDKey + session
+//     id). It performs NO verification — the gRPC port is internal-only
+//     (nginx exposes only the gateway), the same trusted-network posture as
+//     the other embedded services. Requests without identity metadata pass
+//     through; handlers that need identity enforce its presence themselves.
 //   - protovalidate.UnaryServerInterceptor: enforces (buf.validate.field)
 //     rules declared in testkit.proto.
 //
 // The HTTP gateway auto-registers via testkitv1.RegisterTestkitServiceHandlerFromEndpoint
 // when cfg.Server.GatewayAddr is non-empty. grpc-gateway forwards the HTTP
 // Authorization header to gRPC metadata under the unprefixed "authorization"
-// key by default (verified in grpc-gateway runtime/context.go), so no custom
-// header matcher is needed (design decision 4).
+// key by default (verified in grpc-gateway runtime/context.go), and custom
+// headers under the Grpc-Metadata- prefix — which is how the middleware's
+// identity headers cross the transcode boundary.
 func NewServer(cfg *config.Config) (*Server, error) {
 	svc, err := service.New(cfg)
 	if err != nil {
@@ -74,47 +80,35 @@ func NewServer(cfg *config.Config) (*Server, error) {
 
 	hdl := handler.New(svc)
 
-	// Auth gate (design spec §5.2): a JWT manager + a session→user_id resolver
-	// bridged to the embedded user-service GetSession. The manager is stateless
-	// (HS256 secret + ttl from cfg); service.New built its own identical
-	// manager for the auth domain's signing path — two stateless instances off
-	// the same config interoperate freely.
-	jwtMgr, err := jwt.NewManager(cfg.JWT.Secret, cfg.JWT.TTL)
-	if err != nil {
-		return nil, err
-	}
-	resolver := svc.SessionResolver()
-	authIntercept := auth.NewInterceptor(
-		jwtMgr,
-		resolver,
-		auth.WithPublicMethods(
-			"/testkit.v1.TestkitService/Ping",
-			"/testkit.v1.TestkitService/Login",
-			"/testkit.v1.TestkitService/Register",
-			"/testkit.v1.TestkitService/SendVerificationCode",
-			// Public self-service flows (P2): password reset is code-based
-			// (no caller identity), and social login starts before the caller
-			// has a session — GetOAuthURL kicks off OAuth, the three login
-			// RPCs complete it and mint the first JWT. "My" RPCs (GetProfile /
-			// ListSessions / ...) stay PROTECTED — they need the caller's
-			// user_id injected from a verified JWT.
-			"/testkit.v1.TestkitService/ResetPassword",
-			"/testkit.v1.TestkitService/GetOAuthURL",
-			"/testkit.v1.TestkitService/SocialLogin",
-			"/testkit.v1.TestkitService/MiniProgramLogin",
-			"/testkit.v1.TestkitService/MiniProgramPhoneLogin",
+	// Edge auth middleware over the whole gateway surface: transcoded RPC
+	// routes, the telemetry raw-ingest routes, and /metrics. The public list
+	// mirrors the proto's google.api.http annotations of the public RPCs plus
+	// the raw routes the gateway hosts (which carry their own credentials —
+	// HMAC for ingest, none for metrics).
+	edgeAuth := usauth.NewMiddleware(
+		svc.UserService(),
+		usauth.WithPublicPaths(
+			"/ping",
+			"/api/v1/auth/login",
+			"/api/v1/auth/register",
+			"/api/v1/captcha/send",
+			// Password reset is code-based (no caller identity).
+			"/api/v1/auth/password-reset",
+			// Raw routes with their own credentials (never session-gated).
+			"/v1/collect/events",
+			"/metrics",
+		),
+		usauth.WithPublicPrefixes(
+			// Social login starts before the caller has a session —
+			// GetOAuthURL/{provider}/url plus the three login completions
+			// (social/login, social/miniprogram, social/miniprogram/phone)
+			// are the only routes under /api/v1/social/.
+			"/api/v1/social/",
 			// File-link recipients are anonymous external users (links
 			// embedded in sent emails) — the link token is the credential.
-			"/testkit.v1.TestkitService/GetFileLinkDownload",
-			// grpcx auto-registers grpc.health.v1.Health; health probes carry
-			// no token, so the Check RPC must stay public.
-			"/grpc.health.v1.Health/Check",
-			// RefreshSession is intentionally PROTECTED — a deviation from
-			// design §3.5's whitelist: testkit's JWT is itself the session
-			// carrier (there is no separate refresh token), so the frontend
-			// must refresh proactively before expiry. The interceptor validates
-			// the session and injects session_id, which RefreshSession reuses
-			// as the target when the request omits it.
+			"/api/v1/links/",
+			// Telemetry raw ingestion: HMAC over the raw body bytes.
+			"/v1/e/",
 		),
 	)
 
@@ -127,18 +121,17 @@ func NewServer(cfg *config.Config) (*Server, error) {
 		&grpcx.ServerConfig{
 			GRPCAddr:    cfg.Server.GRPCAddr,
 			GatewayAddr: cfg.Server.GatewayAddr,
+			GatewayWrap: edgeAuth.Wrap,
 		},
 		func(gs *grpc.Server) {
 			testkitv1.RegisterTestkitServiceServer(gs, hdl)
 		},
 		registerGateway(svc),
 		// Chain order is outermost-first (grpc.ChainUnaryInterceptor).
-		// ErrorInterceptor wraps the auth gate so its *xerr.Error rejections
-		// (and protovalidate's) are translated to gRPC status / HTTP codes.
-		// Auth runs before protovalidate so unauthenticated requests are
-		// rejected without paying for request-body validation.
+		// ErrorInterceptor maps *xerr.Error rejections (and protovalidate's)
+		// to gRPC status / HTTP codes.
 		grpcx.ErrorInterceptor,
-		authIntercept.Unary(),
+		usauth.TrustedIdentityUnary(),
 		protovalidate_middleware.UnaryServerInterceptor(validator),
 	)
 

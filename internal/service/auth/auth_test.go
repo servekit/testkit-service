@@ -4,14 +4,12 @@ import (
 	"context"
 	"errors"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	userv1 "github.com/servekit/api/gen/go/user/v1"
-	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/auth"
 )
 
@@ -45,11 +43,9 @@ type stubUserClient struct {
 	refreshErr  error
 }
 
-func newAuthSvc(t *testing.T, stub *stubUserClient) (*auth.Service, *jwt.Manager) {
+func newAuthSvc(t *testing.T, stub *stubUserClient) *auth.Service {
 	t.Helper()
-	m, err := jwt.NewManager("test-secret", time.Hour)
-	require.NoError(t, err)
-	return auth.New(m, auth.WithUserClient(stub)), m
+	return auth.New(auth.WithUserClient(stub))
 }
 
 func (s *stubUserClient) Login(_ context.Context, req *userv1.LoginRequest) (*userv1.LoginResponse, error) {
@@ -103,9 +99,9 @@ func sampleUser() *userv1.User {
 	}
 }
 
-func TestLogin_ForwardsAndSignsJWT(t *testing.T) {
+func TestLogin_ForwardsAndReturnsSessionToken(t *testing.T) {
 	stub := &stubUserClient{loginSessionID: "sess-1", loginUser: sampleUser()}
-	svc, m := newAuthSvc(t, stub)
+	svc := newAuthSvc(t, stub)
 
 	resp, err := svc.Login(context.Background(), &testkitv1.LoginRequest{
 		Method:     userv1.LoginMethod_LOGIN_METHOD_USERNAME_PASSWORD,
@@ -118,17 +114,11 @@ func TestLogin_ForwardsAndSignsJWT(t *testing.T) {
 		CaptchaId:  "cap-9",
 	})
 	require.NoError(t, err)
-	require.NotEmpty(t, resp.GetToken())
 
-	// The JWT carries the session id user-service returned, not anything from
-	// the request.
-	sid, err := m.Verify(resp.GetToken())
-	require.NoError(t, err)
-	require.Equal(t, "sess-1", sid)
-
-	// TokenResponse carries token + user only. There is no session_id field:
-	// it lives only inside the JWT (compile-time-guaranteed — the generated
-	// TokenResponse has no GetSessionId accessor).
+	// The bearer token IS the session id user-service returned — no JWT
+	// layer, nothing derived from the request.
+	require.Equal(t, "sess-1", resp.GetToken())
+	require.Equal(t, "sess-1", resp.GetSessionId())
 	require.Equal(t, sampleUser().GetId(), resp.GetUser().GetId())
 
 	// The forwarded request int-cast the enum and copied every field 1:1.
@@ -144,7 +134,7 @@ func TestLogin_ForwardsAndSignsJWT(t *testing.T) {
 
 func TestLogin_PropagatesDownstreamError(t *testing.T) {
 	stub := &stubUserClient{loginErr: errors.New("bad credentials")}
-	svc, _ := newAuthSvc(t, stub)
+	svc := newAuthSvc(t, stub)
 	_, err := svc.Login(context.Background(), &testkitv1.LoginRequest{
 		Method:   userv1.LoginMethod_LOGIN_METHOD_EMAIL_PASSWORD,
 		Email:    "x@example.com",
@@ -153,9 +143,9 @@ func TestLogin_PropagatesDownstreamError(t *testing.T) {
 	require.ErrorIs(t, err, stub.loginErr)
 }
 
-func TestRegister_ForwardsAndSignsJWT(t *testing.T) {
+func TestRegister_ForwardsAndReturnsSessionToken(t *testing.T) {
 	stub := &stubUserClient{registerUser: sampleUser()}
-	svc, m := newAuthSvc(t, stub)
+	svc := newAuthSvc(t, stub)
 
 	resp, err := svc.Register(context.Background(), &testkitv1.RegisterRequest{
 		Provider:   userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL,
@@ -169,9 +159,7 @@ func TestRegister_ForwardsAndSignsJWT(t *testing.T) {
 		CaptchaId:  "cap-1",
 	})
 	require.NoError(t, err)
-	sid, err := m.Verify(resp.GetToken())
-	require.NoError(t, err)
-	require.Equal(t, "reg-sess", sid)
+	require.Equal(t, "reg-sess", resp.GetToken())
 
 	// Provider enum int-cast; every field forwarded.
 	require.Equal(t, userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL, stub.gotRegister.GetProvider())
@@ -187,7 +175,7 @@ func TestRegister_ForwardsAndSignsJWT(t *testing.T) {
 
 func TestSendVerificationCode_ForwardsAndReturnsCaptchaID(t *testing.T) {
 	stub := &stubUserClient{codeCaptchaID: "cap-z"}
-	svc, _ := newAuthSvc(t, stub)
+	svc := newAuthSvc(t, stub)
 
 	resp, err := svc.SendVerificationCode(context.Background(), &testkitv1.SendVerificationCodeRequest{
 		Email:      "alice@example.com",
@@ -211,7 +199,7 @@ func TestSendVerificationCode_ForwardsAndReturnsCaptchaID(t *testing.T) {
 
 func TestLogout_ForwardsSessionIDFromContext(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newAuthSvc(t, stub)
+	svc := newAuthSvc(t, stub)
 
 	_, err := svc.Logout(context.Background(), "sess-from-ctx")
 	require.NoError(t, err)
@@ -219,23 +207,21 @@ func TestLogout_ForwardsSessionIDFromContext(t *testing.T) {
 }
 
 func TestLogout_EmptySessionIDRejected(t *testing.T) {
-	svc, _ := newAuthSvc(t, &stubUserClient{})
+	svc := newAuthSvc(t, &stubUserClient{})
 	_, err := svc.Logout(context.Background(), "")
 	require.Error(t, err)
 }
 
-func TestRefreshSession_ForwardsAndReissuesJWT(t *testing.T) {
+func TestRefreshSession_ForwardsAndReturnsSessionToken(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, m := newAuthSvc(t, stub)
+	svc := newAuthSvc(t, stub)
 
 	resp, err := svc.RefreshSession(context.Background(), &testkitv1.RefreshSessionRequest{SessionId: "sess-7"})
 	require.NoError(t, err)
 
-	// RefreshSession re-signs over the SAME session id (user-service extends
-	// the TTL; it does not rotate the id).
-	sid, err := m.Verify(resp.GetToken())
-	require.NoError(t, err)
-	require.Equal(t, "sess-7", sid)
+	// user-service extends the TTL; it does not rotate the id, so the token
+	// comes back unchanged.
+	require.Equal(t, "sess-7", resp.GetToken())
 
 	// RefreshSession carries no user payload — user is nil in the response.
 	require.Nil(t, resp.GetUser())
@@ -244,7 +230,7 @@ func TestRefreshSession_ForwardsAndReissuesJWT(t *testing.T) {
 }
 
 func TestRefreshSession_EmptySessionIDRejected(t *testing.T) {
-	svc, _ := newAuthSvc(t, &stubUserClient{})
+	svc := newAuthSvc(t, &stubUserClient{})
 	_, err := svc.RefreshSession(context.Background(), &testkitv1.RefreshSessionRequest{})
 	require.Error(t, err)
 }
@@ -269,7 +255,7 @@ func TestEnumIntCast_MirroredSameNumber(t *testing.T) {
 
 func TestToTestkitUser_CuratesAndIntCastsUserType(t *testing.T) {
 	stub := &stubUserClient{loginSessionID: "s", loginUser: sampleUser()}
-	svc, _ := newAuthSvc(t, stub)
+	svc := newAuthSvc(t, stub)
 
 	resp, err := svc.Login(context.Background(), &testkitv1.LoginRequest{
 		Method: userv1.LoginMethod_LOGIN_METHOD_USERNAME_PASSWORD,
@@ -289,7 +275,7 @@ func TestToTestkitUser_CuratesAndIntCastsUserType(t *testing.T) {
 func TestToTestkitUser_NilInput(t *testing.T) {
 	// RefreshSession path produces no user; toTestkitUser(nil) must be nil.
 	stub := &stubUserClient{}
-	svc, _ := newAuthSvc(t, stub)
+	svc := newAuthSvc(t, stub)
 	resp, err := svc.RefreshSession(context.Background(), &testkitv1.RefreshSessionRequest{SessionId: "s"})
 	require.NoError(t, err)
 	require.Nil(t, resp.GetUser())

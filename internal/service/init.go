@@ -34,7 +34,6 @@ import (
 	usroption "github.com/servekit/user-service/pkg/option"
 
 	"github.com/servekit/testkit-service/internal/jobs"
-	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/auth"
 	dashboardsvc "github.com/servekit/testkit-service/internal/service/dashboard"
 	gidsvc "github.com/servekit/testkit-service/internal/service/gid"
@@ -174,17 +173,12 @@ func New(cfg *config.Config) (*Service, error) {
 	}
 	svc.telemetry = tel
 
-	// JWT manager (stateless; not registered with mgr).
-	jwtMgr, err := jwt.NewManager(cfg.JWT.Secret, cfg.JWT.TTL)
-	if err != nil {
-		return nil, rollback(mgr, fmt.Errorf("init jwt: %w", err))
-	}
-
-	// P1 auth domain: forward to user-service + issue testkit JWT.
-	svc.auth = auth.New(jwtMgr, auth.WithUserClient(usr))
+	// P1 auth domain: forward to user-service; login returns the session id
+	// as the bearer token.
+	svc.auth = auth.New(auth.WithUserClient(usr))
 
 	// P2 user domain.
-	svc.userSvc = user.New(usr, jwtMgr)
+	svc.userSvc = user.New(usr)
 
 	// P3 storage domain.
 	svc.storageSvc = storage.New(st)

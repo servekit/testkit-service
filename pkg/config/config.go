@@ -11,8 +11,6 @@
 package config
 
 import (
-	"time"
-
 	"github.com/servekit/go-common/configx"
 	"github.com/servekit/go-common/dbx"
 	"github.com/servekit/go-common/logging"
@@ -50,7 +48,6 @@ type Config struct {
 	Server     *ServerConfig
 	Database   *dbx.Config
 	Redis      *redisx.Config
-	JWT        *JWTConfig
 	CORS       *CORSConfig
 	ThirdParty *ThirdPartyConfig
 	Message    *MessageConfig
@@ -69,17 +66,6 @@ type ServerConfig struct {
 	// GatewayAddr defaults to ":18085" — the grpc-gateway HTTP port; empty
 	// disables the HTTP surface.
 	GatewayAddr string `default:":18085"`
-}
-
-// JWTConfig holds the HS256 signing parameters for the tokens testkit issues.
-// The token carries a user-service session id; testkit is the only signer.
-type JWTConfig struct {
-	// Secret signs/verifies tokens. ${VAR}-expanded from the environment —
-	// never commit a real value. Required (empty is a startup error at the
-	// jwt.Manager constructor, not here).
-	Secret string
-	// TTL is the token lifetime. Defaults to 2h.
-	TTL time.Duration `default:"2h"`
 }
 
 // CORSConfig holds the allowed origins for the grpc-gateway HTTP surface.

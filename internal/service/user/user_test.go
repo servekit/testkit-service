@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -13,7 +12,6 @@ import (
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/go-common/grpcx"
-	"github.com/servekit/testkit-service/internal/jwt"
 	"github.com/servekit/testkit-service/internal/service/user"
 )
 
@@ -76,16 +74,10 @@ type stubUserClient struct {
 	socialErr error
 }
 
-// newSvc wires a user.Service against the stub + a real (test-secret) JWT
-// manager. passNilJWT drops the manager to exercise the social-login guard.
-func newSvc(t *testing.T, stub *stubUserClient, passNilJWT bool) (*user.Service, *jwt.Manager) {
+// newSvc wires a user.Service against the stub client.
+func newSvc(t *testing.T, stub *stubUserClient) *user.Service {
 	t.Helper()
-	m, err := jwt.NewManager("test-secret", time.Hour)
-	require.NoError(t, err)
-	if passNilJWT {
-		return user.New(stub, nil), m
-	}
-	return user.New(stub, m), m
+	return user.New(stub)
 }
 
 func ctxWithUser(uid int64) context.Context {
@@ -187,7 +179,7 @@ func (s *stubUserClient) SocialLogin(_ context.Context, req *userv1.SocialLoginR
 
 func TestGetProfile_InjectsUserIDFromCtx(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.GetProfile(ctxWithUser(42), &testkitv1.GetProfileRequest{})
 	require.NoError(t, err)
@@ -196,14 +188,14 @@ func TestGetProfile_InjectsUserIDFromCtx(t *testing.T) {
 }
 
 func TestGetProfile_NoUserIDInCtx_Unauthorized(t *testing.T) {
-	svc, _ := newSvc(t, &stubUserClient{}, false)
+	svc := newSvc(t, &stubUserClient{})
 	_, err := svc.GetProfile(context.Background(), &testkitv1.GetProfileRequest{})
 	require.Error(t, err)
 }
 
 func TestUpdateProfile_ForwardsFieldsAndUserID(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	_, err := svc.UpdateProfile(ctxWithUser(7), &testkitv1.UpdateProfileRequest{
 		Username:  "alice2",
@@ -234,7 +226,7 @@ func TestUpdateProfile_ForwardsFieldsAndUserID(t *testing.T) {
 
 func TestChangePassword_InjectsUserIDFromCtx(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	_, err := svc.ChangePassword(ctxWithUser(99), &testkitv1.ChangePasswordRequest{
 		OldPassword: "old",
@@ -250,7 +242,7 @@ func TestResetPassword_ForwardsAsIs_NoCtxInjection(t *testing.T) {
 	// ResetPassword is public: no caller identity. We assert it just forwards
 	// (downstream returns Empty) — no user_id to inject, so a background ctx is
 	// fine and must not error.
-	svc, _ := newSvc(t, &stubUserClient{}, false)
+	svc := newSvc(t, &stubUserClient{})
 	_, err := svc.ResetPassword(context.Background(), &testkitv1.ResetPasswordRequest{
 		Email:       "alice@example.com",
 		Code:        "123456",
@@ -265,7 +257,7 @@ func TestListIdentities_InjectsUserIDFromCtx_AndMapsIdentity(t *testing.T) {
 	stub := &stubUserClient{identities: []*userv1.Identity{
 		{Id: 1, Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL, ProviderUid: "alice@example.com", Verified: true, CreatedAt: timestamppb.Now()},
 	}}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.ListIdentities(ctxWithUser(5), &testkitv1.ListIdentitiesRequest{})
 	require.NoError(t, err)
@@ -282,7 +274,7 @@ func TestListIdentities_InjectsUserIDFromCtx_AndMapsIdentity(t *testing.T) {
 
 func TestUnbindIdentity_ForwardsUserIDFromCtx_AndTargetIdentityID(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	_, err := svc.UnbindIdentity(ctxWithUser(13), &testkitv1.UnbindIdentityRequest{IdentityId: 77, Code: "999"})
 	require.NoError(t, err)
@@ -299,7 +291,7 @@ func TestListSessions_InjectsUserIDFromCtx_AndMapsSession(t *testing.T) {
 	stub := &stubUserClient{sessions: []*userv1.Session{
 		{Id: "sess-1", Ip: "1.2.3.4", DeviceType: userv1.DeviceType_DEVICE_TYPE_WEB, Os: "macOS", Browser: "Chrome", Country: "CN", City: "Shanghai", Current: true, CreatedAt: timestamppb.Now(), LastActiveAt: timestamppb.Now()},
 	}}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.ListSessions(ctxWithUser(8), &testkitv1.ListSessionsRequest{})
 	require.NoError(t, err)
@@ -315,7 +307,7 @@ func TestListSessions_InjectsUserIDFromCtx_AndMapsSession(t *testing.T) {
 
 func TestRevokeSession_ForwardsTargetSessionID_NoCtxInjection(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	_, err := svc.RevokeSession(context.Background(), &testkitv1.RevokeSessionRequest{SessionId: "sess-target"})
 	require.NoError(t, err)
@@ -324,7 +316,7 @@ func TestRevokeSession_ForwardsTargetSessionID_NoCtxInjection(t *testing.T) {
 
 func TestRevokeAllSessions_InjectsUserIDFromCtx(t *testing.T) {
 	stub := &stubUserClient{}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	_, err := svc.RevokeAllSessions(ctxWithUser(21), &testkitv1.RevokeAllSessionsRequest{})
 	require.NoError(t, err)
@@ -333,9 +325,9 @@ func TestRevokeAllSessions_InjectsUserIDFromCtx(t *testing.T) {
 
 // --- Social ---
 
-func TestSocialLogin_ConsumesSessionID_AndSignsJWT(t *testing.T) {
+func TestSocialLogin_ConsumesSessionID_AsBearerToken(t *testing.T) {
 	stub := &stubUserClient{socialSession: "social-sess-9", socialUser: fullUser(3), socialIsNew: true, socialReturnTo: "https://app/home"}
-	svc, m := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.SocialLogin(ctxWithUser(0), &testkitv1.SocialLoginRequest{
 		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
@@ -344,15 +336,8 @@ func TestSocialLogin_ConsumesSessionID_AndSignsJWT(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	// The JWT carries the session id user-service returned — verified by
-	// round-tripping the token through the same manager.
-	sid, err := m.Verify(resp.GetToken())
-	require.NoError(t, err)
-	require.Equal(t, "social-sess-9", sid)
-
-	// Response carries token + user + hints. session_id is NOT surfaced: the
-	// generated SocialLoginResponse has no SessionId field (Token/User/IsNew/
-	// ReturnTo only), so it lives only inside the JWT.
+	// The bearer token IS the session id user-service returned — no JWT layer.
+	require.Equal(t, "social-sess-9", resp.GetToken())
 	require.Equal(t, int64(3), resp.GetUser().GetId())
 	require.True(t, resp.GetIsNew())
 	require.Equal(t, "https://app/home", resp.GetReturnTo())
@@ -365,7 +350,7 @@ func TestSocialLogin_ConsumesSessionID_AndSignsJWT(t *testing.T) {
 
 func TestSocialLogin_PropagatesDownstreamError(t *testing.T) {
 	stub := &stubUserClient{socialErr: errors.New("bad oauth code")}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	_, err := svc.SocialLogin(context.Background(), &testkitv1.SocialLoginRequest{
 		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
@@ -375,21 +360,9 @@ func TestSocialLogin_PropagatesDownstreamError(t *testing.T) {
 	require.ErrorIs(t, err, stub.socialErr)
 }
 
-func TestSocialLogin_NilJWTManager_InternalError(t *testing.T) {
-	stub := &stubUserClient{socialSession: "s", socialUser: fullUser(1)}
-	svc, _ := newSvc(t, stub, true) // passNilJWT = true
-
-	_, err := svc.SocialLogin(context.Background(), &testkitv1.SocialLoginRequest{
-		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
-		Code:     "x",
-		State:    "y",
-	})
-	require.Error(t, err) // defensive guard fires before Sign
-}
-
 func TestSocialLogin_EmptySessionID_Rejected(t *testing.T) {
 	stub := &stubUserClient{socialSession: ""} // downstream returned no session
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	_, err := svc.SocialLogin(context.Background(), &testkitv1.SocialLoginRequest{
 		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
@@ -401,7 +374,7 @@ func TestSocialLogin_EmptySessionID_Rejected(t *testing.T) {
 
 func TestGetOAuthURL_ForwardsAsIs(t *testing.T) {
 	stub := &stubUserClient{oauthURL: "https://github.com/auth?state=xyz", oauthState: "xyz"}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.GetOAuthURL(context.Background(), &testkitv1.GetOAuthURLRequest{
 		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
@@ -425,7 +398,7 @@ func TestToTestkitUser_CuratesAllFieldsAndIntCastsEnums(t *testing.T) {
 	// map 1:1 on every field, with status/gender/register_source/user_type
 	// int-cast (mirrored same-number enums).
 	stub := &stubUserClient{profileUser: fullUser(501)}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	u, err := svc.GetProfile(ctxWithUser(501), &testkitv1.GetProfileRequest{})
 	require.NoError(t, err)
@@ -454,7 +427,7 @@ func TestToTestkitUser_CuratesAllFieldsAndIntCastsEnums(t *testing.T) {
 func TestToTestkitUser_NilInput(t *testing.T) {
 	// Social login with no user payload must yield a nil user, not a panic.
 	stub := &stubUserClient{socialSession: "s", socialUser: nil}
-	svc, _ := newSvc(t, stub, false)
+	svc := newSvc(t, stub)
 
 	resp, err := svc.SocialLogin(context.Background(), &testkitv1.SocialLoginRequest{
 		Provider: userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,

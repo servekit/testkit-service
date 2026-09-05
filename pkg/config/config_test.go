@@ -42,7 +42,6 @@ log:
 
 	require.Equal(t, ":19095", cfg.Server.GRPCAddr)
 	require.Equal(t, ":18085", cfg.Server.GatewayAddr)
-	require.Equal(t, 2*time.Hour, cfg.JWT.TTL)
 	require.Equal(t, "Asia/Shanghai", cfg.Cron.Timezone)
 
 	// ThirdParty and each downstream wrapper are allocated by viper even with
