@@ -52,7 +52,7 @@ RUN --mount=type=bind,source=.,target=/workspace \
       *) echo "unsupported target platform: ${TARGETPLATFORM}" >&2; exit 1 ;; \
     esac; \
     mkdir -p /out; \
-    cd /workspace/.; \
+    cd /workspace/testkit-service; \
     CGO_ENABLED=0 GOOS="${TARGETOS}" GOARCH="${TARGETARCH}" \
       go build \
         -mod=readonly \
@@ -71,7 +71,7 @@ RUN apk add --no-cache ca-certificates tzdata \
 WORKDIR /app
 COPY --from=builder /out/testkit-service /app/testkit-service
 COPY --from=grpc-health-probe /ko-app/grpc-health-probe /usr/local/bin/grpc_health_probe
-COPY config.example.yaml /app/config.yaml
+COPY testkit-service/config.example.yaml /app/config.yaml
 
 USER appuser
 EXPOSE 19095

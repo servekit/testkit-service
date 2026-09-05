@@ -273,6 +273,30 @@ third_party:
       cron:
         timezone: ${TESTKIT_SERVICE_USER_CRON_TIMEZONE}
 
+  license:
+    mode: ${TESTKIT_SERVICE_LICENSE_MODE}        # module | grpc
+    target: ${TESTKIT_SERVICE_LICENSE_TARGET}    # gRPC addr when mode=grpc
+    # module-mode config. DB/Redis are injected via option (shared pool), so
+    # they stay out. Signing is REQUIRED — license-service fails fast without
+    # key material; seed is a 64-hex (32-byte) Ed25519 seed. Fields not listed
+    # here (trial / rate_limit / cron) use license-service's built-in defaults.
+    config:
+      signing:
+        keys:
+          - key_id: ${TESTKIT_SERVICE_LICENSE_SIGNING_KEY_ID}
+            seed: ${TESTKIT_SERVICE_LICENSE_SIGNING_SEED}
+        sign_key_id: ${TESTKIT_SERVICE_LICENSE_SIGNING_SIGN_KEY_ID}
+  telemetry:
+    mode: ${TESTKIT_SERVICE_TELEMETRY_MODE}      # module | grpc
+    target: ${TESTKIT_SERVICE_TELEMETRY_TARGET}  # gRPC addr when mode=grpc
+    # module-mode config. DB is injected via option. admin.token guards the
+    # admin RPCs — empty DISABLES the admin surface (fail closed); testkit's
+    # BFF forwards admin calls with this Bearer token. Fields not listed here
+    # (ingest / registry / aggregation / cron) use telemetry-service defaults.
+    config:
+      admin:
+        token: ${TESTKIT_SERVICE_TELEMETRY_ADMIN_TOKEN}
+
 # Message-domain settings (P4). testkit injects sender_id into downstream
 # SendEmail/SendSMS requests; it is a service label (not a user id). Override
 # per ingress point (e.g. "testkit-ops") without touching code.

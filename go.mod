@@ -15,14 +15,16 @@ require (
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/servekit/gid-service v0.0.0-20260904101455-50bc5a3f8aa5
 	github.com/servekit/go-common v0.0.0-20260904101207-39630b2b22cc
+	github.com/servekit/license-service v0.0.0-00010101000000-000000000000
 	github.com/servekit/message-service v0.0.0-20260904102231-3626ecab0ab3
 	github.com/servekit/storage-service v0.0.0-20260904102237-5f9ae8502cbd
+	github.com/servekit/telemetry-service v0.0.0-00010101000000-000000000000
 	github.com/servekit/user-service v0.0.0-20260904102326-07e6d0be6b64
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.22.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260618152121-87f3d3e198d3
 	google.golang.org/grpc v1.82.1
-	google.golang.org/protobuf v1.36.11
+	google.golang.org/protobuf v1.36.12
 	gorm.io/gorm v1.31.1
 )
 
@@ -58,6 +60,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.103.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.43.2 // indirect
 	github.com/aws/smithy-go v1.27.1 // indirect
+	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bytedance/gopkg v0.1.3 // indirect
 	github.com/bytedance/sonic v1.15.2 // indirect
 	github.com/bytedance/sonic/loader v0.5.1 // indirect
@@ -103,8 +106,9 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.13-0.20220915233716-71ac16282d12 // indirect
-	github.com/klauspost/compress v1.18.7 // indirect
+	github.com/klauspost/compress v1.19.1 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.10 // indirect
+	github.com/lib/pq v1.12.3 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/magiconair/properties v1.8.10 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
@@ -122,12 +126,17 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mozillazg/go-httpheader v0.2.1 // indirect
+	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nyaruka/phonenumbers v1.8.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
+	github.com/prometheus/client_golang v1.24.1 // indirect
+	github.com/prometheus/client_model v0.6.3 // indirect
+	github.com/prometheus/common v0.70.1 // indirect
+	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/sagikazarmark/locafero v0.11.0 // indirect
 	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
@@ -194,3 +203,14 @@ require (
 // volcengine SDK -> go-kit chain that clashes with the split googleapis/{api,rpc}
 // modules). Bump the require versions above and drop go.work once the downstreams
 // publish the new WithGIDHandler / WithMessageHandler API.
+
+// TEMP local iteration wiring (drop + bump require when user-service is
+// re-published): docker-compose builds with the servekit root as context so
+// this relative replace resolves inside the image build too.
+replace github.com/servekit/user-service => ../user-service
+
+// TEMP local iteration wiring (same as user-service above — drop + bump
+// require when license/telemetry are re-published).
+replace github.com/servekit/license-service => ../license-service
+
+replace github.com/servekit/telemetry-service => ../telemetry-service
