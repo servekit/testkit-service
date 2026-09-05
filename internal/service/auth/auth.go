@@ -60,7 +60,7 @@ func (s *Service) Login(ctx context.Context, req *testkitv1.LoginRequest) (*test
 	if err != nil {
 		return nil, err
 	}
-	return s.toTokenResponse(ctx, resp.GetSessionId(), resp.GetUser())
+	return s.toTokenResponse(ctx, resp.GetSessionId(), resp.GetUser(), resp.GetIsNew(), resp.GetReturnTo())
 }
 
 // Register forwards to user-service and issues a testkit JWT over the new
@@ -70,7 +70,9 @@ func (s *Service) Register(ctx context.Context, req *testkitv1.RegisterRequest) 
 	if err != nil {
 		return nil, err
 	}
-	return s.toTokenResponse(ctx, resp.GetSessionId(), resp.GetUser())
+	// RegisterResponse carries no is_new/return_to — those are LoginResponse
+	// (social/code-login) fields; a fresh registration is is_new by definition.
+	return s.toTokenResponse(ctx, resp.GetSessionId(), resp.GetUser(), true, "")
 }
 
 // SendVerificationCode forwards to user-service and returns the captcha_id that
@@ -107,13 +109,15 @@ func (s *Service) RefreshSession(ctx context.Context, req *testkitv1.RefreshSess
 		return nil, err
 	}
 	// No user payload comes back from RefreshSession; return only the new token.
-	return s.toTokenResponse(ctx, sessionID, nil)
+	return s.toTokenResponse(ctx, sessionID, nil, false, "")
 }
 
 // toTokenResponse signs a JWT over sessionID and pairs it with the curated user
 // view. A nil user (RefreshSession has no user payload) yields a token-only
-// response; the frontend already has the user from the prior login.
-func (s *Service) toTokenResponse(_ context.Context, sessionID string, u *userv1.User) (*testkitv1.TokenResponse, error) {
+// response; the frontend already has the user from the prior login. session_id /
+// is_new / return_to mirror the downstream response so testers can target the
+// session directly without decoding the JWT.
+func (s *Service) toTokenResponse(_ context.Context, sessionID string, u *userv1.User, isNew bool, returnTo string) (*testkitv1.TokenResponse, error) {
 	if sessionID == "" {
 		return nil, errors.New("auth: user-service returned an empty session id")
 	}
@@ -122,8 +126,11 @@ func (s *Service) toTokenResponse(_ context.Context, sessionID string, u *userv1
 		return nil, fmt.Errorf("auth: sign jwt: %w", err)
 	}
 	return &testkitv1.TokenResponse{
-		Token: token,
-		User:  toTestkitUser(u),
+		Token:     token,
+		User:      toTestkitUser(u),
+		SessionId: sessionID,
+		IsNew:     isNew,
+		ReturnTo:  returnTo,
 	}, nil
 }
 
@@ -156,17 +163,27 @@ func toUserRegisterRequest(r *testkitv1.RegisterRequest) *userv1.RegisterRequest
 		RegionCode: r.GetRegionCode(),
 		Phone:      r.GetPhone(),
 		CaptchaId:  r.GetCaptchaId(),
+		Gender:     userv1.Gender(r.GetGender()),
+		Timezone:   r.GetTimezone(),
+		Locale:     r.GetLocale(),
 	}
 }
 
 func toUserCodeRequest(r *testkitv1.SendVerificationCodeRequest) *userv1.SendVerificationCodeRequest {
 	return &userv1.SendVerificationCodeRequest{
-		Email:      r.GetEmail(),
-		Channel:    userv1.VerificationChannel(r.GetChannel()),
-		Purpose:    userv1.VerificationPurpose(r.GetPurpose()),
-		RegionCode: r.GetRegionCode(),
-		Phone:      r.GetPhone(),
-		SenderId:   r.GetSenderId(),
+		Email:           r.GetEmail(),
+		Channel:         userv1.VerificationChannel(r.GetChannel()),
+		Purpose:         userv1.VerificationPurpose(r.GetPurpose()),
+		RegionCode:      r.GetRegionCode(),
+		Phone:           r.GetPhone(),
+		SenderId:        r.GetSenderId(),
+		SmsTemplateId:   r.GetSmsTemplateId(),
+		SmsCodeParamKey: r.GetSmsCodeParamKey(),
+		SmsContent:      r.GetSmsContent(),
+		EmailSubject:    r.GetEmailSubject(),
+		EmailBody:       r.GetEmailBody(),
+		EmailHtmlBody:   r.GetEmailHtmlBody(),
+		SignName:        r.GetSignName(),
 	}
 }
 

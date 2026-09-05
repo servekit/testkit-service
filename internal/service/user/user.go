@@ -379,10 +379,11 @@ func (s *Service) socialToTokenResponse(resp *userv1.LoginResponse) (*testkitv1.
 		return nil, fmt.Errorf("user: sign jwt: %w", err)
 	}
 	return &testkitv1.SocialLoginResponse{
-		Token:    token,
-		User:     toTestkitUser(resp.GetUser()),
-		IsNew:    resp.GetIsNew(),
-		ReturnTo: resp.GetReturnTo(),
+		Token:     token,
+		User:      toTestkitUser(resp.GetUser()),
+		IsNew:     resp.GetIsNew(),
+		ReturnTo:  resp.GetReturnTo(),
+		SessionId: sessionID,
 	}, nil
 }
 

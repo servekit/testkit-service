@@ -22,10 +22,14 @@ import (
 	"github.com/servekit/go-common/dbx"
 	"github.com/servekit/go-common/lifecycle"
 	"github.com/servekit/go-common/redisx"
+	licenseservice "github.com/servekit/license-service/pkg"
+	licenseoption "github.com/servekit/license-service/pkg/option"
 	messageservice "github.com/servekit/message-service/pkg"
 	messageoption "github.com/servekit/message-service/pkg/option"
 	storageservice "github.com/servekit/storage-service/pkg"
 	stoption "github.com/servekit/storage-service/pkg/option"
+	telemetryservice "github.com/servekit/telemetry-service/pkg"
+	telemetryoption "github.com/servekit/telemetry-service/pkg/option"
 	userservice "github.com/servekit/user-service/pkg"
 	usroption "github.com/servekit/user-service/pkg/option"
 
@@ -34,8 +38,10 @@ import (
 	"github.com/servekit/testkit-service/internal/service/auth"
 	dashboardsvc "github.com/servekit/testkit-service/internal/service/dashboard"
 	gidsvc "github.com/servekit/testkit-service/internal/service/gid"
+	licsvc "github.com/servekit/testkit-service/internal/service/license"
 	"github.com/servekit/testkit-service/internal/service/message"
 	"github.com/servekit/testkit-service/internal/service/storage"
+	telemetriesvc "github.com/servekit/testkit-service/internal/service/telemetry"
 	"github.com/servekit/testkit-service/internal/service/user"
 	"github.com/servekit/testkit-service/pkg/config"
 	"github.com/servekit/testkit-service/pkg/xcodes"
@@ -129,6 +135,45 @@ func New(cfg *config.Config) (*Service, error) {
 	}
 	svc.user = usr
 
+	// P6 license-service: shares db+redis. Its own Database/Redis sub-configs
+	// stay empty (injected here); Signing seed is required and comes from the
+	// third_party.license.config block.
+	licMode, licTarget, licCfg := unpack(cfg.ThirdParty.License)
+	lic, _, err := licenseservice.Connect(licenseservice.ConnectConfig{
+		Mode:   licMode,
+		Target: licTarget,
+		Config: licCfg,
+		Opts: []licenseoption.Option{
+			licenseoption.WithDB(db),
+			licenseoption.WithRedis(rdb),
+		},
+	}, mgr)
+	if err != nil {
+		return nil, rollback(mgr, err)
+	}
+	svc.license = lic
+
+	// P6 telemetry-service: shares db. The admin token configured here is what
+	// the BFF forwards as Bearer metadata on admin-surface RPCs (empty disables
+	// the downstream admin surface, fail closed).
+	telMode, telTarget, telCfg := unpack(cfg.ThirdParty.Telemetry)
+	telAdminToken := ""
+	if telCfg != nil && telCfg.Admin != nil {
+		telAdminToken = telCfg.Admin.Token
+	}
+	tel, _, err := telemetryservice.Connect(telemetryservice.ConnectConfig{
+		Mode:   telMode,
+		Target: telTarget,
+		Config: telCfg,
+		Opts: []telemetryoption.Option{
+			telemetryoption.WithDB(db),
+		},
+	}, mgr)
+	if err != nil {
+		return nil, rollback(mgr, err)
+	}
+	svc.telemetry = tel
+
 	// JWT manager (stateless; not registered with mgr).
 	jwtMgr, err := jwt.NewManager(cfg.JWT.Secret, cfg.JWT.TTL)
 	if err != nil {
@@ -154,6 +199,10 @@ func New(cfg *config.Config) (*Service, error) {
 	// P5 gid + dashboard domains.
 	svc.gidSvc = gidsvc.New(gid)
 	svc.dashboardSvc = dashboardsvc.New(usr, st, msg)
+
+	// P6 license + telemetry domains.
+	svc.licenseSvc = licsvc.New(lic, "")
+	svc.telemetrySvc = telemetriesvc.New(tel, telAdminToken)
 
 	if err := svc.setupJobs(); err != nil {
 		return nil, rollback(mgr, err)

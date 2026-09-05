@@ -313,6 +313,13 @@
             "required": true,
             "type": "string",
             "format": "int64"
+          },
+          {
+            "name": "requestId",
+            "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id).",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -883,6 +890,13 @@
               "SORT_DIRECTION_DESC"
             ],
             "default": "SORT_DIRECTION_UNSPECIFIED"
+          },
+          {
+            "name": "senderId",
+            "description": "sender_id filters by the calling service label recorded on each record\n(mirror of message-service ListEmailsRequest.sender_id).",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1046,6 +1060,13 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "senderId",
+            "description": "sender_id filter (mirror of message-service ListEmailsByCursorRequest.sender_id).",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1434,6 +1455,13 @@
             "required": true,
             "type": "string",
             "format": "int64"
+          },
+          {
+            "name": "requestId",
+            "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id).",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1907,6 +1935,652 @@
             "in": "query",
             "required": false,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/activate": {
+      "post": {
+        "operationId": "Activate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ActivateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ActivateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/keys": {
+      "get": {
+        "operationId": "ListKeys",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListKeysResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "KEY_STATUS_UNSPECIFIED",
+              "KEY_STATUS_ACTIVE",
+              "KEY_STATUS_REVOKED"
+            ],
+            "default": "KEY_STATUS_UNSPECIFIED"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "post": {
+        "operationId": "CreateKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateKeyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateKeyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/keys/{keyId}": {
+      "get": {
+        "operationId": "ShowKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ShowKeyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "delete": {
+        "operationId": "DeleteKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteKeyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "confirm",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "patch": {
+        "operationId": "UpdateKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateKeyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceUpdateKeyBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/keys/{keyId}/devices": {
+      "get": {
+        "operationId": "ListKeyDevices",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListKeyDevicesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/keys/{keyId}/devices/{deviceToken}": {
+      "delete": {
+        "operationId": "KickDevice",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1KickDeviceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceToken",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/keys/{keyId}/grants/{module}": {
+      "delete": {
+        "operationId": "RevokeModule",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RevokeModuleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "MODULE_UNSPECIFIED",
+              "MODULE_DOWNLOADS",
+              "MODULE_TOOLS"
+            ]
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "put": {
+        "operationId": "GrantModule",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GrantModuleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "MODULE_UNSPECIFIED",
+              "MODULE_DOWNLOADS",
+              "MODULE_TOOLS"
+            ]
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceGrantModuleBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/keys/{keyId}/revoke": {
+      "post": {
+        "operationId": "RevokeKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RevokeKeyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceRevokeKeyBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/keys/{keyId}/unrevoke": {
+      "post": {
+        "operationId": "UnrevokeKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UnrevokeKeyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceUnrevokeKeyBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/signing/pubkey": {
+      "get": {
+        "operationId": "ShowPubKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ShowPubKeyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/trials/{fingerprintId}": {
+      "get": {
+        "operationId": "ShowTrial",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ShowTrialResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fingerprintId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "MODULE_UNSPECIFIED",
+              "MODULE_DOWNLOADS",
+              "MODULE_TOOLS"
+            ],
+            "default": "MODULE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/admin/trials/{fingerprintId}/{module}/reset": {
+      "post": {
+        "operationId": "ResetTrial",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ResetTrialResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fingerprintId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "MODULE_UNSPECIFIED",
+              "MODULE_DOWNLOADS",
+              "MODULE_TOOLS"
+            ]
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceResetTrialBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/deactivate": {
+      "post": {
+        "operationId": "Deactivate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeactivateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeactivateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/healthz": {
+      "get": {
+        "operationId": "Health",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1HealthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/license/trial/start": {
+      "post": {
+        "operationId": "TrialStart",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1TrialStartResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1TrialStartRequest"
+            }
           }
         ],
         "tags": [
@@ -3378,6 +4052,13 @@
               "SORT_DIRECTION_DESC"
             ],
             "default": "SORT_DIRECTION_UNSPECIFIED"
+          },
+          {
+            "name": "senderId",
+            "description": "sender_id filter (mirror of message-service ListSMSRequest.sender_id).",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -3548,6 +4229,13 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "senderId",
+            "description": "sender_id filter (mirror of message-service ListSMSByCursorRequest.sender_id).",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -3987,6 +4675,403 @@
             }
           }
         },
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/admin/apps": {
+      "post": {
+        "operationId": "CreateApp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAppResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAppRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/admin/apps/{slug}": {
+      "get": {
+        "operationId": "GetApp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAppResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      },
+      "put": {
+        "operationId": "UpdateApp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAppResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceUpdateAppBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/admin/apps/{slug}/events": {
+      "put": {
+        "operationId": "ReplaceEventRules",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ReplaceEventRulesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceReplaceEventRulesBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/admin/apps/{slug}/signing-keys": {
+      "post": {
+        "operationId": "CreateSigningKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateSigningKeyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceCreateSigningKeyBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/admin/apps/{slug}/signing-keys/{keyId}": {
+      "delete": {
+        "operationId": "RevokeSigningKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RevokeSigningKeyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/admin/apps/{slug}/stats": {
+      "get": {
+        "operationId": "GetAppStats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAppStatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/admin/apps/{slug}/tokens": {
+      "post": {
+        "operationId": "RotateToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RotateTokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceRotateTokenBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/admin/apps/{slug}/tokens/{prefix}": {
+      "delete": {
+        "operationId": "RevokeToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RevokeTokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "prefix",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/admin/apps/{slug}/versions/{version}": {
+      "put": {
+        "operationId": "SetVersionBlocked",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SetVersionBlockedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestkitServiceSetVersionBlockedBody"
+            }
+          }
+        ],
+        "tags": [
+          "TestkitService"
+        ]
+      }
+    },
+    "/api/v1/telemetry/ingest": {
+      "post": {
+        "operationId": "Ingest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1IngestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1IngestRequest"
+            }
+          }
+        ],
         "tags": [
           "TestkitService"
         ]
@@ -4674,6 +5759,14 @@
         }
       }
     },
+    "TestkitServiceCreateSigningKeyBody": {
+      "type": "object",
+      "properties": {
+        "keyId": {
+          "type": "string"
+        }
+      }
+    },
     "TestkitServiceDisableUserBody": {
       "type": "object",
       "properties": {
@@ -4705,6 +5798,10 @@
         },
         "filename": {
           "type": "string"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -4737,6 +5834,104 @@
         }
       }
     },
+    "TestkitServiceGrantModuleBody": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/v1EntitlementKind"
+        },
+        "durationDays": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "TestkitServiceReplaceEventRulesBody": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EventRule"
+          }
+        }
+      }
+    },
+    "TestkitServiceResetTrialBody": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "TestkitServiceRevokeKeyBody": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "TestkitServiceRotateTokenBody": {
+      "type": "object"
+    },
+    "TestkitServiceSetVersionBlockedBody": {
+      "type": "object",
+      "properties": {
+        "blocked": {
+          "type": "boolean"
+        }
+      }
+    },
+    "TestkitServiceUnrevokeKeyBody": {
+      "type": "object"
+    },
+    "TestkitServiceUpdateAppBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "strictVersions": {
+          "type": "boolean"
+        },
+        "authMode": {
+          "$ref": "#/definitions/v1AuthMode"
+        },
+        "authGraceUntil": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "clearAuthGrace": {
+          "type": "boolean"
+        },
+        "ratePerMinute": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ratePerDay": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rawRetentionDays": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dailyEventBudget": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "TestkitServiceUpdateGroupBody": {
       "type": "object",
       "properties": {
@@ -4745,6 +5940,18 @@
         },
         "description": {
           "type": "string"
+        }
+      }
+    },
+    "TestkitServiceUpdateKeyBody": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "slots": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -4768,6 +5975,10 @@
         },
         "clearMetadata": {
           "type": "boolean"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -4864,6 +6075,40 @@
         }
       }
     },
+    "v1ActivateRequest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "licenseKey": {
+          "type": "string"
+        },
+        "fingerprintId": {
+          "type": "string"
+        },
+        "deviceToken": {
+          "type": "string"
+        },
+        "evictDeviceToken": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ActivateResponse": {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "slots": {
+          "$ref": "#/definitions/v1SlotSummary"
+        }
+      }
+    },
     "v1AddOwnerQuotaRequest": {
       "type": "object",
       "properties": {
@@ -4878,6 +6123,10 @@
           "type": "string",
           "format": "int64",
           "title": "positive = purchase, negative = refund"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -4890,6 +6139,10 @@
         "ownerId": {
           "type": "string",
           "format": "int64"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -5094,6 +6347,10 @@
         "totalBytes": {
           "type": "string",
           "format": "int64"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -5106,6 +6363,10 @@
         "ownerId": {
           "type": "string",
           "format": "int64"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -5119,6 +6380,57 @@
         "bytesReleased": {
           "type": "string",
           "format": "int64"
+        }
+      }
+    },
+    "v1App": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "strictVersions": {
+          "type": "boolean"
+        },
+        "authMode": {
+          "$ref": "#/definitions/v1AuthMode"
+        },
+        "authGraceUntil": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ratePerMinute": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ratePerDay": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rawRetentionDays": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dailyEventBudget": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
@@ -5210,6 +6522,16 @@
       "default": "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED",
       "description": "AuditLogTargetType represents the kind of resource an audited operation touched."
     },
+    "v1AuthMode": {
+      "type": "string",
+      "enum": [
+        "AUTH_MODE_UNSPECIFIED",
+        "AUTH_MODE_NONE",
+        "AUTH_MODE_HMAC"
+      ],
+      "default": "AUTH_MODE_UNSPECIFIED",
+      "description": "==================== telemetry-service domain (P6) ====================\nMirrors telemetry-service proto 1:1 — same field names/numbers, enum\nvalues, and buf.validate rules, with http paths rewritten to\n/api/v1/telemetry/. Admin RPCs forward the caller's testkit session;\nthe downstream's own auth guards still apply."
+    },
     "v1BatchDeleteMyFilesRequest": {
       "type": "object",
       "properties": {
@@ -5219,6 +6541,10 @@
             "type": "string",
             "format": "int64"
           }
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -5259,6 +6585,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -5417,6 +6747,10 @@
       "properties": {
         "uploadToken": {
           "type": "string"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -5436,6 +6770,10 @@
       "properties": {
         "uploadToken": {
           "type": "string"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -5448,6 +6786,31 @@
         },
         "fileInfo": {
           "$ref": "#/definitions/v1FileInfo"
+        }
+      }
+    },
+    "v1CreateAppRequest": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateAppResponse": {
+      "type": "object",
+      "properties": {
+        "app": {
+          "$ref": "#/definitions/v1App"
+        },
+        "token": {
+          "type": "string"
         }
       }
     },
@@ -5466,6 +6829,36 @@
         }
       },
       "title": "---- RBAC-Group (P2) ----"
+    },
+    "v1CreateKeyRequest": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "slots": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "grants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EntitlementInput"
+          }
+        }
+      }
+    },
+    "v1CreateKeyResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/v1KeyInfo"
+        },
+        "plaintextKey": {
+          "type": "string"
+        }
+      }
     },
     "v1CreatePermissionGroupRequest": {
       "type": "object",
@@ -5525,6 +6918,17 @@
       },
       "title": "---- RBAC-Role (P2) ----"
     },
+    "v1CreateSigningKeyResponse": {
+      "type": "object",
+      "properties": {
+        "keyId": {
+          "type": "string"
+        },
+        "secret": {
+          "type": "string"
+        }
+      }
+    },
     "v1CreateUserRequest": {
       "type": "object",
       "properties": {
@@ -5572,6 +6976,22 @@
         }
       }
     },
+    "v1DailyStat": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string"
+        },
+        "devices": {
+          "type": "string",
+          "format": "int64"
+        },
+        "events": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1DashboardResponse": {
       "type": "object",
       "properties": {
@@ -5586,6 +7006,28 @@
         },
         "users": {
           "$ref": "#/definitions/v1UsersSummary"
+        }
+      }
+    },
+    "v1DeactivateRequest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "licenseKey": {
+          "type": "string"
+        },
+        "deviceToken": {
+          "type": "string"
+        }
+      }
+    },
+    "v1DeactivateResponse": {
+      "type": "object",
+      "properties": {
+        "released": {
+          "type": "boolean"
         }
       }
     },
@@ -5607,6 +7049,31 @@
         "generatedAt": {
           "type": "string",
           "title": "ISO8601 timestamp"
+        }
+      }
+    },
+    "v1DeleteKeyResponse": {
+      "type": "object"
+    },
+    "v1DeviceSlotInfo": {
+      "type": "object",
+      "properties": {
+        "deviceToken": {
+          "type": "string"
+        },
+        "fingerprintId": {
+          "type": "string"
+        },
+        "firstSeenAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastSeenAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "name": {
+          "type": "string"
         }
       }
     },
@@ -5853,6 +7320,71 @@
       },
       "description": "EmailVendorStats / SmsVendorStats mirror the downstream per-vendor breakdown."
     },
+    "v1EntitlementInfo": {
+      "type": "object",
+      "properties": {
+        "module": {
+          "$ref": "#/definitions/v1Module"
+        },
+        "kind": {
+          "$ref": "#/definitions/v1EntitlementKind"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "grantedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1EntitlementInput": {
+      "type": "object",
+      "properties": {
+        "module": {
+          "$ref": "#/definitions/v1Module"
+        },
+        "kind": {
+          "$ref": "#/definitions/v1EntitlementKind"
+        },
+        "durationDays": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1EntitlementKind": {
+      "type": "string",
+      "enum": [
+        "ENTITLEMENT_KIND_UNSPECIFIED",
+        "ENTITLEMENT_KIND_PERPETUAL",
+        "ENTITLEMENT_KIND_SUBSCRIPTION",
+        "ENTITLEMENT_KIND_TRIAL"
+      ],
+      "default": "ENTITLEMENT_KIND_UNSPECIFIED"
+    },
+    "v1EventRule": {
+      "type": "object",
+      "properties": {
+        "eventName": {
+          "type": "string"
+        },
+        "allowProps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mapProp": {
+          "type": "string"
+        }
+      }
+    },
     "v1ExchangeSessionCodeRequest": {
       "type": "object",
       "properties": {
@@ -6005,6 +7537,10 @@
         "vendor": {
           "$ref": "#/definitions/v1Vendor",
           "title": "optional; validates bucket vendor when non-UNSPECIFIED"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -6034,6 +7570,68 @@
           "type": "object",
           "additionalProperties": {
             "type": "string"
+          }
+        }
+      }
+    },
+    "v1GetAppResponse": {
+      "type": "object",
+      "properties": {
+        "app": {
+          "$ref": "#/definitions/v1App"
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1IngestTokenInfo"
+          }
+        },
+        "signingKeys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1TelemetrySigningKeyInfo"
+          }
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EventRule"
+          }
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1VersionInfo"
+          }
+        }
+      }
+    },
+    "v1GetAppStatsResponse": {
+      "type": "object",
+      "properties": {
+        "days": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DailyStat"
+          }
+        },
+        "drops": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "int64"
+          }
+        },
+        "sigFails": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "int64"
           }
         }
       }
@@ -6110,6 +7708,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
         }
       }
     },
@@ -6185,6 +7787,14 @@
         }
       }
     },
+    "v1GrantModuleResponse": {
+      "type": "object",
+      "properties": {
+        "entitlement": {
+          "$ref": "#/definitions/v1EntitlementInfo"
+        }
+      }
+    },
     "v1Group": {
       "type": "object",
       "properties": {
@@ -6242,6 +7852,28 @@
         }
       },
       "description": "GroupMember is a user's membership row within a group."
+    },
+    "v1HealthChecks": {
+      "type": "object",
+      "properties": {
+        "db": {
+          "type": "boolean"
+        },
+        "signing": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1HealthResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "checks": {
+          "$ref": "#/definitions/v1HealthChecks"
+        }
+      }
     },
     "v1Identity": {
       "type": "object",
@@ -6356,6 +7988,70 @@
       "default": "IMAGE_RESIZE_MODE_UNSPECIFIED",
       "description": "ImageResizeMode controls how images are resized.\n\n - IMAGE_RESIZE_MODE_FIT: lfit — fit within bounds\n - IMAGE_RESIZE_MODE_FILL: fill — crop to fill\n - IMAGE_RESIZE_MODE_PAD: pad — fit with padding"
     },
+    "v1IngestRequest": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string",
+          "format": "byte"
+        },
+        "signature": {
+          "type": "string"
+        }
+      }
+    },
+    "v1IngestResponse": {
+      "type": "object",
+      "properties": {
+        "httpCode": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "errorCode": {
+          "type": "string"
+        },
+        "duplicate": {
+          "type": "boolean"
+        },
+        "accepted": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dropped": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "drops": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "v1IngestTokenInfo": {
+      "type": "object",
+      "properties": {
+        "prefix": {
+          "type": "string"
+        },
+        "revoked": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUsedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "v1IssueSessionCodeRequest": {
       "type": "object",
       "properties": {
@@ -6387,6 +8083,70 @@
         }
       },
       "description": "ItemError is a per-file failure inside a batch upload-credential response."
+    },
+    "v1KeyInfo": {
+      "type": "object",
+      "properties": {
+        "licenseId": {
+          "type": "string"
+        },
+        "keyPrefix": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "maxSlots": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "usedSlots": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "$ref": "#/definitions/v1KeyStatus"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "revokedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "entitlements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EntitlementInfo"
+          }
+        },
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DeviceSlotInfo"
+          }
+        }
+      }
+    },
+    "v1KeyStatus": {
+      "type": "string",
+      "enum": [
+        "KEY_STATUS_UNSPECIFIED",
+        "KEY_STATUS_ACTIVE",
+        "KEY_STATUS_REVOKED"
+      ],
+      "default": "KEY_STATUS_UNSPECIFIED"
+    },
+    "v1KickDeviceResponse": {
+      "type": "object",
+      "properties": {
+        "kicked": {
+          "type": "boolean"
+        }
+      }
     },
     "v1ListEmailSendersResponse": {
       "type": "object",
@@ -6499,6 +8259,30 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1Identity"
+          }
+        }
+      }
+    },
+    "v1ListKeyDevicesResponse": {
+      "type": "object",
+      "properties": {
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DeviceSlotInfo"
+          }
+        }
+      }
+    },
+    "v1ListKeysResponse": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1KeyInfo"
           }
         }
       }
@@ -6891,6 +8675,16 @@
         }
       }
     },
+    "v1Module": {
+      "type": "string",
+      "enum": [
+        "MODULE_UNSPECIFIED",
+        "MODULE_DOWNLOADS",
+        "MODULE_TOOLS"
+      ],
+      "default": "MODULE_UNSPECIFIED",
+      "description": "==================== license-service domain (P6) ====================\nMirrors license-service proto 1:1 — same field names/numbers, enum\nvalues, and buf.validate rules, with http paths rewritten to\n/api/v1/license/. Admin RPCs forward the caller's testkit session;\nthe downstream's own auth guards still apply."
+    },
     "v1MyQuota": {
       "type": "object",
       "properties": {
@@ -7139,9 +8933,31 @@
         "captchaId": {
           "type": "string",
           "description": "captcha_id returned by SendVerificationCode; required to verify the code."
+        },
+        "gender": {
+          "$ref": "#/definitions/v1Gender",
+          "description": "Optional initial profile fields (mirror user-service RegisterRequest)."
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
         }
       },
       "description": "RegisterRequest is the curated frontend DTO for registration."
+    },
+    "v1ReplaceEventRulesResponse": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EventRule"
+          }
+        }
+      }
     },
     "v1ResetPasswordRequest": {
       "type": "object",
@@ -7162,6 +8978,31 @@
           "type": "string"
         }
       }
+    },
+    "v1ResetTrialResponse": {
+      "type": "object",
+      "properties": {
+        "reset": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1RevokeKeyResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/v1KeyInfo"
+        }
+      }
+    },
+    "v1RevokeModuleResponse": {
+      "type": "object"
+    },
+    "v1RevokeSigningKeyResponse": {
+      "type": "object"
+    },
+    "v1RevokeTokenResponse": {
+      "type": "object"
     },
     "v1Role": {
       "type": "object",
@@ -7203,6 +9044,14 @@
         }
       },
       "description": "Role is a named bundle of permissions assignable to users or groups."
+    },
+    "v1RotateTokenResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
     },
     "v1SMSRecord": {
       "type": "object",
@@ -7471,6 +9320,28 @@
         "senderId": {
           "type": "string",
           "description": "sender_id is the audit actor triggering this send (user id, service name,\nplatform identifier, ...). user-service is stateless and passes it through\nverbatim; for unauthenticated flows (register/login) the frontend supplies\na platform identifier (e.g. the target email/phone or \"testkit-web\")."
+        },
+        "smsTemplateId": {
+          "type": "string",
+          "description": "---- Delivery templates (mirror user-service SendVerificationCodeRequest\n1:1 — field numbers match). Required per channel by user-service's\nvalidateDeliverySpec: EMAIL needs email_subject + email_body ({code}\nplaceholder substituted by user-service); SMS+CN needs sms_template_id +\nsign_name (domestic vendors reject raw content); SMS international needs\nexactly one of sms_template_id / sms_content."
+        },
+        "smsCodeParamKey": {
+          "type": "string"
+        },
+        "smsContent": {
+          "type": "string"
+        },
+        "emailSubject": {
+          "type": "string"
+        },
+        "emailBody": {
+          "type": "string"
+        },
+        "signName": {
+          "type": "string"
+        },
+        "emailHtmlBody": {
+          "type": "string"
         }
       },
       "description": "SendVerificationCodeRequest is the curated frontend DTO for requesting a\nverification code. The vendor template fields (sms_template_id, email_body,\n...) live in user-service and are intentionally NOT exposed here — the BFF\nsupplies them from server config, not the frontend (design spec §3.2.2)."
@@ -7535,6 +9406,79 @@
         "totalBytes": {
           "type": "string",
           "format": "int64"
+        },
+        "requestId": {
+          "type": "string",
+          "description": "request_id is optional; recorded in audit logs for traceability\n(mirror of storage-service *Request.request_id)."
+        }
+      }
+    },
+    "v1SetVersionBlockedResponse": {
+      "type": "object"
+    },
+    "v1ShowKeyResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/v1KeyInfo"
+        }
+      }
+    },
+    "v1ShowPubKeyResponse": {
+      "type": "object",
+      "properties": {
+        "activeKeyId": {
+          "type": "string"
+        },
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SigningKeyInfo"
+          }
+        }
+      }
+    },
+    "v1ShowTrialResponse": {
+      "type": "object",
+      "properties": {
+        "trials": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1TrialInfo"
+          }
+        }
+      }
+    },
+    "v1SigningKeyInfo": {
+      "type": "object",
+      "properties": {
+        "keyId": {
+          "type": "string"
+        },
+        "publicKeyB64": {
+          "type": "string"
+        }
+      }
+    },
+    "v1SlotSummary": {
+      "type": "object",
+      "properties": {
+        "used": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "max": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DeviceSlotInfo"
+          }
         }
       }
     },
@@ -7612,9 +9556,12 @@
         "returnTo": {
           "type": "string",
           "title": "meaningful only for SocialLogin (OAuth callback flow)"
+        },
+        "sessionId": {
+          "type": "string"
         }
       },
-      "description": "SocialLoginResponse is the shared response for all social-login RPCs.\ntoken = testkit-issued JWT (consumes the downstream session_id); session_id\nitself is NOT returned to the frontend."
+      "description": "SocialLoginResponse is the shared response for all social-login RPCs.\ntoken = testkit-issued JWT (consumes the downstream session_id); session_id\nis ALSO returned so testers can target the session (RevokeSession /\nGetSession) without decoding the JWT."
     },
     "v1SortDirection": {
       "type": "string",
@@ -7637,6 +9584,25 @@
       "default": "SORT_FIELD_UNSPECIFIED",
       "description": "SortField controls list ordering."
     },
+    "v1TelemetrySigningKeyInfo": {
+      "type": "object",
+      "properties": {
+        "keyId": {
+          "type": "string"
+        },
+        "revoked": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUsedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "v1TokenResponse": {
       "type": "object",
       "properties": {
@@ -7645,9 +9611,98 @@
         },
         "user": {
           "$ref": "#/definitions/v1User"
+        },
+        "sessionId": {
+          "type": "string",
+          "description": "session_id mirrors downstream Login/Register/SocialLogin responses so\ntesters can target a specific session (RevokeSession / GetSession)\nwithout decoding the JWT."
+        },
+        "isNew": {
+          "type": "boolean",
+          "description": "is_new: this login auto-registered the account (code-login/OAuth paths)."
+        },
+        "returnTo": {
+          "type": "string",
+          "description": "return_to: business URL recorded at GetOAuthURL time (OAuth flows only;\nempty for password/code logins)."
         }
       },
       "description": "TokenResponse is returned by every login-class RPC (Login, Register,\nRefreshSession). It carries the JWT (which embeds session_id internally) plus\nthe curated user. session_id is deliberately NOT surfaced — the frontend\nholds only the token (design spec §5.1/§11)."
+    },
+    "v1TrialInfo": {
+      "type": "object",
+      "properties": {
+        "fingerprintId": {
+          "type": "string"
+        },
+        "module": {
+          "$ref": "#/definitions/v1Module"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "firstDeviceToken": {
+          "type": "string"
+        }
+      }
+    },
+    "v1TrialStartRequest": {
+      "type": "object",
+      "properties": {
+        "module": {
+          "type": "string"
+        },
+        "fingerprintId": {
+          "type": "string"
+        },
+        "deviceToken": {
+          "type": "string"
+        },
+        "licenseKey": {
+          "type": "string"
+        }
+      }
+    },
+    "v1TrialStartResponse": {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "alreadyStarted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1UnrevokeKeyResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/v1KeyInfo"
+        }
+      }
+    },
+    "v1UpdateAppResponse": {
+      "type": "object",
+      "properties": {
+        "app": {
+          "$ref": "#/definitions/v1App"
+        }
+      }
+    },
+    "v1UpdateKeyResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/v1KeyInfo"
+        }
+      }
     },
     "v1UpdateProfileRequest": {
       "type": "object",
@@ -7918,6 +9973,25 @@
       ],
       "default": "VERIFICATION_PURPOSE_UNSPECIFIED",
       "description": "VerificationPurpose binds a code to its consuming RPC, preventing cross-context\nreplay. Mirrors user-service VerificationPurpose same-name/same-number.\n\n - VERIFICATION_PURPOSE_REGISTER: Consumed by Register.\n - VERIFICATION_PURPOSE_LOGIN: Consumed by Login (code methods).\n - VERIFICATION_PURPOSE_VERIFY_EMAIL: EMAIL channel only.\n - VERIFICATION_PURPOSE_VERIFY_PHONE: SMS channel only.\n - VERIFICATION_PURPOSE_PASSWORD_RESET: Consumed by ResetPassword (TBD).\n - VERIFICATION_PURPOSE_BIND: Consumed by BindIdentity (TBD)."
+    },
+    "v1VersionInfo": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "blocked": {
+          "type": "boolean"
+        },
+        "seenCount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lastSeenAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     }
   }
 }

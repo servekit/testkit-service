@@ -19,8 +19,10 @@ import (
 	"github.com/servekit/go-common/redisx"
 
 	gidconfig "github.com/servekit/gid-service/pkg/config"
+	licenseconfig "github.com/servekit/license-service/pkg/config"
 	messageconfig "github.com/servekit/message-service/pkg/config"
 	storageconfig "github.com/servekit/storage-service/pkg/config"
+	telemetryconfig "github.com/servekit/telemetry-service/pkg/config"
 	userconfig "github.com/servekit/user-service/pkg/config"
 )
 
@@ -93,17 +95,19 @@ type CronConfig struct {
 	Timezone string `default:"Asia/Shanghai"`
 }
 
-// ThirdPartyConfig groups the four downstream service settings. Each runs
+// ThirdPartyConfig groups the six downstream service settings. Each runs
 // in-process (mode=module) by default; mode=grpc is reserved for splitting a
 // downstream out to its own deployment later. Each downstream's own Config is
 // embedded as the module-mode payload; testkit overrides its DB/Redis by
 // injecting the shared connections via option, so each downstream's
 // Database/Redis sub-config is left as a placeholder in config.example.yaml.
 type ThirdPartyConfig struct {
-	GID     *RemoteServiceConfig[*gidconfig.Config]
-	Message *RemoteServiceConfig[*messageconfig.Config]
-	Storage *RemoteServiceConfig[*storageconfig.Config]
-	User    *RemoteServiceConfig[*userconfig.Config]
+	GID       *RemoteServiceConfig[*gidconfig.Config]
+	Message   *RemoteServiceConfig[*messageconfig.Config]
+	Storage   *RemoteServiceConfig[*storageconfig.Config]
+	User      *RemoteServiceConfig[*userconfig.Config]
+	License   *RemoteServiceConfig[*licenseconfig.Config]
+	Telemetry *RemoteServiceConfig[*telemetryconfig.Config]
 }
 
 // RemoteServiceConfig holds connection settings for a service that can run

@@ -257,7 +257,7 @@ func toMessageListEmailsRequest(r *testkitv1.ListEmailsRequest) *messagev1.ListE
 		PageSize:      r.GetPageSize(),
 		SortField:     messagev1.SortField(r.GetSortField()),
 		SortDirection: messagev1.SortDirection(r.GetSortDirection()),
-		// SenderId intentionally omitted — decision 2.
+		SenderId:      r.GetSenderId(),
 	}
 }
 
@@ -274,6 +274,7 @@ func toMessageListSMSRequest(r *testkitv1.ListSMSRequest) *messagev1.ListSMSRequ
 		PageSize:      r.GetPageSize(),
 		SortField:     messagev1.SortField(r.GetSortField()),
 		SortDirection: messagev1.SortDirection(r.GetSortDirection()),
+		SenderId:      r.GetSenderId(),
 	}
 }
 
@@ -290,7 +291,7 @@ func toMessageListEmailsByCursorRequest(r *testkitv1.ListEmailsByCursorRequest) 
 		PageSize:      r.GetPageSize(),
 		PageToken:     r.GetPageToken(),
 		IncludeTotal:  r.GetIncludeTotal(),
-		// SenderId intentionally omitted — decision 2.
+		SenderId:      r.GetSenderId(),
 	}
 }
 
@@ -308,6 +309,7 @@ func toMessageListSMSByCursorRequest(r *testkitv1.ListSMSByCursorRequest) *messa
 		PageSize:      r.GetPageSize(),
 		PageToken:     r.GetPageToken(),
 		IncludeTotal:  r.GetIncludeTotal(),
+		SenderId:      r.GetSenderId(),
 	}
 }
 

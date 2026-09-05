@@ -113,6 +113,7 @@ func (s *Service) GenerateUploadURL(ctx context.Context, req *testkitv1.Generate
 		Metadata:    req.GetMetadata(),
 		Vendor:      storagev1.Vendor(req.GetVendor()),
 		Owner:       owner,
+		RequestId:   req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -148,6 +149,7 @@ func (s *Service) GetSTSCredential(ctx context.Context, req *testkitv1.GetSTSCre
 		Ttl:               req.GetTtl(),
 		AllowedExtensions: req.GetAllowedExtensions(),
 		Owner:             owner,
+		RequestId:         req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -192,6 +194,7 @@ func (s *Service) BatchGetSTSCredential(ctx context.Context, req *testkitv1.Batc
 		Ttl:               req.GetTtl(),
 		AllowedExtensions: req.GetAllowedExtensions(),
 		Owner:             owner,
+		RequestId:         req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -221,6 +224,7 @@ func (s *Service) ConfirmUpload(ctx context.Context, req *testkitv1.ConfirmUploa
 	resp, err := s.storage.ConfirmUpload(ctx, &storagev1.ConfirmUploadRequest{
 		UploadToken: req.GetUploadToken(),
 		Owner:       owner,
+		RequestId:   req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -240,6 +244,7 @@ func (s *Service) CancelUpload(ctx context.Context, req *testkitv1.CancelUploadR
 	return s.storage.CancelUpload(ctx, &storagev1.CancelUploadRequest{
 		UploadToken: req.GetUploadToken(),
 		Owner:       owner,
+		RequestId:   req.GetRequestId(),
 	})
 }
 
@@ -297,12 +302,13 @@ func (s *Service) GenerateCDNURL(ctx context.Context, req *testkitv1.GenerateCDN
 		return nil, err
 	}
 	resp, err := s.storage.GenerateCDNURL(ctx, &storagev1.GenerateCDNURLRequest{
-		FileId:   req.GetFileId(),
-		Ops:      toStorageImageProcessOps(req.GetOps()),
-		Ttl:      req.GetTtl(),
-		Public:   req.GetPublic(),
-		Filename: req.Filename, // optional string → *string forwarded verbatim
-		Owner:    owner,
+		FileId:    req.GetFileId(),
+		Ops:       toStorageImageProcessOps(req.GetOps()),
+		Ttl:       req.GetTtl(),
+		Public:    req.GetPublic(),
+		Filename:  req.Filename, // optional string → *string forwarded verbatim
+		Owner:     owner,
+		RequestId: req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -409,6 +415,7 @@ func (s *Service) UpdateMyFile(ctx context.Context, req *testkitv1.UpdateMyFileR
 		Metadata:      req.GetMetadata(),
 		ClearMetadata: req.ClearMetadata,
 		Owner:         owner,
+		RequestId:     req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -423,8 +430,9 @@ func (s *Service) DeleteMyFile(ctx context.Context, req *testkitv1.DeleteMyFileR
 		return nil, err
 	}
 	return s.storage.DeleteMyFile(ctx, &storagev1.DeleteMyFileRequest{
-		FileId: req.GetFileId(),
-		Owner:  owner,
+		FileId:    req.GetFileId(),
+		Owner:     owner,
+		RequestId: req.GetRequestId(),
 	})
 }
 
@@ -436,8 +444,9 @@ func (s *Service) BatchDeleteMyFiles(ctx context.Context, req *testkitv1.BatchDe
 		return nil, err
 	}
 	resp, err := s.storage.BatchDeleteMyFiles(ctx, &storagev1.BatchDeleteMyFilesRequest{
-		FileIds: req.GetFileIds(),
-		Owner:   owner,
+		FileIds:   req.GetFileIds(),
+		Owner:     owner,
+		RequestId: req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -505,6 +514,7 @@ func (s *Service) SetOwnerQuota(ctx context.Context, req *testkitv1.SetOwnerQuot
 		OwnerType:  storagev1.OwnerType(req.GetOwnerType()),
 		OwnerId:    req.GetOwnerId(),
 		TotalBytes: req.GetTotalBytes(),
+		RequestId:  req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -519,6 +529,7 @@ func (s *Service) AddOwnerQuota(ctx context.Context, req *testkitv1.AddOwnerQuot
 		OwnerType:  storagev1.OwnerType(req.GetOwnerType()),
 		OwnerId:    req.GetOwnerId(),
 		DeltaBytes: req.GetDeltaBytes(),
+		RequestId:  req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -575,7 +586,10 @@ func (s *Service) AdminGetFile(ctx context.Context, req *testkitv1.AdminGetFileR
 
 // AdminDeleteFile hard-deletes a file by id. No ctx injection.
 func (s *Service) AdminDeleteFile(ctx context.Context, req *testkitv1.AdminDeleteFileRequest) (*emptypb.Empty, error) {
-	return s.storage.AdminDeleteFile(ctx, &storagev1.AdminDeleteFileRequest{FileId: req.GetFileId()})
+	return s.storage.AdminDeleteFile(ctx, &storagev1.AdminDeleteFileRequest{
+		FileId:    req.GetFileId(),
+		RequestId: req.GetRequestId(),
+	})
 }
 
 // AdminGetQuota returns an owner's quota. The target owner is forwarded from the
@@ -598,6 +612,7 @@ func (s *Service) AdminSetQuota(ctx context.Context, req *testkitv1.AdminSetQuot
 		OwnerType:  storagev1.OwnerType(req.GetOwnerType()),
 		OwnerId:    req.GetOwnerId(),
 		TotalBytes: req.GetTotalBytes(),
+		RequestId:  req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -661,6 +676,7 @@ func (s *Service) AdminSoftDeleteOwnerFiles(ctx context.Context, req *testkitv1.
 	resp, err := s.storage.AdminSoftDeleteOwnerFiles(ctx, &storagev1.AdminSoftDeleteOwnerFilesRequest{
 		OwnerType: storagev1.OwnerType(req.GetOwnerType()),
 		OwnerId:   req.GetOwnerId(),
+		RequestId: req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err
@@ -677,6 +693,7 @@ func (s *Service) AdminDeleteOwner(ctx context.Context, req *testkitv1.AdminDele
 	resp, err := s.storage.AdminDeleteOwner(ctx, &storagev1.AdminDeleteOwnerRequest{
 		OwnerType: storagev1.OwnerType(req.GetOwnerType()),
 		OwnerId:   req.GetOwnerId(),
+		RequestId: req.GetRequestId(),
 	})
 	if err != nil {
 		return nil, err

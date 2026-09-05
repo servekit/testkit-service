@@ -167,7 +167,7 @@ message LoginRequest {
   string password = 3 [(buf.validate.field).string.max_len = 128];
   string code = 4 [(buf.validate.field).string.max_len = 16];
   string email = 5 [(buf.validate.field).string.max_len = 256];
-  string region_code = 6 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string region_code = 6 [(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE, (buf.validate.field).string.pattern = "^[A-Z]{2}$"];
   string phone = 7 [(buf.validate.field).string.max_len = 20];
   // captcha_id returned by SendVerificationCode; required for code-based login.
   string captcha_id = 8 [(buf.validate.field).string.max_len = 128];
@@ -181,10 +181,14 @@ message RegisterRequest {
   string username = 4 [(buf.validate.field).string.max_len = 64];
   string nickname = 5 [(buf.validate.field).string.max_len = 64];
   string password = 6 [(buf.validate.field).string.max_len = 128];
-  string region_code = 7 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string region_code = 7 [(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE, (buf.validate.field).string.pattern = "^[A-Z]{2}$"];
   string phone = 8 [(buf.validate.field).string.max_len = 20];
   // captcha_id returned by SendVerificationCode; required to verify the code.
   string captcha_id = 9 [(buf.validate.field).string.max_len = 128];
+  // Optional initial profile fields (mirror user-service RegisterRequest).
+  Gender gender = 10 [(buf.validate.field).enum.defined_only = true];
+  string timezone = 11 [(buf.validate.field).string.max_len = 64];
+  string locale = 12 [(buf.validate.field).string.max_len = 16];
 }
 
 // SendVerificationCodeRequest is the curated frontend DTO for requesting a
@@ -195,13 +199,27 @@ message SendVerificationCodeRequest {
   string email = 1 [(buf.validate.field).string.max_len = 256];
   VerificationChannel channel = 2 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
   VerificationPurpose purpose = 3 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
-  string region_code = 4 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string region_code = 4 [(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE, (buf.validate.field).string.pattern = "^[A-Z]{2}$"];
   string phone = 5 [(buf.validate.field).string.max_len = 20];
   // sender_id is the audit actor triggering this send (user id, service name,
   // platform identifier, ...). user-service is stateless and passes it through
   // verbatim; for unauthenticated flows (register/login) the frontend supplies
   // a platform identifier (e.g. the target email/phone or "testkit-web").
   string sender_id = 6 [(buf.validate.field).string = {min_len: 1, max_len: 128}];
+
+  // ---- Delivery templates (mirror user-service SendVerificationCodeRequest
+  // 1:1 — field numbers match). Required per channel by user-service's
+  // validateDeliverySpec: EMAIL needs email_subject + email_body ({code}
+  // placeholder substituted by user-service); SMS+CN needs sms_template_id +
+  // sign_name (domestic vendors reject raw content); SMS international needs
+  // exactly one of sms_template_id / sms_content.
+  string sms_template_id = 7 [(buf.validate.field).string.max_len = 128];
+  string sms_code_param_key = 8 [(buf.validate.field).string.max_len = 64];
+  string sms_content = 9 [(buf.validate.field).string.max_len = 1024];
+  string email_subject = 10 [(buf.validate.field).string.max_len = 256];
+  string email_body = 11 [(buf.validate.field).string.max_len = 16384];
+  string sign_name = 12 [(buf.validate.field).string.max_len = 64];
+  string email_html_body = 13 [(buf.validate.field).string.max_len = 65536];
 }
 
 // SendVerificationCodeResponse returns the captcha_id that binds the generated
@@ -355,6 +373,15 @@ message UserRole {
 message TokenResponse {
   string token = 1;
   User user = 2;
+  // session_id mirrors downstream Login/Register/SocialLogin responses so
+  // testers can target a specific session (RevokeSession / GetSession)
+  // without decoding the JWT.
+  string session_id = 3;
+  // is_new: this login auto-registered the account (code-login/OAuth paths).
+  bool is_new = 4;
+  // return_to: business URL recorded at GetOAuthURL time (OAuth flows only;
+  // empty for password/code logins).
+  string return_to = 5;
 }
 
 // ==================== P2 request/response messages ====================
@@ -390,7 +417,7 @@ message ResetPasswordRequest {
   string email = 1 [(buf.validate.field).string.max_len = 256];
   string code = 2 [(buf.validate.field).string = {min_len: 1, max_len: 16}];
   string new_password = 3 [(buf.validate.field).string = {min_len: 8, max_len: 128}];
-  string region_code = 4 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string region_code = 4 [(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE, (buf.validate.field).string.pattern = "^[A-Z]{2}$"];
   string phone = 5 [(buf.validate.field).string.max_len = 20];
 
   option (buf.validate.message).cel = {
@@ -412,7 +439,7 @@ message BindIdentityRequest {
   string email = 2 [(buf.validate.field).string.max_len = 256];
   string code = 3 [(buf.validate.field).string = {min_len: 1, max_len: 16}];
   string password = 4 [(buf.validate.field).string.max_len = 128];
-  string region_code = 5 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string region_code = 5 [(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE, (buf.validate.field).string.pattern = "^[A-Z]{2}$"];
   string phone = 6 [(buf.validate.field).string.max_len = 20];
 
   option (buf.validate.message).cel = {
@@ -519,12 +546,14 @@ message MiniProgramPhoneLoginRequest {
 
 // SocialLoginResponse is the shared response for all social-login RPCs.
 // token = testkit-issued JWT (consumes the downstream session_id); session_id
-// itself is NOT returned to the frontend.
+// is ALSO returned so testers can target the session (RevokeSession /
+// GetSession) without decoding the JWT.
 message SocialLoginResponse {
   string token = 1;
   User user = 2;
   bool is_new = 3;
   string return_to = 4; // meaningful only for SocialLogin (OAuth callback flow)
+  string session_id = 5;
 }
 
 // ---- Admin-Users (P2) ----
@@ -535,7 +564,7 @@ message CreateUserRequest {
   string nickname = 3 [(buf.validate.field).string.max_len = 64];
   string real_name = 4 [(buf.validate.field).string.max_len = 64];
   string email = 5 [(buf.validate.field).string.max_len = 256];
-  string region_code = 6 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string region_code = 6 [(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE, (buf.validate.field).string.pattern = "^[A-Z]{2}$"];
   string phone = 7 [(buf.validate.field).string.max_len = 20];
   string password = 8 [(buf.validate.field).string = {min_len: 8, max_len: 128}];
   Gender gender = 9 [(buf.validate.field).enum.defined_only = true];
@@ -575,7 +604,7 @@ message ListUsersRequest {
   google.protobuf.Timestamp last_login_at_end = 15;
   repeated int64 user_ids = 16;
   string email = 17 [(buf.validate.field).string.max_len = 256];
-  string region_code = 18 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string region_code = 18 [(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE, (buf.validate.field).string.pattern = "^[A-Z]{2}$"];
   string phone = 19 [(buf.validate.field).string.max_len = 20];
   string username = 20 [(buf.validate.field).string.max_len = 64];
   UserType user_type = 21 [(buf.validate.field).enum.defined_only = true];
@@ -605,7 +634,7 @@ message ListUsersPagedRequest {
   google.protobuf.Timestamp last_login_at_end = 14;
   repeated int64 user_ids = 15;
   string email = 16 [(buf.validate.field).string.max_len = 256];
-  string region_code = 17 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string region_code = 17 [(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE, (buf.validate.field).string.pattern = "^[A-Z]{2}$"];
   string phone = 18 [(buf.validate.field).string.max_len = 20];
   string username = 19 [(buf.validate.field).string.max_len = 64];
   UserSortField order_by = 20 [(buf.validate.field).enum.defined_only = true];
@@ -1141,6 +1170,9 @@ message GenerateUploadURLRequest {
   string description = 7;
   map<string, string> metadata = 8;
   Vendor vendor = 10; // optional; validates bucket vendor when non-UNSPECIFIED
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 11;
 }
 message GenerateUploadURLResponse {
   bool instant = 1;
@@ -1164,6 +1196,9 @@ message GetSTSCredentialRequest {
   Vendor vendor = 10;
   google.protobuf.Duration ttl = 11;
   repeated string allowed_extensions = 12;
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 13;
 }
 message GetSTSCredentialResponse {
   bool instant = 1;
@@ -1184,6 +1219,9 @@ message BatchGetSTSCredentialRequest {
   string bucket = 2;
   google.protobuf.Duration ttl = 3;
   repeated string allowed_extensions = 4;
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 5;
 }
 message BatchGetSTSCredentialResponse {
   string access_key = 1;
@@ -1197,6 +1235,9 @@ message BatchGetSTSCredentialResponse {
 
 message ConfirmUploadRequest {
   string upload_token = 1 [(buf.validate.field).string.min_len = 1];
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 2;
 }
 message ConfirmUploadResponse {
   int64 file_id = 1;
@@ -1205,6 +1246,9 @@ message ConfirmUploadResponse {
 
 message CancelUploadRequest {
   string upload_token = 1 [(buf.validate.field).string.min_len = 1];
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 2;
 }
 
 // ---- Download / Process (owner injected from ctx) ----
@@ -1235,6 +1279,9 @@ message GenerateCDNURLRequest {
   google.protobuf.Duration ttl = 3;
   bool public = 4; // unsigned permanent URL for public resources
   optional string filename = 5;
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 6;
 }
 message GenerateCDNURLResponse {
   string url = 1;
@@ -1284,12 +1331,21 @@ message UpdateMyFileRequest {
   optional string description = 4;
   map<string, string> metadata = 5;
   optional bool clear_metadata = 7;
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 8;
 }
 message DeleteMyFileRequest {
   int64 file_id = 1 [(buf.validate.field).int64.gt = 0];
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 2;
 }
 message BatchDeleteMyFilesRequest {
   repeated int64 file_ids = 1 [(buf.validate.field).repeated = {min_items: 1, max_items: 100}];
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 2;
 }
 message BatchDeleteMyFilesResponse {
   int32 deleted_count = 1;
@@ -1319,11 +1375,17 @@ message SetOwnerQuotaRequest {
   OwnerType owner_type = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
   int64 owner_id = 2 [(buf.validate.field).int64.gt = 0];
   int64 total_bytes = 3 [(buf.validate.field).int64.gt = 0];
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 4;
 }
 message AddOwnerQuotaRequest {
   OwnerType owner_type = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
   int64 owner_id = 2 [(buf.validate.field).int64.gt = 0];
   int64 delta_bytes = 3; // positive = purchase, negative = refund
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 4;
 }
 
 // ---- Admin (owner_type+owner_id = query/op target, NOT caller identity) ----
@@ -1352,6 +1414,9 @@ message AdminGetFileRequest {
 }
 message AdminDeleteFileRequest {
   int64 file_id = 1 [(buf.validate.field).int64.gt = 0];
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 2;
 }
 
 message AdminGetQuotaRequest {
@@ -1362,6 +1427,9 @@ message AdminSetQuotaRequest {
   OwnerType owner_type = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
   int64 owner_id = 2 [(buf.validate.field).int64.gt = 0];
   int64 total_bytes = 3 [(buf.validate.field).int64.gt = 0];
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 4;
 }
 
 message AdminGetStatsRequest {
@@ -1388,6 +1456,9 @@ message AdminListBucketsResponse {
 message AdminSoftDeleteOwnerFilesRequest {
   OwnerType owner_type = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
   int64 owner_id = 2 [(buf.validate.field).int64.gt = 0];
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 3;
 }
 message AdminSoftDeleteOwnerFilesResponse {
   int64 files_deleted = 1;
@@ -1397,6 +1468,9 @@ message AdminSoftDeleteOwnerFilesResponse {
 message AdminDeleteOwnerRequest {
   OwnerType owner_type = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
   int64 owner_id = 2 [(buf.validate.field).int64.gt = 0];
+  // request_id is optional; recorded in audit logs for traceability
+  // (mirror of storage-service *Request.request_id).
+  string request_id = 3;
 }
 message AdminDeleteOwnerResponse {
   int64 files_deleted = 1;
@@ -1572,7 +1646,7 @@ message SendEmailRequest {
 }
 
 message SendSMSRequest {
-  string region_code = 1 [(buf.validate.field).string.pattern = "^[A-Z]{2}$"];
+  string region_code = 1 [(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE, (buf.validate.field).string.pattern = "^[A-Z]{2}$"];
   string phone = 2 [(buf.validate.field).string.min_len = 1];
   string content = 3;
   string template_id = 4;
@@ -1677,6 +1751,9 @@ message ListEmailsRequest {
   int32 page_size = 8;
   SortField sort_field = 9;
   SortDirection sort_direction = 10;
+  // sender_id filters by the calling service label recorded on each record
+  // (mirror of message-service ListEmailsRequest.sender_id).
+  string sender_id = 11;
 }
 message ListEmailsResponse {
   repeated EmailRecord records = 1;
@@ -1697,6 +1774,8 @@ message ListSMSRequest {
   int32 page_size = 9;
   SortField sort_field = 10;
   SortDirection sort_direction = 11;
+  // sender_id filter (mirror of message-service ListSMSRequest.sender_id).
+  string sender_id = 12;
 }
 message ListSMSResponse {
   repeated SMSRecord records = 1;
@@ -1719,6 +1798,8 @@ message ListEmailsByCursorRequest {
   int32 page_size = 9;
   string page_token = 10;
   bool include_total = 11;
+  // sender_id filter (mirror of message-service ListEmailsByCursorRequest.sender_id).
+  string sender_id = 12;
 }
 message ListEmailsByCursorResponse {
   repeated EmailRecord records = 1;
@@ -1739,6 +1820,8 @@ message ListSMSByCursorRequest {
   int32 page_size = 10;
   string page_token = 11;
   bool include_total = 12;
+  // sender_id filter (mirror of message-service ListSMSByCursorRequest.sender_id).
+  string sender_id = 13;
 }
 message ListSMSByCursorResponse {
   repeated SMSRecord records = 1;
@@ -1879,6 +1962,654 @@ message DashboardResponse {
   SMSStats sms_stats = 2;
   MyQuota quota = 3;
   UsersSummary users = 4;
+}
+
+// ==================== license-service domain (P6) ====================
+// Mirrors license-service proto 1:1 — same field names/numbers, enum
+// values, and buf.validate rules, with http paths rewritten to
+// /api/v1/license/. Admin RPCs forward the caller's testkit session;
+// the downstream's own auth guards still apply.
+enum Module {
+  MODULE_UNSPECIFIED = 0;
+  MODULE_DOWNLOADS = 1;
+  MODULE_TOOLS = 2;
+}
+enum EntitlementKind {
+  ENTITLEMENT_KIND_UNSPECIFIED = 0;
+  ENTITLEMENT_KIND_PERPETUAL = 1;
+  ENTITLEMENT_KIND_SUBSCRIPTION = 2;
+  ENTITLEMENT_KIND_TRIAL = 3;
+}
+enum KeyStatus {
+  KEY_STATUS_UNSPECIFIED = 0;
+  KEY_STATUS_ACTIVE = 1;
+  KEY_STATUS_REVOKED = 2;
+}
+message ActivateRequest {
+  string key = 1 [(buf.validate.field).string.max_len = 128];
+  string license_key = 2 [(buf.validate.field).string.max_len = 128];
+  
+  string fingerprint_id = 3 [
+    (buf.validate.field).string = {
+      pattern: "^v1\\.[0-9a-f]{64}$"
+      min_len: 1
+      max_len: 128
+    }
+  ];
+  
+  string device_token = 4 [(buf.validate.field).string.uuid = true];
+  
+  
+  
+  optional string evict_device_token = 5 [(buf.validate.field).string.uuid = true];
+}
+message DeviceSlotInfo {
+  string device_token = 1;
+  string fingerprint_id = 2;
+  google.protobuf.Timestamp first_seen_at = 3;
+  google.protobuf.Timestamp last_seen_at = 4;
+  optional string name = 5;
+}
+message SlotSummary {
+  int32 used = 1;
+  int32 max = 2;
+  repeated DeviceSlotInfo devices = 3;
+}
+message ActivateResponse {
+  string payload = 1;   
+  string signature = 2; 
+  SlotSummary slots = 3;
+}
+message DeactivateRequest {
+  string key = 1 [(buf.validate.field).string.max_len = 128];
+  string license_key = 2 [(buf.validate.field).string.max_len = 128];
+  string device_token = 3 [(buf.validate.field).string.uuid = true];
+}
+message DeactivateResponse {
+  
+  bool released = 1;
+}
+message TrialStartRequest {
+  string module = 1 [
+    (buf.validate.field).string = {
+      in: ["downloads", "tools"]
+      min_len: 1
+    }
+  ];
+  string fingerprint_id = 2 [
+    (buf.validate.field).string = {
+      pattern: "^v1\\.[0-9a-f]{64}$"
+      min_len: 1
+      max_len: 128
+    }
+  ];
+  string device_token = 3 [(buf.validate.field).string.uuid = true];
+  string license_key = 4 [(buf.validate.field).string.max_len = 128];
+}
+message TrialStartResponse {
+  string payload = 1;
+  string signature = 2;
+  
+  
+  
+  bool already_started = 3;
+}
+message HealthRequest {
+
+}
+message HealthChecks {
+  bool db = 1;
+  bool signing = 2;
+}
+message HealthResponse {
+  string status = 1;
+  HealthChecks checks = 2;
+}
+message SlotLimitInfo {
+  int32 max_slots = 1;
+  repeated DeviceSlotInfo devices = 2;
+}
+message RetryAfterInfo {
+  int32 seconds = 1;
+}
+message EntitlementInput {
+  Module module = 1 [
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    }
+  ];
+  EntitlementKind kind = 2 [
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    }
+  ];
+  
+  
+  int32 duration_days = 3 [(buf.validate.field).int32 = {
+    gte: 0
+    lte: 3650
+  }];
+  google.protobuf.Timestamp expires_at = 4;
+}
+message EntitlementInfo {
+  Module module = 1;
+  EntitlementKind kind = 2;
+  google.protobuf.Timestamp expires_at = 3;
+  google.protobuf.Timestamp granted_at = 4;
+}
+message KeyInfo {
+  string license_id = 1;
+  string key_prefix = 2; 
+  string label = 3;
+  int32 max_slots = 4;
+  int32 used_slots = 5;
+  KeyStatus status = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp revoked_at = 8;
+  repeated EntitlementInfo entitlements = 9;
+  repeated DeviceSlotInfo devices = 10; 
+}
+message CreateKeyRequest {
+  string label = 1 [(buf.validate.field).string.max_len = 200];
+  
+  int32 slots = 2 [(buf.validate.field).int32 = {
+    gte: 0
+    lte: 100
+  }];
+  repeated EntitlementInput grants = 3 [(buf.validate.field).repeated.max_items = 16];
+}
+message CreateKeyResponse {
+  KeyInfo key = 1;
+  
+  string plaintext_key = 2;
+}
+message ShowKeyRequest {
+  string key_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+}
+message ShowKeyResponse {
+  KeyInfo key = 1;
+}
+message ListKeysRequest {
+  
+  KeyStatus status = 1 [(buf.validate.field).enum.defined_only = true];
+  int32 limit = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 500
+  }];
+}
+message ListKeysResponse {
+  repeated KeyInfo keys = 1;
+}
+message UpdateKeyRequest {
+  string key_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  optional string label = 2 [(buf.validate.field).string.max_len = 200];
+  optional int32 slots = 3 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 100
+  }];
+}
+message UpdateKeyResponse {
+  KeyInfo key = 1;
+}
+message RevokeKeyRequest {
+  string key_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  optional string reason = 2 [(buf.validate.field).string.max_len = 500];
+}
+message RevokeKeyResponse {
+  KeyInfo key = 1;
+}
+message UnrevokeKeyRequest {
+  string key_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+}
+message UnrevokeKeyResponse {
+  KeyInfo key = 1;
+}
+message DeleteKeyRequest {
+  string key_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  
+  optional bool confirm = 2;
+}
+message DeleteKeyResponse {
+
+}
+message GrantModuleRequest {
+  string key_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  Module module = 2 [
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    }
+  ];
+  EntitlementKind kind = 3 [
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    }
+  ];
+  
+  int32 duration_days = 4 [(buf.validate.field).int32 = {
+    gte: 0
+    lte: 3650
+  }];
+  google.protobuf.Timestamp expires_at = 5;
+
+  option (buf.validate.message).cel = {
+    id: "grant_module.expiry_exclusive"
+    message: "exactly one of duration_days or expires_at must be set"
+    expression: "(this.duration_days > 0) != has(this.expires_at)"
+  };
+}
+message GrantModuleResponse {
+  EntitlementInfo entitlement = 1;
+}
+message RevokeModuleRequest {
+  string key_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  Module module = 2 [
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    }
+  ];
+  optional string reason = 3 [(buf.validate.field).string.max_len = 500];
+}
+message RevokeModuleResponse {
+
+}
+message ListKeyDevicesRequest {
+  string key_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+}
+message ListKeyDevicesResponse {
+  repeated DeviceSlotInfo devices = 1;
+}
+message KickDeviceRequest {
+  string key_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string device_token = 2 [(buf.validate.field).string.uuid = true];
+  optional string reason = 3 [(buf.validate.field).string.max_len = 500];
+}
+message KickDeviceResponse {
+  
+  bool kicked = 1;
+}
+message TrialInfo {
+  string fingerprint_id = 1;
+  Module module = 2;
+  google.protobuf.Timestamp started_at = 3;
+  google.protobuf.Timestamp expires_at = 4;
+  string first_device_token = 5; 
+}
+message ShowTrialRequest {
+  string fingerprint_id = 1 [
+    (buf.validate.field).string = {
+      pattern: "^v1\\.[0-9a-f]{64}$"
+      min_len: 1
+      max_len: 128
+    }
+  ];
+  
+  Module module = 2 [(buf.validate.field).enum.defined_only = true];
+}
+message ShowTrialResponse {
+  repeated TrialInfo trials = 1;
+}
+message ResetTrialRequest {
+  string fingerprint_id = 1 [
+    (buf.validate.field).string = {
+      pattern: "^v1\\.[0-9a-f]{64}$"
+      min_len: 1
+      max_len: 128
+    }
+  ];
+  Module module = 2 [
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    }
+  ];
+  
+  string reason = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 500
+  }];
+}
+message ResetTrialResponse {
+  
+  bool reset = 1;
+}
+message ShowPubKeyRequest {
+
+}
+message SigningKeyInfo {
+  string key_id = 1;
+  string public_key_b64 = 2;
+}
+message ShowPubKeyResponse {
+  reserved 1, 2, 3;
+  reserved "public_key_b64", "key_id", "secondary_public_key_b64";
+  
+  string active_key_id = 4;
+  
+  
+  repeated SigningKeyInfo keys = 5;
+}
+
+// ==================== telemetry-service domain (P6) ====================
+// Mirrors telemetry-service proto 1:1 — same field names/numbers, enum
+// values, and buf.validate rules, with http paths rewritten to
+// /api/v1/telemetry/. Admin RPCs forward the caller's testkit session;
+// the downstream's own auth guards still apply.
+enum AuthMode {
+  AUTH_MODE_UNSPECIFIED = 0;
+  
+  AUTH_MODE_NONE = 1;
+  
+  
+  AUTH_MODE_HMAC = 2;
+}
+message IngestRequest {
+  
+  
+  string token = 1 [(buf.validate.field).string = { min_len: 1, max_len: 128 }];
+  
+  bytes body = 2 [(buf.validate.field).bytes = { min_len: 2, max_len: 65536 }];
+  
+  
+  string signature = 3 [(buf.validate.field).string.max_len = 256];
+}
+message IngestResponse {
+  
+  
+  int32 http_code = 1;
+  
+  
+  string error_code = 6;
+  bool duplicate = 2;     
+  int32 accepted = 3;     
+  int32 dropped = 4;      
+  
+  
+  
+  map<string, int32> drops = 5;
+}
+message ValidateEventResult {
+  int32 index = 1;          
+  string event_id = 2;      
+  string name = 3;
+  bool accepted = 4;
+  string drop_reason = 5;   
+}
+message ValidateBatchResponse {
+  int32 http_code = 1;              
+  string app = 2;                   
+  string error_code = 3;            
+  bool signature_valid = 4;         
+  string signature_error = 5;       
+  string envelope_error = 6;        
+  repeated ValidateEventResult events = 7;
+}
+message App {
+  string id = 1;                                    
+  string slug = 2;                                  
+  string name = 3;
+  string email = 4;                                 
+  bool strict_versions = 5;                         
+  AuthMode auth_mode = 6;
+  google.protobuf.Timestamp auth_grace_until = 7;   
+  int32 rate_per_minute = 8;                        
+  int32 rate_per_day = 9;                           
+  int32 raw_retention_days = 10;                    
+  
+  
+  
+  
+  int64 daily_event_budget = 13;
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Timestamp updated_at = 12;
+}
+message EventRule {
+  string event_name = 1 [(buf.validate.field).string = {
+    pattern: "^[a-z][a-z0-9_]{0,63}$"
+  }];
+  repeated string allow_props = 2 [(buf.validate.field).repeated = {
+    max_items: 16,
+    items: { string: { pattern: "^[a-z][a-z0-9_]{0,31}$" } }
+  }];
+  
+  
+  optional string map_prop = 3 [(buf.validate.field).string = {
+    pattern: "^[a-z][a-z0-9_]{0,31}$"
+  }];
+}
+message IngestTokenInfo {
+  string prefix = 1;                     
+  bool revoked = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp last_used_at = 4;  
+}
+message TelemetrySigningKeyInfo {
+  string key_id = 1;
+  bool revoked = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp last_used_at = 4;  
+}
+message VersionInfo {
+  string version = 1;
+  bool blocked = 2;
+  int64 seen_count = 3;
+  google.protobuf.Timestamp last_seen_at = 4;  
+}
+message DailyStat {
+  
+  string day = 1;
+  int64 devices = 2;   
+  int64 events = 3;    
+}
+message CreateAppRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    pattern: "^[a-z][a-z0-9-]{0,63}$"
+  }];
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 200
+  }];
+  string email = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string.email = true
+  ];
+}
+message CreateAppResponse {
+  App app = 1;
+  
+  string token = 2;
+}
+message GetAppRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+}
+message GetAppResponse {
+  App app = 1;
+  repeated IngestTokenInfo tokens = 2;
+  repeated TelemetrySigningKeyInfo signing_keys = 3;
+  repeated EventRule rules = 4;
+  repeated VersionInfo versions = 5;
+}
+message UpdateAppRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+  
+  optional string name = 2 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 200
+  }];
+  optional string email = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string.email = true
+  ];
+  optional bool strict_versions = 4;
+  optional AuthMode auth_mode = 5 [(buf.validate.field).enum = {
+    defined_only: true,
+    not_in: [0]
+  }];
+  optional google.protobuf.Timestamp auth_grace_until = 6;
+  
+  
+  bool clear_auth_grace = 7;
+  
+  
+  optional int32 rate_per_minute = 8 [(buf.validate.field).int32 = {
+    gte: 1,
+    lte: 30
+  }];
+  optional int32 rate_per_day = 9 [(buf.validate.field).int32 = {
+    gte: 1,
+    lte: 5000
+  }];
+  optional int32 raw_retention_days = 10 [(buf.validate.field).int32 = {
+    gte: 7,
+    lte: 90
+  }];
+  
+  
+  optional int64 daily_event_budget = 11 [(buf.validate.field).int64 = {
+    gte: 10000,
+    lte: 100000000
+  }];
+}
+message UpdateAppResponse {
+  App app = 1;
+}
+message RotateTokenRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+}
+message RotateTokenResponse {
+  
+  
+  string token = 1;
+}
+message RevokeTokenRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+  string prefix = 2 [(buf.validate.field).string = {
+    min_len: 6,
+    max_len: 16,
+    pattern: "^tm_live_[a-z0-9]+$"
+  }];
+}
+message RevokeTokenResponse {
+
+}
+message CreateSigningKeyRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+  
+  string key_id = 2 [(buf.validate.field).string = {
+    pattern: "^[a-zA-Z0-9_-]{1,32}$"
+  }];
+}
+message CreateSigningKeyResponse {
+  string key_id = 1;
+  
+  
+  string secret = 2;
+}
+message RevokeSigningKeyRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+  string key_id = 2 [(buf.validate.field).string = {
+    pattern: "^[a-zA-Z0-9_-]{1,32}$"
+  }];
+}
+message RevokeSigningKeyResponse {
+
+}
+message ReplaceEventRulesRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+  
+  
+  repeated EventRule rules = 2 [
+    (buf.validate.field).repeated.max_items = 500,
+    (buf.validate.field).cel = {
+      id: "rules.unique_event_names"
+      message: "event names must be unique"
+      expression: "this.map(r, r.event_name).unique()"
+    }
+  ];
+}
+message ReplaceEventRulesResponse {
+  repeated EventRule rules = 1;
+}
+message SetVersionBlockedRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+  string version = 2 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+  bool blocked = 3;
+}
+message SetVersionBlockedResponse {
+
+}
+message GetAppStatsRequest {
+  string slug = 1 [(buf.validate.field).string = {
+    min_len: 1,
+    max_len: 64
+  }];
+  int32 days = 2 [(buf.validate.field).int32 = {
+    gte: 1,
+    lte: 90
+  }];
+}
+message GetAppStatsResponse {
+  repeated DailyStat days = 1;               
+  map<string, int64> drops = 2;              
+  map<string, int64> sig_fails = 3;          
 }
 
 service TestkitService {
@@ -2332,4 +3063,172 @@ service TestkitService {
   rpc GetDashboard(GetDashboardRequest) returns (DashboardResponse) {
     option (google.api.http) = { get: "/api/v1/dashboard" };
   }
+
+
+  // ---- P6 license-service + telemetry-service forwarders ----
+
+  rpc Activate(ActivateRequest) returns (ActivateResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/license/activate"
+      body: "*"
+    };
+  }
+
+  rpc Deactivate(DeactivateRequest) returns (DeactivateResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/license/deactivate"
+      body: "*"
+    };
+  }
+
+  rpc TrialStart(TrialStartRequest) returns (TrialStartResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/license/trial/start"
+      body: "*"
+    };
+  }
+
+  rpc Health(HealthRequest) returns (HealthResponse) {
+    option (google.api.http) = {get: "/api/v1/license/healthz"};
+  }
+
+  rpc CreateKey(CreateKeyRequest) returns (CreateKeyResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/license/admin/keys"
+      body: "*"
+    };
+  }
+
+  rpc ShowKey(ShowKeyRequest) returns (ShowKeyResponse) {
+    option (google.api.http) = {get: "/api/v1/license/admin/keys/{key_id}"};
+  }
+
+  rpc ListKeys(ListKeysRequest) returns (ListKeysResponse) {
+    option (google.api.http) = {get: "/api/v1/license/admin/keys"};
+  }
+
+  rpc UpdateKey(UpdateKeyRequest) returns (UpdateKeyResponse) {
+    option (google.api.http) = {
+      patch: "/api/v1/license/admin/keys/{key_id}"
+      body: "*"
+    };
+  }
+
+  rpc RevokeKey(RevokeKeyRequest) returns (RevokeKeyResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/license/admin/keys/{key_id}/revoke"
+      body: "*"
+    };
+  }
+
+  rpc UnrevokeKey(UnrevokeKeyRequest) returns (UnrevokeKeyResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/license/admin/keys/{key_id}/unrevoke"
+      body: "*"
+    };
+  }
+
+  rpc DeleteKey(DeleteKeyRequest) returns (DeleteKeyResponse) {
+    option (google.api.http) = {delete: "/api/v1/license/admin/keys/{key_id}"};
+  }
+
+  rpc GrantModule(GrantModuleRequest) returns (GrantModuleResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/license/admin/keys/{key_id}/grants/{module}"
+      body: "*"
+    };
+  }
+
+  rpc RevokeModule(RevokeModuleRequest) returns (RevokeModuleResponse) {
+    option (google.api.http) = {delete: "/api/v1/license/admin/keys/{key_id}/grants/{module}"};
+  }
+
+  rpc ListKeyDevices(ListKeyDevicesRequest) returns (ListKeyDevicesResponse) {
+    option (google.api.http) = {get: "/api/v1/license/admin/keys/{key_id}/devices"};
+  }
+
+  rpc KickDevice(KickDeviceRequest) returns (KickDeviceResponse) {
+    option (google.api.http) = {delete: "/api/v1/license/admin/keys/{key_id}/devices/{device_token}"};
+  }
+
+  rpc ShowTrial(ShowTrialRequest) returns (ShowTrialResponse) {
+    option (google.api.http) = {get: "/api/v1/license/admin/trials/{fingerprint_id}"};
+  }
+
+  rpc ResetTrial(ResetTrialRequest) returns (ResetTrialResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/license/admin/trials/{fingerprint_id}/{module}/reset"
+      body: "*"
+    };
+  }
+
+  rpc ShowPubKey(ShowPubKeyRequest) returns (ShowPubKeyResponse) {
+    option (google.api.http) = {get: "/api/v1/license/admin/signing/pubkey"};
+  }
+
+  rpc Ingest(IngestRequest) returns (IngestResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/telemetry/ingest"
+      body: "*"
+    };
+  }
+
+  rpc CreateApp(CreateAppRequest) returns (CreateAppResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/telemetry/admin/apps"
+      body: "*"
+    };
+  }
+
+  rpc GetApp(GetAppRequest) returns (GetAppResponse) {
+    option (google.api.http) = { get: "/api/v1/telemetry/admin/apps/{slug}" };
+  }
+
+  rpc UpdateApp(UpdateAppRequest) returns (UpdateAppResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/telemetry/admin/apps/{slug}"
+      body: "*"
+    };
+  }
+
+  rpc RotateToken(RotateTokenRequest) returns (RotateTokenResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/telemetry/admin/apps/{slug}/tokens"
+      body: "*"
+    };
+  }
+
+  rpc RevokeToken(RevokeTokenRequest) returns (RevokeTokenResponse) {
+    option (google.api.http) = { delete: "/api/v1/telemetry/admin/apps/{slug}/tokens/{prefix}" };
+  }
+
+  rpc CreateSigningKey(CreateSigningKeyRequest) returns (CreateSigningKeyResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/telemetry/admin/apps/{slug}/signing-keys"
+      body: "*"
+    };
+  }
+
+  rpc RevokeSigningKey(RevokeSigningKeyRequest) returns (RevokeSigningKeyResponse) {
+    option (google.api.http) = { delete: "/api/v1/telemetry/admin/apps/{slug}/signing-keys/{key_id}" };
+  }
+
+  rpc ReplaceEventRules(ReplaceEventRulesRequest) returns (ReplaceEventRulesResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/telemetry/admin/apps/{slug}/events"
+      body: "*"
+    };
+  }
+
+  rpc SetVersionBlocked(SetVersionBlockedRequest) returns (SetVersionBlockedResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/telemetry/admin/apps/{slug}/versions/{version}"
+      body: "*"
+    };
+  }
+
+  rpc GetAppStats(GetAppStatsRequest) returns (GetAppStatsResponse) {
+    option (google.api.http) = { get: "/api/v1/telemetry/admin/apps/{slug}/stats" };
+  }
+
 }

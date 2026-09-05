@@ -8,7 +8,6 @@ package testkitv1
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -126,6 +125,35 @@ const (
 	TestkitService_BatchNextID_FullMethodName               = "/testkit.v1.TestkitService/BatchNextID"
 	TestkitService_Decompose_FullMethodName                 = "/testkit.v1.TestkitService/Decompose"
 	TestkitService_GetDashboard_FullMethodName              = "/testkit.v1.TestkitService/GetDashboard"
+	TestkitService_Activate_FullMethodName                  = "/testkit.v1.TestkitService/Activate"
+	TestkitService_Deactivate_FullMethodName                = "/testkit.v1.TestkitService/Deactivate"
+	TestkitService_TrialStart_FullMethodName                = "/testkit.v1.TestkitService/TrialStart"
+	TestkitService_Health_FullMethodName                    = "/testkit.v1.TestkitService/Health"
+	TestkitService_CreateKey_FullMethodName                 = "/testkit.v1.TestkitService/CreateKey"
+	TestkitService_ShowKey_FullMethodName                   = "/testkit.v1.TestkitService/ShowKey"
+	TestkitService_ListKeys_FullMethodName                  = "/testkit.v1.TestkitService/ListKeys"
+	TestkitService_UpdateKey_FullMethodName                 = "/testkit.v1.TestkitService/UpdateKey"
+	TestkitService_RevokeKey_FullMethodName                 = "/testkit.v1.TestkitService/RevokeKey"
+	TestkitService_UnrevokeKey_FullMethodName               = "/testkit.v1.TestkitService/UnrevokeKey"
+	TestkitService_DeleteKey_FullMethodName                 = "/testkit.v1.TestkitService/DeleteKey"
+	TestkitService_GrantModule_FullMethodName               = "/testkit.v1.TestkitService/GrantModule"
+	TestkitService_RevokeModule_FullMethodName              = "/testkit.v1.TestkitService/RevokeModule"
+	TestkitService_ListKeyDevices_FullMethodName            = "/testkit.v1.TestkitService/ListKeyDevices"
+	TestkitService_KickDevice_FullMethodName                = "/testkit.v1.TestkitService/KickDevice"
+	TestkitService_ShowTrial_FullMethodName                 = "/testkit.v1.TestkitService/ShowTrial"
+	TestkitService_ResetTrial_FullMethodName                = "/testkit.v1.TestkitService/ResetTrial"
+	TestkitService_ShowPubKey_FullMethodName                = "/testkit.v1.TestkitService/ShowPubKey"
+	TestkitService_Ingest_FullMethodName                    = "/testkit.v1.TestkitService/Ingest"
+	TestkitService_CreateApp_FullMethodName                 = "/testkit.v1.TestkitService/CreateApp"
+	TestkitService_GetApp_FullMethodName                    = "/testkit.v1.TestkitService/GetApp"
+	TestkitService_UpdateApp_FullMethodName                 = "/testkit.v1.TestkitService/UpdateApp"
+	TestkitService_RotateToken_FullMethodName               = "/testkit.v1.TestkitService/RotateToken"
+	TestkitService_RevokeToken_FullMethodName               = "/testkit.v1.TestkitService/RevokeToken"
+	TestkitService_CreateSigningKey_FullMethodName          = "/testkit.v1.TestkitService/CreateSigningKey"
+	TestkitService_RevokeSigningKey_FullMethodName          = "/testkit.v1.TestkitService/RevokeSigningKey"
+	TestkitService_ReplaceEventRules_FullMethodName         = "/testkit.v1.TestkitService/ReplaceEventRules"
+	TestkitService_SetVersionBlocked_FullMethodName         = "/testkit.v1.TestkitService/SetVersionBlocked"
+	TestkitService_GetAppStats_FullMethodName               = "/testkit.v1.TestkitService/GetAppStats"
 )
 
 // TestkitServiceClient is the client API for TestkitService service.
@@ -259,6 +287,35 @@ type TestkitServiceClient interface {
 	Decompose(ctx context.Context, in *DecomposeRequest, opts ...grpc.CallOption) (*DecomposeResponse, error)
 	// ---- Dashboard (P5, aggregated) ----
 	GetDashboard(ctx context.Context, in *GetDashboardRequest, opts ...grpc.CallOption) (*DashboardResponse, error)
+	Activate(ctx context.Context, in *ActivateRequest, opts ...grpc.CallOption) (*ActivateResponse, error)
+	Deactivate(ctx context.Context, in *DeactivateRequest, opts ...grpc.CallOption) (*DeactivateResponse, error)
+	TrialStart(ctx context.Context, in *TrialStartRequest, opts ...grpc.CallOption) (*TrialStartResponse, error)
+	Health(ctx context.Context, in *HealthRequest, opts ...grpc.CallOption) (*HealthResponse, error)
+	CreateKey(ctx context.Context, in *CreateKeyRequest, opts ...grpc.CallOption) (*CreateKeyResponse, error)
+	ShowKey(ctx context.Context, in *ShowKeyRequest, opts ...grpc.CallOption) (*ShowKeyResponse, error)
+	ListKeys(ctx context.Context, in *ListKeysRequest, opts ...grpc.CallOption) (*ListKeysResponse, error)
+	UpdateKey(ctx context.Context, in *UpdateKeyRequest, opts ...grpc.CallOption) (*UpdateKeyResponse, error)
+	RevokeKey(ctx context.Context, in *RevokeKeyRequest, opts ...grpc.CallOption) (*RevokeKeyResponse, error)
+	UnrevokeKey(ctx context.Context, in *UnrevokeKeyRequest, opts ...grpc.CallOption) (*UnrevokeKeyResponse, error)
+	DeleteKey(ctx context.Context, in *DeleteKeyRequest, opts ...grpc.CallOption) (*DeleteKeyResponse, error)
+	GrantModule(ctx context.Context, in *GrantModuleRequest, opts ...grpc.CallOption) (*GrantModuleResponse, error)
+	RevokeModule(ctx context.Context, in *RevokeModuleRequest, opts ...grpc.CallOption) (*RevokeModuleResponse, error)
+	ListKeyDevices(ctx context.Context, in *ListKeyDevicesRequest, opts ...grpc.CallOption) (*ListKeyDevicesResponse, error)
+	KickDevice(ctx context.Context, in *KickDeviceRequest, opts ...grpc.CallOption) (*KickDeviceResponse, error)
+	ShowTrial(ctx context.Context, in *ShowTrialRequest, opts ...grpc.CallOption) (*ShowTrialResponse, error)
+	ResetTrial(ctx context.Context, in *ResetTrialRequest, opts ...grpc.CallOption) (*ResetTrialResponse, error)
+	ShowPubKey(ctx context.Context, in *ShowPubKeyRequest, opts ...grpc.CallOption) (*ShowPubKeyResponse, error)
+	Ingest(ctx context.Context, in *IngestRequest, opts ...grpc.CallOption) (*IngestResponse, error)
+	CreateApp(ctx context.Context, in *CreateAppRequest, opts ...grpc.CallOption) (*CreateAppResponse, error)
+	GetApp(ctx context.Context, in *GetAppRequest, opts ...grpc.CallOption) (*GetAppResponse, error)
+	UpdateApp(ctx context.Context, in *UpdateAppRequest, opts ...grpc.CallOption) (*UpdateAppResponse, error)
+	RotateToken(ctx context.Context, in *RotateTokenRequest, opts ...grpc.CallOption) (*RotateTokenResponse, error)
+	RevokeToken(ctx context.Context, in *RevokeTokenRequest, opts ...grpc.CallOption) (*RevokeTokenResponse, error)
+	CreateSigningKey(ctx context.Context, in *CreateSigningKeyRequest, opts ...grpc.CallOption) (*CreateSigningKeyResponse, error)
+	RevokeSigningKey(ctx context.Context, in *RevokeSigningKeyRequest, opts ...grpc.CallOption) (*RevokeSigningKeyResponse, error)
+	ReplaceEventRules(ctx context.Context, in *ReplaceEventRulesRequest, opts ...grpc.CallOption) (*ReplaceEventRulesResponse, error)
+	SetVersionBlocked(ctx context.Context, in *SetVersionBlockedRequest, opts ...grpc.CallOption) (*SetVersionBlockedResponse, error)
+	GetAppStats(ctx context.Context, in *GetAppStatsRequest, opts ...grpc.CallOption) (*GetAppStatsResponse, error)
 }
 
 type testkitServiceClient struct {
@@ -1319,6 +1376,296 @@ func (c *testkitServiceClient) GetDashboard(ctx context.Context, in *GetDashboar
 	return out, nil
 }
 
+func (c *testkitServiceClient) Activate(ctx context.Context, in *ActivateRequest, opts ...grpc.CallOption) (*ActivateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ActivateResponse)
+	err := c.cc.Invoke(ctx, TestkitService_Activate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) Deactivate(ctx context.Context, in *DeactivateRequest, opts ...grpc.CallOption) (*DeactivateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeactivateResponse)
+	err := c.cc.Invoke(ctx, TestkitService_Deactivate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) TrialStart(ctx context.Context, in *TrialStartRequest, opts ...grpc.CallOption) (*TrialStartResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TrialStartResponse)
+	err := c.cc.Invoke(ctx, TestkitService_TrialStart_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) Health(ctx context.Context, in *HealthRequest, opts ...grpc.CallOption) (*HealthResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HealthResponse)
+	err := c.cc.Invoke(ctx, TestkitService_Health_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) CreateKey(ctx context.Context, in *CreateKeyRequest, opts ...grpc.CallOption) (*CreateKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateKeyResponse)
+	err := c.cc.Invoke(ctx, TestkitService_CreateKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ShowKey(ctx context.Context, in *ShowKeyRequest, opts ...grpc.CallOption) (*ShowKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ShowKeyResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ShowKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListKeys(ctx context.Context, in *ListKeysRequest, opts ...grpc.CallOption) (*ListKeysResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListKeysResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListKeys_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UpdateKey(ctx context.Context, in *UpdateKeyRequest, opts ...grpc.CallOption) (*UpdateKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateKeyResponse)
+	err := c.cc.Invoke(ctx, TestkitService_UpdateKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RevokeKey(ctx context.Context, in *RevokeKeyRequest, opts ...grpc.CallOption) (*RevokeKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeKeyResponse)
+	err := c.cc.Invoke(ctx, TestkitService_RevokeKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UnrevokeKey(ctx context.Context, in *UnrevokeKeyRequest, opts ...grpc.CallOption) (*UnrevokeKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UnrevokeKeyResponse)
+	err := c.cc.Invoke(ctx, TestkitService_UnrevokeKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) DeleteKey(ctx context.Context, in *DeleteKeyRequest, opts ...grpc.CallOption) (*DeleteKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteKeyResponse)
+	err := c.cc.Invoke(ctx, TestkitService_DeleteKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GrantModule(ctx context.Context, in *GrantModuleRequest, opts ...grpc.CallOption) (*GrantModuleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GrantModuleResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GrantModule_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RevokeModule(ctx context.Context, in *RevokeModuleRequest, opts ...grpc.CallOption) (*RevokeModuleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeModuleResponse)
+	err := c.cc.Invoke(ctx, TestkitService_RevokeModule_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ListKeyDevices(ctx context.Context, in *ListKeyDevicesRequest, opts ...grpc.CallOption) (*ListKeyDevicesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListKeyDevicesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ListKeyDevices_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) KickDevice(ctx context.Context, in *KickDeviceRequest, opts ...grpc.CallOption) (*KickDeviceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(KickDeviceResponse)
+	err := c.cc.Invoke(ctx, TestkitService_KickDevice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ShowTrial(ctx context.Context, in *ShowTrialRequest, opts ...grpc.CallOption) (*ShowTrialResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ShowTrialResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ShowTrial_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ResetTrial(ctx context.Context, in *ResetTrialRequest, opts ...grpc.CallOption) (*ResetTrialResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResetTrialResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ResetTrial_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ShowPubKey(ctx context.Context, in *ShowPubKeyRequest, opts ...grpc.CallOption) (*ShowPubKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ShowPubKeyResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ShowPubKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) Ingest(ctx context.Context, in *IngestRequest, opts ...grpc.CallOption) (*IngestResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(IngestResponse)
+	err := c.cc.Invoke(ctx, TestkitService_Ingest_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) CreateApp(ctx context.Context, in *CreateAppRequest, opts ...grpc.CallOption) (*CreateAppResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateAppResponse)
+	err := c.cc.Invoke(ctx, TestkitService_CreateApp_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetApp(ctx context.Context, in *GetAppRequest, opts ...grpc.CallOption) (*GetAppResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAppResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetApp_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) UpdateApp(ctx context.Context, in *UpdateAppRequest, opts ...grpc.CallOption) (*UpdateAppResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateAppResponse)
+	err := c.cc.Invoke(ctx, TestkitService_UpdateApp_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RotateToken(ctx context.Context, in *RotateTokenRequest, opts ...grpc.CallOption) (*RotateTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RotateTokenResponse)
+	err := c.cc.Invoke(ctx, TestkitService_RotateToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RevokeToken(ctx context.Context, in *RevokeTokenRequest, opts ...grpc.CallOption) (*RevokeTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeTokenResponse)
+	err := c.cc.Invoke(ctx, TestkitService_RevokeToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) CreateSigningKey(ctx context.Context, in *CreateSigningKeyRequest, opts ...grpc.CallOption) (*CreateSigningKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateSigningKeyResponse)
+	err := c.cc.Invoke(ctx, TestkitService_CreateSigningKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) RevokeSigningKey(ctx context.Context, in *RevokeSigningKeyRequest, opts ...grpc.CallOption) (*RevokeSigningKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeSigningKeyResponse)
+	err := c.cc.Invoke(ctx, TestkitService_RevokeSigningKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) ReplaceEventRules(ctx context.Context, in *ReplaceEventRulesRequest, opts ...grpc.CallOption) (*ReplaceEventRulesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReplaceEventRulesResponse)
+	err := c.cc.Invoke(ctx, TestkitService_ReplaceEventRules_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) SetVersionBlocked(ctx context.Context, in *SetVersionBlockedRequest, opts ...grpc.CallOption) (*SetVersionBlockedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetVersionBlockedResponse)
+	err := c.cc.Invoke(ctx, TestkitService_SetVersionBlocked_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testkitServiceClient) GetAppStats(ctx context.Context, in *GetAppStatsRequest, opts ...grpc.CallOption) (*GetAppStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAppStatsResponse)
+	err := c.cc.Invoke(ctx, TestkitService_GetAppStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TestkitServiceServer is the server API for TestkitService service.
 // All implementations must embed UnimplementedTestkitServiceServer
 // for forward compatibility.
@@ -1450,6 +1797,35 @@ type TestkitServiceServer interface {
 	Decompose(context.Context, *DecomposeRequest) (*DecomposeResponse, error)
 	// ---- Dashboard (P5, aggregated) ----
 	GetDashboard(context.Context, *GetDashboardRequest) (*DashboardResponse, error)
+	Activate(context.Context, *ActivateRequest) (*ActivateResponse, error)
+	Deactivate(context.Context, *DeactivateRequest) (*DeactivateResponse, error)
+	TrialStart(context.Context, *TrialStartRequest) (*TrialStartResponse, error)
+	Health(context.Context, *HealthRequest) (*HealthResponse, error)
+	CreateKey(context.Context, *CreateKeyRequest) (*CreateKeyResponse, error)
+	ShowKey(context.Context, *ShowKeyRequest) (*ShowKeyResponse, error)
+	ListKeys(context.Context, *ListKeysRequest) (*ListKeysResponse, error)
+	UpdateKey(context.Context, *UpdateKeyRequest) (*UpdateKeyResponse, error)
+	RevokeKey(context.Context, *RevokeKeyRequest) (*RevokeKeyResponse, error)
+	UnrevokeKey(context.Context, *UnrevokeKeyRequest) (*UnrevokeKeyResponse, error)
+	DeleteKey(context.Context, *DeleteKeyRequest) (*DeleteKeyResponse, error)
+	GrantModule(context.Context, *GrantModuleRequest) (*GrantModuleResponse, error)
+	RevokeModule(context.Context, *RevokeModuleRequest) (*RevokeModuleResponse, error)
+	ListKeyDevices(context.Context, *ListKeyDevicesRequest) (*ListKeyDevicesResponse, error)
+	KickDevice(context.Context, *KickDeviceRequest) (*KickDeviceResponse, error)
+	ShowTrial(context.Context, *ShowTrialRequest) (*ShowTrialResponse, error)
+	ResetTrial(context.Context, *ResetTrialRequest) (*ResetTrialResponse, error)
+	ShowPubKey(context.Context, *ShowPubKeyRequest) (*ShowPubKeyResponse, error)
+	Ingest(context.Context, *IngestRequest) (*IngestResponse, error)
+	CreateApp(context.Context, *CreateAppRequest) (*CreateAppResponse, error)
+	GetApp(context.Context, *GetAppRequest) (*GetAppResponse, error)
+	UpdateApp(context.Context, *UpdateAppRequest) (*UpdateAppResponse, error)
+	RotateToken(context.Context, *RotateTokenRequest) (*RotateTokenResponse, error)
+	RevokeToken(context.Context, *RevokeTokenRequest) (*RevokeTokenResponse, error)
+	CreateSigningKey(context.Context, *CreateSigningKeyRequest) (*CreateSigningKeyResponse, error)
+	RevokeSigningKey(context.Context, *RevokeSigningKeyRequest) (*RevokeSigningKeyResponse, error)
+	ReplaceEventRules(context.Context, *ReplaceEventRulesRequest) (*ReplaceEventRulesResponse, error)
+	SetVersionBlocked(context.Context, *SetVersionBlockedRequest) (*SetVersionBlockedResponse, error)
+	GetAppStats(context.Context, *GetAppStatsRequest) (*GetAppStatsResponse, error)
 	mustEmbedUnimplementedTestkitServiceServer()
 }
 
@@ -1774,6 +2150,93 @@ func (UnimplementedTestkitServiceServer) Decompose(context.Context, *DecomposeRe
 }
 func (UnimplementedTestkitServiceServer) GetDashboard(context.Context, *GetDashboardRequest) (*DashboardResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetDashboard not implemented")
+}
+func (UnimplementedTestkitServiceServer) Activate(context.Context, *ActivateRequest) (*ActivateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Activate not implemented")
+}
+func (UnimplementedTestkitServiceServer) Deactivate(context.Context, *DeactivateRequest) (*DeactivateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Deactivate not implemented")
+}
+func (UnimplementedTestkitServiceServer) TrialStart(context.Context, *TrialStartRequest) (*TrialStartResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method TrialStart not implemented")
+}
+func (UnimplementedTestkitServiceServer) Health(context.Context, *HealthRequest) (*HealthResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Health not implemented")
+}
+func (UnimplementedTestkitServiceServer) CreateKey(context.Context, *CreateKeyRequest) (*CreateKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateKey not implemented")
+}
+func (UnimplementedTestkitServiceServer) ShowKey(context.Context, *ShowKeyRequest) (*ShowKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ShowKey not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListKeys(context.Context, *ListKeysRequest) (*ListKeysResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListKeys not implemented")
+}
+func (UnimplementedTestkitServiceServer) UpdateKey(context.Context, *UpdateKeyRequest) (*UpdateKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateKey not implemented")
+}
+func (UnimplementedTestkitServiceServer) RevokeKey(context.Context, *RevokeKeyRequest) (*RevokeKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeKey not implemented")
+}
+func (UnimplementedTestkitServiceServer) UnrevokeKey(context.Context, *UnrevokeKeyRequest) (*UnrevokeKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UnrevokeKey not implemented")
+}
+func (UnimplementedTestkitServiceServer) DeleteKey(context.Context, *DeleteKeyRequest) (*DeleteKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteKey not implemented")
+}
+func (UnimplementedTestkitServiceServer) GrantModule(context.Context, *GrantModuleRequest) (*GrantModuleResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GrantModule not implemented")
+}
+func (UnimplementedTestkitServiceServer) RevokeModule(context.Context, *RevokeModuleRequest) (*RevokeModuleResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeModule not implemented")
+}
+func (UnimplementedTestkitServiceServer) ListKeyDevices(context.Context, *ListKeyDevicesRequest) (*ListKeyDevicesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListKeyDevices not implemented")
+}
+func (UnimplementedTestkitServiceServer) KickDevice(context.Context, *KickDeviceRequest) (*KickDeviceResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method KickDevice not implemented")
+}
+func (UnimplementedTestkitServiceServer) ShowTrial(context.Context, *ShowTrialRequest) (*ShowTrialResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ShowTrial not implemented")
+}
+func (UnimplementedTestkitServiceServer) ResetTrial(context.Context, *ResetTrialRequest) (*ResetTrialResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ResetTrial not implemented")
+}
+func (UnimplementedTestkitServiceServer) ShowPubKey(context.Context, *ShowPubKeyRequest) (*ShowPubKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ShowPubKey not implemented")
+}
+func (UnimplementedTestkitServiceServer) Ingest(context.Context, *IngestRequest) (*IngestResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Ingest not implemented")
+}
+func (UnimplementedTestkitServiceServer) CreateApp(context.Context, *CreateAppRequest) (*CreateAppResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateApp not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetApp(context.Context, *GetAppRequest) (*GetAppResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetApp not implemented")
+}
+func (UnimplementedTestkitServiceServer) UpdateApp(context.Context, *UpdateAppRequest) (*UpdateAppResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateApp not implemented")
+}
+func (UnimplementedTestkitServiceServer) RotateToken(context.Context, *RotateTokenRequest) (*RotateTokenResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RotateToken not implemented")
+}
+func (UnimplementedTestkitServiceServer) RevokeToken(context.Context, *RevokeTokenRequest) (*RevokeTokenResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeToken not implemented")
+}
+func (UnimplementedTestkitServiceServer) CreateSigningKey(context.Context, *CreateSigningKeyRequest) (*CreateSigningKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateSigningKey not implemented")
+}
+func (UnimplementedTestkitServiceServer) RevokeSigningKey(context.Context, *RevokeSigningKeyRequest) (*RevokeSigningKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeSigningKey not implemented")
+}
+func (UnimplementedTestkitServiceServer) ReplaceEventRules(context.Context, *ReplaceEventRulesRequest) (*ReplaceEventRulesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReplaceEventRules not implemented")
+}
+func (UnimplementedTestkitServiceServer) SetVersionBlocked(context.Context, *SetVersionBlockedRequest) (*SetVersionBlockedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SetVersionBlocked not implemented")
+}
+func (UnimplementedTestkitServiceServer) GetAppStats(context.Context, *GetAppStatsRequest) (*GetAppStatsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAppStats not implemented")
 }
 func (UnimplementedTestkitServiceServer) mustEmbedUnimplementedTestkitServiceServer() {}
 func (UnimplementedTestkitServiceServer) testEmbeddedByValue()                        {}
@@ -3686,6 +4149,528 @@ func _TestkitService_GetDashboard_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestkitService_Activate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).Activate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_Activate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).Activate(ctx, req.(*ActivateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_Deactivate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeactivateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).Deactivate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_Deactivate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).Deactivate(ctx, req.(*DeactivateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_TrialStart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TrialStartRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).TrialStart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_TrialStart_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).TrialStart(ctx, req.(*TrialStartRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_Health_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HealthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).Health(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_Health_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).Health(ctx, req.(*HealthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_CreateKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CreateKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CreateKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CreateKey(ctx, req.(*CreateKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ShowKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShowKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ShowKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ShowKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ShowKey(ctx, req.(*ShowKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListKeys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListKeysRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListKeys(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListKeys_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListKeys(ctx, req.(*ListKeysRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UpdateKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UpdateKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UpdateKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UpdateKey(ctx, req.(*UpdateKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RevokeKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RevokeKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RevokeKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RevokeKey(ctx, req.(*RevokeKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UnrevokeKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnrevokeKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UnrevokeKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UnrevokeKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UnrevokeKey(ctx, req.(*UnrevokeKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_DeleteKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).DeleteKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_DeleteKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).DeleteKey(ctx, req.(*DeleteKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GrantModule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GrantModuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GrantModule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GrantModule_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GrantModule(ctx, req.(*GrantModuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RevokeModule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeModuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RevokeModule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RevokeModule_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RevokeModule(ctx, req.(*RevokeModuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ListKeyDevices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListKeyDevicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ListKeyDevices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ListKeyDevices_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ListKeyDevices(ctx, req.(*ListKeyDevicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_KickDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(KickDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).KickDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_KickDevice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).KickDevice(ctx, req.(*KickDeviceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ShowTrial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShowTrialRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ShowTrial(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ShowTrial_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ShowTrial(ctx, req.(*ShowTrialRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ResetTrial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResetTrialRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ResetTrial(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ResetTrial_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ResetTrial(ctx, req.(*ResetTrialRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ShowPubKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShowPubKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ShowPubKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ShowPubKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ShowPubKey(ctx, req.(*ShowPubKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_Ingest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IngestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).Ingest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_Ingest_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).Ingest(ctx, req.(*IngestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_CreateApp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAppRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CreateApp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CreateApp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CreateApp(ctx, req.(*CreateAppRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetApp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAppRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetApp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetApp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetApp(ctx, req.(*GetAppRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_UpdateApp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAppRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).UpdateApp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_UpdateApp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).UpdateApp(ctx, req.(*UpdateAppRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RotateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RotateTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RotateToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RotateToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RotateToken(ctx, req.(*RotateTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RevokeToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RevokeToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RevokeToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RevokeToken(ctx, req.(*RevokeTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_CreateSigningKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateSigningKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).CreateSigningKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_CreateSigningKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).CreateSigningKey(ctx, req.(*CreateSigningKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_RevokeSigningKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeSigningKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).RevokeSigningKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_RevokeSigningKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).RevokeSigningKey(ctx, req.(*RevokeSigningKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_ReplaceEventRules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReplaceEventRulesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).ReplaceEventRules(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_ReplaceEventRules_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).ReplaceEventRules(ctx, req.(*ReplaceEventRulesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_SetVersionBlocked_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetVersionBlockedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).SetVersionBlocked(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_SetVersionBlocked_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).SetVersionBlocked(ctx, req.(*SetVersionBlockedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestkitService_GetAppStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAppStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestkitServiceServer).GetAppStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestkitService_GetAppStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestkitServiceServer).GetAppStats(ctx, req.(*GetAppStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TestkitService_ServiceDesc is the grpc.ServiceDesc for TestkitService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -4112,6 +5097,122 @@ var TestkitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetDashboard",
 			Handler:    _TestkitService_GetDashboard_Handler,
+		},
+		{
+			MethodName: "Activate",
+			Handler:    _TestkitService_Activate_Handler,
+		},
+		{
+			MethodName: "Deactivate",
+			Handler:    _TestkitService_Deactivate_Handler,
+		},
+		{
+			MethodName: "TrialStart",
+			Handler:    _TestkitService_TrialStart_Handler,
+		},
+		{
+			MethodName: "Health",
+			Handler:    _TestkitService_Health_Handler,
+		},
+		{
+			MethodName: "CreateKey",
+			Handler:    _TestkitService_CreateKey_Handler,
+		},
+		{
+			MethodName: "ShowKey",
+			Handler:    _TestkitService_ShowKey_Handler,
+		},
+		{
+			MethodName: "ListKeys",
+			Handler:    _TestkitService_ListKeys_Handler,
+		},
+		{
+			MethodName: "UpdateKey",
+			Handler:    _TestkitService_UpdateKey_Handler,
+		},
+		{
+			MethodName: "RevokeKey",
+			Handler:    _TestkitService_RevokeKey_Handler,
+		},
+		{
+			MethodName: "UnrevokeKey",
+			Handler:    _TestkitService_UnrevokeKey_Handler,
+		},
+		{
+			MethodName: "DeleteKey",
+			Handler:    _TestkitService_DeleteKey_Handler,
+		},
+		{
+			MethodName: "GrantModule",
+			Handler:    _TestkitService_GrantModule_Handler,
+		},
+		{
+			MethodName: "RevokeModule",
+			Handler:    _TestkitService_RevokeModule_Handler,
+		},
+		{
+			MethodName: "ListKeyDevices",
+			Handler:    _TestkitService_ListKeyDevices_Handler,
+		},
+		{
+			MethodName: "KickDevice",
+			Handler:    _TestkitService_KickDevice_Handler,
+		},
+		{
+			MethodName: "ShowTrial",
+			Handler:    _TestkitService_ShowTrial_Handler,
+		},
+		{
+			MethodName: "ResetTrial",
+			Handler:    _TestkitService_ResetTrial_Handler,
+		},
+		{
+			MethodName: "ShowPubKey",
+			Handler:    _TestkitService_ShowPubKey_Handler,
+		},
+		{
+			MethodName: "Ingest",
+			Handler:    _TestkitService_Ingest_Handler,
+		},
+		{
+			MethodName: "CreateApp",
+			Handler:    _TestkitService_CreateApp_Handler,
+		},
+		{
+			MethodName: "GetApp",
+			Handler:    _TestkitService_GetApp_Handler,
+		},
+		{
+			MethodName: "UpdateApp",
+			Handler:    _TestkitService_UpdateApp_Handler,
+		},
+		{
+			MethodName: "RotateToken",
+			Handler:    _TestkitService_RotateToken_Handler,
+		},
+		{
+			MethodName: "RevokeToken",
+			Handler:    _TestkitService_RevokeToken_Handler,
+		},
+		{
+			MethodName: "CreateSigningKey",
+			Handler:    _TestkitService_CreateSigningKey_Handler,
+		},
+		{
+			MethodName: "RevokeSigningKey",
+			Handler:    _TestkitService_RevokeSigningKey_Handler,
+		},
+		{
+			MethodName: "ReplaceEventRules",
+			Handler:    _TestkitService_ReplaceEventRules_Handler,
+		},
+		{
+			MethodName: "SetVersionBlocked",
+			Handler:    _TestkitService_SetVersionBlocked_Handler,
+		},
+		{
+			MethodName: "GetAppStats",
+			Handler:    _TestkitService_GetAppStats_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

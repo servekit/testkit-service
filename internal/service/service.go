@@ -22,14 +22,18 @@ import (
 
 	gidservice "github.com/servekit/gid-service/pkg"
 	"github.com/servekit/go-common/lifecycle"
+	licenseservice "github.com/servekit/license-service/pkg"
 	messageservice "github.com/servekit/message-service/pkg"
 	storageservice "github.com/servekit/storage-service/pkg"
+	telemetryservice "github.com/servekit/telemetry-service/pkg"
 	testkitv1 "github.com/servekit/testkit-service/gen/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service/auth"
 	dashboardsvc "github.com/servekit/testkit-service/internal/service/dashboard"
 	gidsvc "github.com/servekit/testkit-service/internal/service/gid"
+	licsvc "github.com/servekit/testkit-service/internal/service/license"
 	"github.com/servekit/testkit-service/internal/service/message"
 	"github.com/servekit/testkit-service/internal/service/storage"
+	telemetriesvc "github.com/servekit/testkit-service/internal/service/telemetry"
 	"github.com/servekit/testkit-service/internal/service/user"
 	"github.com/servekit/testkit-service/internal/version"
 	pkauth "github.com/servekit/testkit-service/pkg/auth"
@@ -46,12 +50,14 @@ type Service struct {
 	redis *redis.Client
 	db    *gorm.DB
 
-	// The four embedded downstreams (thirdcall interfaces: full RPC method set
+	// The six embedded downstreams (thirdcall interfaces: full RPC method set
 	// + Close). Built + lifecycle-registered in init.go.
-	gid     gidservice.Service
-	message messageservice.Service
-	storage storageservice.Service
-	user    userservice.Service
+	gid       gidservice.Service
+	message   messageservice.Service
+	storage   storageservice.Service
+	user      userservice.Service
+	license   licenseservice.Service
+	telemetry telemetryservice.Service
 
 	auth         *auth.Service
 	userSvc      *user.Service
@@ -59,6 +65,8 @@ type Service struct {
 	messageSvc   *message.Service
 	gidSvc       *gidsvc.Service
 	dashboardSvc *dashboardsvc.Service
+	licenseSvc   *licsvc.Service
+	telemetrySvc *telemetriesvc.Service
 
 	startedAt int64
 }
@@ -123,3 +131,11 @@ func (s *Service) Gid() *gidsvc.Service { return s.gidSvc }
 
 // Dashboard returns the P5 dashboard domain (aggregated user/storage/message stats).
 func (s *Service) Dashboard() *dashboardsvc.Service { return s.dashboardSvc }
+
+// License returns the P6 license domain (key lifecycle + activation over
+// license-service).
+func (s *Service) License() *licsvc.Service { return s.licenseSvc }
+
+// Telemetry returns the P6 telemetry domain (app registry + ingest over
+// telemetry-service).
+func (s *Service) Telemetry() *telemetriesvc.Service { return s.telemetrySvc }

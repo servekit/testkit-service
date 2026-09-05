@@ -6,8 +6,10 @@ import (
 	"github.com/servekit/go-common/dbx"
 	"github.com/servekit/go-common/logging"
 
+	licenseservice "github.com/servekit/license-service/pkg"
 	messageservice "github.com/servekit/message-service/pkg"
 	storageservice "github.com/servekit/storage-service/pkg"
+	telemetryservice "github.com/servekit/telemetry-service/pkg"
 	"github.com/servekit/testkit-service/pkg/config"
 	userservice "github.com/servekit/user-service/pkg"
 
@@ -52,6 +54,8 @@ func runMigration(db *gorm.DB) error {
 		userservice.Migrate,
 		storageservice.Migrate,
 		messageservice.Migrate,
+		licenseservice.Migrate,
+		telemetryservice.Migrate,
 	} {
 		if err := m(db); err != nil {
 			return fmt.Errorf("migrate: %w", err)
