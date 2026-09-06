@@ -2289,7 +2289,14 @@ exactly one of sms_template_id / sms_content. */
     createdAt?: string;
     lastActiveAt?: string;
     current?: boolean;
+    status?: v1SessionStatus;
   };
+
+  type v1SessionStatus =
+    | "SESSION_STATUS_UNSPECIFIED"
+    | "SESSION_STATUS_ACTIVE"
+    | "SESSION_STATUS_REVOKED"
+    | "SESSION_STATUS_EXPIRED";
 
   type v1SetVersionBlockedResponse = true;
 

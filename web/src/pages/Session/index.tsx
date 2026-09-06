@@ -14,9 +14,16 @@ import {
 import { DEVICE_TYPE_VALUE_ENUM } from "@/components/usertags";
 
 /**
- * Self-service session management. Lists the caller's active sessions
- * (the current one is flagged), with per-session revoke and revoke-all.
+ * Self-service session management: merged view — live sessions from Redis
+ * first (the current one flagged), then up to 20 historical tombstones from
+ * the audit table (已登出 = explicit logout, 已失效 = TTL lapsed or evicted).
+ * Revoking only applies to live rows.
  */
+const STATUS_TAG: Record<string, { color: string; text: string }> = {
+  SESSION_STATUS_ACTIVE: { color: "green", text: "活跃" },
+  SESSION_STATUS_REVOKED: { color: "orange", text: "已登出" },
+  SESSION_STATUS_EXPIRED: { color: "default", text: "已失效" },
+};
 export default function SessionPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(undefined);
@@ -27,6 +34,15 @@ export default function SessionPage() {
       dataIndex: "current",
       width: 80,
       render: (_, r) => (r.current ? <Tag color="green">本机</Tag> : null),
+    },
+    {
+      title: "状态",
+      dataIndex: "status",
+      width: 90,
+      render: (_, r) => {
+        const tag = STATUS_TAG[r.status ?? ""];
+        return tag ? <Tag color={tag.color}>{tag.text}</Tag> : null;
+      },
     },
     {
       title: "设备",
@@ -52,14 +68,18 @@ export default function SessionPage() {
         <Popconfirm
           key="revoke"
           title="吊销该会话？"
-          disabled={r.current}
+          disabled={r.current || r.status !== "SESSION_STATUS_ACTIVE"}
           onConfirm={async () => {
             await revokeSession({ sessionId: r.id ?? "" });
             message.success("已吊销");
             actionRef.current?.reload();
           }}
         >
-          <Button type="link" danger disabled={r.current}>
+          <Button
+            type="link"
+            danger
+            disabled={r.current || r.status !== "SESSION_STATUS_ACTIVE"}
+          >
             吊销
           </Button>
         </Popconfirm>,

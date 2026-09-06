@@ -83,6 +83,13 @@ export const LOGIN_ACTION_VALUE_ENUM = {
   LOGIN_ACTION_UNBIND: { text: "解绑" },
 };
 
+export const SESSION_STATUS_VALUE_ENUM = {
+  SESSION_STATUS_UNSPECIFIED: { text: "未知" },
+  SESSION_STATUS_ACTIVE: { text: "活跃" },
+  SESSION_STATUS_REVOKED: { text: "已登出" },
+  SESSION_STATUS_EXPIRED: { text: "已失效" },
+};
+
 export const LOGIN_METHOD_VALUE_ENUM = {
   LOGIN_METHOD_UNSPECIFIED: { text: "-" },
   LOGIN_METHOD_EMAIL_PASSWORD: { text: "邮箱密码" },
