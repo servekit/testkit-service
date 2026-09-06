@@ -52,17 +52,12 @@ export default function SessionPage() {
       title: "状态",
       dataIndex: "status",
       width: 130,
+      // The caller's own row gets a single distinct 当前会话 tag (geekblue)
+      // plus the row tint below — no extra badge crammed into the cell.
       render: (_, r) => {
+        if (r.current) return <Tag color="geekblue">当前会话</Tag>;
         const tag = STATUS_TAG[r.status ?? ""];
-        if (!tag) return null;
-        return r.current ? (
-          <>
-            <Tag color={tag.color}>{tag.text}</Tag>
-            <Tag color="blue">本机</Tag>
-          </>
-        ) : (
-          <Tag color={tag.color}>{tag.text}</Tag>
-        );
+        return tag ? <Tag color={tag.color}>{tag.text}</Tag> : null;
       },
     },
     {
@@ -136,7 +131,7 @@ export default function SessionPage() {
         loading={loading}
         // Current row gets a soft green tint (antd green-1); no stylesheet
         // in this project, so the row style is applied inline.
-        onRow={(r) => (r.current ? { style: { background: "#f6ffed" } } : {})}
+        onRow={(r) => (r.current ? { style: { background: "#e6f4ff" } } : {})}
         pagination={false}
         footer={() => (
           <Space>
