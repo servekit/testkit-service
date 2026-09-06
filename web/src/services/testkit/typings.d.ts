@@ -580,6 +580,17 @@ or context was cancelled. error_message carries the last error. */
 returns the LIVE sessions ahead of the history (see user.v1). */
     pageSize?: number;
     cursor?: string;
+    /** Optional status filter (see user.v1): ACTIVE = live rows only;
+REVOKED/EXPIRED page the matching tombstones.
+
+ - SESSION_STATUS_ACTIVE: in Redis; the sliding window is alive
+ - SESSION_STATUS_REVOKED: explicit logout / revoke (revoked_at set)
+ - SESSION_STATUS_EXPIRED: not in Redis, not revoked — TTL lapsed or evicted by the max-sessions cap */
+    status?:
+      | "SESSION_STATUS_UNSPECIFIED"
+      | "SESSION_STATUS_ACTIVE"
+      | "SESSION_STATUS_REVOKED"
+      | "SESSION_STATUS_EXPIRED";
   };
 
   type ListSMSByCursorParams = {

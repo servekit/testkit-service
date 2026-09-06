@@ -1650,7 +1650,9 @@ export async function listSessions(
   method: 'GET',
     params: {
         
-        ...params,},
+        
+        // status has a default value: SESSION_STATUS_UNSPECIFIED
+          'status': 'SESSION_STATUS_UNSPECIFIED',...params,},
     ...(options || {}),
   });
 }

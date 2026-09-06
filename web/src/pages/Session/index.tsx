@@ -1,5 +1,5 @@
 import { PageContainer } from "@ant-design/pro-components";
-import { App, Button, Popconfirm, Space, Table, Tag, type TableColumnsType } from "antd";
+import { App, Button, Popconfirm, Segmented, Space, Table, Tag, type TableColumnsType } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import {
   listSessions,
@@ -24,16 +24,23 @@ const STATUS_TAG: Record<string, { color: string; text: string }> = {
   SESSION_STATUS_EXPIRED: { color: "default", text: "已失效" },
 };
 
+type StatusFilter = "" | "SESSION_STATUS_ACTIVE" | "SESSION_STATUS_REVOKED" | "SESSION_STATUS_EXPIRED";
+
 export default function SessionPage() {
   const { message } = App.useApp();
   const [sessions, setSessions] = useState<API.Session[]>([]);
   const [nextCursor, setNextCursor] = useState("");
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<StatusFilter>("");
 
-  const loadPage = useCallback(async (cursor: string) => {
+  const loadPage = useCallback(async (cursor: string, st: StatusFilter) => {
     setLoading(true);
     try {
-      const resp = await listSessions({ pageSize: PAGE_SIZE, cursor: cursor || undefined });
+      const resp = await listSessions({
+        pageSize: PAGE_SIZE,
+        cursor: cursor || undefined,
+        status: (st || undefined) as API.ListSessionsParams["status"],
+      });
       const page = resp.sessions ?? [];
       setSessions((prev) => (cursor ? [...prev, ...page] : page));
       setNextCursor(resp.nextCursor ?? "");
@@ -42,10 +49,10 @@ export default function SessionPage() {
     }
   }, []);
 
-  // First page on mount; revoke/revoke-all reset to the first page.
+  // First page on mount and on filter change; revoke/revoke-all reset too.
   useEffect(() => {
-    void loadPage("");
-  }, [loadPage]);
+    void loadPage("", status);
+  }, [loadPage, status]);
 
   const columns: TableColumnsType<API.Session> = [
     {
@@ -95,7 +102,7 @@ export default function SessionPage() {
           onConfirm={async () => {
             await revokeSession({ sessionId: r.id ?? "" });
             message.success("已吊销");
-            void loadPage("");
+            void loadPage("", status);
           }}
         >
           <Button
@@ -113,12 +120,22 @@ export default function SessionPage() {
   return (
     <PageContainer>
       <Space style={{ marginBottom: 16 }}>
+        <Segmented
+          value={status || "all"}
+          onChange={(v) => setStatus(v === "all" ? "" : (v as StatusFilter))}
+          options={[
+            { value: "all", label: "全部" },
+            { value: "SESSION_STATUS_ACTIVE", label: "活跃" },
+            { value: "SESSION_STATUS_REVOKED", label: "已登出" },
+            { value: "SESSION_STATUS_EXPIRED", label: "已失效" },
+          ]}
+        />
         <Popconfirm
           title="登出所有其他设备？"
           onConfirm={async () => {
             await revokeAllSessions();
             message.success("已登出所有设备");
-            void loadPage("");
+            void loadPage("", status);
           }}
         >
           <Button danger>登出所有其他设备</Button>
@@ -140,7 +157,7 @@ export default function SessionPage() {
               <Button
                 type="link"
                 loading={loading}
-                onClick={() => void loadPage(nextCursor)}
+                onClick={() => void loadPage(nextCursor, status)}
               >
                 加载更多
               </Button>

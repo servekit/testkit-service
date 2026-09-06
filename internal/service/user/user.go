@@ -230,6 +230,7 @@ func (s *Service) ListSessions(ctx context.Context, req *testkitv1.ListSessionsR
 		UserId:   userID,
 		PageSize: req.GetPageSize(),
 		Cursor:   req.GetCursor(),
+		Status:   userv1.SessionStatus(req.GetStatus()),
 	})
 	if err != nil {
 		return nil, err
