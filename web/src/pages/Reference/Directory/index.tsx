@@ -1,0 +1,283 @@
+/**
+ * Reference directory console (internal-only). One page over the five
+ * reference-service directories — countries / timezones / languages /
+ * currencies / region groups — with a locale switcher (the 11 compiled
+ * locales) and client-side search. Data is static and fetched once per
+ * (tab, locale); data_version shows which snapshot is served.
+ * access: canInternal at the route level.
+ */
+import { PageContainer, ProCard } from "@ant-design/pro-components";
+import { Input, Segmented, Select, Spin, Table, Tag, Tooltip } from "antd";
+import { useEffect, useMemo, useState } from "react";
+import {
+  listCountries,
+  listCurrencies,
+  listLanguages,
+  listRegionGroups,
+  listTimezones,
+} from "@/services/testkit/testkitService";
+
+const LOCALES = [
+  { value: "zh-Hans", label: "简体中文" },
+  { value: "zh-Hant", label: "繁體中文" },
+  { value: "ja", label: "日本語" },
+  { value: "ko", label: "한국어" },
+  { value: "en", label: "English" },
+  { value: "fr", label: "Français" },
+  { value: "de", label: "Deutsch" },
+  { value: "pt", label: "Português" },
+  { value: "es", label: "Español" },
+  { value: "ar", label: "العربية" },
+  { value: "ru", label: "Русский" },
+];
+
+type Domain = "countries" | "timezones" | "languages" | "currencies" | "groups";
+
+const DOMAIN_LABEL: Record<Domain, string> = {
+  countries: "国家",
+  timezones: "时区",
+  languages: "语言",
+  currencies: "货币",
+  groups: "区域分组",
+};
+
+export default function ReferenceDirectoryPage() {
+  const [locale, setLocale] = useState("zh-Hans");
+  const [domain, setDomain] = useState<Domain>("countries");
+  const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [version, setVersion] = useState<string>();
+
+  const [countries, setCountries] = useState<API.v1Country[]>();
+  const [timezones, setTimezones] = useState<API.v1Timezone[]>();
+  const [languages, setLanguages] = useState<API.v1Language[]>();
+  const [currencies, setCurrencies] = useState<API.v1Currency[]>();
+  const [groups, setGroups] = useState<API.v1RegionGroup[]>();
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchDomain = async () => {
+      setLoading(true);
+      try {
+        if (domain === "countries" && !countries) {
+          const r = await listCountries({ locale });
+          if (!cancelled) {
+            setCountries(r.countries ?? []);
+            setVersion(r.dataVersion);
+          }
+        } else if (domain === "timezones" && !timezones) {
+          const r = await listTimezones({ locale });
+          if (!cancelled) {
+            setTimezones(r.timezones ?? []);
+            setVersion(r.dataVersion);
+          }
+        } else if (domain === "languages" && !languages) {
+          const r = await listLanguages({ locale });
+          if (!cancelled) {
+            setLanguages(r.languages ?? []);
+            setVersion(r.dataVersion);
+          }
+        } else if (domain === "currencies" && !currencies) {
+          const r = await listCurrencies({ locale });
+          if (!cancelled) {
+            setCurrencies(r.currencies ?? []);
+            setVersion(r.dataVersion);
+          }
+        } else if (domain === "groups" && !groups) {
+          const r = await listRegionGroups({ locale });
+          if (!cancelled) {
+            setGroups(r.regionGroups ?? []);
+            setVersion(r.dataVersion);
+          }
+        }
+      } catch {
+        /* request interceptor surfaces errors */
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    void fetchDomain();
+    return () => {
+      cancelled = true;
+    };
+    // Re-fetch nothing on locale change by design: entries are cached per
+    // domain; switching locale refreshes ALL cached tabs' names.
+  }, [domain]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Locale switch re-fetches every already-loaded domain so names follow.
+  useEffect(() => {
+    setCountries(undefined);
+    setTimezones(undefined);
+    setLanguages(undefined);
+    setCurrencies(undefined);
+    setGroups(undefined);
+  }, [locale]);
+
+  const kw = keyword.trim().toLowerCase();
+  const match = (...fields: (string | undefined)[]) =>
+    !kw || fields.some((f) => (f ?? "").toLowerCase().includes(kw));
+
+  const countryColumns = useMemo(
+    () => [
+      { title: "国旗", dataIndex: "flagEmoji", width: 64, render: (v: string) => <span style={{ fontSize: 18 }}>{v}</span> },
+      { title: "alpha-2", dataIndex: "code", width: 90 },
+      { title: "alpha-3", dataIndex: "alpha3", width: 90 },
+      { title: "区号", dataIndex: "dialCode", width: 90 },
+      { title: "名称", dataIndex: "name" },
+    ],
+    [],
+  );
+  const timezoneColumns = useMemo(
+    () => [
+      { title: "IANA ID", dataIndex: "id", width: 220 },
+      { title: "名称", dataIndex: "name", width: 140 },
+      {
+        title: "国家",
+        dataIndex: "countryCodes",
+        render: (v: string[]) => v?.join(", "),
+      },
+      {
+        title: "别名",
+        dataIndex: "aliases",
+        width: 200,
+        render: (v: string[]) =>
+          v?.length ? (
+            <Tooltip title={v.join("、")}>
+              <Tag>{v.length} 个</Tag>
+            </Tooltip>
+          ) : (
+            "-"
+          ),
+      },
+    ],
+    [],
+  );
+  const languageColumns = useMemo(
+    () => [
+      { title: "BCP 47", dataIndex: "tag", width: 140 },
+      { title: "名称", dataIndex: "name" },
+    ],
+    [],
+  );
+  const currencyColumns = useMemo(
+    () => [
+      { title: "代码", dataIndex: "code", width: 90 },
+      { title: "符号", dataIndex: "symbol", width: 80 },
+      { title: "小数位", dataIndex: "minorUnits", width: 80 },
+      { title: "名称", dataIndex: "name" },
+      {
+        title: "使用国家/地区",
+        dataIndex: "countryCodes",
+        render: (v: string[]) => v?.length ?? 0,
+      },
+    ],
+    [],
+  );
+  const groupColumns = useMemo(
+    () => [
+      { title: "M49", dataIndex: "code", width: 80 },
+      { title: "名称", dataIndex: "name", width: 140 },
+      {
+        title: "层级",
+        dataIndex: "parentCode",
+        width: 100,
+        render: (v: string) => (v ? `└ ${v}` : "顶级"),
+      },
+      {
+        title: "直接成员",
+        dataIndex: "countryCodes",
+        render: (v: string[]) => v?.length ?? 0,
+      },
+    ],
+    [],
+  );
+
+  const tables: Record<Domain, { columns: any[]; rows: { key: string; [k: string]: any }[] }> = {
+    countries: {
+      columns: countryColumns,
+      rows: (countries ?? [])
+        .filter((c) => match(c.code, c.alpha3, c.dialCode, c.name))
+        .map((c) => ({ ...c, key: c.code })),
+    },
+    timezones: {
+      columns: timezoneColumns,
+      rows: (timezones ?? [])
+        .filter((t) => match(t.id, t.name, ...(t.countryCodes ?? [])))
+        .map((t) => ({ ...t, key: t.id })),
+    },
+    languages: {
+      columns: languageColumns,
+      rows: (languages ?? [])
+        .filter((l) => match(l.tag, l.name))
+        .map((l) => ({ ...l, key: l.tag })),
+    },
+    currencies: {
+      columns: currencyColumns,
+      rows: (currencies ?? [])
+        .filter((c) => match(c.code, c.symbol, c.name))
+        .map((c) => ({ ...c, key: c.code })),
+    },
+    groups: {
+      columns: groupColumns,
+      rows: (groups ?? [])
+        .filter((g) => match(g.code, g.name))
+        .map((g) => ({ ...g, key: g.code })),
+    },
+  };
+
+  const current = tables[domain];
+
+  return (
+    <PageContainer
+      header={{
+        title: "参考数据目录",
+        subTitle: "reference-service · 全球静态参考数据",
+        extra: version ? <Tag color="blue">数据版本 {version}</Tag> : undefined,
+      }}
+    >
+      <ProCard
+        headerBordered
+        title={
+          <span>
+            <Segmented
+              value={domain}
+              onChange={(v) => setDomain(v as Domain)}
+              options={(Object.keys(DOMAIN_LABEL) as Domain[]).map((d) => ({
+                label: DOMAIN_LABEL[d],
+                value: d,
+              }))}
+            />
+          </span>
+        }
+        extra={
+          <span style={{ display: "inline-flex", gap: 8 }}>
+            <Select
+              size="small"
+              value={locale}
+              onChange={setLocale}
+              options={LOCALES}
+              style={{ width: 140 }}
+            />
+            <Input.Search
+              size="small"
+              allowClear
+              placeholder="搜索代码或名称"
+              onSearch={setKeyword}
+              onChange={(e) => !e.target.value && setKeyword("")}
+              style={{ width: 200 }}
+            />
+          </span>
+        }
+      >
+        <Spin spinning={loading}>
+          <Table
+            size="small"
+            columns={current.columns}
+            dataSource={current.rows}
+            pagination={{ pageSize: 50, showSizeChanger: false, showTotal: (t) => `共 ${t} 条` }}
+          />
+        </Spin>
+      </ProCard>
+    </PageContainer>
+  );
+}

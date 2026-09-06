@@ -1642,6 +1642,109 @@ export async function revokeRole(
   });
 }
 
+/** 此处后端没有提供注释 POST /api/v1/reference/codes${resolve} */
+export async function resolveCodes(body: API.v1ResolveCodesRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ResolveCodesResponse>(`/api/v1/reference/codes:resolve`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/reference/countries */
+export async function listCountries(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListCountriesParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListCountriesResponse>('/api/v1/reference/countries', {
+  method: 'GET',
+    params: {
+        ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/reference/currencies */
+export async function listCurrencies(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListCurrenciesParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListCurrenciesResponse>('/api/v1/reference/currencies', {
+  method: 'GET',
+    params: {
+        ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/reference/languages */
+export async function listLanguages(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListLanguagesParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListLanguagesResponse>('/api/v1/reference/languages', {
+  method: 'GET',
+    params: {
+        ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/reference/phone${parse} */
+export async function parsePhone(body: API.v1ParsePhoneRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ParsePhoneResponse>(`/api/v1/reference/phone:parse`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/reference/region-groups */
+export async function listRegionGroups(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListRegionGroupsParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListRegionGroupsResponse>('/api/v1/reference/region-groups', {
+  method: 'GET',
+    params: {
+        ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/reference/timezones */
+export async function listTimezones(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListTimezonesParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListTimezonesResponse>('/api/v1/reference/timezones', {
+  method: 'GET',
+    params: {
+        ...params,},
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/v1/region-codes */
 export async function listRegionCodes(
   options ?: {[key: string]: any}

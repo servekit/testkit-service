@@ -361,6 +361,14 @@ when both are set; an unknown username yields an empty page. */
     reason?: string;
   };
 
+  type ListCountriesParams = {
+    locale?: string;
+  };
+
+  type ListCurrenciesParams = {
+    locale?: string;
+  };
+
   type ListEmailsByCursorParams = {
     /**  - EMAIL_VENDOR_ALIYUN: Aliyun DirectMail.
  - EMAIL_VENDOR_TENCENT: Tencent SES.
@@ -507,6 +515,10 @@ or context was cancelled. error_message carries the last error. */
     limit?: number;
   };
 
+  type ListLanguagesParams = {
+    locale?: string;
+  };
+
   type ListMyAuditLogsParams = {
     action?:
       | "AUDIT_ACTION_UNSPECIFIED"
@@ -571,6 +583,10 @@ or context was cancelled. error_message carries the last error. */
   type ListPermissionsParams = {
     pageSize?: number;
     cursor?: string;
+  };
+
+  type ListRegionGroupsParams = {
+    locale?: string;
   };
 
   type ListRolesParams = {
@@ -715,6 +731,10 @@ or context was cancelled. error_message carries the last error. */
       | "SORT_DIRECTION_DESC";
     /** sender_id filter (mirror of message-service ListSMSRequest.sender_id). */
     senderId?: string;
+  };
+
+  type ListTimezonesParams = {
+    locale?: string;
   };
 
   type ListUserRolesParams = {
@@ -1375,6 +1395,19 @@ user_id injected from ctx */
     fileInfo?: v1FileInfo;
   };
 
+  type v1Country = {
+    /** alpha-2, e.g. "CN" */
+    code?: string;
+    /** alpha-3, e.g. "CHN" */
+    alpha3?: string;
+    /** ITU E.164 with "+", e.g. "+86" */
+    dialCode?: string;
+    /** regional-indicator pair, e.g. "🇨🇳" */
+    flagEmoji?: string;
+    /** display name in the request locale */
+    name?: string;
+  };
+
   type v1CreateAppRequest = {
     slug?: string;
     name?: string;
@@ -1449,6 +1482,19 @@ user_id injected from ctx */
 
   type v1CreateUserResponse = {
     user?: v1User;
+  };
+
+  type v1Currency = {
+    /** e.g. "CNY" */
+    code?: string;
+    /** e.g. "¥" */
+    symbol?: string;
+    /** 0 (JPY) / 2 (CNY) / 3 (BHD) */
+    minorUnits?: number;
+    /** current official users */
+    countryCodes?: string[];
+    /** display name in the request locale */
+    name?: string;
   };
 
   type v1DailyStat = {
@@ -1904,6 +1950,25 @@ user_id injected from ctx */
     kicked?: boolean;
   };
 
+  type v1Language = {
+    /** e.g. "zh-Hans" */
+    tag?: string;
+    /** the language's name in the request locale */
+    name?: string;
+  };
+
+  type v1ListCountriesResponse = {
+    /** name-sorted in the request locale */
+    countries?: v1Country[];
+    /** generation stamp, e.g. "2026-09-06" */
+    dataVersion?: string;
+  };
+
+  type v1ListCurrenciesResponse = {
+    currencies?: v1Currency[];
+    dataVersion?: string;
+  };
+
   type v1ListEmailsByCursorResponse = {
     records?: v1EmailRecord[];
     total?: number;
@@ -1949,6 +2014,11 @@ user_id injected from ctx */
     keys?: v1KeyInfo[];
   };
 
+  type v1ListLanguagesResponse = {
+    languages?: v1Language[];
+    dataVersion?: string;
+  };
+
   type v1ListMyAuditLogsResponse = {
     logs?: v1AuditLogEntry[];
     totalCount?: number;
@@ -1984,6 +2054,12 @@ user_id injected from ctx */
     regionCodes?: v1RegionCode[];
   };
 
+  type v1ListRegionGroupsResponse = {
+    /** top level first, then depth */
+    regionGroups?: v1RegionGroup[];
+    dataVersion?: string;
+  };
+
   type v1ListRolesResponse = {
     roles?: v1Role[];
     nextCursor?: string;
@@ -2014,6 +2090,11 @@ user_id injected from ctx */
 
   type v1ListSMSSendersResponse = {
     senderIds?: string[];
+  };
+
+  type v1ListTimezonesResponse = {
+    timezones?: v1Timezone[];
+    dataVersion?: string;
   };
 
   type v1ListUserRolesResponse = {
@@ -2134,6 +2215,28 @@ resolves (see user.v1). */
     | "OWNER_TYPE_BUSINESS"
     | "OWNER_TYPE_SERVICE";
 
+  type v1ParsePhoneRequest = {
+    raw?: string;
+    /** alpha-2; disambiguates local-format input; empty = international format only */
+    defaultRegion?: string;
+  };
+
+  type v1ParsePhoneResponse = {
+    isValid?: boolean;
+    /** canonical E.164 when parseable */
+    e164?: string;
+    /** inferred alpha-2, "" when unknown */
+    countryCode?: string;
+    /** e.g. "+86", "" when unknown */
+    dialCode?: string;
+    nationalNumber?: string;
+    /** E.123 international display form */
+    formattedInternational?: string;
+    type?: v1PhoneType;
+    /** set when is_valid=false */
+    errorReason?: string;
+  };
+
   type v1Permission = {
     id?: string;
     resource?: string;
@@ -2149,6 +2252,21 @@ resolves (see user.v1). */
     permissions?: v1Permission[];
     isBuiltin?: boolean;
   };
+
+  type v1PhoneType =
+    | "PHONE_TYPE_UNSPECIFIED"
+    | "PHONE_TYPE_MOBILE"
+    | "PHONE_TYPE_FIXED_LINE"
+    | "PHONE_TYPE_FIXED_LINE_OR_MOBILE"
+    | "PHONE_TYPE_TOLL_FREE"
+    | "PHONE_TYPE_PREMIUM_RATE"
+    | "PHONE_TYPE_SHARED_COST"
+    | "PHONE_TYPE_VOIP"
+    | "PHONE_TYPE_PERSONAL_NUMBER"
+    | "PHONE_TYPE_PAGER"
+    | "PHONE_TYPE_UAN"
+    | "PHONE_TYPE_VOICE_MAIL"
+    | "PHONE_TYPE_UNKNOWN";
 
   type v1Pong = {
     /** service name, e.g. "user-service" */
@@ -2198,6 +2316,17 @@ resolves (see user.v1). */
     nameEn?: string;
   };
 
+  type v1RegionGroup = {
+    /** UN M49, e.g. "142" (Asia) */
+    code?: string;
+    /** "" for top level */
+    parentCode?: string;
+    /** direct members; recurse client-side */
+    countryCodes?: string[];
+    /** e.g. "亚洲" / "Asia" */
+    name?: string;
+  };
+
   type v1RegisterRequest = {
     provider?: v1IdentityProvider;
     email?: string;
@@ -2228,6 +2357,26 @@ resolves (see user.v1). */
 
   type v1ResetTrialResponse = {
     reset?: boolean;
+  };
+
+  type v1ResolveCodesRequest = {
+    locale?: string;
+    countryCodes?: string[];
+    timezoneIds?: string[];
+    languageTags?: string[];
+    currencyCodes?: string[];
+  };
+
+  type v1ResolveCodesResponse = {
+    countries?: v1Country[];
+    timezones?: v1Timezone[];
+    languages?: v1Language[];
+    currencies?: v1Currency[];
+    missingCountries?: string[];
+    missingTimezones?: string[];
+    missingLanguages?: string[];
+    missingCurrencies?: string[];
+    dataVersion?: string;
   };
 
   type v1RevokeKeyResponse = {
@@ -2465,6 +2614,17 @@ exactly one of sms_template_id / sms_content. */
     revoked?: boolean;
     createdAt?: string;
     lastUsedAt?: string;
+  };
+
+  type v1Timezone = {
+    /** canonical, e.g. "Asia/Shanghai" */
+    id?: string;
+    /** backward links, e.g. "PRC"; input */
+    aliases?: string[];
+    /** normalization only — never in pickers ISO alpha-2 members */
+    countryCodes?: string[];
+    /** CLDR exemplar city in the request locale */
+    name?: string;
   };
 
   type v1TokenResponse = {

@@ -305,6 +305,29 @@ export default defineConfig({
         },
       ],
     },
+    // --- reference-service (P7): global reference data console ---
+    // Static directories (countries/timezones/languages/currencies/region
+    // groups) + phone parse tool. Internal-only like the other debug
+    // consoles; the pre-login register page keeps its own public endpoint.
+    {
+      key: "svc-reference",
+      name: "Reference 服务",
+      icon: "GlobalOutlined",
+      access: "canInternal",
+      routes: [
+        { path: "/reference", redirect: "/reference/directory" },
+        {
+          path: "/reference/directory",
+          name: "数据目录",
+          component: "./Reference/Directory",
+        },
+        {
+          path: "/reference/phone",
+          name: "手机号解析",
+          component: "./Reference/Phone",
+        },
+      ],
+    },
     {
       path: "/system",
       name: "系统",
