@@ -2314,6 +2314,11 @@ exactly one of sms_template_id / sms_content. */
     lastActiveAt?: string;
     current?: boolean;
     status?: v1SessionStatus;
+    /** How this session authenticated (see user.v1): LOGIN_METHOD_* for
+credential logins, IDENTITY_PROVIDER_* for social/mini-program. */
+    loginMethod?: string;
+    loginTarget?: string;
+    device?: string;
   };
 
   type v1SessionStatus =
@@ -2443,9 +2448,6 @@ exactly one of sms_template_id / sms_content. */
   type v1TokenResponse = {
     token?: string;
     user?: v1User;
-    /** session_id mirrors downstream Login/Register/SocialLogin responses so
-testers can target a specific session (RevokeSession / GetSession)
-without decoding the JWT. */
     sessionId?: string;
     /** is_new: this login auto-registered the account (code-login/OAuth paths). */
     isNew?: boolean;

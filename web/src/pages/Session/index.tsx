@@ -1,12 +1,12 @@
 import { PageContainer } from "@ant-design/pro-components";
-import { App, Button, Popconfirm, Segmented, Space, Table, Tag, type TableColumnsType } from "antd";
+import { App, Button, Popconfirm, Segmented, Space, Table, Tag, Typography, type TableColumnsType } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import {
   listSessions,
   revokeAllSessions,
   revokeSession,
 } from "@/services/testkit/testkitService";
-import { DEVICE_TYPE_VALUE_ENUM } from "@/components/usertags";
+import { DEVICE_TYPE_VALUE_ENUM, loginMethodLabel } from "@/components/usertags";
 import dayjs from "dayjs";
 
 const PAGE_SIZE = 20;
@@ -68,10 +68,29 @@ export default function SessionPage() {
       },
     },
     {
+      title: "登录方式",
+      dataIndex: "loginMethod",
+      width: 170,
+      // e.g. 邮箱验证码 · x@y.com — sensitive ops gate on this strength.
+      render: (_, r) => (
+        <div>
+          <div>{loginMethodLabel(r.loginMethod)}</div>
+          {r.loginTarget ? (
+            <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+              {r.loginTarget}
+            </Typography.Text>
+          ) : null}
+        </div>
+      ),
+    },
+    {
       title: "设备",
-      dataIndex: "deviceType",
-      width: 100,
-      render: (_, r) => DEVICE_TYPE_VALUE_ENUM[r.deviceType ?? ""]?.text ?? "-",
+      dataIndex: "device",
+      width: 110,
+      // Hardware name when known (iPhone/Android model/client hint);
+      // degrade to the kind label for desktop web / API clients.
+      render: (_, r) =>
+        r.device || DEVICE_TYPE_VALUE_ENUM[r.deviceType ?? ""]?.text || "-",
     },
     { title: "IP", dataIndex: "ip", width: 140 },
     { title: "系统", dataIndex: "os", width: 120 },

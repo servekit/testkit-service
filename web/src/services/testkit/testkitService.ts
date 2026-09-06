@@ -204,8 +204,8 @@ export async function login(body: API.v1LoginRequest,
 }
 
 /** Logout revokes the caller's current session. session_id is NOT in the
-request — it is read from the authenticated context (set by the auth
-interceptor from the JWT). POST /api/v1/auth/logout */
+request — it is read from the authenticated context (set by the edge
+auth middleware from the verified session token). POST /api/v1/auth/logout */
 export async function logout(
   options ?: {[key: string]: any}
 ) {

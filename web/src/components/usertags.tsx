@@ -98,3 +98,16 @@ export const LOGIN_METHOD_VALUE_ENUM = {
   LOGIN_METHOD_EMAIL_CODE: { text: "邮箱验证码" },
   LOGIN_METHOD_USERNAME_PASSWORD: { text: "账号密码" },
 };
+
+/**
+ * Session rows store LOGIN_METHOD_* for credential logins but
+ * IDENTITY_PROVIDER_* for social/mini-program ones — one lookup for both.
+ */
+export function loginMethodLabel(v?: string): string {
+  if (!v) return "-";
+  return (
+    LOGIN_METHOD_VALUE_ENUM[v]?.text ??
+    PROVIDER_VALUE_ENUM[v]?.text ??
+    v
+  );
+}

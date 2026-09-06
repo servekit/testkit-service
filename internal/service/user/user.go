@@ -872,6 +872,9 @@ func toTestkitSession(s *userv1.Session) *testkitv1.Session {
 		LastActiveAt: s.GetLastActiveAt(),
 		Current:      s.GetCurrent(),
 		Status:       userv1.SessionStatus(s.GetStatus()),
+		LoginMethod:  s.GetLoginMethod(),
+		LoginTarget:  s.GetLoginTarget(),
+		Device:       s.GetDevice(),
 	}
 }
 
