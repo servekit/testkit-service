@@ -58,6 +58,7 @@ import (
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	userv1 "github.com/servekit/api/gen/go/user/v1"
 	userservice "github.com/servekit/user-service/pkg"
+	usauth "github.com/servekit/user-service/pkg/auth"
 )
 
 // Service implements testkit's user domain. The user field is typed as the
@@ -215,19 +216,25 @@ func (s *Service) UnbindIdentity(ctx context.Context, req *testkitv1.UnbindIdent
 
 // --- Session (P2 Task 8) ---
 
-// ListSessions lists the CALLER's active sessions. user_id is injected from ctx.
+// ListSessions lists the CALLER's active sessions, flagging the one the
+// caller is currently using. user_id is injected from ctx; the current
+// session id likewise comes from the edge middleware's trusted identity.
 func (s *Service) ListSessions(ctx context.Context, _ *testkitv1.ListSessionsRequest) (*testkitv1.ListSessionsResponse, error) {
 	userID, err := userIDFromCtx(ctx)
 	if err != nil {
 		return nil, err
 	}
+	currentSID, _ := usauth.SessionIDFromCtx(ctx) // absent outside gateway calls
+
 	resp, err := s.user.ListSessions(ctx, &userv1.ListSessionsRequest{UserId: userID})
 	if err != nil {
 		return nil, err
 	}
 	sessions := make([]*testkitv1.Session, 0, len(resp.GetSessions()))
 	for _, sess := range resp.GetSessions() {
-		sessions = append(sessions, toTestkitSession(sess))
+		ts := toTestkitSession(sess)
+		ts.Current = ts.Id == currentSID
+		sessions = append(sessions, ts)
 	}
 	return &testkitv1.ListSessionsResponse{Sessions: sessions}, nil
 }

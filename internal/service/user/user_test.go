@@ -13,6 +13,7 @@ import (
 	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/go-common/grpcx"
 	"github.com/servekit/testkit-service/internal/service/user"
+	usauth "github.com/servekit/user-service/pkg/auth"
 )
 
 // stubUserClient stands in for the embedded user-service handler. It embeds
@@ -290,19 +291,44 @@ func TestUnbindIdentity_ForwardsUserIDFromCtx_AndTargetIdentityID(t *testing.T) 
 func TestListSessions_InjectsUserIDFromCtx_AndMapsSession(t *testing.T) {
 	stub := &stubUserClient{sessions: []*userv1.Session{
 		{Id: "sess-1", Ip: "1.2.3.4", DeviceType: userv1.DeviceType_DEVICE_TYPE_WEB, Os: "macOS", Browser: "Chrome", Country: "CN", City: "Shanghai", Current: true, CreatedAt: timestamppb.Now(), LastActiveAt: timestamppb.Now()},
+		{Id: "sess-2", Ip: "5.6.7.8", Os: "iOS", Browser: "Safari", CreatedAt: timestamppb.Now(), LastActiveAt: timestamppb.Now()},
+	}}
+	svc := newSvc(t, stub)
+
+	// The caller's session id rides on the ctx (edge middleware identity);
+	// the Current flag is testkit's own marking, overriding whatever the
+	// downstream happened to set.
+	ctx := usauth.WithSessionID(ctxWithUser(8), "sess-2")
+
+	resp, err := svc.ListSessions(ctx, &testkitv1.ListSessionsRequest{})
+	require.NoError(t, err)
+	require.Equal(t, int64(8), stub.gotListSessions.GetUserId())
+
+	require.Len(t, resp.GetSessions(), 2)
+	byID := map[string]*testkitv1.Session{}
+	for _, s := range resp.GetSessions() {
+		byID[s.GetId()] = s
+	}
+	got := byID["sess-1"]
+	require.Equal(t, userv1.DeviceType_DEVICE_TYPE_WEB, got.GetDeviceType()) // enum int-cast
+	require.Equal(t, "macOS", got.GetOs())
+	require.False(t, got.GetCurrent(), "only the caller's own session is current")
+
+	mine := byID["sess-2"]
+	require.True(t, mine.GetCurrent())
+}
+
+func TestListSessions_NoSessionInCtx_NoCurrentFlag(t *testing.T) {
+	// Direct gRPC callers (no edge middleware) carry no session id — nothing
+	// is flagged current, and the downstream's stale flag is dropped.
+	stub := &stubUserClient{sessions: []*userv1.Session{
+		{Id: "sess-1", Current: true},
 	}}
 	svc := newSvc(t, stub)
 
 	resp, err := svc.ListSessions(ctxWithUser(8), &testkitv1.ListSessionsRequest{})
 	require.NoError(t, err)
-	require.Equal(t, int64(8), stub.gotListSessions.GetUserId())
-
-	require.Len(t, resp.GetSessions(), 1)
-	got := resp.GetSessions()[0]
-	require.Equal(t, "sess-1", got.GetId())
-	require.Equal(t, userv1.DeviceType_DEVICE_TYPE_WEB, got.GetDeviceType()) // enum int-cast
-	require.Equal(t, "macOS", got.GetOs())
-	require.True(t, got.GetCurrent())
+	require.False(t, resp.GetSessions()[0].GetCurrent())
 }
 
 func TestRevokeSession_ForwardsTargetSessionID_NoCtxInjection(t *testing.T) {
