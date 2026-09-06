@@ -17,7 +17,6 @@ import (
 	"time"
 
 	gidservice "github.com/servekit/gid-service/pkg"
-	referenceservice "github.com/servekit/reference-service/pkg"
 	"github.com/servekit/go-common/configx"
 	"github.com/servekit/go-common/cronx"
 	"github.com/servekit/go-common/dbx"
@@ -27,10 +26,12 @@ import (
 	licenseoption "github.com/servekit/license-service/pkg/option"
 	messageservice "github.com/servekit/message-service/pkg"
 	messageoption "github.com/servekit/message-service/pkg/option"
+	referenceservice "github.com/servekit/reference-service/pkg"
 	storageservice "github.com/servekit/storage-service/pkg"
 	stoption "github.com/servekit/storage-service/pkg/option"
 	telemetryservice "github.com/servekit/telemetry-service/pkg"
 	telemetryoption "github.com/servekit/telemetry-service/pkg/option"
+	"github.com/servekit/testkit-service/internal/service/reference"
 	userservice "github.com/servekit/user-service/pkg"
 	usroption "github.com/servekit/user-service/pkg/option"
 
@@ -92,6 +93,7 @@ func New(cfg *config.Config) (*Service, error) {
 		return nil, rollback(mgr, err)
 	}
 	svc.reference = ref
+	svc.referenceSvc = reference.New(ref)
 
 	msgMode, msgTarget, msgCfg := unpack(cfg.ThirdParty.Message)
 	msg, msgRaw, err := messageservice.Connect(messageservice.ConnectConfig{

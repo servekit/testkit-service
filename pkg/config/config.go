@@ -19,9 +19,9 @@ import (
 	gidconfig "github.com/servekit/gid-service/pkg/config"
 	licenseconfig "github.com/servekit/license-service/pkg/config"
 	messageconfig "github.com/servekit/message-service/pkg/config"
+	referenceconfig "github.com/servekit/reference-service/pkg/config"
 	storageconfig "github.com/servekit/storage-service/pkg/config"
 	telemetryconfig "github.com/servekit/telemetry-service/pkg/config"
-	referenceconfig "github.com/servekit/reference-service/pkg/config"
 	userconfig "github.com/servekit/user-service/pkg/config"
 )
 

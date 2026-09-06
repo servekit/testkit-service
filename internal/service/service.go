@@ -14,6 +14,7 @@ package service
 
 import (
 	"context"
+	referencev1 "github.com/servekit/api/gen/go/reference/v1"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -21,10 +22,10 @@ import (
 
 	commonv1 "github.com/servekit/api/gen/go/common/v1"
 	gidservice "github.com/servekit/gid-service/pkg"
-	referenceservice "github.com/servekit/reference-service/pkg"
 	"github.com/servekit/go-common/lifecycle"
 	licenseservice "github.com/servekit/license-service/pkg"
 	messageservice "github.com/servekit/message-service/pkg"
+	referenceservice "github.com/servekit/reference-service/pkg"
 	storageservice "github.com/servekit/storage-service/pkg"
 	telemetryservice "github.com/servekit/telemetry-service/pkg"
 	"github.com/servekit/testkit-service/internal/service/auth"
@@ -32,6 +33,7 @@ import (
 	gidsvc "github.com/servekit/testkit-service/internal/service/gid"
 	licsvc "github.com/servekit/testkit-service/internal/service/license"
 	"github.com/servekit/testkit-service/internal/service/message"
+	"github.com/servekit/testkit-service/internal/service/reference"
 	"github.com/servekit/testkit-service/internal/service/storage"
 	telemetriesvc "github.com/servekit/testkit-service/internal/service/telemetry"
 	"github.com/servekit/testkit-service/internal/service/user"
@@ -51,13 +53,14 @@ type Service struct {
 	// The six embedded downstreams (each a full provider Service interface:
 	// module-mode Handler or gRPC Client). Built + lifecycle-registered in
 	// init.go.
-	gid       gidservice.Service
-	reference referenceservice.Service
-	message   messageservice.Service
-	storage   storageservice.Service
-	user      userservice.Service
-	license   licenseservice.Service
-	telemetry telemetryservice.Service
+	gid          gidservice.Service
+	reference    referenceservice.Service
+	referenceSvc *reference.Service
+	message      messageservice.Service
+	storage      storageservice.Service
+	user         userservice.Service
+	license      licenseservice.Service
+	telemetry    telemetryservice.Service
 
 	auth         *auth.Service
 	userSvc      *user.Service
@@ -128,3 +131,40 @@ func (s *Service) License() *licsvc.Service { return s.licenseSvc }
 // Telemetry returns the P6 telemetry domain (app registry + ingest over
 // telemetry-service).
 func (s *Service) Telemetry() *telemetriesvc.Service { return s.telemetrySvc }
+
+// --- reference-domain facades (1:1 forwards of reference.v1 types) ---
+
+// ListCountries delegates to the reference domain.
+func (s *Service) ListCountries(ctx context.Context, req *referencev1.ListCountriesRequest) (*referencev1.ListCountriesResponse, error) {
+	return s.referenceSvc.ListCountries(ctx, req)
+}
+
+// ListTimezones delegates to the reference domain.
+func (s *Service) ListTimezones(ctx context.Context, req *referencev1.ListTimezonesRequest) (*referencev1.ListTimezonesResponse, error) {
+	return s.referenceSvc.ListTimezones(ctx, req)
+}
+
+// ListLanguages delegates to the reference domain.
+func (s *Service) ListLanguages(ctx context.Context, req *referencev1.ListLanguagesRequest) (*referencev1.ListLanguagesResponse, error) {
+	return s.referenceSvc.ListLanguages(ctx, req)
+}
+
+// ListCurrencies delegates to the reference domain.
+func (s *Service) ListCurrencies(ctx context.Context, req *referencev1.ListCurrenciesRequest) (*referencev1.ListCurrenciesResponse, error) {
+	return s.referenceSvc.ListCurrencies(ctx, req)
+}
+
+// ListRegionGroups delegates to the reference domain.
+func (s *Service) ListRegionGroups(ctx context.Context, req *referencev1.ListRegionGroupsRequest) (*referencev1.ListRegionGroupsResponse, error) {
+	return s.referenceSvc.ListRegionGroups(ctx, req)
+}
+
+// ParsePhone delegates to the reference domain.
+func (s *Service) ParsePhone(ctx context.Context, req *referencev1.ParsePhoneRequest) (*referencev1.ParsePhoneResponse, error) {
+	return s.referenceSvc.ParsePhone(ctx, req)
+}
+
+// ResolveCodes delegates to the reference domain.
+func (s *Service) ResolveCodes(ctx context.Context, req *referencev1.ResolveCodesRequest) (*referencev1.ResolveCodesResponse, error) {
+	return s.referenceSvc.ResolveCodes(ctx, req)
+}

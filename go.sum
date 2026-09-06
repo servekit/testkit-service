@@ -588,8 +588,8 @@ github.com/nats-io/nuid v1.0.1/go.mod h1:19wcPz3Ph3q0Jbyiqsd0kePYG7A95tJPxeL+1OS
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/nxadm/tail v1.4.4/go.mod h1:kenIhsEOeOJmVchQTgglprH7qJGnHDVpk1VPCcaMI8A=
 github.com/nxadm/tail v1.4.8/go.mod h1:+ncqLTQzXmGhMZNUePPaPqPvBxHAIsmXswZKocGu+AU=
-github.com/nyaruka/phonenumbers v1.8.0 h1:TrXNJmbwcAHajzDqin3mLWw57vqLUA6ZjVdeNds0heQ=
-github.com/nyaruka/phonenumbers v1.8.0/go.mod h1:fsKPJ70O9JetEA4ggnJadYTFWwtGPvu/lETTXNXq6Cs=
+github.com/nyaruka/phonenumbers v1.8.1 h1:2K9YMQuv1dCGqjjzB1DwmdCe89khT4KPBQb2CxAMMlU=
+github.com/nyaruka/phonenumbers v1.8.1/go.mod h1:fsKPJ70O9JetEA4ggnJadYTFWwtGPvu/lETTXNXq6Cs=
 github.com/onsi/ginkgo v1.6.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/ginkgo v1.7.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/ginkgo v1.12.1/go.mod h1:zj2OWP4+oCPe1qIXoGWkgMRwljMUYCdkwsT2108oapk=
@@ -672,8 +672,8 @@ github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb
 github.com/sagikazarmark/locafero v0.11.0 h1:1iurJgmM9G3PA/I+wWYIOw/5SyBtxapeHDcg+AAIFXc=
 github.com/sagikazarmark/locafero v0.11.0/go.mod h1:nVIGvgyzw595SUSUE6tvCp3YYTeHs15MvlmU87WwIik=
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
-github.com/servekit/api/gen/go v0.0.0-20260906125712-e0bb0334f188 h1:K5dEjhayioe8Y590gTx9BSiET6+Km0T/NoA9gD1lHMM=
-github.com/servekit/api/gen/go v0.0.0-20260906125712-e0bb0334f188/go.mod h1:eRewFd7DCi0TVeTc/7XgwS6IIKB841UltJ32J5NYcD4=
+github.com/servekit/api/gen/go v0.0.0-20260906161859-149a5fb4e9e4 h1:xrBYN+QA5DuULJNgEJIDdyT5eb2zbw3q6uRCCBUsitw=
+github.com/servekit/api/gen/go v0.0.0-20260906161859-149a5fb4e9e4/go.mod h1:eRewFd7DCi0TVeTc/7XgwS6IIKB841UltJ32J5NYcD4=
 github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d h1:qwa5EnFOBvAGGG7kiMgANioKOtwRbIqRzABXtNVDgvw=
 github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d/go.mod h1:wkaPO0XYfNLPyKQKKsRlTxuPdUQzz6XcWZ7ChY9+ttI=
 github.com/servekit/go-common v0.0.0-20260906125735-1aee64b7710e h1:giQSVzXFXfvK2apT5HNq5BujOpVXmISmc10sgzXj4tA=
@@ -682,6 +682,8 @@ github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc h1:w2hKia
 github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc/go.mod h1:K/xygKsXBmfBqKHi4Vcg1xt5YIarW3BP7qU51JVbp9M=
 github.com/servekit/message-service v0.0.0-20260906125833-92a1b776c02d h1:EU1RLGMskbxGGL2o+jJUfxdO/LDzvVgxabL/SVyOj0o=
 github.com/servekit/message-service v0.0.0-20260906125833-92a1b776c02d/go.mod h1:JH6ujBX5INgzUJsZ0QvWdO+c9QCW4I6cm9MNhcmWRFk=
+github.com/servekit/reference-service v0.0.0-20260906163527-6a7d1e1966f2 h1:q1zuHXAk7B9vJYezzh4Dadqtz7xGpIr2Jl/qjOoTaAg=
+github.com/servekit/reference-service v0.0.0-20260906163527-6a7d1e1966f2/go.mod h1:/ySh9MeW0sTq9NzaiKz67wvFBgQ9qxI5yXgj7EwVh34=
 github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae h1:+p1YP6ALcbGYypwo2l8boFoLee8EsvyJIYJ+MvH6Iys=
 github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae/go.mod h1:7r9JE9CDXVy9iZDQBjGf99bSzH8a6HWA4IZst+dz12k=
 github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5 h1:/+v1GnKCsSbTUPiJYuhBqHxNFN17x/pCbm3Hkxtp810=

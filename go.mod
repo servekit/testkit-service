@@ -14,6 +14,7 @@ require (
 	github.com/servekit/go-common v0.0.0-20260906125735-1aee64b7710e
 	github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc
 	github.com/servekit/message-service v0.0.0-20260906125833-92a1b776c02d
+	github.com/servekit/reference-service v0.0.0-20260906163527-6a7d1e1966f2
 	github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae
 	github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5
 	github.com/servekit/user-service v0.0.0-20260906130036-972a8450d5c4
@@ -129,7 +130,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mozillazg/go-httpheader v0.2.1 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/nyaruka/phonenumbers v1.8.0 // indirect
+	github.com/nyaruka/phonenumbers v1.8.1 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
@@ -140,7 +141,7 @@ require (
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/sagikazarmark/locafero v0.11.0 // indirect
-	github.com/servekit/api/gen/go v0.0.0-20260906125712-e0bb0334f188
+	github.com/servekit/api/gen/go v0.0.0-20260906161859-149a5fb4e9e4
 	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/sony/sonyflake/v2 v2.1.0 // indirect
