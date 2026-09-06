@@ -18,6 +18,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	commonv1 "github.com/servekit/api/gen/go/common/v1"
@@ -25,6 +26,7 @@ import (
 	pb "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/go-common/grpcx"
 	usauth "github.com/servekit/user-service/pkg/auth"
+	usclientinfo "github.com/servekit/user-service/pkg/clientinfo"
 )
 
 // fakeSessions backs the edge middleware: sess-7 → user 7.
@@ -38,16 +40,22 @@ func (fakeSessions) GetSession(_ context.Context, req *pb.GetSessionRequest) (*p
 }
 
 // stubTestkit implements just the three RPCs the smoke drives; everything
-// else stays Unimplemented.
+// else stays Unimplemented. Login captures the incoming metadata so the test
+// can assert client info crossed the transcode boundary.
 type stubTestkit struct {
 	testkitv1.UnimplementedTestkitServiceServer
+
+	loginMD metadata.MD
 }
 
-func (stubTestkit) Ping(context.Context, *emptypb.Empty) (*commonv1.Pong, error) {
+func (*stubTestkit) Ping(context.Context, *emptypb.Empty) (*commonv1.Pong, error) {
 	return &commonv1.Pong{Status: "SERVING"}, nil
 }
 
-func (stubTestkit) Login(_ context.Context, _ *testkitv1.LoginRequest) (*testkitv1.TokenResponse, error) {
+func (s *stubTestkit) Login(ctx context.Context, _ *testkitv1.LoginRequest) (*testkitv1.TokenResponse, error) {
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		s.loginMD = md
+	}
 	// The bearer token is the session id — mirroring the auth domain's
 	// toTokenResponse after the JWT removal.
 	return &testkitv1.TokenResponse{Token: "sess-7", SessionId: "sess-7"}, nil
@@ -70,7 +78,7 @@ func freeAddr(t *testing.T) string {
 	return addr
 }
 
-func newSmokeServer(t *testing.T) string {
+func newSmokeServer(t *testing.T) (*stubTestkit, string) {
 	t.Helper()
 	grpcAddr := freeAddr(t)
 	gwAddr := freeAddr(t)
@@ -80,15 +88,18 @@ func newSmokeServer(t *testing.T) string {
 	edgeAuth := usauth.NewMiddleware(fakeSessions{},
 		usauth.WithPublicPaths("/ping", "/api/v1/auth/login"),
 	)
+	stub := &stubTestkit{}
 
 	srv := grpcx.New(
 		&grpcx.ServerConfig{
 			GRPCAddr:    grpcAddr,
 			GatewayAddr: gwAddr,
-			GatewayWrap: edgeAuth.Wrap,
+			GatewayWrap: func(next http.Handler) http.Handler {
+				return usclientinfo.Wrap(edgeAuth.Wrap(next))
+			},
 		},
 		func(gs *grpc.Server) {
-			testkitv1.RegisterTestkitServiceServer(gs, stubTestkit{})
+			testkitv1.RegisterTestkitServiceServer(gs, stub)
 		},
 		func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
 			return testkitv1.RegisterTestkitServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
@@ -98,7 +109,18 @@ func newSmokeServer(t *testing.T) string {
 	)
 	require.NoError(t, srv.Start())
 	t.Cleanup(func() { _ = srv.Stop() })
-	return gwAddr
+	return stub, gwAddr
+}
+
+// mdValue returns the first value for key, case-insensitively: the gateway's
+// annotation leaves canonical casing on metadata keys.
+func mdValue(md metadata.MD, key string) string {
+	for k, vals := range md {
+		if len(vals) > 0 && strings.EqualFold(k, key) {
+			return vals[0]
+		}
+	}
+	return ""
 }
 
 func get(t *testing.T, url, bearer string, hdr map[string]string) (*http.Response, string) {
@@ -120,7 +142,7 @@ func get(t *testing.T, url, bearer string, hdr map[string]string) (*http.Respons
 }
 
 func TestEdgeAuth_EndToEnd(t *testing.T) {
-	gw := newSmokeServer(t)
+	stub, gw := newSmokeServer(t)
 	waitReachable(t, "http://"+gw+"/ping")
 
 	t.Run("public ping without token", func(t *testing.T) {
@@ -139,9 +161,15 @@ func TestEdgeAuth_EndToEnd(t *testing.T) {
 		require.Equal(t, http.StatusUnauthorized, resp.StatusCode)
 	})
 
-	t.Run("login returns session id as token", func(t *testing.T) {
-		resp, err := http.Post("http://"+gw+"/api/v1/auth/login", "application/json",
+	t.Run("login returns session id as token and captures client info", func(t *testing.T) {
+		req, err := http.NewRequest(http.MethodPost, "http://"+gw+"/api/v1/auth/login",
 			strings.NewReader(`{"method":"LOGIN_METHOD_EMAIL_PASSWORD","email":"a@b.c","password":"x"}`))
+		require.NoError(t, err)
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("User-Agent", "smoke-agent/1.0 (test)")
+		// The edge proxy's view: the real client first, proxy chain behind.
+		req.Header.Set("X-Forwarded-For", "203.0.113.9, 10.0.0.2")
+		resp, err := (&http.Client{Timeout: 5 * time.Second}).Do(req)
 		require.NoError(t, err)
 		body, rerr := io.ReadAll(resp.Body)
 		require.NoError(t, rerr)
@@ -155,6 +183,12 @@ func TestEdgeAuth_EndToEnd(t *testing.T) {
 		require.NoError(t, json.Unmarshal(body, &tok))
 		require.Equal(t, "sess-7", tok.Token)
 		require.Equal(t, "sess-7", tok.SessionID)
+
+		// The clientinfo middleware stamped the caller environment at the
+		// edge; it must arrive server-side as metadata — this is the pipe
+		// user-service reads via clientinfo.FromCtx at login.
+		require.Equal(t, "203.0.113.9", mdValue(stub.loginMD, "x-client-ip"))
+		require.Contains(t, mdValue(stub.loginMD, "x-client-ua"), "smoke-agent/1.0")
 	})
 
 	t.Run("valid session reaches handler with verified identity", func(t *testing.T) {

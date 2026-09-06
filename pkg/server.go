@@ -25,6 +25,7 @@ import (
 	"github.com/servekit/testkit-service/pkg/config"
 	"github.com/servekit/testkit-service/pkg/handler"
 	usauth "github.com/servekit/user-service/pkg/auth"
+	usclientinfo "github.com/servekit/user-service/pkg/clientinfo"
 
 	"github.com/servekit/telemetry-service/pkg/ingesthttp"
 )
@@ -121,7 +122,12 @@ func NewServer(cfg *config.Config) (*Server, error) {
 		&grpcx.ServerConfig{
 			GRPCAddr:    cfg.Server.GRPCAddr,
 			GatewayAddr: cfg.Server.GatewayAddr,
-			GatewayWrap: edgeAuth.Wrap,
+			// clientinfo sits OUTSIDE the auth middleware so it stamps every
+			// request — login is a public route, and client capture at login
+			// (session rows, login logs) is exactly what it exists for.
+			GatewayWrap: func(next http.Handler) http.Handler {
+				return usclientinfo.Wrap(edgeAuth.Wrap(next))
+			},
 		},
 		func(gs *grpc.Server) {
 			testkitv1.RegisterTestkitServiceServer(gs, hdl)
