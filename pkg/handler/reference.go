@@ -1,5 +1,6 @@
 // Reference-domain delegations: 1:1 forwards of reference.v1 types (the
 // proto reuses the reference contract directly), so each method is one line.
+
 package handler
 
 import (
