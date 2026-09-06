@@ -15,7 +15,8 @@ import { DEVICE_TYPE_VALUE_ENUM } from "@/components/usertags";
 
 /**
  * Self-service session management: merged view — live sessions from Redis
- * first (the current one flagged), then up to 20 historical tombstones from
+ * first (the current one highlighted + badged 本机), then up to 20 historical
+ * tombstones from
  * the audit table (已登出 = explicit logout, 已失效 = TTL lapsed or evicted).
  * Revoking only applies to live rows.
  */
@@ -30,18 +31,20 @@ export default function SessionPage() {
 
   const columns: ProColumns<API.Session>[] = [
     {
-      title: "当前",
-      dataIndex: "current",
-      width: 80,
-      render: (_, r) => (r.current ? <Tag color="green">本机</Tag> : null),
-    },
-    {
       title: "状态",
       dataIndex: "status",
       width: 90,
       render: (_, r) => {
         const tag = STATUS_TAG[r.status ?? ""];
-        return tag ? <Tag color={tag.color}>{tag.text}</Tag> : null;
+        if (!tag) return null;
+        return r.current ? (
+          <>
+            <Tag color={tag.color}>{tag.text}</Tag>
+            <Tag color="blue">本机</Tag>
+          </>
+        ) : (
+          <Tag color={tag.color}>{tag.text}</Tag>
+        );
       },
     },
     {
@@ -94,6 +97,9 @@ export default function SessionPage() {
         columns={columns}
         rowKey="id"
         search={false}
+        // Current row gets a soft green tint (antd green-1); no stylesheet in
+        // this project, so the row style is applied inline.
+        onRow={(r) => (r.current ? { style: { background: "#f6ffed" } } : {})}
         pagination={false}
         headerTitle="登录会话"
         request={async () => {
