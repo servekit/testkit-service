@@ -43,3 +43,8 @@ func (h *Handler) ParsePhone(ctx context.Context, req *referencev1.ParsePhoneReq
 func (h *Handler) ResolveCodes(ctx context.Context, req *referencev1.ResolveCodesRequest) (*referencev1.ResolveCodesResponse, error) {
 	return h.svc.ResolveCodes(ctx, req)
 }
+
+// GetCountryProfile delegates to service.GetCountryProfile.
+func (h *Handler) GetCountryProfile(ctx context.Context, req *referencev1.GetCountryProfileRequest) (*referencev1.GetCountryProfileResponse, error) {
+	return h.svc.GetCountryProfile(ctx, req)
+}

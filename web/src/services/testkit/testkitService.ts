@@ -1671,6 +1671,24 @@ export async function listCountries(
   });
 }
 
+/** 此处后端没有提供注释 GET /api/v1/reference/countries/${param0}/profile */
+export async function getCountryProfile(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GetCountryProfileParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'countryCode': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1GetCountryProfileResponse>(`/api/v1/reference/countries/${param0}/profile`, {
+  method: 'GET',
+    params: {
+        ...queryParams,},
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/v1/reference/currencies */
 export async function listCurrencies(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

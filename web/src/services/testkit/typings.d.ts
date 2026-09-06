@@ -182,6 +182,11 @@ declare namespace API {
     days?: number;
   };
 
+  type GetCountryProfileParams = {
+    countryCode: string;
+    locale?: string;
+  };
+
   type GetEmailParams = {
     id: string;
   };
@@ -1738,6 +1743,22 @@ user_id injected from ctx */
     days?: v1DailyStat[];
     drops?: Record<string, any>;
     sigFails?: Record<string, any>;
+  };
+
+  type v1GetCountryProfileResponse = {
+    country?: v1Country;
+    /** The country's group chain, continent first then sub-regions
+(e.g. Asia -> Eastern Asia). Empty for territories outside the
+served hierarchy (e.g. Antarctica sits under the unserved world root). */
+    regionGroups?: v1RegionGroup[];
+    /** Official (incl. de facto official) languages, most-spoken first
+(CLDR territoryInfo); e.g. zh-Hans for CN. */
+    languages?: v1Language[];
+    /** currently valid in this country */
+    currencies?: v1Currency[];
+    /** IANA zones covering this country */
+    timezones?: v1Timezone[];
+    dataVersion?: string;
   };
 
   type v1GetFileLinkDownloadResponse = {

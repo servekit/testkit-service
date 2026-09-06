@@ -141,7 +141,7 @@ require (
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/sagikazarmark/locafero v0.11.0 // indirect
-	github.com/servekit/api/gen/go v0.0.0-20260906172205-4fc28327e262
+	github.com/servekit/api/gen/go v0.0.0-20260906173556-60e149ffbe5b
 	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/sony/sonyflake/v2 v2.1.0 // indirect

@@ -168,3 +168,8 @@ func (s *Service) ParsePhone(ctx context.Context, req *referencev1.ParsePhoneReq
 func (s *Service) ResolveCodes(ctx context.Context, req *referencev1.ResolveCodesRequest) (*referencev1.ResolveCodesResponse, error) {
 	return s.referenceSvc.ResolveCodes(ctx, req)
 }
+
+// GetCountryProfile delegates to the reference domain.
+func (s *Service) GetCountryProfile(ctx context.Context, req *referencev1.GetCountryProfileRequest) (*referencev1.GetCountryProfileResponse, error) {
+	return s.referenceSvc.GetCountryProfile(ctx, req)
+}

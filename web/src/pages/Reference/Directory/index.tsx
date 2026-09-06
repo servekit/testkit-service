@@ -7,15 +7,30 @@
  * access: canInternal at the route level.
  */
 import { PageContainer, ProCard } from "@ant-design/pro-components";
-import { Input, Segmented, Select, Spin, Table, Tag, Tooltip } from "antd";
+import {
+  App,
+  Descriptions,
+  Drawer,
+  Input,
+  Segmented,
+  Select,
+  Spin,
+  Table,
+  Tag,
+  Typography,
+  Tooltip,
+} from "antd";
 import { useEffect, useMemo, useState } from "react";
 import {
+  getCountryProfile,
   listCountries,
   listCurrencies,
   listLanguages,
   listRegionGroups,
   listTimezones,
 } from "@/services/testkit/testkitService";
+
+const { Text } = Typography;
 
 const LOCALES = [
   { value: "zh-Hans", label: "简体中文" },
@@ -41,7 +56,83 @@ const DOMAIN_LABEL: Record<Domain, string> = {
   groups: "区域分组",
 };
 
+function ProfileDrawer({
+  code,
+  locale,
+  onClose,
+}: {
+  code?: string;
+  locale: string;
+  onClose: () => void;
+}) {
+  const { message } = App.useApp();
+  const [profile, setProfile] = useState<API.v1GetCountryProfileResponse>();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!code) return;
+    let cancelled = false;
+    setLoading(true);
+    getCountryProfile({ countryCode: code, locale })
+      .then((r) => {
+        if (!cancelled) setProfile(r);
+      })
+      .catch(() => {
+        if (!cancelled) message.error("加载国家详情失败");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [code, locale]);
+
+  const c = profile?.country;
+  return (
+    <Drawer
+      open={!!code}
+      onClose={onClose}
+      width={520}
+      title={
+        c ? (
+          <span style={{ fontSize: 20 }}>
+            {c.flagEmoji} {c.name} <Text type="secondary">{c.code}</Text>
+          </span>
+        ) : (
+          "国家详情"
+        )
+      }
+    >
+      <Spin spinning={loading}>
+        {profile && (
+          <Descriptions column={1} bordered size="small" labelStyle={{ width: 110 }}>
+            <Descriptions.Item label="区号">{c?.dialCode}</Descriptions.Item>
+            <Descriptions.Item label="alpha-3">{c?.alpha3}</Descriptions.Item>
+            <Descriptions.Item label="所属区域">
+              {(profile.regionGroups ?? []).map((g) => g.name).join(" → ") || "-"}
+            </Descriptions.Item>
+            <Descriptions.Item label="官方语言">
+              {(profile.languages ?? []).map((l) => `${l.name} (${l.tag})`).join("、") || "-"}
+            </Descriptions.Item>
+            <Descriptions.Item label="货币">
+              {(profile.currencies ?? [])
+                .map((cur) => `${cur.flagEmoji ?? ""} ${cur.name} ${cur.symbol} (${cur.code})`)
+                .join("；") || "-"}
+            </Descriptions.Item>
+            <Descriptions.Item label="时区">
+              {(profile.timezones ?? []).map((tz) => `${tz.id}（${tz.name}）`).join("、") || "-"}
+            </Descriptions.Item>
+            <Descriptions.Item label="数据版本">{profile.dataVersion}</Descriptions.Item>
+          </Descriptions>
+        )}
+      </Spin>
+    </Drawer>
+  );
+}
+
 export default function ReferenceDirectoryPage() {
+  const [detailCode, setDetailCode] = useState<string>();
   const [locale, setLocale] = useState("zh-Hans");
   const [domain, setDomain] = useState<Domain>("countries");
   const [keyword, setKeyword] = useState("");
@@ -119,7 +210,7 @@ export default function ReferenceDirectoryPage() {
 
   const countryColumns = useMemo(
     () => [
-      { title: "国旗", dataIndex: "flagEmoji", width: 64, render: (v: string) => <span style={{ fontSize: 18 }}>{v}</span> },
+      { title: "国旗", dataIndex: "flagEmoji", width: 56, render: (v: string) => <span style={{ fontSize: 18 }}>{v}</span> },
       { title: "alpha-2", dataIndex: "code", width: 90 },
       { title: "alpha-3", dataIndex: "alpha3", width: 90 },
       { title: "区号", dataIndex: "dialCode", width: 90 },
@@ -280,10 +371,16 @@ export default function ReferenceDirectoryPage() {
             size="small"
             columns={current.columns}
             dataSource={current.rows}
+            onRow={
+              domain === "countries"
+                ? (r) => ({ onClick: () => setDetailCode(String(r.code)), style: { cursor: "pointer" } })
+                : undefined
+            }
             pagination={{ pageSize: 50, showSizeChanger: false, showTotal: (t) => `共 ${t} 条` }}
           />
         </Spin>
       </ProCard>
+      <ProfileDrawer code={detailCode} locale={locale} onClose={() => setDetailCode(undefined)} />
     </PageContainer>
   );
 }

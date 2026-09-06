@@ -672,8 +672,8 @@ github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb
 github.com/sagikazarmark/locafero v0.11.0 h1:1iurJgmM9G3PA/I+wWYIOw/5SyBtxapeHDcg+AAIFXc=
 github.com/sagikazarmark/locafero v0.11.0/go.mod h1:nVIGvgyzw595SUSUE6tvCp3YYTeHs15MvlmU87WwIik=
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
-github.com/servekit/api/gen/go v0.0.0-20260906172205-4fc28327e262 h1:lZyXdIBztxgB1R8uLBiTQynrzMZrkmxB/9EdJYePmrA=
-github.com/servekit/api/gen/go v0.0.0-20260906172205-4fc28327e262/go.mod h1:eRewFd7DCi0TVeTc/7XgwS6IIKB841UltJ32J5NYcD4=
+github.com/servekit/api/gen/go v0.0.0-20260906173556-60e149ffbe5b h1:eLeyZeNafnTnC1s8lfolr3nIv7LGP/YV8Iu7MGmMK7M=
+github.com/servekit/api/gen/go v0.0.0-20260906173556-60e149ffbe5b/go.mod h1:eRewFd7DCi0TVeTc/7XgwS6IIKB841UltJ32J5NYcD4=
 github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d h1:qwa5EnFOBvAGGG7kiMgANioKOtwRbIqRzABXtNVDgvw=
 github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d/go.mod h1:wkaPO0XYfNLPyKQKKsRlTxuPdUQzz6XcWZ7ChY9+ttI=
 github.com/servekit/go-common v0.0.0-20260906125735-1aee64b7710e h1:giQSVzXFXfvK2apT5HNq5BujOpVXmISmc10sgzXj4tA=

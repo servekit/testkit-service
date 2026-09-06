@@ -593,3 +593,8 @@ func (c *Client) ParsePhone(ctx context.Context, in *referencev1.ParsePhoneReque
 func (c *Client) ResolveCodes(ctx context.Context, in *referencev1.ResolveCodesRequest) (*referencev1.ResolveCodesResponse, error) {
 	return c.cli.ResolveCodes(ctx, in)
 }
+
+// GetCountryProfile delegates to the remote testkit-service.
+func (c *Client) GetCountryProfile(ctx context.Context, in *referencev1.GetCountryProfileRequest) (*referencev1.GetCountryProfileResponse, error) {
+	return c.cli.GetCountryProfile(ctx, in)
+}
