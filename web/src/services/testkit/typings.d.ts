@@ -2048,6 +2048,8 @@ or context was cancelled. error_message carries the last error. */
     /** Denormalized at read time for list views; empty when user_id no longer
 resolves (see user.v1). */
     username?: string;
+    /** The credential subject of the attempt (see user.v1). */
+    target?: string;
   };
 
   type v1LoginMethod =

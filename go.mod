@@ -16,7 +16,7 @@ require (
 	github.com/servekit/message-service v0.0.0-20260905155410-ddc3b057a308
 	github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae
 	github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5
-	github.com/servekit/user-service v0.0.0-20260906043047-92c7be6cbb43
+	github.com/servekit/user-service v0.0.0-20260906043826-5bb4589775da
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.22.0
 	google.golang.org/grpc v1.83.2
@@ -140,7 +140,7 @@ require (
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/sagikazarmark/locafero v0.11.0 // indirect
-	github.com/servekit/api/gen/go v0.0.0-20260906041937-8fd30bc47209
+	github.com/servekit/api/gen/go v0.0.0-20260906043625-78f5a630e911
 	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/sony/sonyflake/v2 v2.1.0 // indirect

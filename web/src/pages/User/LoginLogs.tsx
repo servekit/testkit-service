@@ -85,6 +85,14 @@ export default function LoginLogsPage() {
       render: (_, r) => r.username || "-",
     },
     {
+      title: "认证对象",
+      dataIndex: "target",
+      width: 170,
+      // The credential subject (username/email/phone/oauth-uid) — the kind
+      // reads from the 登录方式/动作 columns next to it.
+      render: (_, r) => r.target || "-",
+    },
+    {
       title: "登录方式",
       dataIndex: "method",
       width: 110,
