@@ -71,27 +71,18 @@ export default function LoginLogsPage() {
   }, [filters]);
 
   const columns: TableColumnsType<API.LoginLog> = [
-    { title: "时间", dataIndex: "createdAt", width: 180, render: (v) => dayjsLocal(v) },
     {
-      title: "用户",
+      title: "用户 ID",
+      dataIndex: "userId",
+      width: 180,
+      copyable: true,
+      render: (_, r) => String(r.userId || "-"),
+    },
+    {
+      title: "用户名",
       dataIndex: "username",
-      width: 170,
-      // Username first, the snowflake id dimmed beneath (copy on click);
-      // failed attempts on unknown targets fall back to the raw id.
-      render: (_, r) => (
-        <div>
-          <div>{r.username || String(r.userId || "-")}</div>
-          {r.username && r.userId ? (
-            <Typography.Text
-              type="secondary"
-              style={{ fontSize: 12 }}
-              copyable={{ text: String(r.userId), tooltips: ["复制 ID", "已复制"] }}
-            >
-              {String(r.userId)}
-            </Typography.Text>
-          ) : null}
-        </div>
-      ),
+      width: 140,
+      render: (_, r) => r.username || "-",
     },
     {
       title: "登录方式",
@@ -137,6 +128,7 @@ export default function LoginLogsPage() {
         return labels[r.failReason] ?? r.failReason;
       },
     },
+    { title: "时间", dataIndex: "createdAt", width: 180, render: (v) => dayjsLocal(v) },
   ];
 
   return (
