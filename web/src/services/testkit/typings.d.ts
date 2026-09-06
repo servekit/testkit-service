@@ -182,6 +182,11 @@ declare namespace API {
     days?: number;
   };
 
+  type GetCountryDefaultsParams = {
+    countryCode: string;
+    locale?: string;
+  };
+
   type GetCountryProfileParams = {
     countryCode: string;
     locale?: string;
@@ -364,6 +369,11 @@ when both are set; an unknown username yields an empty page. */
     keyId: string;
     deviceToken: string;
     reason?: string;
+  };
+
+  type ListCountriesByRegionParams = {
+    regionCode: string;
+    locale?: string;
   };
 
   type ListCountriesParams = {
@@ -1411,6 +1421,8 @@ user_id injected from ctx */
     flagEmoji?: string;
     /** display name in the request locale */
     name?: string;
+    /** libphonenumber example, e.g. "+86 138 0013 8000"; */
+    exampleNumber?: string;
   };
 
   type v1CreateAppRequest = {
@@ -1745,6 +1757,25 @@ user_id injected from ctx */
     sigFails?: Record<string, any>;
   };
 
+  type v1GetCountryDefaultsResponse = {
+    /** primary IANA zone, e.g. "Asia/Shanghai" */
+    timezoneId?: string;
+    /** display name in the request locale */
+    timezoneName?: string;
+    /** first currently-valid currency, e.g. "CNY" */
+    currencyCode?: string;
+    currencyName?: string;
+    currencySymbol?: string;
+    /** most-spoken official language, e.g. "zh-Hans" */
+    languageTag?: string;
+    languageName?: string;
+    /** "+86" */
+    dialCode?: string;
+    /** "+86 138 0013 8000" */
+    exampleNumber?: string;
+    dataVersion?: string;
+  };
+
   type v1GetCountryProfileResponse = {
     country?: v1Country;
     /** The country's group chain, continent first then sub-regions
@@ -1759,6 +1790,16 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     /** IANA zones covering this country */
     timezones?: v1Timezone[];
     dataVersion?: string;
+  };
+
+  type v1GetDataInfoResponse = {
+    dataVersion?: string;
+    locales?: string[];
+    countryCount?: number;
+    timezoneCount?: number;
+    languageCount?: number;
+    currencyCount?: number;
+    regionGroupCount?: number;
   };
 
   type v1GetFileLinkDownloadResponse = {
@@ -1978,6 +2019,11 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     tag?: string;
     /** the language's name in the request locale */
     name?: string;
+  };
+
+  type v1ListCountriesByRegionResponse = {
+    countries?: v1Country[];
+    dataVersion?: string;
   };
 
   type v1ListCountriesResponse = {

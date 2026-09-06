@@ -1671,6 +1671,24 @@ export async function listCountries(
   });
 }
 
+/** 此处后端没有提供注释 GET /api/v1/reference/countries/${param0}/defaults */
+export async function getCountryDefaults(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.GetCountryDefaultsParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'countryCode': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1GetCountryDefaultsResponse>(`/api/v1/reference/countries/${param0}/defaults`, {
+  method: 'GET',
+    params: {
+        ...queryParams,},
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/v1/reference/countries/${param0}/profile */
 export async function getCountryProfile(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -1700,6 +1718,16 @@ export async function listCurrencies(
   method: 'GET',
     params: {
         ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/reference/data-info */
+export async function getDataInfo(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1GetDataInfoResponse>('/api/v1/reference/data-info', {
+  method: 'GET',
     ...(options || {}),
   });
 }
@@ -1744,6 +1772,24 @@ export async function listRegionGroups(
   method: 'GET',
     params: {
         ...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/reference/regions/${param0}/countries */
+export async function listCountriesByRegion(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListCountriesByRegionParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'regionCode': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1ListCountriesByRegionResponse>(`/api/v1/reference/regions/${param0}/countries`, {
+  method: 'GET',
+    params: {
+        ...queryParams,},
     ...(options || {}),
   });
 }

@@ -173,3 +173,18 @@ func (s *Service) ResolveCodes(ctx context.Context, req *referencev1.ResolveCode
 func (s *Service) GetCountryProfile(ctx context.Context, req *referencev1.GetCountryProfileRequest) (*referencev1.GetCountryProfileResponse, error) {
 	return s.referenceSvc.GetCountryProfile(ctx, req)
 }
+
+// ListCountriesByRegion delegates to the reference domain.
+func (s *Service) ListCountriesByRegion(ctx context.Context, req *referencev1.ListCountriesByRegionRequest) (*referencev1.ListCountriesByRegionResponse, error) {
+	return s.referenceSvc.ListCountriesByRegion(ctx, req)
+}
+
+// GetCountryDefaults delegates to the reference domain.
+func (s *Service) GetCountryDefaults(ctx context.Context, req *referencev1.GetCountryDefaultsRequest) (*referencev1.GetCountryDefaultsResponse, error) {
+	return s.referenceSvc.GetCountryDefaults(ctx, req)
+}
+
+// GetDataInfo delegates to the reference domain.
+func (s *Service) GetDataInfo(ctx context.Context, req *referencev1.GetDataInfoRequest) (*referencev1.GetDataInfoResponse, error) {
+	return s.referenceSvc.GetDataInfo(ctx, req)
+}

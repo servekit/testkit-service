@@ -48,3 +48,18 @@ func (h *Handler) ResolveCodes(ctx context.Context, req *referencev1.ResolveCode
 func (h *Handler) GetCountryProfile(ctx context.Context, req *referencev1.GetCountryProfileRequest) (*referencev1.GetCountryProfileResponse, error) {
 	return h.svc.GetCountryProfile(ctx, req)
 }
+
+// ListCountriesByRegion delegates to service.ListCountriesByRegion.
+func (h *Handler) ListCountriesByRegion(ctx context.Context, req *referencev1.ListCountriesByRegionRequest) (*referencev1.ListCountriesByRegionResponse, error) {
+	return h.svc.ListCountriesByRegion(ctx, req)
+}
+
+// GetCountryDefaults delegates to service.GetCountryDefaults.
+func (h *Handler) GetCountryDefaults(ctx context.Context, req *referencev1.GetCountryDefaultsRequest) (*referencev1.GetCountryDefaultsResponse, error) {
+	return h.svc.GetCountryDefaults(ctx, req)
+}
+
+// GetDataInfo delegates to service.GetDataInfo.
+func (h *Handler) GetDataInfo(ctx context.Context, req *referencev1.GetDataInfoRequest) (*referencev1.GetDataInfoResponse, error) {
+	return h.svc.GetDataInfo(ctx, req)
+}

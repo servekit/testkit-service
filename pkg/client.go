@@ -598,3 +598,18 @@ func (c *Client) ResolveCodes(ctx context.Context, in *referencev1.ResolveCodesR
 func (c *Client) GetCountryProfile(ctx context.Context, in *referencev1.GetCountryProfileRequest) (*referencev1.GetCountryProfileResponse, error) {
 	return c.cli.GetCountryProfile(ctx, in)
 }
+
+// ListCountriesByRegion delegates to the remote testkit-service.
+func (c *Client) ListCountriesByRegion(ctx context.Context, in *referencev1.ListCountriesByRegionRequest) (*referencev1.ListCountriesByRegionResponse, error) {
+	return c.cli.ListCountriesByRegion(ctx, in)
+}
+
+// GetCountryDefaults delegates to the remote testkit-service.
+func (c *Client) GetCountryDefaults(ctx context.Context, in *referencev1.GetCountryDefaultsRequest) (*referencev1.GetCountryDefaultsResponse, error) {
+	return c.cli.GetCountryDefaults(ctx, in)
+}
+
+// GetDataInfo delegates to the remote testkit-service.
+func (c *Client) GetDataInfo(ctx context.Context, in *referencev1.GetDataInfoRequest) (*referencev1.GetDataInfoResponse, error) {
+	return c.cli.GetDataInfo(ctx, in)
+}

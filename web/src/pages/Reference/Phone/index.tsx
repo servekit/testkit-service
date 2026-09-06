@@ -15,8 +15,8 @@ import {
   Tag,
   Typography,
 } from "antd";
-import { useState } from "react";
-import { parsePhone } from "@/services/testkit/testkitService";
+import { useEffect, useState } from "react";
+import { getCountryDefaults, parsePhone } from "@/services/testkit/testkitService";
 
 const { Text } = Typography;
 
@@ -48,6 +48,23 @@ export default function ReferencePhonePage() {
   const [region, setRegion] = useState<string>();
   const [result, setResult] = useState<API.v1ParsePhoneResponse>();
   const [loading, setLoading] = useState(false);
+  const [example, setExample] = useState<string>();
+
+  useEffect(() => {
+    if (!region) {
+      setExample(undefined);
+      return;
+    }
+    let cancelled = false;
+    getCountryDefaults({ countryCode: region, locale: "zh-Hans" })
+      .then((d) => {
+        if (!cancelled) setExample(d.exampleNumber);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [region]);
 
   const doParse = async (payload?: { raw: string; region?: string }) => {
     const target = payload ?? { raw, region };

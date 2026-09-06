@@ -22,8 +22,10 @@ import {
 } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import {
+  getCountryDefaults,
   getCountryProfile,
   listCountries,
+  listCountriesByRegion,
   listCurrencies,
   listLanguages,
   listRegionGroups,
@@ -67,12 +69,18 @@ function ProfileDrawer({
 }) {
   const { message } = App.useApp();
   const [profile, setProfile] = useState<API.v1GetCountryProfileResponse>();
+  const [defaults, setDefaults] = useState<API.v1GetCountryDefaultsResponse>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!code) return;
     let cancelled = false;
     setLoading(true);
+    getCountryDefaults({ countryCode: code, locale }).then((d) => {
+      if (!cancelled) setDefaults(d);
+    }).catch(() => {
+      /* defaults are additive; profile still renders */
+    });
     getCountryProfile({ countryCode: code, locale })
       .then((r) => {
         if (!cancelled) setProfile(r);
@@ -123,6 +131,15 @@ function ProfileDrawer({
             <Descriptions.Item label="时区">
               {(profile.timezones ?? []).map((tz) => `${tz.id}（${tz.name}）`).join("、") || "-"}
             </Descriptions.Item>
+            <Descriptions.Item label="默认时区">
+              {defaults ? `${defaults.timezoneName}（${defaults.timezoneId}）` : "…"}
+            </Descriptions.Item>
+            <Descriptions.Item label="默认语言">
+              {defaults ? `${defaults.languageName}（${defaults.languageTag}）` : "…"}
+            </Descriptions.Item>
+            <Descriptions.Item label="示例号码">
+              {profile.country?.exampleNumber || "-"}
+            </Descriptions.Item>
             <Descriptions.Item label="数据版本">{profile.dataVersion}</Descriptions.Item>
           </Descriptions>
         )}
@@ -133,6 +150,19 @@ function ProfileDrawer({
 
 export default function ReferenceDirectoryPage() {
   const [detailCode, setDetailCode] = useState<string>();
+  const [regionCountries, setRegionCountries] = useState<API.v1Country[]>();
+  const [regionTitle, setRegionTitle] = useState<string>();
+  const [regionLoading, setRegionLoading] = useState(false);
+
+  const openRegion = (code: string, name: string) => {
+    setRegionTitle(name);
+    setRegionCountries(undefined);
+    setRegionLoading(true);
+    listCountriesByRegion({ regionCode: code, locale })
+      .then((r) => setRegionCountries(r.countries ?? []))
+      .catch(() => undefined)
+      .finally(() => setRegionLoading(false));
+  };
   const [locale, setLocale] = useState("zh-Hans");
   const [domain, setDomain] = useState<Domain>("countries");
   const [keyword, setKeyword] = useState("");
@@ -374,13 +404,43 @@ export default function ReferenceDirectoryPage() {
             onRow={
               domain === "countries"
                 ? (r) => ({ onClick: () => setDetailCode(String(r.code)), style: { cursor: "pointer" } })
-                : undefined
+                : domain === "groups"
+                  ? (r) => ({
+                      onClick: () => openRegion(String(r.code), String(r.name)),
+                      style: { cursor: "pointer" },
+                    })
+                  : undefined
             }
             pagination={{ pageSize: 50, showSizeChanger: false, showTotal: (t) => `共 ${t} 条` }}
           />
         </Spin>
       </ProCard>
       <ProfileDrawer code={detailCode} locale={locale} onClose={() => setDetailCode(undefined)} />
+      <Drawer
+        open={!!regionTitle}
+        onClose={() => {
+          setRegionTitle(undefined);
+          setRegionCountries(undefined);
+        }}
+        width={420}
+        title={regionTitle ? `${regionTitle} · 国家（含次级分组）` : "区域国家"}
+      >
+        <Spin spinning={regionLoading}>
+          {(regionCountries ?? []).map((c) => (
+            <div
+              key={c.code}
+              style={{ padding: "4px 0", cursor: "pointer" }}
+              onClick={() => {
+                setRegionTitle(undefined);
+                setDetailCode(c.code);
+              }}
+            >
+              {c.flagEmoji} {c.name} <Text type="secondary">{c.code} · {c.dialCode}</Text>
+            </div>
+          ))}
+          {!regionLoading && (regionCountries ?? []).length === 0 && <Text type="secondary">无直接成员国</Text>}
+        </Spin>
+      </Drawer>
     </PageContainer>
   );
 }

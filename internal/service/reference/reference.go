@@ -61,3 +61,18 @@ func (s *Service) ResolveCodes(ctx context.Context, req *referencev1.ResolveCode
 func (s *Service) GetCountryProfile(ctx context.Context, req *referencev1.GetCountryProfileRequest) (*referencev1.GetCountryProfileResponse, error) {
 	return s.ref.GetCountryProfile(ctx, req)
 }
+
+// ListCountriesByRegion forwards to the reference backend.
+func (s *Service) ListCountriesByRegion(ctx context.Context, req *referencev1.ListCountriesByRegionRequest) (*referencev1.ListCountriesByRegionResponse, error) {
+	return s.ref.ListCountriesByRegion(ctx, req)
+}
+
+// GetCountryDefaults forwards to the reference backend.
+func (s *Service) GetCountryDefaults(ctx context.Context, req *referencev1.GetCountryDefaultsRequest) (*referencev1.GetCountryDefaultsResponse, error) {
+	return s.ref.GetCountryDefaults(ctx, req)
+}
+
+// GetDataInfo forwards to the reference backend.
+func (s *Service) GetDataInfo(ctx context.Context, req *referencev1.GetDataInfoRequest) (*referencev1.GetDataInfoResponse, error) {
+	return s.ref.GetDataInfo(ctx, req)
+}
