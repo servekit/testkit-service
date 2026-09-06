@@ -2151,10 +2151,6 @@ resolves (see user.v1). */
     fileCount?: number;
   };
 
-  type v1RefreshSessionRequest = {
-    sessionId?: string;
-  };
-
   type v1RegisterRequest = {
     provider?: v1IdentityProvider;
     email?: string;

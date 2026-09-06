@@ -73,11 +73,6 @@ func (c *Client) Logout(ctx context.Context, in *emptypb.Empty) (*emptypb.Empty,
 	return c.cli.Logout(ctx, in)
 }
 
-// RefreshSession delegates to the remote testkit-service.
-func (c *Client) RefreshSession(ctx context.Context, in *testkitv1.RefreshSessionRequest) (*testkitv1.TokenResponse, error) {
-	return c.cli.RefreshSession(ctx, in)
-}
-
 // GetProfile delegates to the remote testkit-service.
 func (c *Client) GetProfile(ctx context.Context, in *testkitv1.GetProfileRequest) (*testkitv1.User, error) {
 	return c.cli.GetProfile(ctx, in)

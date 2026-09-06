@@ -14,7 +14,7 @@ import (
 //
 // Each is a thin delegate to the auth domain (internal/service/auth). The
 // handler holds no auth logic; the only non-delegate work is reading the
-// session_id out of the authenticated context for Logout/RefreshSession —
+// session_id out of the authenticated context for Logout —
 // session_id never appears in a request message (design spec §3.2.1).
 
 // Login authenticates against user-service and returns the session id as the
@@ -43,18 +43,4 @@ func (h *Handler) Logout(ctx context.Context, _ *emptypb.Empty) (*emptypb.Empty,
 		return nil, err
 	}
 	return h.svc.Auth().Logout(ctx, sessionID)
-}
-
-// RefreshSession extends the caller's session and returns the session id as
-// the bearer token. When the request omits session_id it is derived from the
-// authenticated context.
-func (h *Handler) RefreshSession(ctx context.Context, req *testkitv1.RefreshSessionRequest) (*testkitv1.TokenResponse, error) {
-	if req.GetSessionId() == "" {
-		sid, err := usauth.SessionIDFromCtx(ctx)
-		if err != nil {
-			return nil, err
-		}
-		req.SessionId = sid
-	}
-	return h.svc.Auth().RefreshSession(ctx, req)
 }

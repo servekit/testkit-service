@@ -93,27 +93,8 @@ func (s *Service) Logout(ctx context.Context, sessionID string) (*emptypb.Empty,
 	return s.user.Logout(ctx, &userv1.LogoutRequest{SessionId: sessionID})
 }
 
-// RefreshSession refreshes the caller's session at user-service and returns
-// the same session id as the bearer token. user-service's RefreshSession
-// returns Empty (the session id is unchanged; only its TTL is extended — and
-// the edge middleware's GetSession already slides it on every request, so
-// this mostly updates PG's last_active_at), so the session id returned is the
-// one carried on the request (populated by the handler from the authenticated
-// context when the body omits it).
-func (s *Service) RefreshSession(ctx context.Context, req *testkitv1.RefreshSessionRequest) (*testkitv1.TokenResponse, error) {
-	sessionID := req.GetSessionId()
-	if sessionID == "" {
-		return nil, errors.New("auth: refresh requires a session id in context")
-	}
-	if _, err := s.user.RefreshSession(ctx, &userv1.RefreshSessionRequest{SessionId: sessionID}); err != nil {
-		return nil, err
-	}
-	// No user payload comes back from RefreshSession; return only the token.
-	return s.toTokenResponse(ctx, sessionID, nil, false, "")
-}
-
 // toTokenResponse pairs the session id — which IS the bearer token — with the
-// curated user view. A nil user (RefreshSession has no user payload) yields a
+// curated user view. A nil user yields a
 // token-only response; the frontend already has the user from the prior login.
 // session_id / is_new / return_to mirror the downstream response so testers
 // can target the session directly.
@@ -184,7 +165,7 @@ func toUserCodeRequest(r *testkitv1.SendVerificationCodeRequest) *userv1.SendVer
 }
 
 // toTestkitUser curates a user-service User down to the frontend view. nil input
-// yields nil output (RefreshSession has no user payload). user_type is int-cast
+// yields nil output. user_type is int-cast
 // like the other enums.
 func toTestkitUser(u *userv1.User) *testkitv1.User {
 	if u == nil {

@@ -229,20 +229,6 @@ export async function resetPassword(body: API.v1ResetPasswordRequest,
   });
 }
 
-/** 此处后端没有提供注释 POST /api/v1/auth/refresh */
-export async function refreshSession(body: API.v1RefreshSessionRequest,
-  options ?: {[key: string]: any}
-) {
-  return request<API.v1TokenResponse>('/api/v1/auth/refresh', {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 POST /api/v1/auth/register */
 export async function register(body: API.v1RegisterRequest,
   options ?: {[key: string]: any}

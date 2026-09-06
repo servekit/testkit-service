@@ -27,7 +27,6 @@ type stubUserClient struct {
 	gotRegister *userv1.RegisterRequest
 	gotCode     *userv1.SendVerificationCodeRequest
 	gotLogout   *userv1.LogoutRequest
-	gotRefresh  *userv1.RefreshSessionRequest
 
 	// configured responses
 	loginSessionID string
@@ -76,14 +75,6 @@ func (s *stubUserClient) Logout(_ context.Context, req *userv1.LogoutRequest) (*
 	s.gotLogout = req
 	if s.logoutErr != nil {
 		return nil, s.logoutErr
-	}
-	return &emptypb.Empty{}, nil
-}
-
-func (s *stubUserClient) RefreshSession(_ context.Context, req *userv1.RefreshSessionRequest) (*emptypb.Empty, error) {
-	s.gotRefresh = req
-	if s.refreshErr != nil {
-		return nil, s.refreshErr
 	}
 	return &emptypb.Empty{}, nil
 }
@@ -212,29 +203,6 @@ func TestLogout_EmptySessionIDRejected(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestRefreshSession_ForwardsAndReturnsSessionToken(t *testing.T) {
-	stub := &stubUserClient{}
-	svc := newAuthSvc(t, stub)
-
-	resp, err := svc.RefreshSession(context.Background(), &testkitv1.RefreshSessionRequest{SessionId: "sess-7"})
-	require.NoError(t, err)
-
-	// user-service extends the TTL; it does not rotate the id, so the token
-	// comes back unchanged.
-	require.Equal(t, "sess-7", resp.GetToken())
-
-	// RefreshSession carries no user payload — user is nil in the response.
-	require.Nil(t, resp.GetUser())
-	// The session id was forwarded to user-service verbatim.
-	require.Equal(t, "sess-7", stub.gotRefresh.GetSessionId())
-}
-
-func TestRefreshSession_EmptySessionIDRejected(t *testing.T) {
-	svc := newAuthSvc(t, &stubUserClient{})
-	_, err := svc.RefreshSession(context.Background(), &testkitv1.RefreshSessionRequest{})
-	require.Error(t, err)
-}
-
 func TestEnumIntCast_MirroredSameNumber(t *testing.T) {
 	// The design hinges on testkit and user-service enums being same-number, so
 	// the int cast is value-preserving. Pin a representative value per enum.
@@ -270,13 +238,4 @@ func TestToTestkitUser_CuratesAndIntCastsUserType(t *testing.T) {
 	require.Equal(t, "Alice", u.GetNickname())
 	// user_type int-cast preserves INTERNAL for the frontend two-track split.
 	require.Equal(t, userv1.UserType_USER_TYPE_INTERNAL, u.GetUserType())
-}
-
-func TestToTestkitUser_NilInput(t *testing.T) {
-	// RefreshSession path produces no user; toTestkitUser(nil) must be nil.
-	stub := &stubUserClient{}
-	svc := newAuthSvc(t, stub)
-	resp, err := svc.RefreshSession(context.Background(), &testkitv1.RefreshSessionRequest{SessionId: "s"})
-	require.NoError(t, err)
-	require.Nil(t, resp.GetUser())
 }
