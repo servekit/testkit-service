@@ -12,20 +12,28 @@ import {
 } from "@/components/usertags";
 
 /**
- * Admin login-audit log. getLoginLogs is cursor-based, so this page fetches a
- * bounded first page (no offset cursor paging — kept simple for P2). Optional
- * filters: target user_id, provider, success.
+ * Auth audit log (login/register attempts — the backend table also records
+ * social/binding events, hence the page name 认证记录). getLoginLogs is
+ * cursor-based, so this page fetches a bounded first page. Optional filters:
+ * user, login method, action, result.
  */
 export default function LoginLogsPage() {
   const columns: ProColumns<API.LoginLog>[] = [
     { title: "时间", dataIndex: "createdAt", valueType: "dateTime", width: 180 },
-    { title: "用户 ID", dataIndex: "userId", width: 180, copyable: true },
+    {
+      title: "用户",
+      dataIndex: "username",
+      width: 160,
+      copyable: true,
+      // Failed attempts on unknown targets have no user row — fall back
+      // to the raw id so the cell is never blank.
+      render: (_, r) => r.username || String(r.userId || "-"),
+    },
     {
       title: "登录方式",
       dataIndex: "method",
       valueType: "select",
       valueEnum: LOGIN_METHOD_VALUE_ENUM,
-      search: false, // backend filters by provider only, not method
       width: 110,
     },
     {
@@ -87,7 +95,8 @@ export default function LoginLogsPage() {
         request={async (params) => {
           const resp = await getLoginLogs({
             userId: params.userId,
-            provider: params.provider as API.GetLoginLogsParams["provider"],
+            action: params.action as API.GetLoginLogsParams["action"],
+            method: params.method as API.GetLoginLogsParams["method"],
             success:
               params.success === undefined
                 ? undefined

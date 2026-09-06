@@ -2260,7 +2260,11 @@ export async function getLoginLogs(
           'provider': 'IDENTITY_PROVIDER_UNSPECIFIED',
         
         
-        ...params,},
+        
+        // action has a default value: LOGIN_ACTION_UNSPECIFIED
+          'action': 'LOGIN_ACTION_UNSPECIFIED',
+        // method has a default value: LOGIN_METHOD_UNSPECIFIED
+          'method': 'LOGIN_METHOD_UNSPECIFIED',...params,},
     ...(options || {}),
   });
 }

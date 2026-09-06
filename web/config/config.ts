@@ -104,7 +104,7 @@ export default defineConfig({
             },
             {
               path: "/users/login-logs",
-              name: "登录日志",
+              name: "认证记录",
               component: "./User/LoginLogs",
             },
           ],

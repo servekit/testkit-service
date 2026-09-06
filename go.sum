@@ -672,8 +672,8 @@ github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb
 github.com/sagikazarmark/locafero v0.11.0 h1:1iurJgmM9G3PA/I+wWYIOw/5SyBtxapeHDcg+AAIFXc=
 github.com/sagikazarmark/locafero v0.11.0/go.mod h1:nVIGvgyzw595SUSUE6tvCp3YYTeHs15MvlmU87WwIik=
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
-github.com/servekit/api/gen/go v0.0.0-20260906025823-75c8a8be2ba5 h1:CbHgJDeT5szdg6T5gpWikXEWfHQbkmZO8YcW8/J48E8=
-github.com/servekit/api/gen/go v0.0.0-20260906025823-75c8a8be2ba5/go.mod h1:eRewFd7DCi0TVeTc/7XgwS6IIKB841UltJ32J5NYcD4=
+github.com/servekit/api/gen/go v0.0.0-20260906030617-dc72f4359d03 h1:yDzb7cMLQHIpxZQCGt35UmTxq+UKBixj2KTEaqEtxVU=
+github.com/servekit/api/gen/go v0.0.0-20260906030617-dc72f4359d03/go.mod h1:eRewFd7DCi0TVeTc/7XgwS6IIKB841UltJ32J5NYcD4=
 github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d h1:qwa5EnFOBvAGGG7kiMgANioKOtwRbIqRzABXtNVDgvw=
 github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d/go.mod h1:wkaPO0XYfNLPyKQKKsRlTxuPdUQzz6XcWZ7ChY9+ttI=
 github.com/servekit/go-common v0.0.0-20260905165851-0bd6ec4339d2 h1:WKmy4yx4bg4yH+P6yB8XP40Umr8HkLiPTTueJ6Dytn4=
@@ -686,8 +686,8 @@ github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae h1:+p1YP6
 github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae/go.mod h1:7r9JE9CDXVy9iZDQBjGf99bSzH8a6HWA4IZst+dz12k=
 github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5 h1:/+v1GnKCsSbTUPiJYuhBqHxNFN17x/pCbm3Hkxtp810=
 github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5/go.mod h1:6HqtqxBsG+uB0ABD1SgFx0WFwx4OXORsxHhVpdTaoNg=
-github.com/servekit/user-service v0.0.0-20260906030009-bf0c5cb0e4ee h1:BCU6+PMAVt2B7qIYB0iQyxvVOo8KGVjhPSUk0srsZaw=
-github.com/servekit/user-service v0.0.0-20260906030009-bf0c5cb0e4ee/go.mod h1:fvt/QJuA0dsulon/AsAb4ckcrn6nMyenjglUG/SH+OE=
+github.com/servekit/user-service v0.0.0-20260906031015-b8a87236ea5f h1:WgPBJbGGerHLBAWyFyBg/vHly8sq3JkobHTtYkSD6uA=
+github.com/servekit/user-service v0.0.0-20260906031015-b8a87236ea5f/go.mod h1:WMQrjzfDvElWRNllzSCLc+um00XWWAggsc4LYe5owgI=
 github.com/shirou/gopsutil/v4 v4.26.5 h1:RPcBXkpz7kOj9PqGFQOlBPZHsyaPvPVQc098y9RmCNM=
 github.com/shirou/gopsutil/v4 v4.26.5/go.mod h1:LZ6ewCSkBqUpvSOf+LsTGnRinC6iaNUNMGBtDkJBaLQ=
 github.com/shopspring/decimal v1.4.0/go.mod h1:gawqmDU56v4yIKSwfBSFip1HdCCXN8/+DMd9qYNcwME=

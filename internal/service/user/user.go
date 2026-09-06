@@ -952,7 +952,9 @@ func toUserGetLoginLogsRequest(r *testkitv1.GetLoginLogsRequest) *userv1.GetLogi
 	return &userv1.GetLoginLogsRequest{
 		UserId:   r.GetUserId(),
 		Provider: userv1.IdentityProvider(r.GetProvider()),
-		Success:  r.GetSuccess(),
+		Success:  r.Success, // optional: nil = both outcomes
+		Action:   userv1.LoginAction(r.GetAction()),
+		Method:   userv1.LoginMethod(r.GetMethod()),
 		PageSize: r.GetPageSize(),
 		Cursor:   r.GetCursor(),
 	}
@@ -1014,6 +1016,7 @@ func toTestkitLoginLog(l *userv1.LoginLog) *testkitv1.LoginLog {
 		FailReason: l.GetFailReason(),
 		Ip:         l.GetIp(),
 		Method:     userv1.LoginMethod(l.GetMethod()),
+		Username:   l.GetUsername(),
 		DeviceType: userv1.DeviceType(l.GetDeviceType()),
 		Os:         l.GetOs(),
 		Browser:    l.GetBrowser(),

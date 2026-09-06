@@ -238,9 +238,38 @@ declare namespace API {
       | "IDENTITY_PROVIDER_APPLE"
       | "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM"
       | "IDENTITY_PROVIDER_ADMIN";
+    /** optional: presence distinguishes "filter failed attempts" (false) from
+"no filter" — a plain proto3 bool cannot tell those apart. */
     success?: boolean;
     pageSize?: number;
     cursor?: string;
+    /** optional filter (0 = all)
+
+ - LOGIN_ACTION_LOGIN: Successful password Login.
+ - LOGIN_ACTION_REGISTER: Register RPC or code-login auto-register.
+ - LOGIN_ACTION_SOCIAL_LOGIN: SocialLogin on an existing user.
+ - LOGIN_ACTION_SOCIAL_REGISTER: SocialLogin / MiniProgramLogin on a new user.
+ - LOGIN_ACTION_BIND: BindIdentity (planned).
+ - LOGIN_ACTION_UNBIND: UnbindIdentity (planned). */
+    action?:
+      | "LOGIN_ACTION_UNSPECIFIED"
+      | "LOGIN_ACTION_LOGIN"
+      | "LOGIN_ACTION_REGISTER"
+      | "LOGIN_ACTION_SOCIAL_LOGIN"
+      | "LOGIN_ACTION_SOCIAL_REGISTER"
+      | "LOGIN_ACTION_BIND"
+      | "LOGIN_ACTION_UNBIND";
+    /** optional filter (0 = all)
+
+ - LOGIN_METHOD_PHONE_CODE: Auto-registers on missing identity.
+ - LOGIN_METHOD_EMAIL_CODE: Auto-registers on missing identity. */
+    method?:
+      | "LOGIN_METHOD_UNSPECIFIED"
+      | "LOGIN_METHOD_EMAIL_PASSWORD"
+      | "LOGIN_METHOD_PHONE_PASSWORD"
+      | "LOGIN_METHOD_PHONE_CODE"
+      | "LOGIN_METHOD_EMAIL_CODE"
+      | "LOGIN_METHOD_USERNAME_PASSWORD";
   };
 
   type GetMyFileParams = {
@@ -1994,6 +2023,9 @@ or context was cancelled. error_message carries the last error. */
     city?: string;
     createdAt?: string;
     method?: v1LoginMethod;
+    /** Denormalized at read time for list views; empty when user_id no longer
+resolves (see user.v1). */
+    username?: string;
   };
 
   type v1LoginMethod =
