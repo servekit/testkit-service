@@ -75,7 +75,7 @@ export default function SessionPage() {
     },
     { title: "IP", dataIndex: "ip", width: 140 },
     { title: "系统", dataIndex: "os", width: 120 },
-    { title: "浏览器", dataIndex: "browser" },
+    { title: "客户端", dataIndex: "browser" },
     {
       title: "位置",
       render: (_, r) => [r.country, r.city].filter(Boolean).join(" ") || "-",
