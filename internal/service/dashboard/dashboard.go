@@ -34,7 +34,7 @@ type Service struct {
 }
 
 // New constructs the dashboard service. The three clients are the embedded
-// downstream handlers (thirdcall interfaces). Order: user, storage, message.
+// downstream provider Services. Order: user, storage, message.
 func New(user userservice.Service, storage storageservice.Service, message messageservice.Service) *Service {
 	return &Service{user: user, storage: storage, message: message}
 }

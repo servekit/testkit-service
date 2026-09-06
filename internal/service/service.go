@@ -39,16 +39,17 @@ import (
 	userservice "github.com/servekit/user-service/pkg"
 )
 
-// Service holds testkit-service runtime state: the four downstream thirdcall
-// clients plus the six domain services. Construction + DI is in init.go.
+// Service holds testkit-service runtime state: the six embedded downstreams
+// plus the eight domain services. Construction + DI is in init.go.
 type Service struct {
 	cfg   *config.Config
 	mgr   *lifecycle.Manager
 	redis *redis.Client
 	db    *gorm.DB
 
-	// The six embedded downstreams (thirdcall interfaces: full RPC method set
-	// + Close). Built + lifecycle-registered in init.go.
+	// The six embedded downstreams (each a full provider Service interface:
+	// module-mode Handler or gRPC Client). Built + lifecycle-registered in
+	// init.go.
 	gid       gidservice.Service
 	message   messageservice.Service
 	storage   storageservice.Service

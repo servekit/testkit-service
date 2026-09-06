@@ -338,7 +338,7 @@ func (s *Service) SocialLogin(ctx context.Context, req *testkitv1.SocialLoginReq
 }
 
 // MiniProgramLogin completes a WeChat mini-program login (code flow). Same
-// session_id → JWT shape as SocialLogin.
+// Same session-token shape as SocialLogin.
 func (s *Service) MiniProgramLogin(ctx context.Context, req *testkitv1.MiniProgramLoginRequest) (*testkitv1.SocialLoginResponse, error) {
 	resp, err := s.user.MiniProgramLogin(ctx, &userv1.MiniProgramLoginRequest{
 		Code:      req.GetCode(),
@@ -352,7 +352,7 @@ func (s *Service) MiniProgramLogin(ctx context.Context, req *testkitv1.MiniProgr
 }
 
 // MiniProgramPhoneLogin completes a WeChat mini-program phone login. Same
-// session_id → JWT shape as SocialLogin.
+// Same session-token shape as SocialLogin.
 func (s *Service) MiniProgramPhoneLogin(ctx context.Context, req *testkitv1.MiniProgramPhoneLoginRequest) (*testkitv1.SocialLoginResponse, error) {
 	resp, err := s.user.MiniProgramPhoneLogin(ctx, &userv1.MiniProgramPhoneLoginRequest{
 		LoginCode: req.GetLoginCode(),
