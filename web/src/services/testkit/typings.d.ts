@@ -270,6 +270,9 @@ declare namespace API {
       | "LOGIN_METHOD_PHONE_CODE"
       | "LOGIN_METHOD_EMAIL_CODE"
       | "LOGIN_METHOD_USERNAME_PASSWORD";
+    /** Alternative to user_id: resolve the username server-side. user_id wins
+when both are set; an unknown username yields an empty page. */
+    username?: string;
   };
 
   type GetMyFileParams = {

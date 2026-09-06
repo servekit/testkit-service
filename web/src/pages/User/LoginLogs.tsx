@@ -4,7 +4,7 @@ import {
   ProFormText,
   QueryFilter,
 } from "@ant-design/pro-components";
-import { Button, Space, Table, Tag, type TableColumnsType } from "antd";
+import { Button, Space, Table, Tag, Typography, type TableColumnsType } from "antd";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { getLoginLogs } from "@/services/testkit/testkitService";
@@ -17,6 +17,7 @@ import {
 /** Shape of the QueryFilter output; values arrive as strings. */
 interface AuditFilters {
   userId?: string;
+  username?: string;
   method?: API.GetLoginLogsParams["method"];
   action?: API.GetLoginLogsParams["action"];
   success?: "true" | "false";
@@ -49,6 +50,7 @@ export default function LoginLogsPage() {
     try {
       const resp = await getLoginLogs({
         userId: f.userId || undefined,
+        username: f.username || undefined,
         method: f.method,
         action: f.action,
         success: f.success === undefined ? undefined : f.success === "true",
@@ -73,10 +75,23 @@ export default function LoginLogsPage() {
     {
       title: "用户",
       dataIndex: "username",
-      width: 160,
-      // Failed attempts on unknown targets have no user row — fall back
-      // to the raw id so the cell is never blank.
-      render: (_, r) => r.username || String(r.userId || "-"),
+      width: 170,
+      // Username first, the snowflake id dimmed beneath (copy on click);
+      // failed attempts on unknown targets fall back to the raw id.
+      render: (_, r) => (
+        <div>
+          <div>{r.username || String(r.userId || "-")}</div>
+          {r.username && r.userId ? (
+            <Typography.Text
+              type="secondary"
+              style={{ fontSize: 12 }}
+              copyable={{ text: String(r.userId), tooltips: ["复制 ID", "已复制"] }}
+            >
+              {String(r.userId)}
+            </Typography.Text>
+          ) : null}
+        </div>
+      ),
     },
     {
       title: "登录方式",
@@ -132,6 +147,7 @@ export default function LoginLogsPage() {
         }}
         onReset={() => setFilters({})}
       >
+        <ProFormText name="username" label="用户名" placeholder="按用户名过滤" />
         <ProFormText name="userId" label="用户 ID" placeholder="按用户 ID 过滤" />
         <ProFormSelect
           name="method"

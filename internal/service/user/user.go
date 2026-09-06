@@ -961,6 +961,7 @@ func toUserGetLoginLogsRequest(r *testkitv1.GetLoginLogsRequest) *userv1.GetLogi
 		Success:  r.Success, // optional: nil = both outcomes
 		Action:   userv1.LoginAction(r.GetAction()),
 		Method:   userv1.LoginMethod(r.GetMethod()),
+		Username: r.GetUsername(),
 		PageSize: r.GetPageSize(),
 		Cursor:   r.GetCursor(),
 	}
