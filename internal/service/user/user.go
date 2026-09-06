@@ -219,14 +219,18 @@ func (s *Service) UnbindIdentity(ctx context.Context, req *testkitv1.UnbindIdent
 // ListSessions lists the CALLER's active sessions, flagging the one the
 // caller is currently using. user_id is injected from ctx; the current
 // session id likewise comes from the edge middleware's trusted identity.
-func (s *Service) ListSessions(ctx context.Context, _ *testkitv1.ListSessionsRequest) (*testkitv1.ListSessionsResponse, error) {
+func (s *Service) ListSessions(ctx context.Context, req *testkitv1.ListSessionsRequest) (*testkitv1.ListSessionsResponse, error) {
 	userID, err := userIDFromCtx(ctx)
 	if err != nil {
 		return nil, err
 	}
 	currentSID, _ := usauth.SessionIDFromCtx(ctx) // absent outside gateway calls
 
-	resp, err := s.user.ListSessions(ctx, &userv1.ListSessionsRequest{UserId: userID})
+	resp, err := s.user.ListSessions(ctx, &userv1.ListSessionsRequest{
+		UserId:   userID,
+		PageSize: req.GetPageSize(),
+		Cursor:   req.GetCursor(),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -236,7 +240,7 @@ func (s *Service) ListSessions(ctx context.Context, _ *testkitv1.ListSessionsReq
 		ts.Current = ts.Id == currentSID
 		sessions = append(sessions, ts)
 	}
-	return &testkitv1.ListSessionsResponse{Sessions: sessions}, nil
+	return &testkitv1.ListSessionsResponse{Sessions: sessions, NextCursor: resp.GetNextCursor()}, nil
 }
 
 // RevokeSession revokes a target session. session_id is the target resource ID

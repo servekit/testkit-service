@@ -575,6 +575,13 @@ or context was cancelled. error_message carries the last error. */
     cursor?: string;
   };
 
+  type ListSessionsParams = {
+    /** History pages are cursor-based; the first call (empty cursor) also
+returns the LIVE sessions ahead of the history (see user.v1). */
+    pageSize?: number;
+    cursor?: string;
+  };
+
   type ListSMSByCursorParams = {
     /**  - SMS_VENDOR_ALIYUN: Aliyun (domestic + intl SendMessageToGlobe).
  - SMS_VENDOR_TENCENT: Tencent Cloud SMS (domestic + intl via SdkAppid).
@@ -1961,6 +1968,7 @@ or context was cancelled. error_message carries the last error. */
 
   type v1ListSessionsResponse = {
     sessions?: v1Session[];
+    nextCursor?: string;
   };
 
   type v1ListSMSByCursorResponse = {
