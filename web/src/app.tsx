@@ -3,7 +3,12 @@ import { history } from '@umijs/max';
 import { App as AntdApp, Dropdown } from 'antd';
 import type { ReactNode } from 'react';
 import { requestConfig } from './request';
+import { installChunkReloadGuard } from './utils/chunkGuard';
 import { endSession } from './utils/session';
+
+// Before anything renders: a stale-deploy tab whose lazy chunks 404 should
+// reload itself once instead of showing "Loading chunk ... failed" forever.
+installChunkReloadGuard();
 
 const LOGIN_PATH = '/user/login';
 // Public (session-less) surfaces: everything under /user/ — login + register.
