@@ -71,7 +71,7 @@ export default function GroupsPage() {
     { title: "用户 ID", dataIndex: "userId", copyable: true },
     { title: "昵称", dataIndex: "nickname" },
     { title: "角色", dataIndex: "role", width: 100 },
-    { title: "加入时间", dataIndex: "createdAt", width: 180 },
+    { title: "加入时间", dataIndex: "createdAt", valueType: "dateTime", width: 180 },
     {
       title: "操作",
       valueType: "option",

@@ -42,7 +42,7 @@ export default function SessionPage() {
       title: "位置",
       render: (_, r) => [r.country, r.city].filter(Boolean).join(" ") || "-",
     },
-    { title: "最后活跃", dataIndex: "lastActiveAt", width: 180 },
+    { title: "最后活跃", dataIndex: "lastActiveAt", valueType: "dateTime", width: 180 },
     {
       title: "操作",
       valueType: "option",

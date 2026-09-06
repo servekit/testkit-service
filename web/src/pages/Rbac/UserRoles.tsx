@@ -42,7 +42,7 @@ export default function UserRolesPage() {
           <Tag>{r.source}</Tag>
         ),
     },
-    { title: "授权时间", dataIndex: "createdAt", width: 180 },
+    { title: "授权时间", dataIndex: "createdAt", valueType: "dateTime", width: 180 },
     {
       title: "操作",
       valueType: "option",

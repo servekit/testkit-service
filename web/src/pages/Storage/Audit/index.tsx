@@ -52,7 +52,7 @@ export default function MyAuditPage() {
     },
     { title: "开始时间", dataIndex: "startTime", hideInTable: true },
     { title: "结束时间", dataIndex: "endTime", hideInTable: true },
-    { title: "时间", dataIndex: "createdAt", search: false, width: 180 },
+    { title: "时间", dataIndex: "createdAt", valueType: "dateTime", search: false, width: 180 },
     { title: "request_id", dataIndex: "requestId", search: false, copyable: true },
     { title: "错误信息", dataIndex: "errorMessage", search: false },
   ];

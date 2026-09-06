@@ -122,7 +122,7 @@ export default function MyFilesPage() {
       render: (_, r) =>
         r.isPublic ? <Tag color="green">公开</Tag> : <Tag>私有</Tag>,
     },
-    { title: "创建时间", dataIndex: "createdAt", search: false, width: 180 },
+    { title: "创建时间", dataIndex: "createdAt", valueType: "dateTime", search: false, width: 180 },
     {
       title: "操作",
       valueType: "option",

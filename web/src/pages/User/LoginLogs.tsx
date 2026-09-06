@@ -18,7 +18,7 @@ import {
  */
 export default function LoginLogsPage() {
   const columns: ProColumns<API.LoginLog>[] = [
-    { title: "时间", dataIndex: "createdAt", width: 180 },
+    { title: "时间", dataIndex: "createdAt", valueType: "dateTime", width: 180 },
     { title: "用户 ID", dataIndex: "userId", width: 180, copyable: true },
     {
       title: "登录方式",

@@ -52,6 +52,7 @@ export default function IdentityPage() {
     {
       title: "绑定时间",
       dataIndex: "createdAt",
+      valueType: "dateTime",
       width: 180,
     },
     {

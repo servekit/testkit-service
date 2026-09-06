@@ -91,6 +91,7 @@ export default function EmailRecordsPage() {
     {
       title: "发送时间",
       dataIndex: "sentAt",
+      valueType: "dateTime",
       width: 170,
       search: false,
       render: (_, r) => formatTimestamp(r.sentAt),

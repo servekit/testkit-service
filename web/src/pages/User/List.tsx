@@ -7,6 +7,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import dayjs from "dayjs";
 import { App, Button, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useRef, useState } from "react";
@@ -63,7 +64,17 @@ export default function UserListPage() {
       search: false,
       valueEnum: PROVIDER_VALUE_ENUM,
     },
-    { title: "最后登录", dataIndex: "lastLoginAt", search: false, width: 180 },
+    {
+      title: "最后登录",
+      dataIndex: "lastLoginAt",
+      search: false,
+      width: 180,
+      // proto zero-time (1970) means the user never logged in.
+      render: (_, r) =>
+        r.lastLoginAt && !r.lastLoginAt.startsWith("1970")
+          ? dayjs(r.lastLoginAt).format("YYYY-MM-DD HH:mm:ss")
+          : "-",
+    },
     {
       title: "操作",
       valueType: "option",

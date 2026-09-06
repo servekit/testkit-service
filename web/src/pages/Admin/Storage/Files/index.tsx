@@ -48,7 +48,7 @@ export default function AdminFilesPage() {
       width: 110,
       render: (_, r) => formatBytes(r.size),
     },
-    { title: "创建时间", dataIndex: "createdAt", search: false, width: 180 },
+    { title: "创建时间", dataIndex: "createdAt", valueType: "dateTime", search: false, width: 180 },
     {
       title: "操作",
       valueType: "option",
