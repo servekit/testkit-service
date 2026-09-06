@@ -8,7 +8,7 @@ import { getLoginLogs } from "@/services/testkit/testkitService";
 import {
   DEVICE_TYPE_VALUE_ENUM,
   LOGIN_ACTION_VALUE_ENUM,
-  PROVIDER_VALUE_ENUM,
+  LOGIN_METHOD_VALUE_ENUM,
 } from "@/components/usertags";
 
 /**
@@ -22,9 +22,10 @@ export default function LoginLogsPage() {
     { title: "用户 ID", dataIndex: "userId", width: 180, copyable: true },
     {
       title: "登录方式",
-      dataIndex: "provider",
+      dataIndex: "method",
       valueType: "select",
-      valueEnum: PROVIDER_VALUE_ENUM,
+      valueEnum: LOGIN_METHOD_VALUE_ENUM,
+      search: false, // backend filters by provider only, not method
       width: 110,
     },
     {

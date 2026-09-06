@@ -1013,6 +1013,7 @@ func toTestkitLoginLog(l *userv1.LoginLog) *testkitv1.LoginLog {
 		Success:    l.GetSuccess(),
 		FailReason: l.GetFailReason(),
 		Ip:         l.GetIp(),
+		Method:     userv1.LoginMethod(l.GetMethod()),
 		DeviceType: userv1.DeviceType(l.GetDeviceType()),
 		Os:         l.GetOs(),
 		Browser:    l.GetBrowser(),

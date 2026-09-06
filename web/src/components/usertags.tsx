@@ -82,3 +82,12 @@ export const LOGIN_ACTION_VALUE_ENUM = {
   LOGIN_ACTION_BIND: { text: "绑定" },
   LOGIN_ACTION_UNBIND: { text: "解绑" },
 };
+
+export const LOGIN_METHOD_VALUE_ENUM = {
+  LOGIN_METHOD_UNSPECIFIED: { text: "-" },
+  LOGIN_METHOD_EMAIL_PASSWORD: { text: "邮箱密码" },
+  LOGIN_METHOD_PHONE_PASSWORD: { text: "手机密码" },
+  LOGIN_METHOD_PHONE_CODE: { text: "手机验证码" },
+  LOGIN_METHOD_EMAIL_CODE: { text: "邮箱验证码" },
+  LOGIN_METHOD_USERNAME_PASSWORD: { text: "账号密码" },
+};

@@ -187,11 +187,21 @@ declare namespace API {
   };
 
   type GetEmailStatsParams = {
+    /**  - EMAIL_VENDOR_ALIYUN: Aliyun DirectMail.
+ - EMAIL_VENDOR_TENCENT: Tencent SES.
+ - EMAIL_VENDOR_NETEASE: NetEase EasyMail. */
     vendor?:
       | "EMAIL_VENDOR_UNSPECIFIED"
       | "EMAIL_VENDOR_ALIYUN"
       | "EMAIL_VENDOR_TENCENT"
       | "EMAIL_VENDOR_NETEASE";
+    /**  - EMAIL_SCENE_LOGIN_CODE: One-time login verification code.
+ - EMAIL_SCENE_FORGOT_PASSWORD: Password reset link / code.
+ - EMAIL_SCENE_REGISTER: Registration verification code.
+ - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.
+ - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.
+ - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.
+ - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address. */
     scene?:
       | "EMAIL_SCENE_UNSPECIFIED"
       | "EMAIL_SCENE_LOGIN_CODE"
@@ -216,7 +226,8 @@ declare namespace API {
   type GetLoginLogsParams = {
     /** optional filter (0 = all); kept */
     userId?: string;
-    /**  - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method. */
+    /**  - IDENTITY_PROVIDER_WECHAT: WeChat web OAuth (redirect-based).
+ - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method. */
     provider?:
       | "IDENTITY_PROVIDER_UNSPECIFIED"
       | "IDENTITY_PROVIDER_EMAIL"
@@ -272,6 +283,11 @@ declare namespace API {
   };
 
   type GetSMSStatsParams = {
+    /**  - SMS_VENDOR_ALIYUN: Aliyun (domestic + intl SendMessageToGlobe).
+ - SMS_VENDOR_TENCENT: Tencent Cloud SMS (domestic + intl via SdkAppid).
+ - SMS_VENDOR_VOLCENGINE: ByteDance Volcengine SMS.
+ - SMS_VENDOR_BYTEPLUS: Byteplus (intl-only, template-based).
+ - SMS_VENDOR_HUAWEI: Huawei Cloud SMS. */
     vendor?:
       | "SMS_VENDOR_UNSPECIFIED"
       | "SMS_VENDOR_ALIYUN"
@@ -279,6 +295,12 @@ declare namespace API {
       | "SMS_VENDOR_VOLCENGINE"
       | "SMS_VENDOR_BYTEPLUS"
       | "SMS_VENDOR_HUAWEI";
+    /**  - SMS_SCENE_LOGIN_CODE: One-time login verification code.
+ - SMS_SCENE_FORGOT_PASSWORD: Password reset code.
+ - SMS_SCENE_REGISTER: Registration verification code.
+ - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.
+ - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.
+ - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number. */
     scene?:
       | "SMS_SCENE_UNSPECIFIED"
       | "SMS_SCENE_LOGIN_CODE"
@@ -308,11 +330,21 @@ declare namespace API {
   };
 
   type ListEmailsByCursorParams = {
+    /**  - EMAIL_VENDOR_ALIYUN: Aliyun DirectMail.
+ - EMAIL_VENDOR_TENCENT: Tencent SES.
+ - EMAIL_VENDOR_NETEASE: NetEase EasyMail. */
     vendor?:
       | "EMAIL_VENDOR_UNSPECIFIED"
       | "EMAIL_VENDOR_ALIYUN"
       | "EMAIL_VENDOR_TENCENT"
       | "EMAIL_VENDOR_NETEASE";
+    /**  - EMAIL_SCENE_LOGIN_CODE: One-time login verification code.
+ - EMAIL_SCENE_FORGOT_PASSWORD: Password reset link / code.
+ - EMAIL_SCENE_REGISTER: Registration verification code.
+ - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.
+ - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.
+ - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.
+ - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address. */
     scene?:
       | "EMAIL_SCENE_UNSPECIFIED"
       | "EMAIL_SCENE_LOGIN_CODE"
@@ -322,6 +354,15 @@ declare namespace API {
       | "EMAIL_SCENE_BIND_ACCOUNT"
       | "EMAIL_SCENE_NOTIFICATION"
       | "EMAIL_SCENE_VERIFY_EMAIL";
+    /**  - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.
+ - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;
+the sync flow does NOT write PENDING (currently unused).
+ - MESSAGE_STATUS_SENT: SENT — the vendor synchronously accepted the send request.
+For SMS: vendor API returned OK; does NOT mean handset received
+         (async delivery is not tracked yet).
+For email: SMTP server accepted the message.
+ - MESSAGE_STATUS_FAILED: FAILED — the vendor rejected the request, network/transport failed,
+or context was cancelled. error_message carries the last error. */
     status?:
       | "MESSAGE_STATUS_UNSPECIFIED"
       | "MESSAGE_STATUS_PENDING"
@@ -347,11 +388,21 @@ declare namespace API {
   };
 
   type ListEmailsParams = {
+    /**  - EMAIL_VENDOR_ALIYUN: Aliyun DirectMail.
+ - EMAIL_VENDOR_TENCENT: Tencent SES.
+ - EMAIL_VENDOR_NETEASE: NetEase EasyMail. */
     vendor?:
       | "EMAIL_VENDOR_UNSPECIFIED"
       | "EMAIL_VENDOR_ALIYUN"
       | "EMAIL_VENDOR_TENCENT"
       | "EMAIL_VENDOR_NETEASE";
+    /**  - EMAIL_SCENE_LOGIN_CODE: One-time login verification code.
+ - EMAIL_SCENE_FORGOT_PASSWORD: Password reset link / code.
+ - EMAIL_SCENE_REGISTER: Registration verification code.
+ - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.
+ - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.
+ - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.
+ - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address. */
     scene?:
       | "EMAIL_SCENE_UNSPECIFIED"
       | "EMAIL_SCENE_LOGIN_CODE"
@@ -361,6 +412,15 @@ declare namespace API {
       | "EMAIL_SCENE_BIND_ACCOUNT"
       | "EMAIL_SCENE_NOTIFICATION"
       | "EMAIL_SCENE_VERIFY_EMAIL";
+    /**  - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.
+ - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;
+the sync flow does NOT write PENDING (currently unused).
+ - MESSAGE_STATUS_SENT: SENT — the vendor synchronously accepted the send request.
+For SMS: vendor API returned OK; does NOT mean handset received
+         (async delivery is not tracked yet).
+For email: SMTP server accepted the message.
+ - MESSAGE_STATUS_FAILED: FAILED — the vendor rejected the request, network/transport failed,
+or context was cancelled. error_message carries the last error. */
     status?:
       | "MESSAGE_STATUS_UNSPECIFIED"
       | "MESSAGE_STATUS_PENDING"
@@ -487,6 +547,11 @@ declare namespace API {
   };
 
   type ListSMSByCursorParams = {
+    /**  - SMS_VENDOR_ALIYUN: Aliyun (domestic + intl SendMessageToGlobe).
+ - SMS_VENDOR_TENCENT: Tencent Cloud SMS (domestic + intl via SdkAppid).
+ - SMS_VENDOR_VOLCENGINE: ByteDance Volcengine SMS.
+ - SMS_VENDOR_BYTEPLUS: Byteplus (intl-only, template-based).
+ - SMS_VENDOR_HUAWEI: Huawei Cloud SMS. */
     vendor?:
       | "SMS_VENDOR_UNSPECIFIED"
       | "SMS_VENDOR_ALIYUN"
@@ -494,6 +559,12 @@ declare namespace API {
       | "SMS_VENDOR_VOLCENGINE"
       | "SMS_VENDOR_BYTEPLUS"
       | "SMS_VENDOR_HUAWEI";
+    /**  - SMS_SCENE_LOGIN_CODE: One-time login verification code.
+ - SMS_SCENE_FORGOT_PASSWORD: Password reset code.
+ - SMS_SCENE_REGISTER: Registration verification code.
+ - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.
+ - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.
+ - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number. */
     scene?:
       | "SMS_SCENE_UNSPECIFIED"
       | "SMS_SCENE_LOGIN_CODE"
@@ -502,6 +573,15 @@ declare namespace API {
       | "SMS_SCENE_CHANGE_PASSWORD"
       | "SMS_SCENE_BIND_ACCOUNT"
       | "SMS_SCENE_VERIFY_PHONE";
+    /**  - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.
+ - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;
+the sync flow does NOT write PENDING (currently unused).
+ - MESSAGE_STATUS_SENT: SENT — the vendor synchronously accepted the send request.
+For SMS: vendor API returned OK; does NOT mean handset received
+         (async delivery is not tracked yet).
+For email: SMTP server accepted the message.
+ - MESSAGE_STATUS_FAILED: FAILED — the vendor rejected the request, network/transport failed,
+or context was cancelled. error_message carries the last error. */
     status?:
       | "MESSAGE_STATUS_UNSPECIFIED"
       | "MESSAGE_STATUS_PENDING"
@@ -528,6 +608,11 @@ declare namespace API {
   };
 
   type ListSMSParams = {
+    /**  - SMS_VENDOR_ALIYUN: Aliyun (domestic + intl SendMessageToGlobe).
+ - SMS_VENDOR_TENCENT: Tencent Cloud SMS (domestic + intl via SdkAppid).
+ - SMS_VENDOR_VOLCENGINE: ByteDance Volcengine SMS.
+ - SMS_VENDOR_BYTEPLUS: Byteplus (intl-only, template-based).
+ - SMS_VENDOR_HUAWEI: Huawei Cloud SMS. */
     vendor?:
       | "SMS_VENDOR_UNSPECIFIED"
       | "SMS_VENDOR_ALIYUN"
@@ -535,6 +620,12 @@ declare namespace API {
       | "SMS_VENDOR_VOLCENGINE"
       | "SMS_VENDOR_BYTEPLUS"
       | "SMS_VENDOR_HUAWEI";
+    /**  - SMS_SCENE_LOGIN_CODE: One-time login verification code.
+ - SMS_SCENE_FORGOT_PASSWORD: Password reset code.
+ - SMS_SCENE_REGISTER: Registration verification code.
+ - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.
+ - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.
+ - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number. */
     scene?:
       | "SMS_SCENE_UNSPECIFIED"
       | "SMS_SCENE_LOGIN_CODE"
@@ -543,6 +634,15 @@ declare namespace API {
       | "SMS_SCENE_CHANGE_PASSWORD"
       | "SMS_SCENE_BIND_ACCOUNT"
       | "SMS_SCENE_VERIFY_PHONE";
+    /**  - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.
+ - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;
+the sync flow does NOT write PENDING (currently unused).
+ - MESSAGE_STATUS_SENT: SENT — the vendor synchronously accepted the send request.
+For SMS: vendor API returned OK; does NOT mean handset received
+         (async delivery is not tracked yet).
+For email: SMTP server accepted the message.
+ - MESSAGE_STATUS_FAILED: FAILED — the vendor rejected the request, network/transport failed,
+or context was cancelled. error_message carries the last error. */
     status?:
       | "MESSAGE_STATUS_UNSPECIFIED"
       | "MESSAGE_STATUS_PENDING"
@@ -584,7 +684,8 @@ declare namespace API {
       | "GENDER_FEMALE"
       | "GENDER_OTHER"
       | "GENDER_UNKNOWN";
-    /**  - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method. */
+    /**  - IDENTITY_PROVIDER_WECHAT: WeChat web OAuth (redirect-based).
+ - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method. */
     registerSource?:
       | "IDENTITY_PROVIDER_UNSPECIFIED"
       | "IDENTITY_PROVIDER_EMAIL"
@@ -595,6 +696,7 @@ declare namespace API {
       | "IDENTITY_PROVIDER_APPLE"
       | "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM"
       | "IDENTITY_PROVIDER_ADMIN";
+    /**  - DEVICE_TYPE_API: Machine-to-machine / direct API token (no UA). */
     registerDevice?:
       | "DEVICE_TYPE_UNSPECIFIED"
       | "DEVICE_TYPE_WEB"
@@ -620,6 +722,7 @@ declare namespace API {
     regionCode?: string;
     phone?: string;
     username?: string;
+    /**  - USER_SORT_FIELD_ID: Default: snowflake id ascending. */
     orderBy?:
       | "USER_SORT_FIELD_UNSPECIFIED"
       | "USER_SORT_FIELD_ID"
@@ -647,7 +750,8 @@ declare namespace API {
       | "GENDER_FEMALE"
       | "GENDER_OTHER"
       | "GENDER_UNKNOWN";
-    /**  - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method. */
+    /**  - IDENTITY_PROVIDER_WECHAT: WeChat web OAuth (redirect-based).
+ - IDENTITY_PROVIDER_ADMIN: Audit tag for CreateUser; not a login method. */
     registerSource?:
       | "IDENTITY_PROVIDER_UNSPECIFIED"
       | "IDENTITY_PROVIDER_EMAIL"
@@ -658,6 +762,7 @@ declare namespace API {
       | "IDENTITY_PROVIDER_APPLE"
       | "IDENTITY_PROVIDER_WECHAT_MINIPROGRAM"
       | "IDENTITY_PROVIDER_ADMIN";
+    /**  - DEVICE_TYPE_API: Machine-to-machine / direct API token (no UA). */
     registerDevice?:
       | "DEVICE_TYPE_UNSPECIFIED"
       | "DEVICE_TYPE_WEB"
@@ -683,6 +788,7 @@ declare namespace API {
       | "USER_TYPE_UNSPECIFIED"
       | "USER_TYPE_NORMAL"
       | "USER_TYPE_INTERNAL";
+    /**  - USER_SORT_FIELD_ID: Default: snowflake id ascending. */
     orderBy?:
       | "USER_SORT_FIELD_UNSPECIFIED"
       | "USER_SORT_FIELD_ID"
@@ -1887,6 +1993,7 @@ declare namespace API {
     country?: string;
     city?: string;
     createdAt?: string;
+    method?: v1LoginMethod;
   };
 
   type v1LoginMethod =
@@ -1972,7 +2079,7 @@ declare namespace API {
   };
 
   type v1Pong = {
-    /** service name, e.g. "demo-service" */
+    /** service name, e.g. "user-service" */
     service?: string;
     /** semantic version (ldflags; "dev" by default) */
     version?: string;
