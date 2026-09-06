@@ -17,6 +17,7 @@ import (
 	"time"
 
 	gidservice "github.com/servekit/gid-service/pkg"
+	referenceservice "github.com/servekit/reference-service/pkg"
 	"github.com/servekit/go-common/configx"
 	"github.com/servekit/go-common/cronx"
 	"github.com/servekit/go-common/dbx"
@@ -81,6 +82,16 @@ func New(cfg *config.Config) (*Service, error) {
 		return nil, rollback(mgr, err)
 	}
 	svc.gid = gid
+
+	// reference-service: pure static data, module mode costs nothing.
+	refMode, refTarget, refCfg := unpack(cfg.ThirdParty.Reference)
+	ref, _, err := referenceservice.Connect(referenceservice.ConnectConfig{
+		Mode: refMode, Target: refTarget, Config: refCfg,
+	}, mgr)
+	if err != nil {
+		return nil, rollback(mgr, err)
+	}
+	svc.reference = ref
 
 	msgMode, msgTarget, msgCfg := unpack(cfg.ThirdParty.Message)
 	msg, msgRaw, err := messageservice.Connect(messageservice.ConnectConfig{
@@ -188,7 +199,10 @@ func New(cfg *config.Config) (*Service, error) {
 	if cfg.Message.SenderID == "" {
 		return nil, rollback(mgr, xcodes.ErrSenderNotConfigured.New())
 	}
-	svc.messageSvc = message.New(msg, message.WithSenderID(cfg.Message.SenderID))
+	svc.messageSvc = message.New(msg,
+		message.WithSenderID(cfg.Message.SenderID),
+		message.WithReference(ref),
+	)
 
 	// P5 gid + dashboard domains.
 	svc.gidSvc = gidsvc.New(gid)

@@ -21,6 +21,7 @@ import (
 
 	commonv1 "github.com/servekit/api/gen/go/common/v1"
 	gidservice "github.com/servekit/gid-service/pkg"
+	referenceservice "github.com/servekit/reference-service/pkg"
 	"github.com/servekit/go-common/lifecycle"
 	licenseservice "github.com/servekit/license-service/pkg"
 	messageservice "github.com/servekit/message-service/pkg"
@@ -51,6 +52,7 @@ type Service struct {
 	// module-mode Handler or gRPC Client). Built + lifecycle-registered in
 	// init.go.
 	gid       gidservice.Service
+	reference referenceservice.Service
 	message   messageservice.Service
 	storage   storageservice.Service
 	user      userservice.Service

@@ -92,6 +92,12 @@ third_party:
         machine_id: ${TESTKIT_SERVICE_GID_MACHINE_ID}  # must be unique per node, 1..1023
         # snowflake epoch — DO NOT change after deployment
         start_time: ${TESTKIT_SERVICE_GID_START_TIME}
+  reference:
+    mode: ${TESTKIT_SERVICE_REFERENCE_MODE}    # module | grpc
+    target: ${TESTKIT_SERVICE_REFERENCE_TARGET} # gRPC addr when mode=grpc
+    config:                                    # required when mode=module — reference has no DB
+      server:
+        grpc_addr: ${REFERENCE_SERVICE_SERVER_GRPC_ADDR}
   message:
     mode: ${TESTKIT_SERVICE_MESSAGE_MODE}      # module | grpc
     target: ${TESTKIT_SERVICE_MESSAGE_TARGET}

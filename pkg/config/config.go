@@ -21,6 +21,7 @@ import (
 	messageconfig "github.com/servekit/message-service/pkg/config"
 	storageconfig "github.com/servekit/storage-service/pkg/config"
 	telemetryconfig "github.com/servekit/telemetry-service/pkg/config"
+	referenceconfig "github.com/servekit/reference-service/pkg/config"
 	userconfig "github.com/servekit/user-service/pkg/config"
 )
 
@@ -94,6 +95,7 @@ type ThirdPartyConfig struct {
 	User      *RemoteServiceConfig[*userconfig.Config]
 	License   *RemoteServiceConfig[*licenseconfig.Config]
 	Telemetry *RemoteServiceConfig[*telemetryconfig.Config]
+	Reference *RemoteServiceConfig[*referenceconfig.Config]
 }
 
 // RemoteServiceConfig holds connection settings for a service that can run

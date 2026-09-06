@@ -30,11 +30,14 @@ package message
 
 import (
 	"context"
+	"errors"
 	messagingv1 "github.com/servekit/api/gen/go/messaging/v1"
 
 	messagev1 "github.com/servekit/api/gen/go/messaging/v1"
+	referencev1 "github.com/servekit/api/gen/go/reference/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	messageservice "github.com/servekit/message-service/pkg"
+	referenceservice "github.com/servekit/reference-service/pkg"
 )
 
 // Service implements testkit's message domain. The message field is typed as
@@ -43,8 +46,9 @@ import (
 // messagev1.UnimplementedMessageServiceServer, override the methods under test,
 // and add a no-op Close (Task 2).
 type Service struct {
-	message  messageservice.Service
-	senderID string // injected into downstream Send requests (decision 1)
+	message   messageservice.Service
+	reference referenceservice.Service // region-code directory source
+	senderID  string                   // injected into downstream Send requests (decision 1)
 }
 
 // Option configures a Service.
@@ -54,6 +58,13 @@ type Option func(*Service)
 // in production (service.New fail-fasts on empty cfg.Message.SenderID); the
 // option form keeps construction uniform with the other domain constructors.
 func WithSenderID(id string) Option { return func(s *Service) { s.senderID = id } }
+
+// WithReference sets the reference-service dependency backing the region-code
+// directory. Wired in service init; nil leaves ListRegionCodes erroring
+// (fail closed) instead of panicking.
+func WithReference(ref referenceservice.Service) Option {
+	return func(s *Service) { s.reference = ref }
+}
 
 // New constructs the message-domain service. client is the embedded
 // message-service handler (messageservice.Service). senderID is
@@ -195,23 +206,36 @@ func (s *Service) ListSMSRegions(ctx context.Context, _ *testkitv1.ListSMSRegion
 	return &testkitv1.ListSMSRegionsResponse{RegionCodes: resp.GetRegionCodes()}, nil
 }
 
-// ListRegionCodes forwards the international dial-code directory (static
-// reference data owned by message-service) for region pickers.
+// ListRegionCodes forwards the international dial-code directory from
+// reference-service (its canonical home) for region pickers. The public
+// testkit contract still carries both zh-Hans and en names, so the module
+// handler is called twice — in-process and static data, microseconds.
 func (s *Service) ListRegionCodes(ctx context.Context, _ *testkitv1.ListRegionCodesRequest) (*testkitv1.ListRegionCodesResponse, error) {
-	resp, err := s.message.ListRegionCodes(ctx, &messagev1.ListRegionCodesRequest{})
+	if s.reference == nil {
+		return nil, errors.New("message: reference-service not wired")
+	}
+	zh, err := s.reference.ListCountries(ctx, &referencev1.ListCountriesRequest{Locale: "zh-Hans"})
 	if err != nil {
 		return nil, err
 	}
-	codes := make([]*testkitv1.RegionCode, 0, len(resp.GetRegionCodes()))
-	for _, r := range resp.GetRegionCodes() {
-		codes = append(codes, &testkitv1.RegionCode{
-			Code:     r.GetCode(),
-			DialCode: r.GetDialCode(),
-			NameZh:   r.GetNameZh(),
-			NameEn:   r.GetNameEn(),
+	en, err := s.reference.ListCountries(ctx, &referencev1.ListCountriesRequest{Locale: "en"})
+	if err != nil {
+		return nil, err
+	}
+	enName := make(map[string]string, len(en.GetCountries()))
+	for _, c := range en.GetCountries() {
+		enName[c.GetCode()] = c.GetName()
+	}
+	out := make([]*testkitv1.RegionCode, 0, len(zh.GetCountries()))
+	for _, c := range zh.GetCountries() {
+		out = append(out, &testkitv1.RegionCode{
+			Code:     c.GetCode(),
+			DialCode: c.GetDialCode(),
+			NameZh:   c.GetName(),
+			NameEn:   enName[c.GetCode()],
 		})
 	}
-	return &testkitv1.ListRegionCodesResponse{RegionCodes: codes}, nil
+	return &testkitv1.ListRegionCodesResponse{RegionCodes: out}, nil
 }
 
 // --- converters (testkit DTO ↔ message-service proto) ---

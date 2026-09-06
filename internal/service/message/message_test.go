@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	messagev1 "github.com/servekit/api/gen/go/messaging/v1"
+	referencev1 "github.com/servekit/api/gen/go/reference/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service/message"
 )
@@ -492,4 +493,51 @@ func TestSendEmail_DownstreamErrorPassthrough(t *testing.T) {
 		Scene:   messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
 	})
 	require.ErrorIs(t, err, downstream)
+}
+
+// fakeReference embeds referencev1.UnimplementedReferenceServiceServer and
+// backs ListCountries with a tiny locale-aware table — enough to prove the
+// region-code directory now sources from reference-service with both locales
+// filled (public contract unchanged).
+type fakeReference struct {
+	referencev1.UnimplementedReferenceServiceServer
+}
+
+func (f *fakeReference) ListCountries(_ context.Context, req *referencev1.ListCountriesRequest) (*referencev1.ListCountriesResponse, error) {
+	if req.GetLocale() == "en" {
+		return &referencev1.ListCountriesResponse{Countries: []*referencev1.Country{
+			{Code: "CN", DialCode: "+86", Name: "China"},
+			{Code: "US", DialCode: "+1", Name: "United States"},
+		}}, nil
+	}
+	return &referencev1.ListCountriesResponse{Countries: []*referencev1.Country{
+		{Code: "CN", DialCode: "+86", Name: "中国"},
+		{Code: "US", DialCode: "+1", Name: "美国"},
+	}}, nil
+}
+
+func TestListRegionCodesFromReference(t *testing.T) {
+	stub := &stubServer{}
+	svc := message.New(stub, message.WithSenderID("testkit-service"), message.WithReference(&fakeReference{}))
+
+	resp, err := svc.ListRegionCodes(context.Background(), &testkitv1.ListRegionCodesRequest{})
+	require.NoError(t, err)
+	require.Len(t, resp.GetRegionCodes(), 2)
+
+	cn := resp.GetRegionCodes()[0]
+	require.Equal(t, "CN", cn.GetCode())
+	require.Equal(t, "+86", cn.GetDialCode())
+	require.Equal(t, "中国", cn.GetNameZh())
+	require.Equal(t, "China", cn.GetNameEn())
+
+	us := resp.GetRegionCodes()[1]
+	require.Equal(t, "US", us.GetCode())
+	require.Equal(t, "美国", us.GetNameZh())
+	require.Equal(t, "United States", us.GetNameEn())
+}
+
+func TestListRegionCodesWithoutReferenceFails(t *testing.T) {
+	svc := message.New(&stubServer{}, message.WithSenderID("testkit-service"))
+	_, err := svc.ListRegionCodes(context.Background(), &testkitv1.ListRegionCodesRequest{})
+	require.Error(t, err)
 }
