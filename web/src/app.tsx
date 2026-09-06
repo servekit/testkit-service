@@ -1,8 +1,9 @@
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
-import { App as AntdApp } from 'antd';
+import { App as AntdApp, Dropdown } from 'antd';
 import type { ReactNode } from 'react';
 import { requestConfig } from './request';
+import { endSession } from './utils/session';
 
 const LOGIN_PATH = '/user/login';
 // Public (session-less) surfaces: everything under /user/ — login + register.
@@ -63,6 +64,20 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     avatarProps: {
       size: 'small',
       title: user?.nickname || user?.username || '用户',
+      render: (_props, dom) => (
+        <Dropdown
+          menu={{
+            items: [{ key: 'logout', label: '退出登录' }],
+            onClick: ({ key }) => {
+              if (key === 'logout') {
+                void endSession();
+              }
+            },
+          }}
+        >
+          {dom}
+        </Dropdown>
+      ),
     },
     onPageChange: () => {
       const token = localStorage.getItem('testkit_token');

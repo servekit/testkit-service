@@ -8,7 +8,6 @@ import {
   ProFormSelect,
 } from "@ant-design/pro-components";
 import { App, Button, Descriptions, Space } from "antd";
-import { history } from "@umijs/max";
 import { useEffect, useState } from "react";
 import {
   changePassword,
@@ -16,6 +15,7 @@ import {
   updateProfile,
 } from "@/services/testkit/testkitService";
 import { GENDER_VALUE_ENUM, UserTypeTag } from "@/components/usertags";
+import { endSession } from "@/utils/session";
 
 /**
  * Self-service profile page. Any logged-in user (incl. internal) lands here.
@@ -45,18 +45,12 @@ export default function ProfilePage() {
     };
   }, []);
 
-  const logout = () => {
-    localStorage.removeItem("testkit_token");
-    localStorage.removeItem("testkit_user");
-    history.push("/user/login");
-  };
-
   return (
     <PageContainer
       header={{
         title: "个人资料",
         extra: [
-          <Button key="logout" onClick={logout}>
+          <Button key="logout" onClick={() => void endSession()}>
             退出登录
           </Button>,
         ],
