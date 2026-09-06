@@ -16,7 +16,7 @@ require (
 	github.com/servekit/message-service v0.0.0-20260905155410-ddc3b057a308
 	github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae
 	github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5
-	github.com/servekit/user-service v0.0.0-20260906042408-77605871c4c1
+	github.com/servekit/user-service v0.0.0-20260906043047-92c7be6cbb43
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.22.0
 	google.golang.org/grpc v1.83.2
