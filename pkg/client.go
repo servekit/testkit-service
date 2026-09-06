@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	commonv1 "github.com/servekit/api/gen/go/common/v1"
+	referencev1 "github.com/servekit/api/gen/go/reference/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 
 	"google.golang.org/grpc"
@@ -556,4 +557,39 @@ func (c *Client) Decompose(ctx context.Context, in *testkitv1.DecomposeRequest) 
 // GetDashboard delegates to the remote testkit-service.
 func (c *Client) GetDashboard(ctx context.Context, in *testkitv1.GetDashboardRequest) (*testkitv1.DashboardResponse, error) {
 	return c.cli.GetDashboard(ctx, in)
+}
+
+// ListCountries delegates to the remote testkit-service.
+func (c *Client) ListCountries(ctx context.Context, in *referencev1.ListCountriesRequest) (*referencev1.ListCountriesResponse, error) {
+	return c.cli.ListCountries(ctx, in)
+}
+
+// ListTimezones delegates to the remote testkit-service.
+func (c *Client) ListTimezones(ctx context.Context, in *referencev1.ListTimezonesRequest) (*referencev1.ListTimezonesResponse, error) {
+	return c.cli.ListTimezones(ctx, in)
+}
+
+// ListLanguages delegates to the remote testkit-service.
+func (c *Client) ListLanguages(ctx context.Context, in *referencev1.ListLanguagesRequest) (*referencev1.ListLanguagesResponse, error) {
+	return c.cli.ListLanguages(ctx, in)
+}
+
+// ListCurrencies delegates to the remote testkit-service.
+func (c *Client) ListCurrencies(ctx context.Context, in *referencev1.ListCurrenciesRequest) (*referencev1.ListCurrenciesResponse, error) {
+	return c.cli.ListCurrencies(ctx, in)
+}
+
+// ListRegionGroups delegates to the remote testkit-service.
+func (c *Client) ListRegionGroups(ctx context.Context, in *referencev1.ListRegionGroupsRequest) (*referencev1.ListRegionGroupsResponse, error) {
+	return c.cli.ListRegionGroups(ctx, in)
+}
+
+// ParsePhone delegates to the remote testkit-service.
+func (c *Client) ParsePhone(ctx context.Context, in *referencev1.ParsePhoneRequest) (*referencev1.ParsePhoneResponse, error) {
+	return c.cli.ParsePhone(ctx, in)
+}
+
+// ResolveCodes delegates to the remote testkit-service.
+func (c *Client) ResolveCodes(ctx context.Context, in *referencev1.ResolveCodesRequest) (*referencev1.ResolveCodesResponse, error) {
+	return c.cli.ResolveCodes(ctx, in)
 }
