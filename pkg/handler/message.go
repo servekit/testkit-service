@@ -74,6 +74,10 @@ func (h *Handler) ListSMSRegions(ctx context.Context, req *testkitv1.ListSMSRegi
 	return h.svc.Message().ListSMSRegions(ctx, req)
 }
 
+func (h *Handler) ListRegionCodes(ctx context.Context, req *testkitv1.ListRegionCodesRequest) (*testkitv1.ListRegionCodesResponse, error) {
+	return h.svc.Message().ListRegionCodes(ctx, req)
+}
+
 // ListSMSSenders returns distinct sender_id values for SMS filter dropdowns.
 func (h *Handler) ListSMSSenders(ctx context.Context, req *testkitv1.ListSMSSendersRequest) (*testkitv1.ListSMSSendersResponse, error) {
 	return h.svc.Message().ListSMSSenders(ctx, req)

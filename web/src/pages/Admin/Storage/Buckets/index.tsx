@@ -7,6 +7,7 @@ import {
   ProTable,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { adminListBuckets } from "@/services/testkit/testkitService";
 import {
   BUCKET_ACL_VALUE_ENUM,
@@ -39,6 +40,7 @@ export default function AdminBucketsPage() {
         rowKey={(r) => `${r.provider}/${r.name}`}
         search={false}
         pagination={false}
+        options={spinReload}
         request={async () => {
           const resp = await adminListBuckets();
           return { data: resp.buckets ?? [], success: true };

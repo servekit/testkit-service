@@ -11,12 +11,12 @@ require (
 	github.com/redis/go-redis/v9 v9.20.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d
-	github.com/servekit/go-common v0.0.0-20260905165851-0bd6ec4339d2
+	github.com/servekit/go-common v0.0.0-20260906125735-1aee64b7710e
 	github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc
-	github.com/servekit/message-service v0.0.0-20260905155410-ddc3b057a308
+	github.com/servekit/message-service v0.0.0-20260906125833-92a1b776c02d
 	github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae
 	github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5
-	github.com/servekit/user-service v0.0.0-20260906053424-0b036226de66
+	github.com/servekit/user-service v0.0.0-20260906130036-972a8450d5c4
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.22.0
 	google.golang.org/grpc v1.83.2
@@ -140,7 +140,7 @@ require (
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/sagikazarmark/locafero v0.11.0 // indirect
-	github.com/servekit/api/gen/go v0.0.0-20260906050558-9a43200f5662
+	github.com/servekit/api/gen/go v0.0.0-20260906125712-e0bb0334f188
 	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/sony/sonyflake/v2 v2.1.0 // indirect

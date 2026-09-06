@@ -7,6 +7,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { App, Button, Popconfirm, Tag } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useRef, useState } from "react";
@@ -29,7 +30,7 @@ export default function UserRolesPage() {
   const [assignOpen, setAssignOpen] = useState(false);
 
   const columns: ProColumns<API.UserRole>[] = [
-    { title: "角色 ID", dataIndex: "roleId", width: 120, copyable: true },
+    { title: "角色 ID", dataIndex: "roleId", width: 120 },
     { title: "角色名", dataIndex: "roleName" },
     {
       title: "来源",
@@ -83,6 +84,7 @@ export default function UserRolesPage() {
         search={{ labelWidth: "auto" }}
         pagination={false}
         headerTitle="用户角色"
+        options={spinReload}
         request={async (params) => {
           const uid = (params.userId as string) ?? "";
           setUserId(uid);

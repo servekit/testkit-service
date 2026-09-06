@@ -9,6 +9,7 @@ import {
   ProTable,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { listMyAuditLogs } from "@/services/testkit/testkitService";
 import {
   AUDIT_ACTION_VALUE_ENUM,
@@ -26,7 +27,7 @@ const TARGET_LABEL: Record<string, string> = {
 
 export default function MyAuditPage() {
   const columns: ProColumns<API.v1AuditLogEntry>[] = [
-    { title: "ID", dataIndex: "id", width: 180, copyable: true, search: false },
+    { title: "ID", dataIndex: "id", width: 180, search: false },
     {
       title: "操作",
       dataIndex: "action",
@@ -53,7 +54,7 @@ export default function MyAuditPage() {
     { title: "开始时间", dataIndex: "startTime", hideInTable: true },
     { title: "结束时间", dataIndex: "endTime", hideInTable: true },
     { title: "时间", dataIndex: "createdAt", valueType: "dateTime", search: false, width: 180 },
-    { title: "request_id", dataIndex: "requestId", search: false, copyable: true },
+    { title: "request_id", dataIndex: "requestId", search: false },
     { title: "错误信息", dataIndex: "errorMessage", search: false },
   ];
 
@@ -64,6 +65,7 @@ export default function MyAuditPage() {
         rowKey="id"
         search={{ labelWidth: "auto" }}
         pagination={false}
+        options={spinReload}
         request={async (params) => {
           const resp = await listMyAuditLogs({
             action: params.action as API.ListMyAuditLogsParams["action"],

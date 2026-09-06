@@ -195,6 +195,25 @@ func (s *Service) ListSMSRegions(ctx context.Context, _ *testkitv1.ListSMSRegion
 	return &testkitv1.ListSMSRegionsResponse{RegionCodes: resp.GetRegionCodes()}, nil
 }
 
+// ListRegionCodes forwards the international dial-code directory (static
+// reference data owned by message-service) for region pickers.
+func (s *Service) ListRegionCodes(ctx context.Context, _ *testkitv1.ListRegionCodesRequest) (*testkitv1.ListRegionCodesResponse, error) {
+	resp, err := s.message.ListRegionCodes(ctx, &messagev1.ListRegionCodesRequest{})
+	if err != nil {
+		return nil, err
+	}
+	codes := make([]*testkitv1.RegionCode, 0, len(resp.GetRegionCodes()))
+	for _, r := range resp.GetRegionCodes() {
+		codes = append(codes, &testkitv1.RegionCode{
+			Code:     r.GetCode(),
+			DialCode: r.GetDialCode(),
+			NameZh:   r.GetNameZh(),
+			NameEn:   r.GetNameEn(),
+		})
+	}
+	return &testkitv1.ListRegionCodesResponse{RegionCodes: codes}, nil
+}
+
 // --- converters (testkit DTO ↔ message-service proto) ---
 //
 // Send converters take the configured senderID (decision 1); List/Stats

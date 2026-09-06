@@ -1,83 +1,48 @@
-import {
-  PageContainer,
-  ProFormSelect,
-  ProFormText,
-  QueryFilter,
-} from "@ant-design/pro-components";
-import { Button, Space, Table, Tag, Typography, type TableColumnsType } from "antd";
+import { PageContainer, ProTable, type ProColumns } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
+import { Tag, Typography } from "antd";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
 import { getLoginLogs } from "@/services/testkit/testkitService";
 import {
   DEVICE_TYPE_VALUE_ENUM,
   LOGIN_ACTION_VALUE_ENUM,
   LOGIN_METHOD_VALUE_ENUM,
 } from "@/components/usertags";
+import { useCursorTable } from "@/components/CursorPager";
 
-/** Shape of the QueryFilter output; values arrive as strings. */
-interface AuditFilters {
-  userId?: string;
-  username?: string;
-  method?: API.GetLoginLogsParams["method"];
-  action?: API.GetLoginLogsParams["action"];
-  success?: "true" | "false";
-}
-
-const PAGE_SIZE = 50;
-
-function toEnumOptions(
-  valueEnum: Record<string, { text: string }>,
-): { value: string; label: string }[] {
+/** Select options derived from a shared value-enum table. */
+function toEnumOptions(valueEnum: Record<string, { text: string }>) {
   return Object.entries(valueEnum).map(([value, { text }]) => ({ value, label: text }));
 }
+
+const METHOD_OPTIONS = toEnumOptions(LOGIN_METHOD_VALUE_ENUM);
+const ACTION_OPTIONS = toEnumOptions(LOGIN_ACTION_VALUE_ENUM);
 
 /**
  * Auth audit log (login/register attempts — the backend table also records
  * social/binding events, hence the page name 认证记录). The backend is
  * cursor-paginated (an audit table only grows, so cursor paging never skips
  * or repeats rows the way offset paging does under a steady write stream);
- * this page surfaces that as progressive loading: first page on filter
- * change, 加载更多 appends while next_cursor is non-empty.
+ * useCursorTable surfaces it as progressive prev/next paging.
  */
 export default function LoginLogsPage() {
-  const [logs, setLogs] = useState<API.LoginLog[]>([]);
-  const [nextCursor, setNextCursor] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState<AuditFilters>({});
+  const logs = useCursorTable(async ({ cursor, pageSize, username, userId, method, action, success }) => {
+    const resp = await getLoginLogs({
+      username: (username as string) || undefined,
+      userId: (userId as string) || undefined,
+      method: method as API.GetLoginLogsParams["method"],
+      action: action as API.GetLoginLogsParams["action"],
+      success:
+        success === undefined || success === ""
+          ? undefined
+          : success === "true" || success === true,
+      pageSize,
+      cursor: cursor || undefined,
+    });
+    return { items: resp.logs, nextCursor: resp.nextCursor };
+  });
 
-  async function loadPage(cursor: string, f: AuditFilters) {
-    setLoading(true);
-    try {
-      const resp = await getLoginLogs({
-        userId: f.userId || undefined,
-        username: f.username || undefined,
-        method: f.method,
-        action: f.action,
-        success: f.success === undefined ? undefined : f.success === "true",
-        pageSize: PAGE_SIZE,
-        cursor: cursor || undefined,
-      });
-      const page = resp.logs ?? [];
-      setLogs((prev) => (cursor ? [...prev, ...page] : page));
-      setNextCursor(resp.nextCursor ?? "");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // First page whenever the filters change; 加载更多 passes the cursor in.
-  useEffect(() => {
-    void loadPage("", filters);
-  }, [filters]);
-
-  const columns: TableColumnsType<API.LoginLog> = [
-    {
-      title: "用户 ID",
-      dataIndex: "userId",
-      width: 180,
-      copyable: true,
-      render: (_, r) => String(r.userId || "-"),
-    },
+  const columns: ProColumns<API.LoginLog>[] = [
     {
       title: "用户名",
       dataIndex: "username",
@@ -85,8 +50,15 @@ export default function LoginLogsPage() {
       render: (_, r) => r.username || "-",
     },
     {
+      title: "用户 ID",
+      dataIndex: "userId",
+      width: 180,
+      render: (_, r) => String(r.userId || "-"),
+    },
+    {
       title: "认证对象",
       dataIndex: "target",
+      search: false,
       width: 170,
       // The credential subject (username/email/phone/oauth-uid) — the kind
       // reads from the 登录方式/动作 columns next to it.
@@ -95,109 +67,93 @@ export default function LoginLogsPage() {
     {
       title: "登录方式",
       dataIndex: "method",
+      valueType: "select",
+      fieldProps: { options: METHOD_OPTIONS },
       width: 110,
-      render: (_, r) => LOGIN_METHOD_VALUE_ENUM[r.method ?? ""]?.text ?? "-",
+      render: (_, r) =>
+        LOGIN_METHOD_VALUE_ENUM[r.method as keyof typeof LOGIN_METHOD_VALUE_ENUM]?.text ?? "-",
     },
     {
       title: "动作",
       dataIndex: "action",
+      valueType: "select",
+      fieldProps: { options: ACTION_OPTIONS },
       width: 100,
-      render: (_, r) => LOGIN_ACTION_VALUE_ENUM[r.action ?? ""]?.text ?? "-",
+      render: (_, r) =>
+        LOGIN_ACTION_VALUE_ENUM[r.action as keyof typeof LOGIN_ACTION_VALUE_ENUM]?.text ?? "-",
     },
     {
       title: "结果",
       dataIndex: "success",
+      valueType: "select",
+      fieldProps: {
+        options: [
+          { value: "true", label: "成功" },
+          { value: "false", label: "失败" },
+        ],
+      },
       width: 90,
       render: (_, r) =>
         r.success ? <Tag color="green">成功</Tag> : <Tag color="red">失败</Tag>,
     },
-    { title: "IP", dataIndex: "ip", width: 140 },
+    { title: "IP", dataIndex: "ip", search: false, width: 140 },
     {
       title: "设备",
       dataIndex: "deviceType",
+      search: false,
       width: 90,
-      render: (_, r) => DEVICE_TYPE_VALUE_ENUM[r.deviceType ?? ""]?.text ?? "-",
+      render: (_, r) =>
+        DEVICE_TYPE_VALUE_ENUM[
+          r.deviceType as keyof typeof DEVICE_TYPE_VALUE_ENUM
+        ]?.text ?? "-",
     },
     {
       title: "位置",
+      search: false,
       render: (_, r) => [r.country, r.city].filter(Boolean).join(" ") || "-",
     },
     {
       title: "失败原因",
       dataIndex: "failReason",
+      search: false,
       render: (_, r) => {
-        if (!r.failReason) return "-";
-        // Audit codes stored by user-service; unknown codes pass through raw.
+        // Successful rows carry LOGIN_FAIL_REASON_UNSPECIFIED — render as "-"
+        // like the pre-enum empty value; unmapped future values pass raw.
+        if (!r.failReason || r.failReason === "LOGIN_FAIL_REASON_UNSPECIFIED") return "-";
         const labels: Record<string, string> = {
-          wrong_password: "密码错误",
-          wrong_code: "验证码错误",
-          verify_failed: "校验未通过",
+          LOGIN_FAIL_REASON_WRONG_PASSWORD: "密码错误",
+          LOGIN_FAIL_REASON_WRONG_CODE: "验证码错误",
+          LOGIN_FAIL_REASON_VERIFY_FAILED: "校验未通过",
         };
-        return labels[r.failReason] ?? r.failReason;
+        return <Typography.Text type="secondary">{labels[r.failReason] ?? r.failReason}</Typography.Text>;
       },
     },
-    { title: "时间", dataIndex: "createdAt", width: 180, render: (v) => dayjsLocal(v) },
+    {
+      title: "时间",
+      dataIndex: "createdAt",
+      search: false,
+      width: 180,
+      render: (_, r) => fmt(r.createdAt),
+    },
   ];
 
   return (
     <PageContainer>
-      <QueryFilter<AuditFilters>
-        onFinish={async (values) => {
-          setFilters(values);
-        }}
-        onReset={() => setFilters({})}
-      >
-        <ProFormText name="username" label="用户名" placeholder="按用户名过滤" />
-        <ProFormText name="userId" label="用户 ID" placeholder="按用户 ID 过滤" />
-        <ProFormSelect
-          name="method"
-          label="登录方式"
-          options={toEnumOptions(LOGIN_METHOD_VALUE_ENUM)}
-        />
-        <ProFormSelect
-          name="action"
-          label="动作"
-          options={toEnumOptions(LOGIN_ACTION_VALUE_ENUM)}
-        />
-        <ProFormSelect
-          name="success"
-          label="结果"
-          options={[
-            { value: "true", label: "成功" },
-            { value: "false", label: "失败" },
-          ]}
-        />
-      </QueryFilter>
-
-      <Table<API.LoginLog>
+      <ProTable<API.LoginLog>
+        actionRef={logs.actionRef}
         columns={columns}
         rowKey="id"
-        dataSource={logs}
-        loading={loading}
+        search={{ labelWidth: "auto" }}
         pagination={false}
-        footer={() => (
-          <Space>
-            <span>已加载 {logs.length} 条</span>
-            {nextCursor ? (
-              <Button
-                type="link"
-                loading={loading}
-                onClick={() => void loadPage(nextCursor, filters)}
-              >
-                加载更多
-              </Button>
-            ) : (
-              <span>· 没有更多了</span>
-            )}
-          </Space>
-        )}
+        options={spinReload}
+        request={logs.request}
+        footer={() => logs.pager}
       />
     </PageContainer>
   );
 }
 
 /** Render an RFC3339 timestamp in the browser's timezone. */
-function dayjsLocal(v?: string): string {
-  if (!v) return "-";
-  return dayjs(v).format("YYYY-MM-DD HH:mm:ss");
+function fmt(v?: string): string {
+  return v ? dayjs(v).format("YYYY-MM-DD HH:mm:ss") : "-";
 }

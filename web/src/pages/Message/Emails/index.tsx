@@ -4,14 +4,14 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
-import { App, Button, Card, Descriptions, Drawer, Modal, Space, Statistic, Switch } from "antd";
+import { spinReload } from "@/components/TableOptions";
+import { App, Button, Card, Descriptions, Drawer, Modal, Space, Statistic } from "antd";
 import { useEffect, useRef, useState } from "react";
 import {
   getEmail,
   getEmailStats,
   listEmailSenders,
   listEmails,
-  listEmailsByCursor,
 } from "@/services/testkit/testkitService";
 import {
   EMAIL_SCENE_VALUE_ENUM,
@@ -22,21 +22,15 @@ import {
 } from "@/components/messagetags";
 
 /**
- * Email records ops console. Two pagination modes (plan Task 13): offset via
- * listEmails (ProTable native paging, default) and cursor via listEmailsByCursor
- * (manual "load more", toggled). All data flows through GENERATED services — no
- * hand-written fetch. `sender_id` is NOT a table filter (plan decision 2: not
- * forwarded); known senders are surfaced in the stats modal for audit context.
+ * Email records ops console: ProTable over the offset-paginated listEmails
+ * RPC (the unified list style — filter form + toolbar refresh + numbered
+ * pagination). All data flows through GENERATED services — no hand-written
+ * fetch. `sender_id` is NOT a table filter (plan decision 2: not forwarded);
+ * known senders are surfaced in the stats modal for audit context.
  */
 export default function EmailRecordsPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(undefined);
-
-  const [cursorMode, setCursorMode] = useState(false);
-  const [cursorRecords, setCursorRecords] = useState<API.v1EmailRecord[]>([]);
-  const [cursorTotal, setCursorTotal] = useState<number | undefined>(undefined);
-  const [nextToken, setNextToken] = useState("");
-  const [cursorLoading, setCursorLoading] = useState(false);
 
   const [senders, setSenders] = useState<string[]>([]);
   const [detail, setDetail] = useState<API.v1EmailRecord | null>(null);
@@ -51,7 +45,7 @@ export default function EmailRecordsPage() {
   }, []);
 
   const columns: ProColumns<API.v1EmailRecord>[] = [
-    { title: "ID", dataIndex: "id", width: 180, copyable: true, search: false },
+    { title: "ID", dataIndex: "id", width: 180, search: false },
     {
       title: "供应商",
       dataIndex: "vendor",
@@ -85,7 +79,6 @@ export default function EmailRecordsPage() {
       title: "发送方",
       dataIndex: "senderId",
       width: 150,
-      copyable: true,
       search: false,
     },
     {
@@ -118,109 +111,54 @@ export default function EmailRecordsPage() {
     },
   ];
 
-  const loadMore = async () => {
-    try {
-      setCursorLoading(true);
-      const isFirst = cursorRecords.length === 0;
-      const resp = await listEmailsByCursor({
-        pageSize: 20,
-        pageToken: nextToken || undefined,
-        includeTotal: isFirst,
-        sortField: "SORT_FIELD_CREATED_AT",
-        sortDirection: "SORT_DIRECTION_DESC",
-      });
-      setCursorRecords([...cursorRecords, ...(resp.records ?? [])]);
-      setNextToken(resp.nextPageToken ?? "");
-      if (isFirst) setCursorTotal(resp.total);
-    } catch {
-      message.error("加载失败");
-    } finally {
-      setCursorLoading(false);
-    }
-  };
-
   return (
     <PageContainer>
       <Card
         bordered={false}
         extra={
-          <Space>
-            <span>偏移</span>
-            <Switch
-              checked={cursorMode}
-              onChange={(c) => {
-                setCursorMode(c);
-                setCursorRecords([]);
-                setNextToken("");
-                setCursorTotal(undefined);
-                if (!c) actionRef.current?.reload();
-              }}
-            />
-            <span>游标</span>
-            <Button
-              onClick={async () => {
-                try {
-                  const r = await getEmailStats({});
-                  setStats(r);
-                } catch {
-                  message.error("加载统计失败");
-                }
-              }}
-            >
-              统计
-            </Button>
-          </Space>
-        }
-      >
-        {!cursorMode ? (
-          <ProTable<API.v1EmailRecord>
-            actionRef={actionRef}
-            rowKey="id"
-            columns={columns}
-            search={{ labelWidth: "auto" }}
-            pagination={{ defaultPageSize: 20, showSizeChanger: true }}
-            request={async (params) => {
+          <Button
+            onClick={async () => {
               try {
-                const resp = await listEmails({
-                  vendor: params.vendor as API.ListEmailsParams["vendor"],
-                  scene: params.scene as API.ListEmailsParams["scene"],
-                  status: params.status as API.ListEmailsParams["status"],
-                  target: params.target as string | undefined,
-                  page: params.current ?? 1,
-                  pageSize: params.pageSize ?? 20,
-                  sortField: "SORT_FIELD_CREATED_AT",
-                  sortDirection: "SORT_DIRECTION_DESC",
-                });
-                return {
-                  data: resp.records ?? [],
-                  success: true,
-                  total: resp.total ?? 0,
-                };
+                const r = await getEmailStats({});
+                setStats(r);
               } catch {
-                return { data: [], success: false };
+                message.error("加载统计失败");
               }
             }}
-          />
-        ) : (
-          <div>
-            <ProTable<API.v1EmailRecord>
-              rowKey="id"
-              columns={columns}
-              search={false}
-              pagination={false}
-              dataSource={cursorRecords}
-              toolBarRender={false}
-              options={false}
-            />
-            <Space style={{ marginTop: 16 }}>
-              <Button loading={cursorLoading} onClick={loadMore}>
-                {cursorRecords.length === 0 ? "加载首页" : "加载更多"}
-              </Button>
-              {cursorTotal !== undefined && <span>总数 {cursorTotal}</span>}
-              {!nextToken && cursorRecords.length > 0 && <span>已到末页</span>}
-            </Space>
-          </div>
-        )}
+          >
+            统计
+          </Button>
+        }
+      >
+        <ProTable<API.v1EmailRecord>
+          actionRef={actionRef}
+          rowKey="id"
+          columns={columns}
+          search={{ labelWidth: "auto" }}
+          pagination={{ defaultPageSize: 20, showSizeChanger: true }}
+          options={spinReload}
+          request={async (params) => {
+            try {
+              const resp = await listEmails({
+                vendor: params.vendor as API.ListEmailsParams["vendor"],
+                scene: params.scene as API.ListEmailsParams["scene"],
+                status: params.status as API.ListEmailsParams["status"],
+                target: params.target as string | undefined,
+                page: params.current ?? 1,
+                pageSize: params.pageSize ?? 20,
+                sortField: "SORT_FIELD_CREATED_AT",
+                sortDirection: "SORT_DIRECTION_DESC",
+              });
+              return {
+                data: resp.records ?? [],
+                success: true,
+                total: resp.total ?? 0,
+              };
+            } catch {
+              return { data: [], success: false };
+            }
+          }}
+        />
 
         <Drawer
           open={!!detail}

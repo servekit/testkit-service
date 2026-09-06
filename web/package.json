@@ -7,7 +7,7 @@
     "setup": "max setup",
     "start": "max dev",
     "build": "max build",
-    "openapi": "swagger2openapi ../api/swagger/testkit/v1/testkit.swagger.json -o config/openapi.json && node scripts/fix-int64.js && max openapi && node scripts/fix-services.js",
+    "openapi": "swagger2openapi ${TESTKIT_SWAGGER:-../../api/gen/openapi/testkit/v1/service.swagger.json} -o config/openapi.json && node scripts/fix-int64.js && max openapi && node scripts/fix-services.js",
     "format": "prettier --cache --write ."
   },
   "dependencies": {
@@ -25,6 +25,7 @@
     "@types/react-dom": "^19",
     "@types/spark-md5": "^3.0.5",
     "@umijs/max-plugin-openapi": "^2.0.0",
+    "libphonenumber-js": "^1.13.12",
     "prettier": "^3.0.0",
     "swagger2openapi": "^7.0.0",
     "typescript": "^5"

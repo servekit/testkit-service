@@ -1,7 +1,6 @@
 import { MessageOutlined, SendOutlined } from "@ant-design/icons";
 import {
   App,
-  AutoComplete,
   Button,
   Card,
   Col,
@@ -14,6 +13,7 @@ import {
   Typography,
 } from "antd";
 import { PageContainer } from "@ant-design/pro-components";
+import { useRegionOptions } from "@/hooks/useRegionOptions";
 import { useState } from "react";
 import {
   SMS_SCENE_OPTIONS,
@@ -36,22 +36,6 @@ const { Text } = Typography;
  * form — the BFF injects it from cfg.Message.SenderID.
  */
 
-/** Common region codes; value is the ISO alpha-2 the API expects. */
-const REGION_OPTIONS = [
-  { value: "CN", label: "+86 中国大陆" },
-  { value: "HK", label: "+852 香港" },
-  { value: "MO", label: "+853 澳门" },
-  { value: "TW", label: "+886 台湾" },
-  { value: "US", label: "+1 美国" },
-  { value: "CA", label: "+1 加拿大" },
-  { value: "SG", label: "+65 新加坡" },
-  { value: "MY", label: "+60 马来西亚" },
-  { value: "JP", label: "+81 日本" },
-  { value: "KR", label: "+82 韩国" },
-  { value: "GB", label: "+44 英国" },
-  { value: "DE", label: "+49 德国" },
-  { value: "AU", label: "+61 澳大利亚" },
-];
 
 // One character outside the GSM 7-bit set makes the whole message UCS-2
 // encoded: 70 chars per segment (67 when multi-segment) instead of 160/153.
@@ -140,6 +124,7 @@ export default function SendSMSPage() {
   const { message } = App.useApp();
   const [form] = Form.useForm<SmsFormValues>();
   const [sending, setSending] = useState(false);
+  const regionOptions = useRegionOptions();
   const regionCode = Form.useWatch("regionCode", form);
   const content = Form.useWatch("content", form);
   const vendor = Form.useWatch("vendor", form);
@@ -173,9 +158,9 @@ export default function SendSMSPage() {
       content: isCN ? undefined : vals.content,
       templateId: isCN ? vals.templateId : undefined,
       templateParams,
-      scene: vals.scene,
+      scene: vals.scene as API.v1SendSMSRequest["scene"],
       signName: vals.signName || undefined,
-      vendor: selectedVendor,
+      vendor: selectedVendor as API.v1SendSMSRequest["vendor"],
       account: selectedVendor ? (vals.account ?? "") : "",
       idempotencyKey: vals.idempotencyKey || undefined,
     };
@@ -218,18 +203,12 @@ export default function SendSMSPage() {
                     { pattern: /^[A-Z]{2}$/, message: "两位大写字母（ISO）" },
                   ]}
                 >
-                  <AutoComplete
-                    options={REGION_OPTIONS}
-                    style={{ width: 180 }}
-                    placeholder="区码"
-                    filterOption={(input, option) =>
-                      (option?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase()) ||
-                      (option?.value ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
+                  <Select
+                    options={regionOptions}
+                    style={{ width: 150 }}
+                    placeholder="区号"
+                    showSearch
+                    optionFilterProp="label"
                   />
                 </Form.Item>
                 <Form.Item

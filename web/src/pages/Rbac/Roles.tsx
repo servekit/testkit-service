@@ -8,6 +8,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { App, Button, Popconfirm, Tag } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useRef, useState } from "react";
@@ -18,16 +19,19 @@ import {
   listRoles,
   updateRole,
 } from "@/services/testkit/testkitService";
-import { cursorList } from "@/utils/cursorList";
+import { useCursorTable } from "@/components/CursorPager";
 
 /**
  * RBAC role management: list, create, update, delete. Roles reference
  * permissions (multi-select sourced from listPermissions). Cursor list →
- * bounded first page (see cursorList).
+ * useCursorTable surfaces the cursor API as progressive prev/next paging.
  */
 export default function RolesPage() {
   const { message } = App.useApp();
-  const actionRef = useRef<ActionType>(undefined);
+  const table = useCursorTable(async ({ cursor, pageSize }) => {
+    const resp = await listRoles({ pageSize, cursor: cursor || undefined });
+    return { items: resp.roles, nextCursor: resp.nextCursor };
+  });
   const [createOpen, setCreateOpen] = useState(false);
   const [editing, setEditing] = useState<API.Role>();
 
@@ -68,7 +72,7 @@ export default function RolesPage() {
           onConfirm={async () => {
             await deleteRole({ roleId: r.id ?? "" });
             message.success("已删除");
-            actionRef.current?.reload();
+            table.actionRef.current?.reload();
           }}
         >
           <a style={{ color: r.isBuiltin ? undefined : "red" }}>删除</a>
@@ -108,7 +112,7 @@ export default function RolesPage() {
       setCreateOpen(false);
     }
     message.success("已保存");
-    actionRef.current?.reload();
+    table.actionRef.current?.reload();
     return true;
   };
 
@@ -124,18 +128,15 @@ export default function RolesPage() {
   return (
     <PageContainer>
       <ProTable<API.Role>
-        actionRef={actionRef}
+        actionRef={table.actionRef}
         columns={columns}
         rowKey="id"
         search={false}
         pagination={false}
         headerTitle="角色"
-        request={() =>
-          cursorList(async (n) => {
-            const resp = await listRoles({ pageSize: n });
-            return { items: resp.roles };
-          })
-        }
+        options={spinReload}
+        request={table.request}
+        footer={() => table.pager}
         toolBarRender={() => [
           <Button
             key="new"

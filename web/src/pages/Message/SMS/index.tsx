@@ -3,6 +3,7 @@ import {
   ProTable,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { App, Card, Descriptions, Drawer, Modal, Space, Statistic } from "antd";
 import { useEffect, useState } from "react";
 import {
@@ -44,7 +45,7 @@ export default function SMSRecordsPage() {
   }, []);
 
   const columns: ProColumns<API.v1SMSRecord>[] = [
-    { title: "ID", dataIndex: "id", width: 180, copyable: true, search: false },
+    { title: "ID", dataIndex: "id", width: 180, search: false },
     {
       title: "供应商",
       dataIndex: "vendor",
@@ -76,12 +77,11 @@ export default function SMSRecordsPage() {
         options: regions.map((r) => ({ label: r, value: r })),
       },
     },
-    { title: "手机号", dataIndex: "phone", width: 150, copyable: true },
+    { title: "手机号", dataIndex: "phone", width: 150 },
     {
       title: "发送方",
       dataIndex: "senderId",
       width: 150,
-      copyable: true,
       search: false,
     },
     {
@@ -138,6 +138,7 @@ export default function SMSRecordsPage() {
           columns={columns}
           search={{ labelWidth: "auto" }}
           pagination={{ defaultPageSize: 20, showSizeChanger: true }}
+          options={spinReload}
           request={async (params) => {
             try {
               const resp = await listSms({

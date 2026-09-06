@@ -1002,6 +1002,13 @@ or context was cancelled. error_message carries the last error. */
     blocked?: boolean;
   };
 
+  type TestkitServiceUnbindIdentityBody = {
+    /** Empty for OAuth identities (session is the proof).
+
+user_id injected from ctx */
+    code?: string;
+  };
+
   type TestkitServiceUnrevokeKeyBody = true;
 
   type TestkitServiceUpdateAppBody = {
@@ -1060,8 +1067,6 @@ or context was cancelled. error_message carries the last error. */
   type UnbindIdentityParams = {
     /** target identity */
     identityId: string;
-    /** user_id injected from ctx */
-    code?: string;
   };
 
   type UnrevokeKeyParams = {
@@ -1717,7 +1722,8 @@ or context was cancelled. error_message carries the last error. */
     userAgent?: string;
     os?: string;
     browser?: string;
-    loginMethod?: string;
+    loginMethod?: v1LoginMethod;
+    loginProvider?: v1IdentityProvider;
   };
 
   type v1GetSTSCredentialRequest = {
@@ -1974,6 +1980,10 @@ or context was cancelled. error_message carries the last error. */
     total?: number;
   };
 
+  type v1ListRegionCodesResponse = {
+    regionCodes?: v1RegionCode[];
+  };
+
   type v1ListRolesResponse = {
     roles?: v1Role[];
     nextCursor?: string;
@@ -2030,13 +2040,19 @@ or context was cancelled. error_message carries the last error. */
     | "LOGIN_ACTION_BIND"
     | "LOGIN_ACTION_UNBIND";
 
+  type v1LoginFailReason =
+    | "LOGIN_FAIL_REASON_UNSPECIFIED"
+    | "LOGIN_FAIL_REASON_WRONG_PASSWORD"
+    | "LOGIN_FAIL_REASON_WRONG_CODE"
+    | "LOGIN_FAIL_REASON_VERIFY_FAILED";
+
   type v1LoginLog = {
     id?: string;
     userId?: string;
     provider?: v1IdentityProvider;
     action?: v1LoginAction;
     success?: boolean;
-    failReason?: string;
+    failReason?: v1LoginFailReason;
     ip?: string;
     deviceType?: v1DeviceType;
     os?: string;
@@ -2173,6 +2189,13 @@ resolves (see user.v1). */
     usedBytes?: string;
     availableBytes?: string;
     fileCount?: number;
+  };
+
+  type v1RegionCode = {
+    code?: string;
+    dialCode?: string;
+    nameZh?: string;
+    nameEn?: string;
   };
 
   type v1RegisterRequest = {
@@ -2314,11 +2337,10 @@ exactly one of sms_template_id / sms_content. */
     lastActiveAt?: string;
     current?: boolean;
     status?: v1SessionStatus;
-    /** How this session authenticated (see user.v1): LOGIN_METHOD_* for
-credential logins, IDENTITY_PROVIDER_* for social/mini-program. */
-    loginMethod?: string;
+    loginMethod?: v1LoginMethod;
     loginTarget?: string;
     device?: string;
+    loginProvider?: v1IdentityProvider;
   };
 
   type v1SessionStatus =

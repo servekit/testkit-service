@@ -7,6 +7,8 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { useRegionOptions } from "@/hooks/useRegionOptions";
+import { spinReload } from "@/components/TableOptions";
 import dayjs from "dayjs";
 import { App, Button, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -33,15 +35,16 @@ const DISABLED = "USER_STATUS_DISABLED";
  * access gated to canInternal at the route level.
  */
 export default function UserListPage() {
+  const regionOptions = useRegionOptions();
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(undefined);
   const [createOpen, setCreateOpen] = useState(false);
 
   const columns: ProColumns<API.User>[] = [
-    { title: "ID", dataIndex: "id", width: 180, copyable: true },
+    { title: "ID", dataIndex: "id", width: 180 },
     { title: "用户名", dataIndex: "username" },
     { title: "昵称", dataIndex: "nickname" },
-    { title: "邮箱", dataIndex: "email", copyable: true },
+    { title: "邮箱", dataIndex: "email" },
     {
       title: "类型",
       dataIndex: "userType",
@@ -108,6 +111,7 @@ export default function UserListPage() {
         rowKey="id"
         search={{ labelWidth: "auto" }}
         pagination={{ pageSize: 20 }}
+        options={spinReload}
         request={async (params) => {
           const {
             current = 1,
@@ -173,8 +177,25 @@ export default function UserListPage() {
         <ProFormText name="nickname" label="昵称" />
         <ProFormText name="realName" label="真实姓名" />
         <ProFormText name="email" label="邮箱" />
-        <ProFormText name="regionCode" label="国家码" placeholder="CN" />
-        <ProFormText name="phone" label="手机号" />
+        <div style={{ display: "flex", gap: 8 }}>
+          <ProFormSelect
+            name="regionCode"
+            label="区号"
+            initialValue="CN"
+            fieldProps={{
+              showSearch: true,
+              optionFilterProp: "label",
+              style: { width: 160 },
+            }}
+            options={regionOptions}
+          />
+          <ProFormText
+            name="phone"
+            label="手机号"
+            placeholder="本地号码，无 +"
+            fieldProps={{ style: { flex: 1 } }}
+          />
+        </div>
         <ProFormText.Password
           name="password"
           label="初始密码"
@@ -187,6 +208,28 @@ export default function UserListPage() {
           name="gender"
           label="性别"
           valueEnum={GENDER_VALUE_ENUM}
+        />
+        <ProFormSelect
+          name="timezone"
+          label="时区"
+          showSearch
+          initialValue="Asia/Shanghai"
+          options={[
+            { value: "Asia/Shanghai", label: "Asia/Shanghai" },
+            { value: "UTC", label: "UTC" },
+            { value: "Asia/Tokyo", label: "Asia/Tokyo" },
+            { value: "Europe/London", label: "Europe/London" },
+            { value: "America/New_York", label: "America/New_York" },
+          ]}
+        />
+        <ProFormSelect
+          name="locale"
+          label="语言"
+          initialValue="zh-CN"
+          options={[
+            { value: "zh-CN", label: "简体中文 (zh-CN)" },
+            { value: "en-US", label: "English (en-US)" },
+          ]}
         />
       </ModalForm>
     </PageContainer>

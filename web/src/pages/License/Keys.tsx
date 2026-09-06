@@ -7,6 +7,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { App, Button, Card, Form, InputNumber, Modal, Popconfirm, Select, Space, Tag } from "antd";
 import { useRef, useState } from "react";
 import {
@@ -27,9 +28,10 @@ export default function LicenseKeysPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(undefined);
   const [detail, setDetail] = useState<API.v1KeyInfo | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
 
   const columns: ProColumns<API.v1KeyInfo>[] = [
-    { title: "License ID", dataIndex: "licenseId", copyable: true, width: 220 },
+    { title: "License ID", dataIndex: "licenseId", width: 220 },
     { title: "标签", dataIndex: "label", width: 160 },
     { title: "Key 前缀", dataIndex: "keyPrefix", width: 120 },
     {
@@ -110,16 +112,18 @@ export default function LicenseKeysPage() {
         rowKey="licenseId"
         search={false}
         pagination={false}
+        options={spinReload}
         request={async () => {
           const resp = await listKeys({ limit: 100 });
           return { data: resp?.keys ?? [], success: true };
         }}
         toolBarRender={() => [
           <Button
-            key="reload"
-            onClick={() => actionRef.current?.reload()}
+            key="new"
+            type="primary"
+            onClick={() => setCreateOpen(true)}
           >
-            刷新
+            新建密钥
           </Button>,
         ]}
       />
@@ -133,7 +137,8 @@ export default function LicenseKeysPage() {
         }[];
       }>
         title="新建密钥"
-        trigger={<Button type="primary">新建密钥</Button>}
+        open={createOpen}
+        onOpenChange={setCreateOpen}
         onFinish={async (vals) => {
           try {
             const resp = await createKey({

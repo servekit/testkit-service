@@ -7,6 +7,7 @@ import {
   ProTable,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { adminListProviders } from "@/services/testkit/testkitService";
 import { VENDOR_VALUE_ENUM } from "@/components/storagetags";
 
@@ -30,6 +31,7 @@ export default function AdminProvidersPage() {
         rowKey="name"
         search={false}
         pagination={false}
+        options={spinReload}
         request={async () => {
           const resp = await adminListProviders();
           return { data: resp.providers ?? [], success: true };

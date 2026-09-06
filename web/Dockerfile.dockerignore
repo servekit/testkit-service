@@ -1,0 +1,15 @@
+# Per-Dockerfile ignore for web/Dockerfile (repo-root build context).
+# Host build output never enters the image — the image runs its own
+# `npm ci` + `npm run openapi` + `max build`.
+testkit-service/web/node_modules/
+testkit-service/web/dist/
+testkit-service/web/.umi/
+testkit-service/web/.mfsu/
+testkit-service/web/.cache/
+testkit-service/web/src/.umi/
+testkit-service/web/src/.umi-production/
+testkit-service/web/config/openapi.json
+**/.git/
+**/.env
+**/*.log
+**/coverage.out

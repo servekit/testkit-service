@@ -8,6 +8,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { App, Button, Drawer, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useRef, useState } from "react";
@@ -18,7 +19,7 @@ import {
   listGroups,
   removeGroupMember,
 } from "@/services/testkit/testkitService";
-import { cursorList } from "@/utils/cursorList";
+import { useCursorTable } from "@/components/CursorPager";
 
 const MEMBER_ROLE_OPTIONS = [
   { value: "owner", label: "负责人" },
@@ -32,7 +33,10 @@ const MEMBER_ROLE_OPTIONS = [
  */
 export default function GroupsPage() {
   const { message } = App.useApp();
-  const actionRef = useRef<ActionType>(undefined);
+  const table = useCursorTable(async ({ cursor, pageSize }) => {
+    const resp = await listGroups({ pageSize, cursor: cursor || undefined });
+    return { items: resp.groups, nextCursor: resp.nextCursor };
+  });
   const [createOpen, setCreateOpen] = useState(false);
   const [membersGroup, setMembersGroup] = useState<API.Group>();
   const memberRef = useRef<ActionType>(undefined);
@@ -68,7 +72,7 @@ export default function GroupsPage() {
   ];
 
   const memberColumns: ProColumns<API.GroupMember>[] = [
-    { title: "用户 ID", dataIndex: "userId", copyable: true },
+    { title: "用户 ID", dataIndex: "userId" },
     { title: "昵称", dataIndex: "nickname" },
     { title: "角色", dataIndex: "role", width: 100 },
     { title: "加入时间", dataIndex: "createdAt", valueType: "dateTime", width: 180 },
@@ -98,18 +102,15 @@ export default function GroupsPage() {
   return (
     <PageContainer>
       <ProTable<API.Group>
-        actionRef={actionRef}
+        actionRef={table.actionRef}
         columns={columns}
         rowKey="id"
         search={false}
         pagination={false}
         headerTitle="用户组"
-        request={() =>
-          cursorList(async (n) => {
-            const resp = await listGroups({ pageSize: n });
-            return { items: resp.groups };
-          })
-        }
+        options={spinReload}
+        request={table.request}
+        footer={() => table.pager}
         toolBarRender={() => [
           <Button
             key="new"
@@ -129,7 +130,7 @@ export default function GroupsPage() {
         onFinish={async (vals) => {
           await createGroup(vals);
           message.success("已创建");
-          actionRef.current?.reload();
+          table.actionRef.current?.reload();
           return true;
         }}
       >

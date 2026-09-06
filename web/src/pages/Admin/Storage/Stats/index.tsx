@@ -115,6 +115,13 @@ export default function AdminStatsPage() {
               查询
             </Button>
           </Form.Item>
+          <Form.Item>
+            {/* Re-run the CURRENT filter (not the form draft) — the shared
+                stats feed serves all three tables below. */}
+            <Button loading={loading} onClick={() => fetchStats(filter)}>
+              刷新
+            </Button>
+          </Form.Item>
         </Form>
       </ProCard>
 
@@ -165,6 +172,7 @@ export default function AdminStatsPage() {
         rowKey={(r) => `${r.ownerType}/${r.fileCount}`}
         search={false}
         pagination={false}
+        options={false}
         dataSource={data?.ownerStats ?? []}
         loading={loading}
         style={{ marginTop: 16 }}
@@ -175,6 +183,7 @@ export default function AdminStatsPage() {
         rowKey="provider"
         search={false}
         pagination={false}
+        options={false}
         dataSource={data?.providerStats ?? []}
         loading={loading}
         style={{ marginTop: 16 }}
@@ -185,6 +194,7 @@ export default function AdminStatsPage() {
         rowKey="bucket"
         search={false}
         pagination={false}
+        options={false}
         dataSource={data?.bucketStats ?? []}
         loading={loading}
         style={{ marginTop: 16 }}

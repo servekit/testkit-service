@@ -12,6 +12,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
 import {
   DeleteOutlined,
@@ -66,7 +67,7 @@ export default function MyFilesPage() {
   };
 
   const columns: ProColumns<API.v1FileInfo>[] = [
-    { title: "ID", dataIndex: "id", width: 180, copyable: true, search: false },
+    { title: "ID", dataIndex: "id", width: 180, search: false },
     {
       title: "文件名",
       dataIndex: "filename",
@@ -171,6 +172,7 @@ export default function MyFilesPage() {
             </Popconfirm>
           </Space>
         )}
+        options={spinReload}
         request={async (params) => {
           const {
             current = 1,

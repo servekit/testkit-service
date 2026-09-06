@@ -11,6 +11,7 @@ import {
   ProTable,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { adminListAuditLogs } from "@/services/testkit/testkitService";
 import {
   AUDIT_ACTION_VALUE_ENUM,
@@ -29,7 +30,7 @@ const TARGET_LABEL: Record<string, string> = {
 
 export default function AdminAuditPage() {
   const columns: ProColumns<API.v1AuditLogEntry>[] = [
-    { title: "ID", dataIndex: "id", width: 180, copyable: true, search: false },
+    { title: "ID", dataIndex: "id", width: 180, search: false },
     {
       title: "操作",
       dataIndex: "action",
@@ -60,7 +61,7 @@ export default function AdminAuditPage() {
       valueEnum: OWNER_TYPE_VALUE_ENUM,
     },
     { title: "Owner ID", dataIndex: "ownerId", width: 180 },
-    { title: "request_id", dataIndex: "requestId", copyable: true },
+    { title: "request_id", dataIndex: "requestId" },
     { title: "开始时间", dataIndex: "startTime", hideInTable: true },
     { title: "结束时间", dataIndex: "endTime", hideInTable: true },
     { title: "时间", dataIndex: "createdAt", valueType: "dateTime", search: false, width: 180 },
@@ -74,6 +75,7 @@ export default function AdminAuditPage() {
         rowKey="id"
         search={{ labelWidth: "auto" }}
         pagination={false}
+        options={spinReload}
         request={async (params) => {
           const resp = await adminListAuditLogs({
             action: params.action as API.AdminListAuditLogsParams["action"],

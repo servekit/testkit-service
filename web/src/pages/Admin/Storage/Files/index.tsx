@@ -10,6 +10,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { App, Popconfirm } from "antd";
 import { useRef } from "react";
 import {
@@ -26,7 +27,7 @@ export default function AdminFilesPage() {
   const actionRef = useRef<ActionType>(undefined);
 
   const columns: ProColumns<API.v1AdminFileInfo>[] = [
-    { title: "ID", dataIndex: "id", width: 180, copyable: true, search: false },
+    { title: "ID", dataIndex: "id", width: 180, search: false },
     {
       title: "Owner 类型",
       dataIndex: "ownerType",
@@ -34,13 +35,13 @@ export default function AdminFilesPage() {
       valueEnum: OWNER_TYPE_VALUE_ENUM,
       width: 110,
     },
-    { title: "Owner ID", dataIndex: "ownerId", width: 180, copyable: true },
+    { title: "Owner ID", dataIndex: "ownerId", width: 180 },
     { title: "文件名", dataIndex: "filename", search: false },
     { title: "路径前缀", dataIndex: "pathPrefix", hideInTable: true },
     { title: "扩展名", dataIndex: "extension", hideInTable: true },
     { title: "Provider", dataIndex: "provider" },
     { title: "Bucket", dataIndex: "bucket" },
-    { title: "Object Key", dataIndex: "objectKey", search: false, copyable: true },
+    { title: "Object Key", dataIndex: "objectKey", search: false },
     {
       title: "大小",
       dataIndex: "size",
@@ -77,6 +78,7 @@ export default function AdminFilesPage() {
         rowKey="id"
         search={{ labelWidth: "auto" }}
         pagination={false}
+        options={spinReload}
         request={async (params) => {
           const resp = await adminListFiles({
             ownerType:

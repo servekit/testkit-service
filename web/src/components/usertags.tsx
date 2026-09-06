@@ -62,7 +62,7 @@ export const PROVIDER_VALUE_ENUM = {
   IDENTITY_PROVIDER_WECHAT: { text: "微信" },
   IDENTITY_PROVIDER_APPLE: { text: "Apple" },
   IDENTITY_PROVIDER_WECHAT_MINIPROGRAM: { text: "微信小程序" },
-  IDENTITY_PROVIDER_ADMIN: { text: "管理员" },
+  IDENTITY_PROVIDER_ADMIN: { text: "管理员创建" },
 };
 
 export const DEVICE_TYPE_VALUE_ENUM = {

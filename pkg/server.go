@@ -93,6 +93,9 @@ func NewServer(cfg *config.Config) (*Server, error) {
 			"/api/v1/auth/login",
 			"/api/v1/auth/register",
 			"/api/v1/captcha/send",
+			// Static region directory — region pickers render pre-login
+			// (the register page needs dial codes before any session exists).
+			"/api/v1/region-codes",
 			// Password reset is code-based (no caller identity).
 			"/api/v1/auth/password-reset",
 			// Raw routes with their own credentials (never session-gated).

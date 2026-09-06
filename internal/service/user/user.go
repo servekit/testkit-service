@@ -251,14 +251,21 @@ func (s *Service) RevokeSession(ctx context.Context, req *testkitv1.RevokeSessio
 	return s.user.RevokeSession(ctx, &userv1.RevokeSessionRequest{SessionId: req.GetSessionId()})
 }
 
-// RevokeAllSessions revokes every session owned by the CALLER. user_id is
-// injected from ctx.
+// RevokeAllSessions revokes every OTHER session owned by the CALLER ("log
+// out other devices" on the testkit session page). user_id is injected from
+// ctx; so is the caller's current session id, passed down as
+// exclude_session_id so the backend spares it. Absent ctx (direct gRPC
+// tests) excludes nothing and revokes all.
 func (s *Service) RevokeAllSessions(ctx context.Context, _ *testkitv1.RevokeAllSessionsRequest) (*emptypb.Empty, error) {
 	userID, err := userIDFromCtx(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return s.user.RevokeAllSessions(ctx, &userv1.RevokeAllSessionsRequest{UserId: userID})
+	currentSID, _ := usauth.SessionIDFromCtx(ctx) // absent outside gateway calls
+	return s.user.RevokeAllSessions(ctx, &userv1.RevokeAllSessionsRequest{
+		UserId:           userID,
+		ExcludeSessionId: currentSID,
+	})
 }
 
 // GetSession fetches a target session. session_id is the target resource ID.
@@ -268,14 +275,15 @@ func (s *Service) GetSession(ctx context.Context, req *testkitv1.GetSessionReque
 		return nil, err
 	}
 	return &testkitv1.GetSessionResponse{
-		UserId:      resp.GetUserId(),
-		ExpiresAt:   resp.GetExpiresAt(),
-		CreatedAt:   resp.GetCreatedAt(),
-		Ip:          resp.GetIp(),
-		UserAgent:   resp.GetUserAgent(),
-		Os:          resp.GetOs(),
-		Browser:     resp.GetBrowser(),
-		LoginMethod: resp.GetLoginMethod(),
+		UserId:        resp.GetUserId(),
+		ExpiresAt:     resp.GetExpiresAt(),
+		CreatedAt:     resp.GetCreatedAt(),
+		Ip:            resp.GetIp(),
+		UserAgent:     resp.GetUserAgent(),
+		Os:            resp.GetOs(),
+		Browser:       resp.GetBrowser(),
+		LoginMethod:   resp.GetLoginMethod(),
+		LoginProvider: resp.GetLoginProvider(),
 	}, nil
 }
 
@@ -861,20 +869,21 @@ func toTestkitSession(s *userv1.Session) *testkitv1.Session {
 		return nil
 	}
 	return &testkitv1.Session{
-		Id:           s.GetId(),
-		Ip:           s.GetIp(),
-		DeviceType:   userv1.DeviceType(s.GetDeviceType()),
-		Os:           s.GetOs(),
-		Browser:      s.GetBrowser(),
-		Country:      s.GetCountry(),
-		City:         s.GetCity(),
-		CreatedAt:    s.GetCreatedAt(),
-		LastActiveAt: s.GetLastActiveAt(),
-		Current:      s.GetCurrent(),
-		Status:       userv1.SessionStatus(s.GetStatus()),
-		LoginMethod:  s.GetLoginMethod(),
-		LoginTarget:  s.GetLoginTarget(),
-		Device:       s.GetDevice(),
+		Id:            s.GetId(),
+		Ip:            s.GetIp(),
+		DeviceType:    userv1.DeviceType(s.GetDeviceType()),
+		Os:            s.GetOs(),
+		Browser:       s.GetBrowser(),
+		Country:       s.GetCountry(),
+		City:          s.GetCity(),
+		CreatedAt:     s.GetCreatedAt(),
+		LastActiveAt:  s.GetLastActiveAt(),
+		Current:       s.GetCurrent(),
+		Status:        userv1.SessionStatus(s.GetStatus()),
+		LoginMethod:   s.GetLoginMethod(),
+		LoginProvider: s.GetLoginProvider(),
+		LoginTarget:   s.GetLoginTarget(),
+		Device:        s.GetDevice(),
 	}
 }
 

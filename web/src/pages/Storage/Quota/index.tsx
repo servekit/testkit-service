@@ -17,8 +17,12 @@ const { Paragraph } = Typography;
 
 export default function MyQuotaPage() {
   // useRequest doesn't infer getMyQuota's return type through the generated
-  // overload, so narrow `data` to the quota shape explicitly.
-  const { data: raw, loading } = useRequest(getMyQuota);
+  // overload, so narrow `data` to the quota shape explicitly. formatResult is
+  // pass-through: @umijs/max defaults it to `r => r?.data`, which strips the
+  // response body (it has no .data field) and leaves the page all zeros.
+  const { data: raw, loading } = useRequest(getMyQuota, {
+    formatResult: (r) => r,
+  });
   const data = raw as API.v1QuotaInfo | undefined;
 
   const total = Number(data?.totalBytes ?? 0);

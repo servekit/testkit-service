@@ -112,13 +112,23 @@ services:
   nginx:
     image: ${WEB_IMAGE_REPOSITORY:-testkit-web}:${IMAGE_TAG:-latest}
     build:
-      context: "."
-      dockerfile: "web/Dockerfile"
+      # Repo-root context (like testkit-service): the Dockerfile COPYs
+      # web/... and api/gen/openapi/... paths relative to the root. A
+      # previous "." context only worked via stale cache layers.
+      context: ".."
+      dockerfile: "testkit-service/web/Dockerfile"
     depends_on:
       testkit-service:
         condition: service_healthy
     ports:
       - "${HOST_NGINX_PORT:-8080}:80"
+    # The JSON access log is high-volume — bound the container log so it
+    # cannot grow unbounded on the host.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   postgres:
     image: ${POSTGRES_IMAGE:-postgres:17-alpine}

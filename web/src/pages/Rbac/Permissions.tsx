@@ -7,6 +7,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { spinReload } from "@/components/TableOptions";
 import { App, Button, Popconfirm, Tag } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useRef, useState } from "react";
@@ -16,7 +17,7 @@ import {
   listPermissions,
   updatePermission,
 } from "@/services/testkit/testkitService";
-import { cursorList } from "@/utils/cursorList";
+import { useCursorTable } from "@/components/CursorPager";
 
 interface PermForm {
   resource: string;
@@ -30,7 +31,10 @@ interface PermForm {
  */
 export default function PermissionsPage() {
   const { message } = App.useApp();
-  const actionRef = useRef<ActionType>(undefined);
+  const table = useCursorTable(async ({ cursor, pageSize }) => {
+    const resp = await listPermissions({ pageSize, cursor: cursor || undefined });
+    return { items: resp.permissions, nextCursor: resp.nextCursor };
+  });
   const [createOpen, setCreateOpen] = useState(false);
   const [editing, setEditing] = useState<API.Permission>();
 
@@ -61,7 +65,7 @@ export default function PermissionsPage() {
           onConfirm={async () => {
             await deletePermission({ permissionId: r.id ?? "" });
             message.success("已删除");
-            actionRef.current?.reload();
+            table.actionRef.current?.reload();
           }}
         >
           <a style={{ color: r.isBuiltin ? undefined : "red" }}>删除</a>
@@ -86,25 +90,22 @@ export default function PermissionsPage() {
       setCreateOpen(false);
     }
     message.success("已保存");
-    actionRef.current?.reload();
+    table.actionRef.current?.reload();
     return true;
   };
 
   return (
     <PageContainer>
       <ProTable<API.Permission>
-        actionRef={actionRef}
+        actionRef={table.actionRef}
         columns={columns}
         rowKey="id"
         search={false}
         pagination={false}
         headerTitle="权限"
-        request={() =>
-          cursorList(async (n) => {
-            const resp = await listPermissions({ pageSize: n });
-            return { items: resp.permissions };
-          })
-        }
+        options={spinReload}
+        request={table.request}
+        footer={() => table.pager}
         toolBarRender={() => [
           <Button
             key="new"

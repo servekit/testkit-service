@@ -6,6 +6,7 @@ import {
   ProFormText,
   ProFormTextArea,
 } from "@ant-design/pro-components";
+import { useRegionOptions } from "@/hooks/useRegionOptions";
 import { App, Button, Collapse, Typography } from "antd";
 import { history, useModel } from "@umijs/max";
 import { useRef, useState } from "react";
@@ -69,6 +70,7 @@ function bizMessage(err: unknown, fallback: string): string {
  * succeeds the captcha_id auto-fills from the response.
  */
 export default function RegisterPage() {
+  const regionOptions = useRegionOptions();
   const { message } = App.useApp();
   const { setInitialState } = useModel("@@initialState");
   const formRef = useRef<ProFormInstance<RegisterFormValues>>();
@@ -239,11 +241,12 @@ export default function RegisterPage() {
         {({ channel }) =>
           channel === "phone" ? (
             <>
-              <ProFormText
+              <ProFormSelect
                 name="regionCode"
-                label="国家码"
-                placeholder="CN"
-                rules={[{ required: true, message: "请输入两位国家码" }]}
+                label="国家区号"
+                initialValue="CN"
+                fieldProps={{ showSearch: true, optionFilterProp: "label" }}
+                options={regionOptions}
               />
               <ProFormText
                 name="phone"
@@ -266,6 +269,34 @@ export default function RegisterPage() {
         }
       </ProFormDependency>
 
+      <ProFormSelect
+        name="timezone"
+        label="时区"
+        showSearch
+        options={[
+          { value: "Asia/Shanghai", label: "Asia/Shanghai (中国标准时间)" },
+          { value: "UTC", label: "UTC (协调世界时)" },
+          { value: "Asia/Hong_Kong", label: "Asia/Hong_Kong" },
+          { value: "Asia/Singapore", label: "Asia/Singapore" },
+          { value: "Asia/Tokyo", label: "Asia/Tokyo" },
+          { value: "Europe/London", label: "Europe/London" },
+          { value: "Europe/Berlin", label: "Europe/Berlin" },
+          { value: "America/New_York", label: "America/New_York" },
+          { value: "America/Los_Angeles", label: "America/Los_Angeles" },
+        ]}
+      />
+      <ProFormSelect
+        name="locale"
+        label="语言"
+        options={[
+          { value: "zh-CN", label: "简体中文 (zh-CN)" },
+          { value: "zh-TW", label: "繁體中文 (zh-TW)" },
+          { value: "en-US", label: "English (en-US)" },
+          { value: "en-GB", label: "English (en-GB)" },
+          { value: "ja-JP", label: "日本語 (ja-JP)" },
+          { value: "ko-KR", label: "한국어 (ko-KR)" },
+        ]}
+      />
       <ProFormText
         name="code"
         label="验证码"

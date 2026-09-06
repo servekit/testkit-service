@@ -709,20 +709,23 @@ export async function bindIdentity(body: API.v1BindIdentityRequest,
   });
 }
 
-/** 此处后端没有提供注释 DELETE /api/v1/identities/${param0} */
+/** 此处后端没有提供注释 POST /api/v1/identities/${param0}${unbind} */
 export async function unbindIdentity(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.UnbindIdentityParams
-    ,
+    ,body: API.TestkitServiceUnbindIdentityBody,
   options ?: {[key: string]: any}
 ) {
   const { 'identityId': param0, 
   ...queryParams
   } = params;
-  return request<Record<string, any>>(`/api/v1/identities/${param0}`, {
-  method: 'DELETE',
-    params: {
-        ...queryParams,},
+  return request<Record<string, any>>(`/api/v1/identities/${param0}:unbind`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
     ...(options || {}),
   });
 }
@@ -1635,6 +1638,16 @@ export async function revokeRole(
   return request<Record<string, any>>(`/api/v1/rbac/users/${param0}/roles/${param1}`, {
   method: 'DELETE',
     params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/region-codes */
+export async function listRegionCodes(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListRegionCodesResponse>('/api/v1/region-codes', {
+  method: 'GET',
     ...(options || {}),
   });
 }
