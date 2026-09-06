@@ -66,7 +66,11 @@ export default function LoginLogsPage() {
       render: (_, r) => {
         if (!r.failReason) return "-";
         // Audit codes stored by user-service; unknown codes pass through raw.
-        const labels: Record<string, string> = { wrong_password: "密码错误" };
+        const labels: Record<string, string> = {
+          wrong_password: "密码错误",
+          wrong_code: "验证码错误",
+          verify_failed: "校验未通过",
+        };
         return labels[r.failReason] ?? r.failReason;
       },
     },
