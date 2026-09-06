@@ -1495,6 +1495,8 @@ user_id injected from ctx */
     countryCodes?: string[];
     /** display name in the request locale */
     name?: string;
+    /** issuer flag, e.g. "🇨🇳" — derived from the */
+    flagEmoji?: string;
   };
 
   type v1DailyStat = {

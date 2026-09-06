@@ -161,8 +161,14 @@ export default function ReferenceDirectoryPage() {
   );
   const currencyColumns = useMemo(
     () => [
+      {
+        title: "国旗",
+        dataIndex: "flagEmoji",
+        width: 60,
+        render: (v: string) => <span style={{ fontSize: 18 }}>{v || "-"}</span>,
+      },
       { title: "代码", dataIndex: "code", width: 90 },
-      { title: "符号", dataIndex: "symbol", width: 80 },
+      { title: "符号", dataIndex: "symbol", width: 90 },
       { title: "小数位", dataIndex: "minorUnits", width: 80 },
       { title: "名称", dataIndex: "name" },
       {
