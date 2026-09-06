@@ -17,7 +17,7 @@ func TestRunMigration_CreatesAllTables(t *testing.T) {
 
 	rows, err := db.Raw(`
 		SELECT tablename FROM pg_tables WHERE schemaname = 'public'
-		AND tablename IN ('users', 'storage_files', 'message_email_records')
+		AND tablename IN ('user_users', 'storage_files', 'message_email_records')
 	`).Rows()
 	require.NoError(t, err)
 	defer rows.Close()
