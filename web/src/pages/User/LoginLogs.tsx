@@ -59,7 +59,17 @@ export default function LoginLogsPage() {
       search: false,
       render: (_, r) => [r.country, r.city].filter(Boolean).join(" ") || "-",
     },
-    { title: "失败原因", dataIndex: "failReason", search: false },
+    {
+      title: "失败原因",
+      dataIndex: "failReason",
+      search: false,
+      render: (_, r) => {
+        if (!r.failReason) return "-";
+        // Audit codes stored by user-service; unknown codes pass through raw.
+        const labels: Record<string, string> = { wrong_password: "密码错误" };
+        return labels[r.failReason] ?? r.failReason;
+      },
+    },
   ];
 
   return (
