@@ -682,8 +682,8 @@ github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc h1:w2hKia
 github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc/go.mod h1:K/xygKsXBmfBqKHi4Vcg1xt5YIarW3BP7qU51JVbp9M=
 github.com/servekit/message-service v0.0.0-20260906163542-ef4c89484440 h1:9xNKoaVvH+consaXEWZqdj0j4gbmIDF3EKCCGLQf0II=
 github.com/servekit/message-service v0.0.0-20260906163542-ef4c89484440/go.mod h1:ceiCdvwLrGH1vrrbTiyp9mO4OpXoIVI9L2KZ4WNNJfU=
-github.com/servekit/reference-service v0.0.0-20260907024015-13e7326be29e h1:s/Fk/4l2miGSu2u7uRqkB22VOdCRMjn7t3+OnuhXXlk=
-github.com/servekit/reference-service v0.0.0-20260907024015-13e7326be29e/go.mod h1:Z57xk7SXzILA2dsqkW6hSpWhiMbxGXSMmQOT92wZeL0=
+github.com/servekit/reference-service v0.0.0-20260907025120-6121e33b7ac2 h1:AaNHx5cLJ6gAYU3l0iLijsmfTC/GFck5cAgkmo4PvVU=
+github.com/servekit/reference-service v0.0.0-20260907025120-6121e33b7ac2/go.mod h1:Z57xk7SXzILA2dsqkW6hSpWhiMbxGXSMmQOT92wZeL0=
 github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae h1:+p1YP6ALcbGYypwo2l8boFoLee8EsvyJIYJ+MvH6Iys=
 github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae/go.mod h1:7r9JE9CDXVy9iZDQBjGf99bSzH8a6HWA4IZst+dz12k=
 github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5 h1:/+v1GnKCsSbTUPiJYuhBqHxNFN17x/pCbm3Hkxtp810=
