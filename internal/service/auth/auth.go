@@ -24,6 +24,7 @@ import (
 
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	userv1 "github.com/servekit/api/gen/go/user/v1"
+	"github.com/servekit/testkit-service/internal/phone"
 	userservice "github.com/servekit/user-service/pkg"
 )
 
@@ -118,31 +119,29 @@ func (s *Service) toTokenResponse(_ context.Context, sessionID string, u *userv1
 
 func toUserLoginRequest(r *testkitv1.LoginRequest) *userv1.LoginRequest {
 	return &userv1.LoginRequest{
-		Method:     userv1.LoginMethod(r.GetMethod()),
-		Username:   r.GetUsername(),
-		Password:   r.GetPassword(),
-		Code:       r.GetCode(),
-		Email:      r.GetEmail(),
-		RegionCode: r.GetRegionCode(),
-		Phone:      r.GetPhone(),
-		CaptchaId:  r.GetCaptchaId(),
+		Method:    userv1.LoginMethod(r.GetMethod()),
+		Username:  r.GetUsername(),
+		Password:  r.GetPassword(),
+		Code:      r.GetCode(),
+		Email:     r.GetEmail(),
+		Phone:     phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
+		CaptchaId: r.GetCaptchaId(),
 	}
 }
 
 func toUserRegisterRequest(r *testkitv1.RegisterRequest) *userv1.RegisterRequest {
 	return &userv1.RegisterRequest{
-		Provider:   userv1.IdentityProvider(r.GetProvider()),
-		Email:      r.GetEmail(),
-		Code:       r.GetCode(),
-		Username:   r.GetUsername(),
-		Nickname:   r.GetNickname(),
-		Password:   r.GetPassword(),
-		RegionCode: r.GetRegionCode(),
-		Phone:      r.GetPhone(),
-		CaptchaId:  r.GetCaptchaId(),
-		Gender:     userv1.Gender(r.GetGender()),
-		Timezone:   r.GetTimezone(),
-		Locale:     r.GetLocale(),
+		Provider:  userv1.IdentityProvider(r.GetProvider()),
+		Email:     r.GetEmail(),
+		Code:      r.GetCode(),
+		Username:  r.GetUsername(),
+		Nickname:  r.GetNickname(),
+		Password:  r.GetPassword(),
+		Phone:     phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
+		CaptchaId: r.GetCaptchaId(),
+		Gender:    userv1.Gender(r.GetGender()),
+		Timezone:  r.GetTimezone(),
+		Locale:    r.GetLocale(),
 	}
 }
 
@@ -151,8 +150,7 @@ func toUserCodeRequest(r *testkitv1.SendVerificationCodeRequest) *userv1.SendVer
 		Email:           r.GetEmail(),
 		Channel:         userv1.VerificationChannel(r.GetChannel()),
 		Purpose:         userv1.VerificationPurpose(r.GetPurpose()),
-		RegionCode:      r.GetRegionCode(),
-		Phone:           r.GetPhone(),
+		Phone:           phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
 		SenderId:        r.GetSenderId(),
 		SmsTemplateId:   r.GetSmsTemplateId(),
 		SmsCodeParamKey: r.GetSmsCodeParamKey(),

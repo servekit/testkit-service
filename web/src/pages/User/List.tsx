@@ -180,9 +180,9 @@ export default function UserListPage() {
         <ProFormText name="email" label="邮箱" />
         <div style={{ display: "flex", gap: 8 }}>
           <ProFormSelect
-            name="regionCode"
+            name="dialCode"
             label="区号"
-            initialValue="CN"
+            initialValue="+86"
             fieldProps={{
               showSearch: true,
               optionFilterProp: "label",

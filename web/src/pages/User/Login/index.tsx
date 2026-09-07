@@ -31,7 +31,7 @@ export default function LoginPage() {
             method: "LOGIN_METHOD_USERNAME_PASSWORD",
             username: vals.username,
             password: vals.password,
-            regionCode: "CN",
+            dialCode: "+86",
           });
 
           const token = data?.token;

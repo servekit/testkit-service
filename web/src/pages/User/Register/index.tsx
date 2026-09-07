@@ -29,7 +29,7 @@ const SENDER_ID = "testkit-web";
 interface RegisterFormValues {
   channel?: "email" | "phone";
   email?: string;
-  regionCode?: string;
+  dialCode?: string;
   phone?: string;
   code?: string;
   captchaId?: string;
@@ -103,13 +103,13 @@ export default function RegisterPage() {
       message.warning("请先填写邮箱");
       return;
     }
-    if (!isEmail && (!vals.regionCode || !vals.phone)) {
+    if (!isEmail && (!vals.dialCode || !vals.phone)) {
       message.warning("请先填写国家码和手机号");
       return;
     }
     if (
       !isEmail &&
-      vals.regionCode === "CN" &&
+      vals.dialCode === "+86" &&
       (!vals.smsTemplateId || !vals.signName)
     ) {
       message.warning("国内短信需要短信模板 ID 和签名（投递模板面板里填写）");
@@ -132,7 +132,7 @@ export default function RegisterPage() {
               emailHtmlBody: vals.emailHtmlBody || undefined,
             }
           : {
-              regionCode: vals.regionCode || "CN",
+              dialCode: vals.dialCode || "+86",
               phone: vals.phone,
               smsTemplateId: vals.smsTemplateId || undefined,
               signName: vals.signName || undefined,
@@ -180,7 +180,7 @@ export default function RegisterPage() {
       subTitle="注册新账号"
       initialValues={{
         channel: "email",
-        regionCode: "CN",
+        dialCode: "+86",
         emailSubject: VERIFICATION_CODE_TEMPLATE.subject,
         emailBody: VERIFICATION_CODE_TEMPLATE.body,
         emailHtmlBody: VERIFICATION_CODE_TEMPLATE.htmlBody,
@@ -201,7 +201,7 @@ export default function RegisterPage() {
                 : "IDENTITY_PROVIDER_PHONE",
             ...(vals.channel === "email"
               ? { email: vals.email }
-              : { regionCode: vals.regionCode, phone: vals.phone }),
+              : { dialCode: vals.dialCode, phone: vals.phone }),
             code: vals.code,
             captchaId: vals.captchaId,
             username: vals.username,
@@ -248,7 +248,7 @@ export default function RegisterPage() {
           channel === "phone" ? (
             <>
               <ProFormSelect
-                name="regionCode"
+                name="dialCode"
                 label="国家区号"
                 initialValue="CN"
                 fieldProps={{ showSearch: true, optionFilterProp: "label" }}
@@ -337,10 +337,10 @@ export default function RegisterPage() {
             key: "delivery",
             label: "投递模板（测试参数，user-service 校验必填项）",
             children: (
-              <ProFormDependency name={["channel", "regionCode"]}>
-                {({ channel, regionCode }) =>
+              <ProFormDependency name={["channel", "dialCode"]}>
+                {({ channel, dialCode }) =>
                   channel === "phone" ? (
-                    regionCode === "CN" ? (
+                    dialCode === "+86" ? (
                       <>
                         <ProFormText
                           name="smsTemplateId"

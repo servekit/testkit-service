@@ -38,6 +38,7 @@ import (
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	messageservice "github.com/servekit/message-service/pkg"
 	referenceservice "github.com/servekit/reference-service/pkg"
+	"github.com/servekit/testkit-service/internal/phone"
 )
 
 // Service implements testkit's message domain. The message field is typed as
@@ -224,15 +225,15 @@ func (s *Service) ListRegionCodes(ctx context.Context, _ *testkitv1.ListRegionCo
 	}
 	enName := make(map[string]string, len(en.GetCountries()))
 	for _, c := range en.GetCountries() {
-		enName[c.GetCode()] = c.GetName()
+		enName[c.GetRegionCode()] = c.GetName()
 	}
 	out := make([]*testkitv1.RegionCode, 0, len(zh.GetCountries()))
 	for _, c := range zh.GetCountries() {
 		out = append(out, &testkitv1.RegionCode{
-			Code:     c.GetCode(),
+			Code:     c.GetRegionCode(),
 			DialCode: c.GetDialCode(),
 			NameZh:   c.GetName(),
-			NameEn:   enName[c.GetCode()],
+			NameEn:   enName[c.GetRegionCode()],
 		})
 	}
 	return &testkitv1.ListRegionCodesResponse{RegionCodes: out}, nil
@@ -267,8 +268,7 @@ func toMessageSendEmailRequest(r *testkitv1.SendEmailRequest, senderID string) *
 
 func toMessageSendSMSRequest(r *testkitv1.SendSMSRequest, senderID string) *messagev1.SendSMSRequest {
 	return &messagev1.SendSMSRequest{
-		RegionCode:     r.GetRegionCode(),
-		Phone:          r.GetPhone(),
+		To:             phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
 		Content:        r.GetContent(),
 		TemplateId:     r.GetTemplateId(),
 		TemplateParams: r.GetTemplateParams(),

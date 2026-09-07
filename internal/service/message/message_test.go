@@ -210,7 +210,7 @@ func TestSendSMS_InjectsSenderIDFromConfig(t *testing.T) {
 	svc := message.New(stub, message.WithSenderID("testkit-service"))
 
 	resp, err := svc.SendSMS(context.Background(), &testkitv1.SendSMSRequest{
-		RegionCode:     "CN",
+		DialCode:       "+86",
 		Phone:          "13800138000",
 		SignName:       "testkit",
 		TemplateId:     "SMS_123",
@@ -219,8 +219,7 @@ func TestSendSMS_InjectsSenderIDFromConfig(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, "testkit-service", stub.sendSMSReq.GetSenderId())
-	require.Equal(t, "CN", stub.sendSMSReq.GetRegionCode())
-	require.Equal(t, "13800138000", stub.sendSMSReq.GetPhone())
+	require.Equal(t, "+8613800138000", stub.sendSMSReq.GetTo())
 	require.Equal(t, messagev1.SmsScene_SMS_SCENE_LOGIN_CODE, stub.sendSMSReq.GetScene())
 	require.Equal(t, map[string]string{"code": "888888"}, stub.sendSMSReq.GetTemplateParams())
 	// response: SMS branch set, email branch zero.
@@ -506,13 +505,13 @@ type fakeReference struct {
 func (f *fakeReference) ListCountries(_ context.Context, req *referencev1.ListCountriesRequest) (*referencev1.ListCountriesResponse, error) {
 	if req.GetLocale() == "en" {
 		return &referencev1.ListCountriesResponse{Countries: []*referencev1.Country{
-			{Code: "CN", DialCode: "+86", Name: "China"},
-			{Code: "US", DialCode: "+1", Name: "United States"},
+			{RegionCode: "CN", DialCode: "+86", Name: "China"},
+			{RegionCode: "US", DialCode: "+1", Name: "United States"},
 		}}, nil
 	}
 	return &referencev1.ListCountriesResponse{Countries: []*referencev1.Country{
-		{Code: "CN", DialCode: "+86", Name: "中国"},
-		{Code: "US", DialCode: "+1", Name: "美国"},
+		{RegionCode: "CN", DialCode: "+86", Name: "中国"},
+		{RegionCode: "US", DialCode: "+1", Name: "美国"},
 	}}, nil
 }
 

@@ -163,7 +163,7 @@ export default function IdentityPage() {
             await bindIdentity({
               provider: vals.provider,
               email: vals.email,
-              regionCode: vals.regionCode,
+              dialCode: vals.dialCode,
               phone: vals.phone,
               code: vals.code,
             });
@@ -231,7 +231,7 @@ export default function IdentityPage() {
                 {isPhone && (
                   <div style={{ display: "flex", gap: 8 }}>
                     <ProFormSelect
-                      name="regionCode"
+                      name="dialCode"
                       label="区号"
                       initialValue="CN"
                       fieldProps={{
@@ -250,8 +250,8 @@ export default function IdentityPage() {
                   </div>
                 )}
                 {(isEmail || isPhone) && (
-                  <ProFormDependency name={["email", "regionCode", "phone"]}>
-                    {({ email, regionCode, phone }) => (
+                  <ProFormDependency name={["email", "dialCode", "phone"]}>
+                    {({ email, dialCode, phone }) => (
                       <Button
                         onClick={async () => {
                           try {
@@ -267,7 +267,7 @@ export default function IdentityPage() {
                                     emailSubject: VERIFICATION_CODE_TEMPLATE.subject,
                                     emailBody: VERIFICATION_CODE_TEMPLATE.body,
                                   }
-                                : { regionCode: regionCode || "CN", phone: phone ?? "" }),
+                                : { dialCode: dialCode || "+86", phone: phone ?? "" }),
                             });
                             message.success("验证码已发送");
                           } catch (e) {

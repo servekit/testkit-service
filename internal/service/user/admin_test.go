@@ -127,17 +127,17 @@ func TestCreateUser_ForwardsAllFields_AndEnumIntCast(t *testing.T) {
 	svc := newSvc(t, stub)
 
 	resp, err := svc.CreateUser(context.Background(), &testkitv1.CreateUserRequest{
-		UserType:   userv1.UserType_USER_TYPE_INTERNAL,
-		Username:   "bob",
-		Nickname:   "Bob",
-		RealName:   "Bob Q",
-		Email:      "bob@example.com",
-		RegionCode: "US",
-		Phone:      "+1555000",
-		Password:   "secret123",
-		Gender:     userv1.Gender_GENDER_MALE,
-		Timezone:   "UTC",
-		Locale:     "en",
+		UserType: userv1.UserType_USER_TYPE_INTERNAL,
+		Username: "bob",
+		Nickname: "Bob",
+		RealName: "Bob Q",
+		Email:    "bob@example.com",
+		DialCode: "+1",
+		Phone:    "5550001234",
+		Password: "secret123",
+		Gender:   userv1.Gender_GENDER_MALE,
+		Timezone: "UTC",
+		Locale:   "en",
 	})
 	require.NoError(t, err)
 
@@ -147,8 +147,7 @@ func TestCreateUser_ForwardsAllFields_AndEnumIntCast(t *testing.T) {
 	require.Equal(t, "Bob", got.GetNickname())
 	require.Equal(t, "Bob Q", got.GetRealName())
 	require.Equal(t, "bob@example.com", got.GetEmail())
-	require.Equal(t, "US", got.GetRegionCode())
-	require.Equal(t, "+1555000", got.GetPhone())
+	require.Equal(t, "+15550001234", got.GetPhone())
 	require.Equal(t, "secret123", got.GetPassword())
 	require.Equal(t, "UTC", got.GetTimezone())
 	require.Equal(t, "en", got.GetLocale())

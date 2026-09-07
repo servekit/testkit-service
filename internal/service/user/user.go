@@ -57,6 +57,7 @@ import (
 
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	userv1 "github.com/servekit/api/gen/go/user/v1"
+	"github.com/servekit/testkit-service/internal/phone"
 	userservice "github.com/servekit/user-service/pkg"
 	usauth "github.com/servekit/user-service/pkg/auth"
 )
@@ -135,8 +136,7 @@ func (s *Service) ResetPassword(ctx context.Context, req *testkitv1.ResetPasswor
 		Email:       req.GetEmail(),
 		Code:        req.GetCode(),
 		NewPassword: req.GetNewPassword(),
-		RegionCode:  req.GetRegionCode(),
-		Phone:       req.GetPhone(),
+		Phone:       phone.ComposeE164(req.GetDialCode(), req.GetPhone()),
 	})
 }
 
@@ -167,13 +167,12 @@ func (s *Service) BindIdentity(ctx context.Context, req *testkitv1.BindIdentityR
 		return nil, err
 	}
 	resp, err := s.user.BindIdentity(ctx, &userv1.BindIdentityRequest{
-		UserId:     userID,
-		Provider:   userv1.IdentityProvider(req.GetProvider()),
-		Email:      req.GetEmail(),
-		Code:       req.GetCode(),
-		Password:   req.GetPassword(),
-		RegionCode: req.GetRegionCode(),
-		Phone:      req.GetPhone(),
+		UserId:   userID,
+		Provider: userv1.IdentityProvider(req.GetProvider()),
+		Email:    req.GetEmail(),
+		Code:     req.GetCode(),
+		Password: req.GetPassword(),
+		Phone:    phone.ComposeE164(req.GetDialCode(), req.GetPhone()),
 	})
 	if err != nil {
 		return nil, err
@@ -805,16 +804,18 @@ func userIDFromCtx(ctx context.Context) (int64, error) {
 
 func toUserUpdateProfileRequest(r *testkitv1.UpdateProfileRequest, userID int64) *userv1.UpdateProfileRequest {
 	return &userv1.UpdateProfileRequest{
-		UserId:    userID,
-		Username:  r.GetUsername(),
-		Nickname:  r.GetNickname(),
-		RealName:  r.GetRealName(),
-		AvatarUrl: r.GetAvatarUrl(),
-		Gender:    userv1.Gender(r.GetGender()),
-		Birthday:  r.GetBirthday(),
-		Timezone:  r.GetTimezone(),
-		Locale:    r.GetLocale(),
-		Bio:       r.GetBio(),
+		UserId:          userID,
+		Username:        r.GetUsername(),
+		Nickname:        r.GetNickname(),
+		RealName:        r.GetRealName(),
+		AvatarUrl:       r.GetAvatarUrl(),
+		Gender:          userv1.Gender(r.GetGender()),
+		Birthday:        r.GetBirthday(),
+		Timezone:        r.GetTimezone(),
+		Locale:          r.GetLocale(),
+		Bio:             r.GetBio(),
+		DefaultCurrency: r.GetDefaultCurrency(),
+		RegionCode:      r.GetRegionCode(),
 	}
 }
 
@@ -825,25 +826,28 @@ func toTestkitUser(u *userv1.User) *testkitv1.User {
 		return nil
 	}
 	return &testkitv1.User{
-		Id:             u.GetId(),
-		Username:       u.GetUsername(),
-		Nickname:       u.GetNickname(),
-		RealName:       u.GetRealName(),
-		AvatarUrl:      u.GetAvatarUrl(),
-		Email:          u.GetEmail(),
-		RegionCode:     u.GetRegionCode(),
-		Phone:          u.GetPhone(),
-		Gender:         userv1.Gender(u.GetGender()),
-		Birthday:       u.GetBirthday(),
-		Timezone:       u.GetTimezone(),
-		Locale:         u.GetLocale(),
-		Bio:            u.GetBio(),
-		Status:         userv1.UserStatus(u.GetStatus()),
-		RegisterSource: userv1.IdentityProvider(u.GetRegisterSource()),
-		UserType:       userv1.UserType(u.GetUserType()),
-		LastLoginAt:    u.GetLastLoginAt(),
-		CreatedAt:      u.GetCreatedAt(),
-		UpdatedAt:      u.GetUpdatedAt(),
+		Id:              u.GetId(),
+		Username:        u.GetUsername(),
+		Nickname:        u.GetNickname(),
+		RealName:        u.GetRealName(),
+		AvatarUrl:       u.GetAvatarUrl(),
+		Email:           u.GetEmail(),
+		RegionCode:      u.GetRegionCode(),
+		Phone:           u.GetPhone(),
+		Gender:          userv1.Gender(u.GetGender()),
+		Birthday:        u.GetBirthday(),
+		Timezone:        u.GetTimezone(),
+		Locale:          u.GetLocale(),
+		Bio:             u.GetBio(),
+		Status:          userv1.UserStatus(u.GetStatus()),
+		RegisterSource:  userv1.IdentityProvider(u.GetRegisterSource()),
+		UserType:        userv1.UserType(u.GetUserType()),
+		LastLoginAt:     u.GetLastLoginAt(),
+		CreatedAt:       u.GetCreatedAt(),
+		UpdatedAt:       u.GetUpdatedAt(),
+		DialCode:        u.GetDialCode(),
+		DefaultCurrency: u.GetDefaultCurrency(),
+		MfaEnabled:      u.GetMfaEnabled(),
 	}
 }
 
@@ -891,17 +895,16 @@ func toTestkitSession(s *userv1.Session) *testkitv1.Session {
 
 func toUserCreateUserRequest(r *testkitv1.CreateUserRequest) *userv1.CreateUserRequest {
 	return &userv1.CreateUserRequest{
-		UserType:   userv1.UserType(r.GetUserType()),
-		Username:   r.GetUsername(),
-		Nickname:   r.GetNickname(),
-		RealName:   r.GetRealName(),
-		Email:      r.GetEmail(),
-		RegionCode: r.GetRegionCode(),
-		Phone:      r.GetPhone(),
-		Password:   r.GetPassword(),
-		Gender:     userv1.Gender(r.GetGender()),
-		Timezone:   r.GetTimezone(),
-		Locale:     r.GetLocale(),
+		UserType: userv1.UserType(r.GetUserType()),
+		Username: r.GetUsername(),
+		Nickname: r.GetNickname(),
+		RealName: r.GetRealName(),
+		Email:    r.GetEmail(),
+		Phone:    phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
+		Password: r.GetPassword(),
+		Gender:   userv1.Gender(r.GetGender()),
+		Timezone: r.GetTimezone(),
+		Locale:   r.GetLocale(),
 	}
 }
 

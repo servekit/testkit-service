@@ -95,14 +95,14 @@ func TestLogin_ForwardsAndReturnsSessionToken(t *testing.T) {
 	svc := newAuthSvc(t, stub)
 
 	resp, err := svc.Login(context.Background(), &testkitv1.LoginRequest{
-		Method:     userv1.LoginMethod_LOGIN_METHOD_USERNAME_PASSWORD,
-		Username:   "alice",
-		Password:   "pw",
-		Code:       "c",
-		Email:      "alice@example.com",
-		RegionCode: "CN",
-		Phone:      "13800138000",
-		CaptchaId:  "cap-9",
+		Method:    userv1.LoginMethod_LOGIN_METHOD_USERNAME_PASSWORD,
+		Username:  "alice",
+		Password:  "pw",
+		Code:      "c",
+		Email:     "alice@example.com",
+		DialCode:  "+86",
+		Phone:     "13800138000",
+		CaptchaId: "cap-9",
 	})
 	require.NoError(t, err)
 
@@ -118,8 +118,7 @@ func TestLogin_ForwardsAndReturnsSessionToken(t *testing.T) {
 	require.Equal(t, "pw", stub.gotLogin.GetPassword())
 	require.Equal(t, "c", stub.gotLogin.GetCode())
 	require.Equal(t, "alice@example.com", stub.gotLogin.GetEmail())
-	require.Equal(t, "CN", stub.gotLogin.GetRegionCode())
-	require.Equal(t, "13800138000", stub.gotLogin.GetPhone())
+	require.Equal(t, "+8613800138000", stub.gotLogin.GetPhone())
 	require.Equal(t, "cap-9", stub.gotLogin.GetCaptchaId())
 }
 
@@ -139,15 +138,15 @@ func TestRegister_ForwardsAndReturnsSessionToken(t *testing.T) {
 	svc := newAuthSvc(t, stub)
 
 	resp, err := svc.Register(context.Background(), &testkitv1.RegisterRequest{
-		Provider:   userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL,
-		Email:      "alice@example.com",
-		Code:       "123456",
-		Username:   "alice",
-		Nickname:   "Alice",
-		Password:   "pw",
-		RegionCode: "CN",
-		Phone:      "13800138000",
-		CaptchaId:  "cap-1",
+		Provider:  userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL,
+		Email:     "alice@example.com",
+		Code:      "123456",
+		Username:  "alice",
+		Nickname:  "Alice",
+		Password:  "pw",
+		DialCode:  "+86",
+		Phone:     "13800138000",
+		CaptchaId: "cap-1",
 	})
 	require.NoError(t, err)
 	require.Equal(t, "reg-sess", resp.GetToken())
@@ -159,8 +158,7 @@ func TestRegister_ForwardsAndReturnsSessionToken(t *testing.T) {
 	require.Equal(t, "alice", stub.gotRegister.GetUsername())
 	require.Equal(t, "Alice", stub.gotRegister.GetNickname())
 	require.Equal(t, "pw", stub.gotRegister.GetPassword())
-	require.Equal(t, "CN", stub.gotRegister.GetRegionCode())
-	require.Equal(t, "13800138000", stub.gotRegister.GetPhone())
+	require.Equal(t, "+8613800138000", stub.gotRegister.GetPhone())
 	require.Equal(t, "cap-1", stub.gotRegister.GetCaptchaId())
 }
 
@@ -169,12 +167,12 @@ func TestSendVerificationCode_ForwardsAndReturnsCaptchaID(t *testing.T) {
 	svc := newAuthSvc(t, stub)
 
 	resp, err := svc.SendVerificationCode(context.Background(), &testkitv1.SendVerificationCodeRequest{
-		Email:      "alice@example.com",
-		Channel:    userv1.VerificationChannel_VERIFICATION_CHANNEL_EMAIL,
-		Purpose:    userv1.VerificationPurpose_VERIFICATION_PURPOSE_REGISTER,
-		RegionCode: "CN",
-		Phone:      "13800138000",
-		SenderId:   "testkit-web",
+		Email:    "alice@example.com",
+		Channel:  userv1.VerificationChannel_VERIFICATION_CHANNEL_EMAIL,
+		Purpose:  userv1.VerificationPurpose_VERIFICATION_PURPOSE_REGISTER,
+		DialCode: "+86",
+		Phone:    "13800138000",
+		SenderId: "testkit-web",
 	})
 	require.NoError(t, err)
 	require.Equal(t, "cap-z", resp.GetCaptchaId())
@@ -183,8 +181,7 @@ func TestSendVerificationCode_ForwardsAndReturnsCaptchaID(t *testing.T) {
 	require.Equal(t, userv1.VerificationChannel_VERIFICATION_CHANNEL_EMAIL, stub.gotCode.GetChannel())
 	require.Equal(t, userv1.VerificationPurpose_VERIFICATION_PURPOSE_REGISTER, stub.gotCode.GetPurpose())
 	require.Equal(t, "alice@example.com", stub.gotCode.GetEmail())
-	require.Equal(t, "CN", stub.gotCode.GetRegionCode())
-	require.Equal(t, "13800138000", stub.gotCode.GetPhone())
+	require.Equal(t, "+8613800138000", stub.gotCode.GetPhone())
 	require.Equal(t, "testkit-web", stub.gotCode.GetSenderId())
 }
 

@@ -68,8 +68,11 @@ export default function ProfilePage() {
             <Descriptions.Item label="邮箱">
               {user?.email || "-"}
             </Descriptions.Item>
+            <Descriptions.Item label="国家/地区">
+              {user?.regionCode || "-"}
+            </Descriptions.Item>
             <Descriptions.Item label="手机">
-              {user?.regionCode} {user?.phone}
+              {user?.phone || "-"}
             </Descriptions.Item>
           </Descriptions>
         </ProCard>

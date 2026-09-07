@@ -62,7 +62,7 @@ function smsSegments(text: string): { count: number; perSegment: number } {
 }
 
 interface SmsFormValues {
-  regionCode?: string;
+  dialCode?: string;
   phone?: string;
   content?: string;
   templateId?: string;
@@ -125,10 +125,10 @@ export default function SendSMSPage() {
   const [form] = Form.useForm<SmsFormValues>();
   const [sending, setSending] = useState(false);
   const regionOptions = useRegionOptions();
-  const regionCode = Form.useWatch("regionCode", form);
+  const dialCode = Form.useWatch("dialCode", form);
   const content = Form.useWatch("content", form);
   const vendor = Form.useWatch("vendor", form);
-  const isCN = regionCode === "CN";
+  const isCN = dialCode === "+86";
 
   const handleSend = async () => {
     let vals: SmsFormValues;
@@ -153,7 +153,7 @@ export default function SendSMSPage() {
     const selectedVendor =
       vendor && vendor !== "SMS_VENDOR_UNSPECIFIED" ? vendor : undefined;
     const payload: API.v1SendSMSRequest = {
-      regionCode: vals.regionCode,
+      dialCode: vals.dialCode,
       phone: vals.phone,
       content: isCN ? undefined : vals.content,
       templateId: isCN ? vals.templateId : undefined,
@@ -186,7 +186,7 @@ export default function SendSMSPage() {
         form={form}
         layout="vertical"
         initialValues={{
-          regionCode: "CN",
+          dialCode: "+86",
           scene: "SMS_SCENE_LOGIN_CODE",
         }}
       >
@@ -196,7 +196,7 @@ export default function SendSMSPage() {
               "收信人",
               <Space style={{ width: "100%" }} size={8}>
                 <Form.Item
-                  name="regionCode"
+                  name="dialCode"
                   noStyle
                   rules={[
                     { required: true, message: "请选择或输入区码" },

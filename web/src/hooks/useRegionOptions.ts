@@ -11,7 +11,7 @@ export function useRegionOptions(): { value: string; label: string }[] {
     async (): Promise<{ value: string; label: string }[]> => {
       const resp = await listRegionCodes();
       return (resp.regionCodes ?? []).map((r) => ({
-        value: r.code ?? "",
+        value: r.dialCode ?? "",
         label: `${r.dialCode ?? ""} ${r.nameZh || r.nameEn || r.code}`,
       }));
     },

@@ -11,7 +11,7 @@ require (
 	github.com/redis/go-redis/v9 v9.20.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d
-	github.com/servekit/go-common v0.0.0-20260906125735-1aee64b7710e
+	github.com/servekit/go-common v0.0.0-20260907134535-5a601f9f7499
 	github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc
 	github.com/servekit/message-service v0.0.0-20260906163542-ef4c89484440
 	github.com/servekit/reference-service v0.0.0-20260907073537-cea96f3424fe
@@ -141,7 +141,7 @@ require (
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/sagikazarmark/locafero v0.11.0 // indirect
-	github.com/servekit/api/gen/go v0.0.0-20260907032048-c85ab995408f
+	github.com/servekit/api/gen/go v0.0.0-20260907134616-c735fd847cc4
 	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/sony/sonyflake/v2 v2.1.0 // indirect
