@@ -47,7 +47,6 @@ func (h *Handler) GetEmailStats(ctx context.Context, req *testkitv1.GetEmailStat
 	return h.svc.Message().GetEmailStats(ctx, req)
 }
 
-
 // GetSMS returns a single SMS record by id.
 func (h *Handler) GetSMS(ctx context.Context, req *testkitv1.GetSMSRequest) (*testkitv1.SMSRecord, error) {
 	return h.svc.Message().GetSMS(ctx, req)
@@ -76,7 +75,6 @@ func (h *Handler) ListSMSRegions(ctx context.Context, req *testkitv1.ListSMSRegi
 func (h *Handler) ListRegionCodes(ctx context.Context, req *testkitv1.ListRegionCodesRequest) (*testkitv1.ListRegionCodesResponse, error) {
 	return h.svc.Message().ListRegionCodes(ctx, req)
 }
-
 
 // --- Message admin RPCs (platform resources; 1:1 forwards, messaging.v1
 // payloads imported directly by the testkit proto) ---

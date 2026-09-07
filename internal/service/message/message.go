@@ -7,7 +7,7 @@
 //
 // Curation (platform-ization):
 //   - SendEmail/SendSMS are policy-driven: the testkit request carries scene
-//     + template params only; the BFF injects its message app credentials
+//   - template params only; the BFF injects its message app credentials
 //     (cfg.Message.AppKey/AppSecret) into the downstream context. All
 //     delivery content (templates, signatures, vendor routing) is owned by
 //     message-service policies managed on the admin surface below.
@@ -188,8 +188,6 @@ func (s *Service) GetSMSStats(ctx context.Context, req *testkitv1.GetSMSStatsReq
 }
 
 // --- Lookups (dropdown sources) ---
-
-
 
 // ListSMSRegions returns distinct region_code values for SMS filter dropdowns.
 func (s *Service) ListSMSRegions(ctx context.Context, _ *testkitv1.ListSMSRegionsRequest) (*testkitv1.ListSMSRegionsResponse, error) {

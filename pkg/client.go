@@ -504,7 +504,6 @@ func (c *Client) GetEmailStats(ctx context.Context, in *testkitv1.GetEmailStatsR
 	return c.cli.GetEmailStats(ctx, in)
 }
 
-
 // GetSMS delegates to the remote testkit-service.
 func (c *Client) GetSMS(ctx context.Context, in *testkitv1.GetSMSRequest) (*testkitv1.SMSRecord, error) {
 	return c.cli.GetSMS(ctx, in)
@@ -529,7 +528,6 @@ func (c *Client) GetSMSStats(ctx context.Context, in *testkitv1.GetSMSStatsReque
 func (c *Client) ListSMSRegions(ctx context.Context, in *testkitv1.ListSMSRegionsRequest) (*testkitv1.ListSMSRegionsResponse, error) {
 	return c.cli.ListSMSRegions(ctx, in)
 }
-
 
 // NextID delegates to the remote testkit-service.
 func (c *Client) NextID(ctx context.Context, in *testkitv1.NextIDRequest) (*testkitv1.NextIDResponse, error) {

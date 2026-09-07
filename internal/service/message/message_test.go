@@ -64,11 +64,11 @@ type stubServer struct {
 	getSMSStatsResp   *messagev1.SMSStatsResponse
 	getSMSStatsErr    error
 	// Lookups
-	listEmailSendersErr  error
-	listSMSSendersErr    error
-	listSMSRegionsReq    *messagev1.ListSMSRegionsRequest
-	listSMSRegionsResp   *messagev1.ListSMSRegionsResponse
-	listSMSRegionsErr    error
+	listEmailSendersErr error
+	listSMSSendersErr   error
+	listSMSRegionsReq   *messagev1.ListSMSRegionsRequest
+	listSMSRegionsResp  *messagev1.ListSMSRegionsResponse
+	listSMSRegionsErr   error
 }
 
 func (s *stubServer) SendEmail(ctx context.Context, req *messagev1.SendEmailRequest) (*messagev1.SendResponse, error) {
@@ -122,8 +122,6 @@ func (s *stubServer) GetSMSStats(_ context.Context, req *messagev1.GetSMSStatsRe
 	s.getSMSStatsReq = req
 	return s.getSMSStatsResp, s.getSMSStatsErr
 }
-
-
 
 func (s *stubServer) ListSMSRegions(_ context.Context, req *messagev1.ListSMSRegionsRequest) (*messagev1.ListSMSRegionsResponse, error) {
 	s.listSMSRegionsReq = req
@@ -434,8 +432,6 @@ func TestGetSMSStats_NoData(t *testing.T) {
 	require.Equal(t, int64(0), got.GetTotal())
 	require.InDelta(t, -1.0, got.GetSuccessRate(), 0.001)
 }
-
-
 
 func TestListSMSRegions(t *testing.T) {
 	stub := &stubServer{listSMSRegionsResp: &messagev1.ListSMSRegionsResponse{
