@@ -197,6 +197,10 @@ export default function MessageAccountsPage() {
         rowKey="id"
         search={false}
         pagination={false}
+        request={async () => {
+          const resp = await messageListChannelAccounts();
+          return { data: resp.accounts ?? [], success: true };
+        }}
         toolBarRender={() => [
           <ModalForm
             key="create"

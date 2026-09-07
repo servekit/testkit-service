@@ -126,6 +126,10 @@ export default function MessageAppsPage() {
         rowKey="id"
         search={false}
         pagination={false}
+        request={async () => {
+          const resp = await messageListApps({});
+          return { data: resp.apps ?? [], success: true };
+        }}
         toolBarRender={() => [
           <ModalForm
             key="create"
