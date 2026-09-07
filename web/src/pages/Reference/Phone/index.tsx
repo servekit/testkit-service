@@ -1,7 +1,9 @@
 /**
  * Phone parse playground (internal-only). One input, one libphonenumber
- * call: E.164 归一、归属国、号码类型. Invalid input is a valid response —
- * the invalid panel shows error_reason and whatever was still inferable.
+ * call: E.164 归一、归属国、号码类型. The default-country select exists for
+ * LOCAL-format numbers (no "+country" prefix) — "+86…" never needs it;
+ * "13800138000" is ambiguous until a country disambiguates it. Invalid
+ * input is a valid response (is_valid=false + error_reason).
  * access: canInternal at the route level.
  */
 import { PageContainer, ProCard } from "@ant-design/pro-components";
@@ -10,13 +12,14 @@ import {
   Button,
   Descriptions,
   Input,
-  Select,
   Space,
   Tag,
+  Tooltip,
   Typography,
 } from "antd";
 import { useEffect, useState } from "react";
-import { getCountryDefaults, parsePhone } from "@/services/testkit/testkitService";
+import CountrySelect from "../components/CountrySelect";
+import { listCountries, parsePhone } from "@/services/testkit/testkitService";
 
 const { Text } = Typography;
 
@@ -44,27 +47,19 @@ const SAMPLES: { label: string; raw: string; region?: string }[] = [
 
 export default function ReferencePhonePage() {
   const { message } = App.useApp();
+  const [countries, setCountries] = useState<API.v1Country[]>();
   const [raw, setRaw] = useState("+86 138 0013 8000");
   const [region, setRegion] = useState<string>();
   const [result, setResult] = useState<API.v1ParsePhoneResponse>();
   const [loading, setLoading] = useState(false);
-  const [example, setExample] = useState<string>();
 
   useEffect(() => {
-    if (!region) {
-      setExample(undefined);
-      return;
-    }
-    let cancelled = false;
-    getCountryDefaults({ countryCode: region, locale: "zh-Hans" })
-      .then((d) => {
-        if (!cancelled) setExample(d.exampleNumber);
-      })
+    listCountries({ locale: "zh-Hans" })
+      .then((r) => setCountries(r.countries ?? []))
       .catch(() => undefined);
-    return () => {
-      cancelled = true;
-    };
-  }, [region]);
+  }, []);
+
+  const selected = (countries ?? []).find((c) => c.code === region);
 
   const doParse = async (payload?: { raw: string; region?: string }) => {
     const target = payload ?? { raw, region };
@@ -97,23 +92,22 @@ export default function ReferencePhonePage() {
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           <Space wrap>
             <Input
-              style={{ width: 320 }}
+              style={{ width: 300 }}
               value={raw}
               onChange={(e) => setRaw(e.target.value)}
-              placeholder="输入手机号（国际或本地格式）"
+              placeholder={
+                selected?.exampleNumber || "输入手机号（国际或本地格式）"
+              }
               onPressEnter={() => doParse()}
             />
-            <Select
-              allowClear
-              placeholder="默认国家（本地格式时消歧）"
-              value={region}
-              onChange={setRegion}
-              style={{ width: 200 }}
-              options={["CN", "US", "JP", "DE", "GB"].map((c) => ({
-                value: c,
-                label: c,
-              }))}
-            />
+            <Tooltip title="仅在号码为本地格式（无 +国际区号）时用于判定归属国，如 13800138000 需选 CN 才能解析；国际格式 +86… 无需选择。">
+              <CountrySelect
+                countries={countries}
+                value={region}
+                onChange={setRegion}
+                placeholder="默认国家（本地格式号码时需要）"
+              />
+            </Tooltip>
             <Button type="primary" loading={loading} onClick={() => doParse()}>
               解析
             </Button>

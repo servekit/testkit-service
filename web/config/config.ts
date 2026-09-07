@@ -322,6 +322,21 @@ export default defineConfig({
           component: "./Reference/Directory",
         },
         {
+          path: "/reference/regions",
+          name: "区域浏览",
+          component: "./Reference/Regions",
+        },
+        {
+          path: "/reference/defaults",
+          name: "默认值填充",
+          component: "./Reference/Defaults",
+        },
+        {
+          path: "/reference/examples",
+          name: "常用示例",
+          component: "./Reference/Examples",
+        },
+        {
           path: "/reference/phone",
           name: "手机号解析",
           component: "./Reference/Phone",
