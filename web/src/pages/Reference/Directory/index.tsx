@@ -176,41 +176,29 @@ export default function ReferenceDirectoryPage() {
   const [currencies, setCurrencies] = useState<API.v1Currency[]>();
   const [groups, setGroups] = useState<API.v1RegionGroup[]>();
 
+  // Fetch the CURRENT tab whenever the tab or the locale changes — the
+  // tables are keyed off both, so a locale switch re-renders in place
+  // instead of waiting for a tab round-trip.
   useEffect(() => {
     let cancelled = false;
-    const fetchDomain = async () => {
+    const load = async () => {
       setLoading(true);
       try {
-        if (domain === "countries" && !countries) {
+        if (domain === "countries") {
           const r = await listCountries({ locale });
-          if (!cancelled) {
-            setCountries(r.countries ?? []);
-            setVersion(r.dataVersion);
-          }
-        } else if (domain === "timezones" && !timezones) {
+          if (!cancelled) { setCountries(r.countries ?? []); setVersion(r.dataVersion); }
+        } else if (domain === "timezones") {
           const r = await listTimezones({ locale });
-          if (!cancelled) {
-            setTimezones(r.timezones ?? []);
-            setVersion(r.dataVersion);
-          }
-        } else if (domain === "languages" && !languages) {
+          if (!cancelled) { setTimezones(r.timezones ?? []); setVersion(r.dataVersion); }
+        } else if (domain === "languages") {
           const r = await listLanguages({ locale });
-          if (!cancelled) {
-            setLanguages(r.languages ?? []);
-            setVersion(r.dataVersion);
-          }
-        } else if (domain === "currencies" && !currencies) {
+          if (!cancelled) { setLanguages(r.languages ?? []); setVersion(r.dataVersion); }
+        } else if (domain === "currencies") {
           const r = await listCurrencies({ locale });
-          if (!cancelled) {
-            setCurrencies(r.currencies ?? []);
-            setVersion(r.dataVersion);
-          }
-        } else if (domain === "groups" && !groups) {
+          if (!cancelled) { setCurrencies(r.currencies ?? []); setVersion(r.dataVersion); }
+        } else if (domain === "groups") {
           const r = await listRegionGroups({ locale });
-          if (!cancelled) {
-            setGroups(r.regionGroups ?? []);
-            setVersion(r.dataVersion);
-          }
+          if (!cancelled) { setGroups(r.regionGroups ?? []); setVersion(r.dataVersion); }
         }
       } catch {
         /* request interceptor surfaces errors */
@@ -218,22 +206,9 @@ export default function ReferenceDirectoryPage() {
         if (!cancelled) setLoading(false);
       }
     };
-    void fetchDomain();
-    return () => {
-      cancelled = true;
-    };
-    // Re-fetch nothing on locale change by design: entries are cached per
-    // domain; switching locale refreshes ALL cached tabs' names.
-  }, [domain]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Locale switch re-fetches every already-loaded domain so names follow.
-  useEffect(() => {
-    setCountries(undefined);
-    setTimezones(undefined);
-    setLanguages(undefined);
-    setCurrencies(undefined);
-    setGroups(undefined);
-  }, [locale]);
+    void load();
+    return () => { cancelled = true; };
+  }, [domain, locale]);
 
   const kw = keyword.trim().toLowerCase();
   const match = (...fields: (string | undefined)[]) =>
