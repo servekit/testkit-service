@@ -96,6 +96,10 @@ func NewServer(cfg *config.Config) (*Server, error) {
 			// Static region directory — region pickers render pre-login
 			// (the register page needs dial codes before any session exists).
 			"/api/v1/region-codes",
+			// Timezone/language directories for the same pre-login register
+			// form's pickers — static reference data, nothing sensitive.
+			"/api/v1/reference/timezones",
+			"/api/v1/reference/languages",
 			// Password reset is code-based (no caller identity).
 			"/api/v1/auth/password-reset",
 			// Raw routes with their own credentials (never session-gated).

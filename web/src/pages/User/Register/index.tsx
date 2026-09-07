@@ -7,6 +7,10 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-components";
 import { useRegionOptions } from "@/hooks/useRegionOptions";
+import {
+  useLanguageOptions,
+  useTimezoneOptions,
+} from "@/hooks/useReferenceOptions";
 import { App, Button, Collapse, Typography } from "antd";
 import { history, useModel } from "@umijs/max";
 import { useRef, useState } from "react";
@@ -71,6 +75,8 @@ function bizMessage(err: unknown, fallback: string): string {
  */
 export default function RegisterPage() {
   const regionOptions = useRegionOptions();
+  const timezoneOptions = useTimezoneOptions();
+  const languageOptions = useLanguageOptions();
   const { message } = App.useApp();
   const { setInitialState } = useModel("@@initialState");
   const formRef = useRef<ProFormInstance<RegisterFormValues>>();
@@ -180,7 +186,7 @@ export default function RegisterPage() {
         emailHtmlBody: VERIFICATION_CODE_TEMPLATE.htmlBody,
         smsContent: "code: {code}",
         timezone: "Asia/Shanghai",
-        locale: "zh-CN",
+        locale: "zh-Hans",
       }}
       onFinish={async (vals) => {
         if (vals.password !== vals.confirmPassword) {
@@ -273,29 +279,19 @@ export default function RegisterPage() {
         name="timezone"
         label="时区"
         showSearch
-        options={[
-          { value: "Asia/Shanghai", label: "Asia/Shanghai (中国标准时间)" },
-          { value: "UTC", label: "UTC (协调世界时)" },
-          { value: "Asia/Hong_Kong", label: "Asia/Hong_Kong" },
-          { value: "Asia/Singapore", label: "Asia/Singapore" },
-          { value: "Asia/Tokyo", label: "Asia/Tokyo" },
-          { value: "Europe/London", label: "Europe/London" },
-          { value: "Europe/Berlin", label: "Europe/Berlin" },
-          { value: "America/New_York", label: "America/New_York" },
-          { value: "America/Los_Angeles", label: "America/Los_Angeles" },
-        ]}
+        options={timezoneOptions}
+        fieldProps={{
+          optionFilterProp: "label",
+          filterOption: (input, option) =>
+            (option?.label ?? "").toLowerCase().includes(input.trim().toLowerCase()) ||
+            (option?.value ?? "").toLowerCase().includes(input.trim().toLowerCase()),
+        }}
       />
       <ProFormSelect
         name="locale"
         label="语言"
-        options={[
-          { value: "zh-CN", label: "简体中文 (zh-CN)" },
-          { value: "zh-TW", label: "繁體中文 (zh-TW)" },
-          { value: "en-US", label: "English (en-US)" },
-          { value: "en-GB", label: "English (en-GB)" },
-          { value: "ja-JP", label: "日本語 (ja-JP)" },
-          { value: "ko-KR", label: "한국어 (ko-KR)" },
-        ]}
+        showSearch
+        options={languageOptions}
       />
       <ProFormText
         name="code"
@@ -403,12 +399,18 @@ export default function RegisterPage() {
                   label="性别"
                   valueEnum={GENDER_VALUE_ENUM}
                 />
-                <ProFormText
+                <ProFormSelect
                   name="timezone"
                   label="时区"
-                  placeholder="Asia/Shanghai"
+                  showSearch
+                  options={timezoneOptions}
                 />
-                <ProFormText name="locale" label="语言" placeholder="zh-CN" />
+                <ProFormSelect
+                  name="locale"
+                  label="语言"
+                  showSearch
+                  options={languageOptions}
+                />
               </>
             ),
           },
