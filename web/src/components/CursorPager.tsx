@@ -99,9 +99,12 @@ export function useCursorTable<T>(
   const pager = (
     <Space style={{ display: "flex", justifyContent: "flex-end" }}>
       <span>
-        已加载 {state.loaded} 条
+        第 {state.page} 页 · 已加载 {state.loaded} 条
         {!state.hasMore && state.loaded > 0 ? " · 没有更多了" : ""}
       </span>
+      <Button size="small" disabled={state.page <= 1 || state.loading} onClick={() => go(1)}>
+        回到首页
+      </Button>
       <Button size="small" disabled={state.page <= 1 || state.loading} onClick={() => go(state.page - 1)}>
         上一页
       </Button>

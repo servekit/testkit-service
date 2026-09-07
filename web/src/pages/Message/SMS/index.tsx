@@ -3,13 +3,25 @@ import {
   ProTable,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { useCursorTable } from "@/components/CursorPager";
 import { spinReload } from "@/components/TableOptions";
-import { App, Card, Descriptions, Drawer, Modal, Space, Statistic } from "antd";
+import { listPagination } from "@/utils/pagination";
+import {
+  App,
+  Card,
+  Descriptions,
+  Drawer,
+  Modal,
+  Segmented,
+  Space,
+  Statistic,
+} from "antd";
 import { useEffect, useState } from "react";
 import {
   getSms,
   getSmsStats,
   listSms,
+  listSmsByCursor,
   listSmsRegions,
   listSmsSenders,
 } from "@/services/testkit/testkitService";
@@ -34,6 +46,25 @@ export default function SMSRecordsPage() {
   const [senders, setSenders] = useState<string[]>([]);
   const [detail, setDetail] = useState<API.v1SMSRecord | null>(null);
   const [stats, setStats] = useState<API.v1SMSStatsResponse | null>(null);
+
+  // Pagination mode: listSms offers offset AND cursor — both surfaces shown.
+  // Cursor mode rides the console-wide useCursorTable convention (filters
+  // keep flowing through the ProTable search form).
+  const [mode, setMode] = useState<"offset" | "cursor">("offset");
+  const cursorTable = useCursorTable<API.v1SMSRecord>(async (params) => {
+    const r = await listSmsByCursor({
+      pageToken: (params.cursor as string) || undefined,
+      pageSize: params.pageSize,
+      vendor: params.vendor as API.ListSMSByCursorParams["vendor"],
+      scene: params.scene as API.ListSMSByCursorParams["scene"],
+      status: params.status as API.ListSMSByCursorParams["status"],
+      regionCode: params.regionCode as string | undefined,
+      phone: params.phone as string | undefined,
+      sortField: "SORT_FIELD_CREATED_AT",
+      sortDirection: "SORT_DIRECTION_DESC",
+    });
+    return { items: r.records ?? [], nextCursor: r.nextPageToken };
+  });
 
   useEffect(() => {
     listSmsRegions()
@@ -119,49 +150,65 @@ export default function SMSRecordsPage() {
       <Card
         bordered={false}
         extra={
-          <a
-            onClick={async () => {
-              try {
-                const r = await getSmsStats({});
-                setStats(r);
-              } catch {
-                message.error("加载统计失败");
-              }
-            }}
-          >
-            统计
-          </a>
+          <Space>
+            <Segmented
+              value={mode}
+              onChange={(v) => setMode(v as "offset" | "cursor")}
+              options={[
+                { label: "传统分页", value: "offset" },
+                { label: "游标分页", value: "cursor" },
+              ]}
+            />
+            <a
+              onClick={async () => {
+                try {
+                  const r = await getSmsStats({});
+                  setStats(r);
+                } catch {
+                  message.error("加载统计失败");
+                }
+              }}
+            >
+              统计
+            </a>
+          </Space>
         }
       >
         <ProTable<API.v1SMSRecord>
+          actionRef={mode === "offset" ? undefined : cursorTable.actionRef}
           rowKey="id"
           columns={columns}
           search={{ labelWidth: "auto" }}
-          pagination={{ defaultPageSize: 20, showSizeChanger: true }}
+          pagination={mode === "offset" ? listPagination : false}
           options={spinReload}
-          request={async (params) => {
-            try {
-              const resp = await listSms({
-                vendor: params.vendor as API.ListSMSParams["vendor"],
-                scene: params.scene as API.ListSMSParams["scene"],
-                status: params.status as API.ListSMSParams["status"],
-                regionCode: params.regionCode as string | undefined,
-                phone: params.phone as string | undefined,
-                page: params.current ?? 1,
-                pageSize: params.pageSize ?? 20,
-                sortField: "SORT_FIELD_CREATED_AT",
-                sortDirection: "SORT_DIRECTION_DESC",
-              });
-              return {
-                data: resp.records ?? [],
-                success: true,
-                total: resp.total ?? 0,
-              };
-            } catch {
-              return { data: [], success: false };
-            }
-          }}
+          request={
+            mode === "offset"
+              ? async (params) => {
+                  try {
+                    const resp = await listSms({
+                      vendor: params.vendor as API.ListSMSParams["vendor"],
+                      scene: params.scene as API.ListSMSParams["scene"],
+                      status: params.status as API.ListSMSParams["status"],
+                      regionCode: params.regionCode as string | undefined,
+                      phone: params.phone as string | undefined,
+                      page: params.current ?? 1,
+                      pageSize: params.pageSize ?? 20,
+                      sortField: "SORT_FIELD_CREATED_AT",
+                      sortDirection: "SORT_DIRECTION_DESC",
+                    });
+                    return {
+                      data: resp.records ?? [],
+                      success: true,
+                      total: resp.total ?? 0,
+                    };
+                  } catch {
+                    return { data: [], success: false };
+                  }
+                }
+              : cursorTable.request
+          }
         />
+        {mode === "cursor" && cursorTable.pager}
 
         <Drawer
           open={!!detail}

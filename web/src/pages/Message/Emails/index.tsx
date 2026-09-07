@@ -4,12 +4,25 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { useCursorTable } from "@/components/CursorPager";
 import { spinReload } from "@/components/TableOptions";
-import { App, Button, Card, Descriptions, Drawer, Modal, Space, Statistic } from "antd";
+import { listPagination } from "@/utils/pagination";
+import {
+  App,
+  Button,
+  Card,
+  Descriptions,
+  Drawer,
+  Modal,
+  Segmented,
+  Space,
+  Statistic,
+} from "antd";
 import { useEffect, useRef, useState } from "react";
 import {
   getEmail,
   getEmailStats,
+  listEmailsByCursor,
   listEmailSenders,
   listEmails,
 } from "@/services/testkit/testkitService";
@@ -35,6 +48,25 @@ export default function EmailRecordsPage() {
   const [senders, setSenders] = useState<string[]>([]);
   const [detail, setDetail] = useState<API.v1EmailRecord | null>(null);
   const [stats, setStats] = useState<API.v1EmailStatsResponse | null>(null);
+
+  // Pagination mode: the backend listEmails offers BOTH styles; the console
+  // shows them side by side (testkit exists to exercise every contract).
+  // Cursor mode rides the console-wide useCursorTable convention (filters
+  // keep flowing through the ProTable search form).
+  const [mode, setMode] = useState<"offset" | "cursor">("offset");
+  const cursorTable = useCursorTable<API.v1EmailRecord>(async (params) => {
+    const r = await listEmailsByCursor({
+      pageToken: (params.cursor as string) || undefined,
+      pageSize: params.pageSize,
+      vendor: params.vendor as API.ListEmailsByCursorParams["vendor"],
+      scene: params.scene as API.ListEmailsByCursorParams["scene"],
+      status: params.status as API.ListEmailsByCursorParams["status"],
+      target: params.target as string | undefined,
+      sortField: "SORT_FIELD_CREATED_AT",
+      sortDirection: "SORT_DIRECTION_DESC",
+    });
+    return { items: r.records ?? [], nextCursor: r.nextPageToken };
+  });
 
   useEffect(() => {
     listEmailSenders()
@@ -116,6 +148,17 @@ export default function EmailRecordsPage() {
       <Card
         bordered={false}
         extra={
+        <Space>
+          <Segmented
+            value={mode}
+            onChange={(v) => {
+              setMode(v as "offset" | "cursor");
+            }}
+            options={[
+              { label: "传统分页", value: "offset" },
+              { label: "游标分页", value: "cursor" },
+            ]}
+          />
           <Button
             onClick={async () => {
               try {
@@ -128,37 +171,43 @@ export default function EmailRecordsPage() {
           >
             统计
           </Button>
+        </Space>
         }
       >
         <ProTable<API.v1EmailRecord>
-          actionRef={actionRef}
+          actionRef={mode === "offset" ? actionRef : cursorTable.actionRef}
           rowKey="id"
           columns={columns}
           search={{ labelWidth: "auto" }}
-          pagination={{ defaultPageSize: 20, showSizeChanger: true }}
+          pagination={mode === "offset" ? listPagination : false}
           options={spinReload}
-          request={async (params) => {
-            try {
-              const resp = await listEmails({
-                vendor: params.vendor as API.ListEmailsParams["vendor"],
-                scene: params.scene as API.ListEmailsParams["scene"],
-                status: params.status as API.ListEmailsParams["status"],
-                target: params.target as string | undefined,
-                page: params.current ?? 1,
-                pageSize: params.pageSize ?? 20,
-                sortField: "SORT_FIELD_CREATED_AT",
-                sortDirection: "SORT_DIRECTION_DESC",
-              });
-              return {
-                data: resp.records ?? [],
-                success: true,
-                total: resp.total ?? 0,
-              };
-            } catch {
-              return { data: [], success: false };
-            }
-          }}
+          request={
+            mode === "offset"
+              ? async (params) => {
+                  try {
+                    const resp = await listEmails({
+                      vendor: params.vendor as API.ListEmailsParams["vendor"],
+                      scene: params.scene as API.ListEmailsParams["scene"],
+                      status: params.status as API.ListEmailsParams["status"],
+                      target: params.target as string | undefined,
+                      page: params.current ?? 1,
+                      pageSize: params.pageSize ?? 20,
+                      sortField: "SORT_FIELD_CREATED_AT",
+                      sortDirection: "SORT_DIRECTION_DESC",
+                    });
+                    return {
+                      data: resp.records ?? [],
+                      success: true,
+                      total: resp.total ?? 0,
+                    };
+                  } catch {
+                    return { data: [], success: false };
+                  }
+                }
+              : cursorTable.request
+          }
         />
+        {mode === "cursor" && cursorTable.pager}
 
         <Drawer
           open={!!detail}

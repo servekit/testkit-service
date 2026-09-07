@@ -31,6 +31,7 @@ import {
   listRegionGroups,
   listTimezones,
 } from "@/services/testkit/testkitService";
+import { listPagination } from "@/utils/pagination";
 
 const { Text } = Typography;
 
@@ -324,31 +325,31 @@ export default function ReferenceDirectoryPage() {
       columns: countryColumns,
       rows: (countries ?? [])
         .filter((c) => match(c.code, c.alpha3, c.dialCode, c.name))
-        .map((c) => ({ ...c, key: c.code })),
+        .map((c) => ({ ...c, key: c.code ?? "" })),
     },
     timezones: {
       columns: timezoneColumns,
       rows: (timezones ?? [])
         .filter((t) => match(t.id, t.name, ...(t.countryCodes ?? [])))
-        .map((t) => ({ ...t, key: t.id })),
+        .map((t) => ({ ...t, key: t.id ?? "" })),
     },
     languages: {
       columns: languageColumns,
       rows: (languages ?? [])
         .filter((l) => match(l.tag, l.name))
-        .map((l) => ({ ...l, key: l.tag })),
+        .map((l) => ({ ...l, key: l.tag ?? "" })),
     },
     currencies: {
       columns: currencyColumns,
       rows: (currencies ?? [])
         .filter((c) => match(c.code, c.symbol, c.name))
-        .map((c) => ({ ...c, key: c.code })),
+        .map((c) => ({ ...c, key: c.code ?? "" })),
     },
     groups: {
       columns: groupColumns,
       rows: (groups ?? [])
         .filter((g) => match(g.code, g.name))
-        .map((g) => ({ ...g, key: g.code })),
+        .map((g) => ({ ...g, key: g.code ?? "" })),
     },
   };
 
@@ -411,7 +412,7 @@ export default function ReferenceDirectoryPage() {
                     })
                   : undefined
             }
-            pagination={{ pageSize: 50, showSizeChanger: false, showTotal: (t) => `共 ${t} 条` }}
+            pagination={listPagination}
           />
         </Spin>
       </ProCard>

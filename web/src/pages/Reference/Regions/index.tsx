@@ -12,6 +12,7 @@ import {
   listCountriesByRegion,
   listRegionGroups,
 } from "@/services/testkit/testkitService";
+import { listPagination } from "@/utils/pagination";
 
 const { Text } = Typography;
 
@@ -112,7 +113,7 @@ export default function ReferenceRegionsPage() {
             <Table
               size="small"
               rowKey="code"
-              pagination={{ pageSize: 50, showSizeChanger: false }}
+              pagination={listPagination}
               dataSource={countries ?? []}
               columns={[
                 {

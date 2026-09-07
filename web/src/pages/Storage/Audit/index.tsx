@@ -9,6 +9,7 @@ import {
   ProTable,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { listPagination } from "@/utils/pagination";
 import { spinReload } from "@/components/TableOptions";
 import { listMyAuditLogs } from "@/services/testkit/testkitService";
 import {
@@ -64,7 +65,7 @@ export default function MyAuditPage() {
         columns={columns}
         rowKey="id"
         search={{ labelWidth: "auto" }}
-        pagination={false}
+        pagination={listPagination}
         options={spinReload}
         request={async (params) => {
           const resp = await listMyAuditLogs({

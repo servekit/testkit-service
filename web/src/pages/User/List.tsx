@@ -7,6 +7,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { listPagination } from "@/utils/pagination";
 import { useRegionOptions } from "@/hooks/useRegionOptions";
 import { spinReload } from "@/components/TableOptions";
 import dayjs from "dayjs";
@@ -110,7 +111,7 @@ export default function UserListPage() {
         columns={columns}
         rowKey="id"
         search={{ labelWidth: "auto" }}
-        pagination={{ pageSize: 20 }}
+        pagination={listPagination}
         options={spinReload}
         request={async (params) => {
           const {

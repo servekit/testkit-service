@@ -7,12 +7,11 @@
 import {
   PageContainer,
   ProTable,
-  type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { useCursorTable } from "@/components/CursorPager";
 import { spinReload } from "@/components/TableOptions";
 import { App, Popconfirm } from "antd";
-import { useRef } from "react";
 import {
   adminDeleteFile,
   adminListFiles,
@@ -24,7 +23,22 @@ import {
 
 export default function AdminFilesPage() {
   const { message } = App.useApp();
-  const actionRef = useRef<ActionType>(undefined);
+
+  // adminListFiles is cursor-based (pageToken): the console-wide
+  // useCursorTable convention drives progressive paging.
+  const table = useCursorTable<API.v1AdminFileInfo>(async (params) => {
+    const resp = await adminListFiles({
+      ownerType: params.ownerType as API.AdminListFilesParams["ownerType"],
+      ownerId: params.ownerId as string | undefined,
+      provider: params.provider as string | undefined,
+      bucket: params.bucket as string | undefined,
+      pathPrefix: params.pathPrefix as string | undefined,
+      extension: params.extension as string | undefined,
+      pageSize: params.pageSize,
+      pageToken: (params.cursor as string) || undefined,
+    });
+    return { items: resp.files ?? [], nextCursor: resp.nextPageToken };
+  });
 
   const columns: ProColumns<API.v1AdminFileInfo>[] = [
     { title: "ID", dataIndex: "id", width: 180, search: false },
@@ -61,7 +75,7 @@ export default function AdminFilesPage() {
           onConfirm={async () => {
             await adminDeleteFile({ fileId: r.id ?? "" });
             message.success("已删除");
-            actionRef.current?.reload();
+            table.actionRef.current?.reload();
           }}
         >
           <a style={{ color: "red" }}>删除</a>
@@ -73,7 +87,7 @@ export default function AdminFilesPage() {
   return (
     <PageContainer>
       <ProTable<API.v1AdminFileInfo>
-        actionRef={actionRef}
+        actionRef={table.actionRef}
         columns={columns}
         rowKey="id"
         search={{ labelWidth: "auto" }}

@@ -12,6 +12,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { listPagination } from "@/utils/pagination";
 import { spinReload } from "@/components/TableOptions";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
 import {
@@ -150,7 +151,7 @@ export default function MyFilesPage() {
         columns={columns}
         rowKey="id"
         search={{ labelWidth: "auto" }}
-        pagination={{ pageSize: 20 }}
+        pagination={listPagination}
         rowSelection={{
           selectedRowKeys,
           onChange: (keys) => setSelectedRowKeys(keys as string[]),
