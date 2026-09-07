@@ -147,18 +147,10 @@ func toUserRegisterRequest(r *testkitv1.RegisterRequest) *userv1.RegisterRequest
 
 func toUserCodeRequest(r *testkitv1.SendVerificationCodeRequest) *userv1.SendVerificationCodeRequest {
 	return &userv1.SendVerificationCodeRequest{
-		Email:           r.GetEmail(),
-		Channel:         userv1.VerificationChannel(r.GetChannel()),
-		Purpose:         userv1.VerificationPurpose(r.GetPurpose()),
-		Phone:           phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
-		SenderId:        r.GetSenderId(),
-		SmsTemplateId:   r.GetSmsTemplateId(),
-		SmsCodeParamKey: r.GetSmsCodeParamKey(),
-		SmsContent:      r.GetSmsContent(),
-		EmailSubject:    r.GetEmailSubject(),
-		EmailBody:       r.GetEmailBody(),
-		EmailHtmlBody:   r.GetEmailHtmlBody(),
-		SignName:        r.GetSignName(),
+		Email:   r.GetEmail(),
+		Channel: userv1.VerificationChannel(r.GetChannel()),
+		Purpose: userv1.VerificationPurpose(r.GetPurpose()),
+		Phone:   phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
 	}
 }
 

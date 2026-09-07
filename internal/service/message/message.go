@@ -5,18 +5,14 @@
 // see only testkitv1; the downstream message handler is reached exclusively
 // through the messageservice.Service seam held here.
 //
-// Curation (plan §3.2 + P4 decisions):
-//   - SendEmail/SendSMS drop sender_id from the testkit request and inject it
-//     from cfg.Message.SenderID instead (decision 1). sender_id is a SERVICE
-//     LABEL (the calling business service, e.g. "testkit-service"), NOT a user
-//     id — the downstream contract says so explicitly, and idempotency is
-//     scoped per (sender_id, idempotency_key) in Redis, so a stable service
-//     label gives the intended global-dedup semantics.
-//   - List/Stats requests neither expose nor forward a sender_id filter
-//     (decision 2): testkit deploys a single sender and the ops console must
-//     see records across all senders (including other services' verification
-//     mails in the shared DB), so filtering by testkit's own sender_id would
-//     hide legitimate records.
+// Curation (platform-ization):
+//   - SendEmail/SendSMS are policy-driven: the testkit request carries scene
+//     + template params only; the BFF injects its message app credentials
+//     (cfg.Message.AppKey/AppSecret) into the downstream context. All
+//     delivery content (templates, signatures, vendor routing) is owned by
+//     message-service policies managed on the admin surface below.
+//   - List/Stats forward the app_key filter as given; the ops console sees
+//     records across all apps by default.
 //   - Get keeps the resource id (operation target — decision 3).
 //   - Enums mirror message-service name-for-name and number-for-number, so
 //     every enum conversion is a plain int cast — no string table.
@@ -39,6 +35,8 @@ import (
 	messageservice "github.com/servekit/message-service/pkg"
 	referenceservice "github.com/servekit/reference-service/pkg"
 	"github.com/servekit/testkit-service/internal/phone"
+
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // Service implements testkit's message domain. The message field is typed as
@@ -49,16 +47,23 @@ import (
 type Service struct {
 	message   messageservice.Service
 	reference referenceservice.Service // region-code directory source
-	senderID  string                   // injected into downstream Send requests (decision 1)
+	// appKey/appSecret are the BFF's message-service app credentials,
+	// injected into the downstream context on every Send (policy lookup,
+	// quota, and idempotency all hang off the app identity).
+	appKey    string
+	appSecret string
 }
 
 // Option configures a Service.
 type Option func(*Service)
 
-// WithSenderID sets the sender_id the BFF injects into Send requests. Required
-// in production (service.New fail-fasts on empty cfg.Message.SenderID); the
-// option form keeps construction uniform with the other domain constructors.
-func WithSenderID(id string) Option { return func(s *Service) { s.senderID = id } }
+// WithAppCredentials sets the message-service app credentials the BFF
+// injects into Send requests' context. Required in production (service.New
+// fail-fasts on empty cfg.Message.AppKey); the option form keeps
+// construction uniform with the other domain constructors.
+func WithAppCredentials(appKey, appSecret string) Option {
+	return func(s *Service) { s.appKey, s.appSecret = appKey, appSecret }
+}
 
 // WithReference sets the reference-service dependency backing the region-code
 // directory. Wired in service init; nil leaves ListRegionCodes erroring
@@ -68,8 +73,8 @@ func WithReference(ref referenceservice.Service) Option {
 }
 
 // New constructs the message-domain service. client is the embedded
-// message-service handler (messageservice.Service). senderID is
-// injected into downstream SendEmail/SendSMS requests.
+// message-service handler (messageservice.Service). App credentials are
+// injected into the context of downstream SendEmail/SendSMS calls.
 func New(client messageservice.Service, opts ...Option) *Service {
 	s := &Service{message: client}
 	for _, o := range opts {
@@ -78,20 +83,24 @@ func New(client messageservice.Service, opts ...Option) *Service {
 	return s
 }
 
-// --- Send (sender_id injected from config) ---
+// --- Send (app credentials injected from config) ---
 
-// SendEmail forwards to message-service with sender_id injected from config.
+// SendEmail forwards to message-service with the BFF's app credentials in
+// the context; the request carries scene + template params only.
 func (s *Service) SendEmail(ctx context.Context, req *testkitv1.SendEmailRequest) (*testkitv1.SendResponse, error) {
-	resp, err := s.message.SendEmail(ctx, toMessageSendEmailRequest(req, s.senderID))
+	ctx = messageservice.WithApp(ctx, s.appKey, s.appSecret)
+	resp, err := s.message.SendEmail(ctx, toMessageSendEmailRequest(req))
 	if err != nil {
 		return nil, err
 	}
 	return toTestkitSendResponse(resp), nil
 }
 
-// SendSMS forwards to message-service with sender_id injected from config.
+// SendSMS forwards to message-service with the BFF's app credentials in
+// the context; the destination is composed from dial_code + phone.
 func (s *Service) SendSMS(ctx context.Context, req *testkitv1.SendSMSRequest) (*testkitv1.SendResponse, error) {
-	resp, err := s.message.SendSMS(ctx, toMessageSendSMSRequest(req, s.senderID))
+	ctx = messageservice.WithApp(ctx, s.appKey, s.appSecret)
+	resp, err := s.message.SendSMS(ctx, toMessageSendSMSRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -180,23 +189,7 @@ func (s *Service) GetSMSStats(ctx context.Context, req *testkitv1.GetSMSStatsReq
 
 // --- Lookups (dropdown sources) ---
 
-// ListEmailSenders returns distinct sender_id values for email filter dropdowns.
-func (s *Service) ListEmailSenders(ctx context.Context, _ *testkitv1.ListEmailSendersRequest) (*testkitv1.ListEmailSendersResponse, error) {
-	resp, err := s.message.ListEmailSenders(ctx, &messagev1.ListEmailSendersRequest{})
-	if err != nil {
-		return nil, err
-	}
-	return &testkitv1.ListEmailSendersResponse{SenderIds: resp.GetSenderIds()}, nil
-}
 
-// ListSMSSenders returns distinct sender_id values for SMS filter dropdowns.
-func (s *Service) ListSMSSenders(ctx context.Context, _ *testkitv1.ListSMSSendersRequest) (*testkitv1.ListSMSSendersResponse, error) {
-	resp, err := s.message.ListSMSSenders(ctx, &messagev1.ListSMSSendersRequest{})
-	if err != nil {
-		return nil, err
-	}
-	return &testkitv1.ListSMSSendersResponse{SenderIds: resp.GetSenderIds()}, nil
-}
 
 // ListSMSRegions returns distinct region_code values for SMS filter dropdowns.
 func (s *Service) ListSMSRegions(ctx context.Context, _ *testkitv1.ListSMSRegionsRequest) (*testkitv1.ListSMSRegionsResponse, error) {
@@ -245,39 +238,25 @@ func (s *Service) ListRegionCodes(ctx context.Context, _ *testkitv1.ListRegionCo
 // converters intentionally omit SenderId (decision 2). Enums are int-cast
 // (testkit enums mirror message-service name- and number-for-name).
 
-func toMessageSendEmailRequest(r *testkitv1.SendEmailRequest, senderID string) *messagev1.SendEmailRequest {
+func toMessageSendEmailRequest(r *testkitv1.SendEmailRequest) *messagev1.SendEmailRequest {
 	return &messagev1.SendEmailRequest{
 		To:             toMessageEmailAddresses(r.GetTo()),
 		Cc:             toMessageEmailAddresses(r.GetCc()),
 		Bcc:            toMessageEmailAddresses(r.GetBcc()),
-		Subject:        r.GetSubject(),
-		Body:           r.GetBody(),
-		HtmlBody:       r.GetHtmlBody(),
 		ReplyTo:        toMessageEmailAddress(r.GetReplyTo()),
-		Vendor:         messagev1.EmailVendor(r.GetVendor()),
-		Account:        r.GetAccount(),
-		TemplateId:     r.GetTemplateId(),
-		TemplateParams: r.GetTemplateParams(),
 		Scene:          messagev1.EmailScene(r.GetScene()),
-		SenderId:       senderID, // decision 1: from config, not the testkit request
+		TemplateParams: r.GetTemplateParams(),
 		IdempotencyKey: r.GetIdempotencyKey(),
-		From:           toMessageEmailAddress(r.GetFrom()),
 		Attachments:    toMessageEmailAttachments(r.GetAttachments()),
 	}
 }
 
-func toMessageSendSMSRequest(r *testkitv1.SendSMSRequest, senderID string) *messagev1.SendSMSRequest {
+func toMessageSendSMSRequest(r *testkitv1.SendSMSRequest) *messagev1.SendSMSRequest {
 	return &messagev1.SendSMSRequest{
 		To:             phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
-		Content:        r.GetContent(),
-		TemplateId:     r.GetTemplateId(),
-		TemplateParams: r.GetTemplateParams(),
-		Vendor:         messagev1.SmsVendor(r.GetVendor()),
-		Account:        r.GetAccount(),
 		Scene:          messagev1.SmsScene(r.GetScene()),
-		SenderId:       senderID, // decision 1
+		TemplateParams: r.GetTemplateParams(),
 		IdempotencyKey: r.GetIdempotencyKey(),
-		SignName:       r.GetSignName(),
 	}
 }
 
@@ -301,7 +280,7 @@ func toMessageListEmailsRequest(r *testkitv1.ListEmailsRequest) *messagev1.ListE
 		PageSize:      r.GetPageSize(),
 		SortField:     messagev1.SortField(r.GetSortField()),
 		SortDirection: messagev1.SortDirection(r.GetSortDirection()),
-		SenderId:      r.GetSenderId(),
+		AppKey:        r.GetAppKey(),
 	}
 }
 
@@ -318,7 +297,7 @@ func toMessageListSMSRequest(r *testkitv1.ListSMSRequest) *messagev1.ListSMSRequ
 		PageSize:      r.GetPageSize(),
 		SortField:     messagev1.SortField(r.GetSortField()),
 		SortDirection: messagev1.SortDirection(r.GetSortDirection()),
-		SenderId:      r.GetSenderId(),
+		AppKey:        r.GetAppKey(),
 	}
 }
 
@@ -335,7 +314,7 @@ func toMessageListEmailsByCursorRequest(r *testkitv1.ListEmailsByCursorRequest) 
 		PageSize:      r.GetPageSize(),
 		PageToken:     r.GetPageToken(),
 		IncludeTotal:  r.GetIncludeTotal(),
-		SenderId:      r.GetSenderId(),
+		AppKey:        r.GetAppKey(),
 	}
 }
 
@@ -353,7 +332,7 @@ func toMessageListSMSByCursorRequest(r *testkitv1.ListSMSByCursorRequest) *messa
 		PageSize:      r.GetPageSize(),
 		PageToken:     r.GetPageToken(),
 		IncludeTotal:  r.GetIncludeTotal(),
-		SenderId:      r.GetSenderId(),
+		AppKey:        r.GetAppKey(),
 	}
 }
 
@@ -405,7 +384,7 @@ func toTestkitEmailRecord(r *messagev1.EmailRecord) *testkitv1.EmailRecord {
 		Scene:          messagingv1.EmailScene(r.GetScene()),
 		Status:         messagingv1.MessageStatus(r.GetStatus()),
 		Target:         toTestkitEmailAddress(r.GetTarget()),
-		SenderId:       r.GetSenderId(),
+		AppKey:         r.GetAppKey(),
 		Cc:             toTestkitEmailAddresses(r.GetCc()),
 		Bcc:            toTestkitEmailAddresses(r.GetBcc()),
 		Subject:        r.GetSubject(),
@@ -435,7 +414,7 @@ func toTestkitSMSRecord(r *messagev1.SMSRecord) *testkitv1.SMSRecord {
 		Status:         messagingv1.MessageStatus(r.GetStatus()),
 		RegionCode:     r.GetRegionCode(),
 		Phone:          r.GetPhone(),
-		SenderId:       r.GetSenderId(),
+		AppKey:         r.GetAppKey(),
 		Content:        r.GetContent(),
 		TemplateId:     r.GetTemplateId(),
 		TemplateParams: r.GetTemplateParams(),
@@ -635,4 +614,122 @@ func toTestkitSmsVendorStats(in []*messagev1.SmsVendorStats) []*testkitv1.SmsVen
 		})
 	}
 	return out
+}
+
+// --- Admin forwards (platform resources: apps / channel accounts /
+// signatures / templates / policies) ---
+//
+// The testkit proto imports the messaging.v1 admin payloads directly
+// (enums-import precedent), so these forwards pass messages through 1:1
+// with zero DTO duplication. xerr.Error passes through untouched.
+
+// CreateApp registers a calling app; the plaintext secret is returned by
+// message-service exactly once and passed straight through to the caller.
+func (s *Service) CreateApp(ctx context.Context, req *messagev1.CreateAppRequest) (*messagev1.CreateAppResponse, error) {
+	return s.message.CreateApp(ctx, req)
+}
+
+// GetApp returns one app by id.
+func (s *Service) GetApp(ctx context.Context, req *messagev1.GetAppRequest) (*messagev1.GetAppResponse, error) {
+	return s.message.GetApp(ctx, req)
+}
+
+// UpdateApp tweaks app metadata.
+func (s *Service) UpdateApp(ctx context.Context, req *messagev1.UpdateAppRequest) (*messagev1.UpdateAppResponse, error) {
+	return s.message.UpdateApp(ctx, req)
+}
+
+// RotateAppSecret invalidates the current secret; new plaintext returned once.
+func (s *Service) RotateAppSecret(ctx context.Context, req *messagev1.RotateAppSecretRequest) (*messagev1.RotateAppSecretResponse, error) {
+	return s.message.RotateAppSecret(ctx, req)
+}
+
+// ListApps returns all apps.
+func (s *Service) ListApps(ctx context.Context, req *messagev1.ListAppsRequest) (*messagev1.ListAppsResponse, error) {
+	return s.message.ListApps(ctx, req)
+}
+
+// DeleteApp soft-deletes an app.
+func (s *Service) DeleteApp(ctx context.Context, req *messagev1.DeleteAppRequest) (*emptypb.Empty, error) {
+	return s.message.DeleteApp(ctx, req)
+}
+
+// CreateChannelAccount adds a vendor account to the platform pool.
+func (s *Service) CreateChannelAccount(ctx context.Context, req *messagev1.CreateChannelAccountRequest) (*messagev1.CreateChannelAccountResponse, error) {
+	return s.message.CreateChannelAccount(ctx, req)
+}
+
+// UpdateChannelAccount edits remark/disabled or replaces credentials.
+func (s *Service) UpdateChannelAccount(ctx context.Context, req *messagev1.UpdateChannelAccountRequest) (*messagev1.UpdateChannelAccountResponse, error) {
+	return s.message.UpdateChannelAccount(ctx, req)
+}
+
+// DeleteChannelAccount soft-deletes an account from the pool.
+func (s *Service) DeleteChannelAccount(ctx context.Context, req *messagev1.DeleteChannelAccountRequest) (*emptypb.Empty, error) {
+	return s.message.DeleteChannelAccount(ctx, req)
+}
+
+// ListChannelAccounts returns the full pool (secrets masked).
+func (s *Service) ListChannelAccounts(ctx context.Context, req *messagev1.ListChannelAccountsRequest) (*messagev1.ListChannelAccountsResponse, error) {
+	return s.message.ListChannelAccounts(ctx, req)
+}
+
+// CreateSignature registers a signature with its account bindings.
+func (s *Service) CreateSignature(ctx context.Context, req *messagev1.CreateSignatureRequest) (*messagev1.CreateSignatureResponse, error) {
+	return s.message.CreateSignature(ctx, req)
+}
+
+// UpdateSignature replaces remark/disabled/bindings.
+func (s *Service) UpdateSignature(ctx context.Context, req *messagev1.UpdateSignatureRequest) (*messagev1.UpdateSignatureResponse, error) {
+	return s.message.UpdateSignature(ctx, req)
+}
+
+// DeleteSignature soft-deletes a signature.
+func (s *Service) DeleteSignature(ctx context.Context, req *messagev1.DeleteSignatureRequest) (*emptypb.Empty, error) {
+	return s.message.DeleteSignature(ctx, req)
+}
+
+// ListSignatures returns all signatures with bindings.
+func (s *Service) ListSignatures(ctx context.Context, req *messagev1.ListSignaturesRequest) (*messagev1.ListSignaturesResponse, error) {
+	return s.message.ListSignatures(ctx, req)
+}
+
+// CreateTemplate registers a template definition.
+func (s *Service) CreateTemplate(ctx context.Context, req *messagev1.CreateTemplateRequest) (*messagev1.CreateTemplateResponse, error) {
+	return s.message.CreateTemplate(ctx, req)
+}
+
+// UpdateTemplate fully replaces a template definition.
+func (s *Service) UpdateTemplate(ctx context.Context, req *messagev1.UpdateTemplateRequest) (*messagev1.UpdateTemplateResponse, error) {
+	return s.message.UpdateTemplate(ctx, req)
+}
+
+// DeleteTemplate soft-deletes a template.
+func (s *Service) DeleteTemplate(ctx context.Context, req *messagev1.DeleteTemplateRequest) (*emptypb.Empty, error) {
+	return s.message.DeleteTemplate(ctx, req)
+}
+
+// ListTemplates filters by app (0 = all) and channel (0 = all).
+func (s *Service) ListTemplates(ctx context.Context, req *messagev1.ListTemplatesRequest) (*messagev1.ListTemplatesResponse, error) {
+	return s.message.ListTemplates(ctx, req)
+}
+
+// CreatePolicy binds (app, channel, scene) to a template + route chains.
+func (s *Service) CreatePolicy(ctx context.Context, req *messagev1.CreatePolicyRequest) (*messagev1.CreatePolicyResponse, error) {
+	return s.message.CreatePolicy(ctx, req)
+}
+
+// UpdatePolicy fully replaces template + route chains.
+func (s *Service) UpdatePolicy(ctx context.Context, req *messagev1.UpdatePolicyRequest) (*messagev1.UpdatePolicyResponse, error) {
+	return s.message.UpdatePolicy(ctx, req)
+}
+
+// DeletePolicy removes the binding; sends fail closed from then on.
+func (s *Service) DeletePolicy(ctx context.Context, req *messagev1.DeletePolicyRequest) (*emptypb.Empty, error) {
+	return s.message.DeletePolicy(ctx, req)
+}
+
+// ListPolicies filters by app (0 = all) and channel (0 = all).
+func (s *Service) ListPolicies(ctx context.Context, req *messagev1.ListPoliciesRequest) (*messagev1.ListPoliciesResponse, error) {
+	return s.message.ListPolicies(ctx, req)
 }

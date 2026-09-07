@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc/metadata"
 
 	messagev1 "github.com/servekit/api/gen/go/messaging/v1"
 	referencev1 "github.com/servekit/api/gen/go/reference/v1"
@@ -23,11 +24,14 @@ import (
 // reached only when its field is set.
 type stubServer struct {
 	messagev1.UnimplementedMessageServiceServer
+	messagev1.UnimplementedMessageAdminServiceServer
 
 	// Send
+	sendEmailCtx  context.Context
 	sendEmailReq  *messagev1.SendEmailRequest
 	sendEmailResp *messagev1.SendResponse
 	sendEmailErr  error
+	sendSMSCtx    context.Context
 	sendSMSReq    *messagev1.SendSMSRequest
 	sendSMSResp   *messagev1.SendResponse
 	sendSMSErr    error
@@ -60,23 +64,21 @@ type stubServer struct {
 	getSMSStatsResp   *messagev1.SMSStatsResponse
 	getSMSStatsErr    error
 	// Lookups
-	listEmailSendersReq  *messagev1.ListEmailSendersRequest
-	listEmailSendersResp *messagev1.ListEmailSendersResponse
 	listEmailSendersErr  error
-	listSMSSendersReq    *messagev1.ListSMSSendersRequest
-	listSMSSendersResp   *messagev1.ListSMSSendersResponse
 	listSMSSendersErr    error
 	listSMSRegionsReq    *messagev1.ListSMSRegionsRequest
 	listSMSRegionsResp   *messagev1.ListSMSRegionsResponse
 	listSMSRegionsErr    error
 }
 
-func (s *stubServer) SendEmail(_ context.Context, req *messagev1.SendEmailRequest) (*messagev1.SendResponse, error) {
+func (s *stubServer) SendEmail(ctx context.Context, req *messagev1.SendEmailRequest) (*messagev1.SendResponse, error) {
+	s.sendEmailCtx = ctx
 	s.sendEmailReq = req
 	return s.sendEmailResp, s.sendEmailErr
 }
 
-func (s *stubServer) SendSMS(_ context.Context, req *messagev1.SendSMSRequest) (*messagev1.SendResponse, error) {
+func (s *stubServer) SendSMS(ctx context.Context, req *messagev1.SendSMSRequest) (*messagev1.SendResponse, error) {
+	s.sendSMSCtx = ctx
 	s.sendSMSReq = req
 	return s.sendSMSResp, s.sendSMSErr
 }
@@ -121,25 +123,17 @@ func (s *stubServer) GetSMSStats(_ context.Context, req *messagev1.GetSMSStatsRe
 	return s.getSMSStatsResp, s.getSMSStatsErr
 }
 
-func (s *stubServer) ListEmailSenders(_ context.Context, req *messagev1.ListEmailSendersRequest) (*messagev1.ListEmailSendersResponse, error) {
-	s.listEmailSendersReq = req
-	return s.listEmailSendersResp, s.listEmailSendersErr
-}
 
-func (s *stubServer) ListSMSSenders(_ context.Context, req *messagev1.ListSMSSendersRequest) (*messagev1.ListSMSSendersResponse, error) {
-	s.listSMSSendersReq = req
-	return s.listSMSSendersResp, s.listSMSSendersErr
-}
 
 func (s *stubServer) ListSMSRegions(_ context.Context, req *messagev1.ListSMSRegionsRequest) (*messagev1.ListSMSRegionsResponse, error) {
 	s.listSMSRegionsReq = req
 	return s.listSMSRegionsResp, s.listSMSRegionsErr
 }
 
-// TestSendEmail_InjectsSenderIDFromConfig verifies the core curation (decision
-// 1): the testkit request has NO sender_id field; the converter fills the
-// downstream sender_id from the configured value (NOT from ctx user_id).
-func TestSendEmail_InjectsSenderIDFromConfig(t *testing.T) {
+// TestSendEmail_InjectsAppCredentials verifies the core curation: the
+// testkit request carries scene + params only; the BFF injects its app
+// credentials into the downstream context.
+func TestSendEmail_InjectsAppCredentials(t *testing.T) {
 	stub := &stubServer{
 		sendEmailResp: &messagev1.SendResponse{
 			Id:     7001,
@@ -147,17 +141,17 @@ func TestSendEmail_InjectsSenderIDFromConfig(t *testing.T) {
 			Vendor: &messagev1.SendResponse_EmailVendor{EmailVendor: messagev1.EmailVendor_EMAIL_VENDOR_ALIYUN},
 		},
 	}
-	svc := message.New(stub, message.WithSenderID("testkit-service"))
+	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
 
 	resp, err := svc.SendEmail(context.Background(), &testkitv1.SendEmailRequest{
-		To:      []*testkitv1.EmailAddress{{Email: "alice@example.com", DisplayName: "Alice"}},
-		Subject: "hello",
-		Body:    "body",
-		Scene:   messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
+		To:             []*testkitv1.EmailAddress{{Email: "alice@example.com", DisplayName: "Alice"}},
+		Scene:          messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
+		TemplateParams: map[string]string{"code": "42"},
 	})
 	require.NoError(t, err)
-	// sender_id injected from config, NOT present on the testkit request.
-	require.Equal(t, "testkit-service", stub.sendEmailReq.GetSenderId())
+	// app credentials injected into the downstream context metadata.
+	require.Equal(t, "testkit-service", appKeyFromCtx(t, stub.sendEmailCtx))
+	require.Equal(t, map[string]string{"code": "42"}, stub.sendEmailReq.GetTemplateParams())
 	// nested EmailAddress mapped field-for-field.
 	require.Equal(t, "alice@example.com", stub.sendEmailReq.GetTo()[0].GetEmail())
 	require.Equal(t, "Alice", stub.sendEmailReq.GetTo()[0].GetDisplayName())
@@ -175,13 +169,11 @@ func TestSendEmail_InjectsSenderIDFromConfig(t *testing.T) {
 // downstream, not at the mapping layer).
 func TestSendEmail_PassesAttachmentsAndIdempotencyKey(t *testing.T) {
 	stub := &stubServer{sendEmailResp: &messagev1.SendResponse{Id: 8}}
-	svc := message.New(stub, message.WithSenderID("tk"))
+	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
 
 	_, err := svc.SendEmail(context.Background(), &testkitv1.SendEmailRequest{
-		To:      []*testkitv1.EmailAddress{{Email: "b@x.com"}},
-		Subject: "s",
-		Body:    "b",
-		Scene:   messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
+		To:    []*testkitv1.EmailAddress{{Email: "b@x.com"}},
+		Scene: messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
 		Attachments: []*testkitv1.EmailAttachment{{
 			Filename:  "report.pdf",
 			Url:       "https://oss.example.com/report.pdf",
@@ -197,9 +189,9 @@ func TestSendEmail_PassesAttachmentsAndIdempotencyKey(t *testing.T) {
 	require.Equal(t, "idem-uuid-1", stub.sendEmailReq.GetIdempotencyKey())
 }
 
-// TestSendSMS_InjectsSenderIDFromConfig verifies SMS send also injects
-// sender_id from config (decision 1) and the response picks the SMS branch.
-func TestSendSMS_InjectsSenderIDFromConfig(t *testing.T) {
+// TestSendSMS_InjectsAppCredentials verifies SMS send also injects the
+// app credentials and the response picks the SMS branch.
+func TestSendSMS_InjectsAppCredentials(t *testing.T) {
 	stub := &stubServer{
 		sendSMSResp: &messagev1.SendResponse{
 			Id:     9001,
@@ -207,18 +199,16 @@ func TestSendSMS_InjectsSenderIDFromConfig(t *testing.T) {
 			Vendor: &messagev1.SendResponse_SmsVendor{SmsVendor: messagev1.SmsVendor_SMS_VENDOR_ALIYUN},
 		},
 	}
-	svc := message.New(stub, message.WithSenderID("testkit-service"))
+	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
 
 	resp, err := svc.SendSMS(context.Background(), &testkitv1.SendSMSRequest{
 		DialCode:       "+86",
 		Phone:          "13800138000",
-		SignName:       "testkit",
-		TemplateId:     "SMS_123",
 		TemplateParams: map[string]string{"code": "888888"},
 		Scene:          messagingv1.SmsScene_SMS_SCENE_LOGIN_CODE,
 	})
 	require.NoError(t, err)
-	require.Equal(t, "testkit-service", stub.sendSMSReq.GetSenderId())
+	require.Equal(t, "testkit-service", appKeyFromCtx(t, stub.sendSMSCtx))
 	require.Equal(t, "+8613800138000", stub.sendSMSReq.GetTo())
 	require.Equal(t, messagev1.SmsScene_SMS_SCENE_LOGIN_CODE, stub.sendSMSReq.GetScene())
 	require.Equal(t, map[string]string{"code": "888888"}, stub.sendSMSReq.GetTemplateParams())
@@ -238,7 +228,7 @@ func TestGetEmail_MapsAllFields(t *testing.T) {
 		Scene:          messagev1.EmailScene_EMAIL_SCENE_REGISTER,
 		Status:         messagev1.MessageStatus_MESSAGE_STATUS_FAILED,
 		Target:         &messagev1.EmailAddress{Email: "to@x.com", DisplayName: "To"},
-		SenderId:       "testkit-service",
+		AppKey:         "testkit-service",
 		Cc:             []*messagev1.EmailAddress{{Email: "cc@x.com"}},
 		Subject:        "subj",
 		Content:        "txt",
@@ -252,7 +242,7 @@ func TestGetEmail_MapsAllFields(t *testing.T) {
 		UpdatedAt:      110,
 		Attachments:    []*messagev1.EmailAttachment{{Filename: "a.pdf", Url: "https://o/a.pdf", SizeBytes: 5}},
 	}}
-	svc := message.New(stub, message.WithSenderID("testkit-service"))
+	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
 
 	got, err := svc.GetEmail(context.Background(), &testkitv1.GetEmailRequest{Id: 1})
 	require.NoError(t, err)
@@ -281,13 +271,13 @@ func TestGetSMS_MapsAllFields(t *testing.T) {
 		Status:     messagev1.MessageStatus_MESSAGE_STATUS_SENT,
 		RegionCode: "US",
 		Phone:      "5551234567",
-		SenderId:   "testkit-service",
+		AppKey:     "testkit-service",
 		Content:    "hi",
 		Attempts:   1,
 		SentAt:     200,
 		CreatedAt:  190,
 	}}
-	svc := message.New(stub, message.WithSenderID("testkit-service"))
+	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
 
 	got, err := svc.GetSMS(context.Background(), &testkitv1.GetSMSRequest{Id: 2})
 	require.NoError(t, err)
@@ -309,7 +299,7 @@ func TestListEmails_OmitsSenderIDFilter(t *testing.T) {
 		TotalPages: 1,
 		HasMore:    false,
 	}}
-	svc := message.New(stub, message.WithSenderID("testkit-service"))
+	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
 
 	got, err := svc.ListEmails(context.Background(), &testkitv1.ListEmailsRequest{
 		Vendor:        messagingv1.EmailVendor_EMAIL_VENDOR_ALIYUN,
@@ -323,7 +313,7 @@ func TestListEmails_OmitsSenderIDFilter(t *testing.T) {
 	})
 	require.NoError(t, err)
 	// decision 2: no sender_id filter forwarded.
-	require.Equal(t, "", stub.listEmailsReq.GetSenderId())
+	require.Equal(t, "", stub.listEmailsReq.GetAppKey())
 	require.Equal(t, messagev1.EmailVendor_EMAIL_VENDOR_ALIYUN, stub.listEmailsReq.GetVendor())
 	require.Equal(t, "alice@x.com", stub.listEmailsReq.GetTarget())
 	require.Equal(t, int32(1), stub.listEmailsReq.GetPage())
@@ -341,7 +331,7 @@ func TestListSMS_OmitsSenderIDFilter(t *testing.T) {
 		Records: []*messagev1.SMSRecord{{Id: 9, RegionCode: "CN"}},
 		Total:   1,
 	}}
-	svc := message.New(stub, message.WithSenderID("tk"))
+	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
 
 	got, err := svc.ListSMS(context.Background(), &testkitv1.ListSMSRequest{
 		RegionCode: "CN",
@@ -350,7 +340,7 @@ func TestListSMS_OmitsSenderIDFilter(t *testing.T) {
 		PageSize:   10,
 	})
 	require.NoError(t, err)
-	require.Equal(t, "", stub.listSMSReq.GetSenderId())
+	require.Equal(t, "", stub.listSMSReq.GetAppKey())
 	require.Equal(t, "CN", stub.listSMSReq.GetRegionCode())
 	require.Equal(t, int32(2), stub.listSMSReq.GetPage())
 	require.Len(t, got.GetRecords(), 1)
@@ -365,7 +355,7 @@ func TestListEmailsByCursor_PassesPageTokenAndIncludeTotal(t *testing.T) {
 		Total:         42,
 		NextPageToken: "cursor-abc",
 	}}
-	svc := message.New(stub, message.WithSenderID("tk"))
+	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
 
 	got, err := svc.ListEmailsByCursor(context.Background(), &testkitv1.ListEmailsByCursorRequest{
 		PageSize:     50,
@@ -377,7 +367,7 @@ func TestListEmailsByCursor_PassesPageTokenAndIncludeTotal(t *testing.T) {
 	require.Equal(t, "cursor-prev", stub.listEmailsByCursorReq.GetPageToken())
 	require.True(t, stub.listEmailsByCursorReq.GetIncludeTotal())
 	require.Equal(t, int32(50), stub.listEmailsByCursorReq.GetPageSize())
-	require.Equal(t, "", stub.listEmailsByCursorReq.GetSenderId())
+	require.Equal(t, "", stub.listEmailsByCursorReq.GetAppKey())
 	require.Equal(t, int32(42), got.GetTotal())
 	require.Equal(t, "cursor-abc", got.GetNextPageToken())
 	require.Len(t, got.GetRecords(), 1)
@@ -389,12 +379,12 @@ func TestListSMSByCursor_FirstPageEmptyToken(t *testing.T) {
 	stub := &stubServer{listSMSByCursorResp: &messagev1.ListSMSByCursorResponse{
 		NextPageToken: "",
 	}}
-	svc := message.New(stub, message.WithSenderID("tk"))
+	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
 
 	got, err := svc.ListSMSByCursor(context.Background(), &testkitv1.ListSMSByCursorRequest{PageSize: 10})
 	require.NoError(t, err)
 	require.Equal(t, "", stub.listSMSByCursorReq.GetPageToken()) // first page
-	require.Equal(t, "", stub.listSMSByCursorReq.GetSenderId())
+	require.Equal(t, "", stub.listSMSByCursorReq.GetAppKey())
 	require.Equal(t, "", got.GetNextPageToken()) // no next page
 }
 
@@ -411,7 +401,7 @@ func TestGetEmailStats_MapsVendorBreakdown(t *testing.T) {
 			{Vendor: messagev1.EmailVendor_EMAIL_VENDOR_TENCENT, Total: 4, Sent: 3, Failed: 1},
 		},
 	}}
-	svc := message.New(stub, message.WithSenderID("tk"))
+	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
 
 	got, err := svc.GetEmailStats(context.Background(), &testkitv1.GetEmailStatsRequest{
 		Vendor:    messagingv1.EmailVendor_EMAIL_VENDOR_ALIYUN,
@@ -437,7 +427,7 @@ func TestGetSMSStats_NoData(t *testing.T) {
 		Failed:      0,
 		SuccessRate: -1,
 	}}
-	svc := message.New(stub, message.WithSenderID("tk"))
+	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
 
 	got, err := svc.GetSMSStats(context.Background(), &testkitv1.GetSMSStatsRequest{})
 	require.NoError(t, err)
@@ -445,33 +435,13 @@ func TestGetSMSStats_NoData(t *testing.T) {
 	require.InDelta(t, -1.0, got.GetSuccessRate(), 0.001)
 }
 
-func TestListEmailSenders(t *testing.T) {
-	stub := &stubServer{listEmailSendersResp: &messagev1.ListEmailSendersResponse{
-		SenderIds: []string{"testkit-service", "user-service"},
-	}}
-	svc := message.New(stub, message.WithSenderID("tk"))
 
-	got, err := svc.ListEmailSenders(context.Background(), &testkitv1.ListEmailSendersRequest{})
-	require.NoError(t, err)
-	require.Equal(t, []string{"testkit-service", "user-service"}, got.GetSenderIds())
-}
-
-func TestListSMSSenders(t *testing.T) {
-	stub := &stubServer{listSMSSendersResp: &messagev1.ListSMSSendersResponse{
-		SenderIds: []string{"testkit-service"},
-	}}
-	svc := message.New(stub, message.WithSenderID("tk"))
-
-	got, err := svc.ListSMSSenders(context.Background(), &testkitv1.ListSMSSendersRequest{})
-	require.NoError(t, err)
-	require.Equal(t, []string{"testkit-service"}, got.GetSenderIds())
-}
 
 func TestListSMSRegions(t *testing.T) {
 	stub := &stubServer{listSMSRegionsResp: &messagev1.ListSMSRegionsResponse{
 		RegionCodes: []string{"CN", "US", "HK"},
 	}}
-	svc := message.New(stub, message.WithSenderID("tk"))
+	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
 
 	got, err := svc.ListSMSRegions(context.Background(), &testkitv1.ListSMSRegionsRequest{})
 	require.NoError(t, err)
@@ -483,13 +453,11 @@ func TestListSMSRegions(t *testing.T) {
 func TestSendEmail_DownstreamErrorPassthrough(t *testing.T) {
 	downstream := errors.New("vendor rejected: invalid from address")
 	stub := &stubServer{sendEmailErr: downstream}
-	svc := message.New(stub, message.WithSenderID("tk"))
+	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
 
 	_, err := svc.SendEmail(context.Background(), &testkitv1.SendEmailRequest{
-		To:      []*testkitv1.EmailAddress{{Email: "x@y.com"}},
-		Subject: "s",
-		Body:    "b",
-		Scene:   messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
+		To:    []*testkitv1.EmailAddress{{Email: "x@y.com"}},
+		Scene: messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
 	})
 	require.ErrorIs(t, err, downstream)
 }
@@ -517,7 +485,7 @@ func (f *fakeReference) ListCountries(_ context.Context, req *referencev1.ListCo
 
 func TestListRegionCodesFromReference(t *testing.T) {
 	stub := &stubServer{}
-	svc := message.New(stub, message.WithSenderID("testkit-service"), message.WithReference(&fakeReference{}))
+	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"), message.WithReference(&fakeReference{}))
 
 	resp, err := svc.ListRegionCodes(context.Background(), &testkitv1.ListRegionCodesRequest{})
 	require.NoError(t, err)
@@ -536,7 +504,18 @@ func TestListRegionCodesFromReference(t *testing.T) {
 }
 
 func TestListRegionCodesWithoutReferenceFails(t *testing.T) {
-	svc := message.New(&stubServer{}, message.WithSenderID("testkit-service"))
+	svc := message.New(&stubServer{}, message.WithAppCredentials("testkit-service", "sec"))
 	_, err := svc.ListRegionCodes(context.Background(), &testkitv1.ListRegionCodesRequest{})
 	require.Error(t, err)
+}
+
+// appKeyFromCtx extracts x-app-key from incoming metadata — the credential
+// channel the BFF injects via messageservice.WithApp.
+func appKeyFromCtx(t *testing.T, ctx context.Context) string {
+	t.Helper()
+	md, ok := metadata.FromIncomingContext(ctx)
+	require.True(t, ok, "incoming metadata expected")
+	keys := md.Get("x-app-key")
+	require.NotEmpty(t, keys)
+	return keys[0]
 }

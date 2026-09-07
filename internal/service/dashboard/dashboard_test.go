@@ -61,6 +61,7 @@ func (s *stubStorage) Close() error { return nil }
 
 type stubMessage struct {
 	messagev1.UnimplementedMessageServiceServer
+	messagev1.UnimplementedMessageAdminServiceServer
 
 	email *messagev1.EmailStatsResponse
 	sms   *messagev1.SMSStatsResponse

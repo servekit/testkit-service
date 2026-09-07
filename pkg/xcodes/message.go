@@ -11,14 +11,12 @@ package xcodes
 
 import "github.com/servekit/go-common/xerr"
 
-// ErrSenderNotConfigured is returned when cfg.Message.SenderID is empty at
-// service construction time. Defense-in-depth: the SenderID default tag
-// ("testkit-service") makes this unreachable in normal operation — it exists
-// to fail fast on a misconfigured deployment rather than sending with an empty
-// service label.
-var ErrSenderNotConfigured = xerr.New(
-	"sender_not_configured",
+// ErrAppNotConfigured is returned when cfg.Message.AppKey/AppSecret are
+// empty at service construction time — fail fast on a misconfigured
+// deployment rather than sending unauthenticated.
+var ErrAppNotConfigured = xerr.New(
+	"app_not_configured",
 	xerr.CategoryInternal,
 	500,
-	"message sender_id is not configured",
+	"message app credentials are not configured",
 )

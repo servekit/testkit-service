@@ -111,17 +111,15 @@ type RemoteServiceConfig[T any] = configx.RemoteServiceConfig[T]
 
 // MessageConfig holds testkit-side message-domain settings.
 //
-// SenderID is the value the BFF injects into downstream message Send requests'
-// sender_id field. It is a SERVICE LABEL (e.g. "testkit-service"), NOT a user
-// id — the downstream contract explicitly states sender_id is the calling
-// business service, and the caller records the end-user in its own audit
-// trail (see the P4 plan, decision 1). Per-deployment overrides (e.g.
-// "testkit-ops", "testkit-api") distinguish ingress points without touching
-// code.
+// AppKey/AppSecret are the BFF's message-service app credentials: created on
+// the message admin surface (ListApps → CreateApp), injected into the
+// downstream context of every Send. Policy lookup, daily quota, and the
+// idempotency namespace all hang off the app identity.
 type MessageConfig struct {
-	// SenderID injected into SendEmail/SendSMS downstream requests. Defaults to
-	// "testkit-service"; service.New fail-fasts on empty (defense-in-depth).
-	SenderID string `default:"testkit-service"`
+	// AppKey identifies the calling app; service.New fail-fasts on empty.
+	AppKey string
+	// AppSecret authenticates the app (internal-trust, DB-plaintext).
+	AppSecret string
 }
 
 // Load reads config from the standard configx locations:

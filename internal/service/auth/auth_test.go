@@ -172,7 +172,6 @@ func TestSendVerificationCode_ForwardsAndReturnsCaptchaID(t *testing.T) {
 		Purpose:  userv1.VerificationPurpose_VERIFICATION_PURPOSE_REGISTER,
 		DialCode: "+86",
 		Phone:    "13800138000",
-		SenderId: "testkit-web",
 	})
 	require.NoError(t, err)
 	require.Equal(t, "cap-z", resp.GetCaptchaId())
@@ -182,7 +181,6 @@ func TestSendVerificationCode_ForwardsAndReturnsCaptchaID(t *testing.T) {
 	require.Equal(t, userv1.VerificationPurpose_VERIFICATION_PURPOSE_REGISTER, stub.gotCode.GetPurpose())
 	require.Equal(t, "alice@example.com", stub.gotCode.GetEmail())
 	require.Equal(t, "+8613800138000", stub.gotCode.GetPhone())
-	require.Equal(t, "testkit-web", stub.gotCode.GetSenderId())
 }
 
 func TestLogout_ForwardsSessionIDFromContext(t *testing.T) {

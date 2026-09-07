@@ -4,6 +4,7 @@ package handler
 import (
 	"context"
 
+	storagev1 "github.com/servekit/api/gen/go/storage/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -172,4 +173,42 @@ func (h *Handler) AdminDeleteOwner(ctx context.Context, req *testkitv1.AdminDele
 // AdminListAuditLogs lists audit logs with rich filters.
 func (h *Handler) AdminListAuditLogs(ctx context.Context, req *testkitv1.AdminListAuditLogsRequest) (*testkitv1.AdminListAuditLogsResponse, error) {
 	return h.svc.Storage().AdminListAuditLogs(ctx, req)
+}
+
+// --- storage platform management (providers / buckets / settings) ---
+// 1:1 forwards; the testkit proto imports storage.v1 admin payloads directly.
+
+// AdminCreateProvider adds a provider; the live registry rebuilds downstream.
+func (h *Handler) AdminCreateProvider(ctx context.Context, req *storagev1.AdminCreateProviderRequest) (*storagev1.AdminCreateProviderResponse, error) {
+	return h.svc.Storage().AdminCreateProvider(ctx, req)
+}
+
+// AdminUpdateProvider edits a provider (credentials replace-on-present).
+func (h *Handler) AdminUpdateProvider(ctx context.Context, req *storagev1.AdminUpdateProviderRequest) (*storagev1.AdminUpdateProviderResponse, error) {
+	return h.svc.Storage().AdminUpdateProvider(ctx, req)
+}
+
+// AdminDeleteProvider removes a provider (rejected while buckets are bound).
+func (h *Handler) AdminDeleteProvider(ctx context.Context, req *storagev1.AdminDeleteProviderRequest) (*emptypb.Empty, error) {
+	return h.svc.Storage().AdminDeleteProvider(ctx, req)
+}
+
+// AdminUpsertBucket creates or fully replaces a bucket binding.
+func (h *Handler) AdminUpsertBucket(ctx context.Context, req *storagev1.AdminUpsertBucketRequest) (*storagev1.AdminUpsertBucketResponse, error) {
+	return h.svc.Storage().AdminUpsertBucket(ctx, req)
+}
+
+// AdminDeleteBucket removes a bucket binding (rejected while objects exist).
+func (h *Handler) AdminDeleteBucket(ctx context.Context, req *storagev1.AdminDeleteBucketRequest) (*emptypb.Empty, error) {
+	return h.svc.Storage().AdminDeleteBucket(ctx, req)
+}
+
+// AdminGetSettings returns the runtime settings row (default/public bucket).
+func (h *Handler) AdminGetSettings(ctx context.Context, req *storagev1.AdminGetSettingsRequest) (*storagev1.AdminGetSettingsResponse, error) {
+	return h.svc.Storage().AdminGetSettings(ctx, req)
+}
+
+// AdminUpdateSettings updates the runtime settings row.
+func (h *Handler) AdminUpdateSettings(ctx context.Context, req *storagev1.AdminUpdateSettingsRequest) (*storagev1.AdminUpdateSettingsResponse, error) {
+	return h.svc.Storage().AdminUpdateSettings(ctx, req)
 }

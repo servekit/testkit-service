@@ -147,38 +147,19 @@ third_party:
     mode: ${TESTKIT_SERVICE_STORAGE_MODE}      # module | grpc
     target: ${TESTKIT_SERVICE_STORAGE_TARGET}
     # module-mode config. DB/Redis are injected via option and gid via adapter,
-    # so they stay out — but the cloud provider/bucket credentials below are
-    # storage-service's OWN required config, passed through verbatim. The two
-    # scalars (upload_token_secret, default_bucket) and at least one provider
-    # are storage-service Validate()-enforced; configx makes the block non-nil
-    # but empty by default, so module mode BOOTS yet every storage RPC fails
-    # at runtime until these are filled. sts/cdn/rate_limit/retention default
-    # sensibly — override via storage-service/config.example.yaml if needed.
+    # so they stay out — upload_token_secret below is storage-service's OWN
+    # required config, passed through verbatim. Providers/buckets/settings
+    # live in storage-service's DB platform tables now — manage them on the
+    # admin pages. sts/cdn/rate_limit/retention default sensibly; override
+    # via storage-service/config.example.yaml if needed.
     config:
       storage:
         upload_token_secret: ${TESTKIT_SERVICE_STORAGE_UPLOAD_TOKEN_SECRET}  # REQUIRED — signs upload tokens
-        default_bucket: ${TESTKIT_SERVICE_STORAGE_DEFAULT_BUCKET}            # REQUIRED — must match a bucket name below
-        providers:
-          # Active Aliyun OSS provider scaffold — replace creds per env. Add a
-          # second list item (+ TESTKIT_SERVICE_STORAGE_PROVIDER_2_*) for more.
-          - name: ${TESTKIT_SERVICE_STORAGE_PROVIDER_NAME}
-            vendor: ${TESTKIT_SERVICE_STORAGE_PROVIDER_VENDOR}      # VENDOR_ALIYUN_OSS | VENDOR_AWS_S3 | VENDOR_S3_COMPATIBLE | VENDOR_TENCENT_COS | VENDOR_HUAWEI_OBS | VENDOR_VOLCENGINE_TOS
-            endpoint: ${TESTKIT_SERVICE_STORAGE_PROVIDER_ENDPOINT}
-            region: ${TESTKIT_SERVICE_STORAGE_PROVIDER_REGION}
-            access_key: ${TESTKIT_SERVICE_STORAGE_PROVIDER_ACCESS_KEY}
-            secret_key: ${TESTKIT_SERVICE_STORAGE_PROVIDER_SECRET_KEY}
-            # role_arn enables STS via GetSTSCredential (vendor-specific format;
-            # empty = STS unavailable, clients fall back to GenerateUploadURL).
-            # role_arn: ${TESTKIT_SERVICE_STORAGE_PROVIDER_ROLE_ARN}
-            buckets:
-              - name: ${TESTKIT_SERVICE_STORAGE_PROVIDER_BUCKET_NAME}  # must include default_bucket above
-                key_prefix: ${TESTKIT_SERVICE_STORAGE_PROVIDER_BUCKET_KEY_PREFIX}
-                acl: ${TESTKIT_SERVICE_STORAGE_PROVIDER_BUCKET_ACL}
-                # CDN is optional per bucket (nil = CDN disabled). Signing keys
-                # differ by vendor — see storage-service/config.example.yaml.
-                # cdn:
-                #   domain: cdn.example.com
-                #   auth_key: ${TESTKIT_SERVICE_STORAGE_PROVIDER_BUCKET_CDN_AUTH_KEY}
+        # Providers/buckets/default_bucket live in storage-service's DB
+        # platform tables now (admin pages / admin RPCs). To import legacy
+        # YAML providers once: put the providers block back temporarily and
+        # run `storage-service migrate --seed-from-config`, then remove it.
+
   user:
     mode: ${TESTKIT_SERVICE_USER_MODE}         # module | grpc
     target: ${TESTKIT_SERVICE_USER_TARGET}
@@ -297,11 +278,13 @@ third_party:
       admin:
         token: ${TESTKIT_SERVICE_TELEMETRY_ADMIN_TOKEN}
 
-# Message-domain settings (P4). testkit injects sender_id into downstream
-# SendEmail/SendSMS requests; it is a service label (not a user id). Override
-# per ingress point (e.g. "testkit-ops") without touching code.
+# Message-domain settings. App credentials identify the BFF to
+# message-service (created on the message admin surface: 应用管理 → 新建);
+# they are injected into the context of every Send. Policy routing, daily
+# quota, and idempotency hang off the app identity.
 message:
-  sender_id: ${TESTKIT_SERVICE_MESSAGE_SENDER_ID}
+  app_key: ${TESTKIT_SERVICE_MESSAGE_APP_KEY}
+  app_secret: ${TESTKIT_SERVICE_MESSAGE_APP_SECRET}
 
 # Cron scheduler settings. jobs.Scheduler is wired but registers no jobs in P1.
 cron:

@@ -657,10 +657,13 @@ func (s *Service) AdminListProviders(ctx context.Context, _ *emptypb.Empty) (*te
 	providers := make([]*testkitv1.ProviderInfo, 0, len(resp.GetProviders()))
 	for _, p := range resp.GetProviders() {
 		providers = append(providers, &testkitv1.ProviderInfo{
-			Name:     p.GetName(),
-			Vendor:   storagev1.Vendor(p.GetVendor()),
-			Endpoint: p.GetEndpoint(),
-			Region:   p.GetRegion(),
+			Name:        p.GetName(),
+			Vendor:      storagev1.Vendor(p.GetVendor()),
+			Endpoint:    p.GetEndpoint(),
+			Region:      p.GetRegion(),
+			Disabled:    p.GetDisabled(),
+			StsEnabled:  p.GetStsEnabled(),
+			BucketCount: p.GetBucketCount(),
 		})
 	}
 	return &testkitv1.AdminListProvidersResponse{Providers: providers}, nil
@@ -674,13 +677,21 @@ func (s *Service) AdminListBuckets(ctx context.Context, _ *emptypb.Empty) (*test
 	}
 	buckets := make([]*testkitv1.BucketInfo, 0, len(resp.GetBuckets()))
 	for _, b := range resp.GetBuckets() {
-		buckets = append(buckets, &testkitv1.BucketInfo{
+		bucket := &testkitv1.BucketInfo{
 			Name:      b.GetName(),
 			Provider:  b.GetProvider(),
 			KeyPrefix: b.GetKeyPrefix(),
 			Acl:       storagev1.BucketACL(b.GetAcl()),
 			Vendor:    storagev1.Vendor(b.GetVendor()),
-		})
+		}
+		if b.GetCdn() != nil {
+			bucket.Cdn = &storagev1.CDNConfig{
+				Domain:    b.GetCdn().GetDomain(),
+				AuthKey:   b.GetCdn().GetAuthKey(),
+				KeyPairId: b.GetCdn().GetKeyPairId(),
+			}
+		}
+		buckets = append(buckets, bucket)
 	}
 	return &testkitv1.AdminListBucketsResponse{Buckets: buckets}, nil
 }
@@ -925,4 +936,44 @@ func toTestkitUploadCredentialItem(it *storagev1.UploadCredentialItem) *testkitv
 		}}}
 	}
 	return nil
+}
+
+// --- platform management forwards (providers / buckets / settings) ---
+//
+// The testkit proto imports storage.v1 admin payloads directly (enums-import
+// precedent), so these forwards pass messages through 1:1.
+
+// AdminCreateProvider adds a provider; the live registry rebuilds downstream.
+func (s *Service) AdminCreateProvider(ctx context.Context, req *storagev1.AdminCreateProviderRequest) (*storagev1.AdminCreateProviderResponse, error) {
+	return s.storage.AdminCreateProvider(ctx, req)
+}
+
+// AdminUpdateProvider edits a provider (credentials replace-on-present).
+func (s *Service) AdminUpdateProvider(ctx context.Context, req *storagev1.AdminUpdateProviderRequest) (*storagev1.AdminUpdateProviderResponse, error) {
+	return s.storage.AdminUpdateProvider(ctx, req)
+}
+
+// AdminDeleteProvider removes a provider (rejected while buckets are bound).
+func (s *Service) AdminDeleteProvider(ctx context.Context, req *storagev1.AdminDeleteProviderRequest) (*emptypb.Empty, error) {
+	return s.storage.AdminDeleteProvider(ctx, req)
+}
+
+// AdminUpsertBucket creates or fully replaces a bucket binding.
+func (s *Service) AdminUpsertBucket(ctx context.Context, req *storagev1.AdminUpsertBucketRequest) (*storagev1.AdminUpsertBucketResponse, error) {
+	return s.storage.AdminUpsertBucket(ctx, req)
+}
+
+// AdminDeleteBucket removes a bucket binding (rejected while objects exist).
+func (s *Service) AdminDeleteBucket(ctx context.Context, req *storagev1.AdminDeleteBucketRequest) (*emptypb.Empty, error) {
+	return s.storage.AdminDeleteBucket(ctx, req)
+}
+
+// AdminGetSettings returns the runtime settings row.
+func (s *Service) AdminGetSettings(ctx context.Context, req *storagev1.AdminGetSettingsRequest) (*storagev1.AdminGetSettingsResponse, error) {
+	return s.storage.AdminGetSettings(ctx, req)
+}
+
+// AdminUpdateSettings updates the runtime settings row.
+func (s *Service) AdminUpdateSettings(ctx context.Context, req *storagev1.AdminUpdateSettingsRequest) (*storagev1.AdminUpdateSettingsResponse, error) {
+	return s.storage.AdminUpdateSettings(ctx, req)
 }

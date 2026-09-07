@@ -196,13 +196,15 @@ func New(cfg *config.Config) (*Service, error) {
 	// P3 storage domain.
 	svc.storageSvc = storage.New(st)
 
-	// P4 message domain. sender_id is a service label injected on every Send —
-	// fail fast on empty rather than sending with a blank label.
-	if cfg.Message.SenderID == "" {
-		return nil, rollback(mgr, xcodes.ErrSenderNotConfigured.New())
+	// P4 message domain. App credentials are injected into the downstream
+	// context of every Send — fail fast on empty rather than sending
+	// unauthenticated. cfg.Message is nil when the config file carries no
+	// message block (no defaults under it → viper leaves the pointer nil).
+	if cfg.Message == nil || cfg.Message.AppKey == "" || cfg.Message.AppSecret == "" {
+		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New())
 	}
 	svc.messageSvc = message.New(msg,
-		message.WithSenderID(cfg.Message.SenderID),
+		message.WithAppCredentials(cfg.Message.AppKey, cfg.Message.AppSecret),
 		message.WithReference(ref),
 	)
 
