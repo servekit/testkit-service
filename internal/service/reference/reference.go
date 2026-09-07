@@ -27,6 +27,11 @@ func (s *Service) ListCountries(ctx context.Context, req *referencev1.ListCountr
 	return s.ref.ListCountries(ctx, req)
 }
 
+// GetCountries forwards the batch alpha-2 subset lookup.
+func (s *Service) GetCountries(ctx context.Context, req *referencev1.GetCountriesRequest) (*referencev1.GetCountriesResponse, error) {
+	return s.ref.GetCountries(ctx, req)
+}
+
 // ListTimezones returns the IANA timezone directory in the request locale.
 func (s *Service) ListTimezones(ctx context.Context, req *referencev1.ListTimezonesRequest) (*referencev1.ListTimezonesResponse, error) {
 	return s.ref.ListTimezones(ctx, req)
