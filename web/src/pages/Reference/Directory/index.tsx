@@ -282,7 +282,9 @@ export default function ReferenceDirectoryPage() {
         title: "当地名称",
         dataIndex: "nativeName",
         width: 180,
-        render: (v: string, r: API.v1Language) => v || r.name,
+        // No fallback to the locale name — this column means "the language's
+        // OWN name"; languages without CLDR endonym data show a dash.
+        render: (v: string) => v || "—",
       },
     ],
     [],
