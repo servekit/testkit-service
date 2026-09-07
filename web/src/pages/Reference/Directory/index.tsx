@@ -278,6 +278,12 @@ export default function ReferenceDirectoryPage() {
     () => [
       { title: "BCP 47", dataIndex: "tag", width: 140 },
       { title: "名称", dataIndex: "name" },
+      {
+        title: "当地名称",
+        dataIndex: "nativeName",
+        width: 180,
+        render: (v: string, r: API.v1Language) => v || r.name,
+      },
     ],
     [],
   );
@@ -336,7 +342,7 @@ export default function ReferenceDirectoryPage() {
     languages: {
       columns: languageColumns,
       rows: (languages ?? [])
-        .filter((l) => match(l.tag, l.name))
+        .filter((l) => match(l.tag, l.name, l.nativeName))
         .map((l) => ({ ...l, key: l.tag ?? "" })),
     },
     currencies: {

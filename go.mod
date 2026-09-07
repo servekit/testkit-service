@@ -14,7 +14,7 @@ require (
 	github.com/servekit/go-common v0.0.0-20260906125735-1aee64b7710e
 	github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc
 	github.com/servekit/message-service v0.0.0-20260906163542-ef4c89484440
-	github.com/servekit/reference-service v0.0.0-20260907025120-6121e33b7ac2
+	github.com/servekit/reference-service v0.0.0-20260907032128-063d29712226
 	github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae
 	github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5
 	github.com/servekit/user-service v0.0.0-20260906130036-972a8450d5c4
@@ -141,7 +141,7 @@ require (
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/sagikazarmark/locafero v0.11.0 // indirect
-	github.com/servekit/api/gen/go v0.0.0-20260906180046-fc6feb22606d
+	github.com/servekit/api/gen/go v0.0.0-20260907032048-c85ab995408f
 	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/sony/sonyflake/v2 v2.1.0 // indirect

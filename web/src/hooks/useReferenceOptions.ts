@@ -23,10 +23,10 @@ export function useLanguageOptions(): { value: string; label: string }[] {
   const { data } = useRequest(
     async (): Promise<{ value: string; label: string }[]> => {
       const resp = await listLanguages({ locale: "zh-Hans" });
-      return (resp.languages ?? []).map((l) => ({
-        value: l.tag ?? "",
-        label: `${l.name}（${l.tag}）`,
-      }));
+      return (resp.languages ?? []).map((l) => {
+        const native = l.nativeName && l.nativeName !== l.name ? ` · ${l.nativeName}` : "";
+        return { value: l.tag ?? "", label: `${l.name}（${l.tag}）${native}` };
+      });
     },
     { cacheKey: "reference-languages", formatResult: (r) => r },
   );

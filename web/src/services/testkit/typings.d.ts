@@ -2019,6 +2019,8 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     tag?: string;
     /** the language's name in the request locale */
     name?: string;
+    /** endonym — the language's own name for itself */
+    nativeName?: string;
   };
 
   type v1ListCountriesByRegionResponse = {
