@@ -4,12 +4,13 @@
  * currencies / region groups — with a locale switcher (the 11 compiled
  * locales) and client-side search. Data is static and fetched once per
  * (tab, locale); data_version shows which snapshot is served.
+ * The countries tab shows every field inline: the list APIs are joined
+ * client-side (region chain, currencies, timezones) and language_tags on
+ * each row carry the official languages — no per-country detail round-trip.
  * access: canInternal at the route level.
  */
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import {
-  App,
-  Descriptions,
   Drawer,
   Input,
   Segmented,
@@ -22,8 +23,6 @@ import {
 } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import {
-  getCountryDefaults,
-  getCountryProfile,
   listCountries,
   listCountriesByRegion,
   listCurrencies,
@@ -59,98 +58,63 @@ const DOMAIN_LABEL: Record<Domain, string> = {
   groups: "区域分组",
 };
 
-function ProfileDrawer({
-  code,
-  locale,
-  onClose,
-}: {
-  code?: string;
-  locale: string;
-  onClose: () => void;
-}) {
-  const { message } = App.useApp();
-  const [profile, setProfile] = useState<API.v1GetCountryProfileResponse>();
-  const [defaults, setDefaults] = useState<API.v1GetCountryDefaultsResponse>();
-  const [loading, setLoading] = useState(false);
+/** Joins the four other directories onto each country row. All inputs are
+ * already in the request locale's collation order, so the joined lists keep
+ * that order — same shape GetCountryProfile returns, without the N+1 calls. */
+function buildCountryJoin(
+  groups: API.v1RegionGroup[],
+  currencies: API.v1Currency[],
+  timezones: API.v1Timezone[],
+  languages: API.v1Language[],
+) {
+  const groupByCode = new Map(groups.map((g) => [g.code, g]));
+  const langName = new Map(languages.map((l) => [l.tag, l.name ?? l.tag]));
 
-  useEffect(() => {
-    if (!code) return;
-    let cancelled = false;
-    setLoading(true);
-    getCountryDefaults({ countryCode: code, locale }).then((d) => {
-      if (!cancelled) setDefaults(d);
-    }).catch(() => {
-      /* defaults are additive; profile still renders */
-    });
-    getCountryProfile({ countryCode: code, locale })
-      .then((r) => {
-        if (!cancelled) setProfile(r);
-      })
-      .catch(() => {
-        if (!cancelled) message.error("加载国家详情失败");
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [code, locale]);
-
-  const c = profile?.country;
-  return (
-    <Drawer
-      open={!!code}
-      onClose={onClose}
-      width={520}
-      title={
-        c ? (
-          <span style={{ fontSize: 20 }}>
-            {c.flagEmoji} {c.name} <Text type="secondary">{c.code}</Text>
-          </span>
-        ) : (
-          "国家详情"
-        )
+  // Country -> set of group codes (direct membership plus ancestors), then
+  // emitted in the list's top-down order — the same chain GetCountryProfile
+  // returns (continent before sub-region).
+  const regionCodes = new Map<string, Set<string>>();
+  for (const g of groups) {
+    for (const cc of g.countryCodes ?? []) {
+      let set = regionCodes.get(cc);
+      if (!set) {
+        set = new Set();
+        regionCodes.set(cc, set);
       }
-    >
-      <Spin spinning={loading}>
-        {profile && (
-          <Descriptions column={1} bordered size="small" labelStyle={{ width: 110 }}>
-            <Descriptions.Item label="区号">{c?.dialCode}</Descriptions.Item>
-            <Descriptions.Item label="alpha-3">{c?.alpha3}</Descriptions.Item>
-            <Descriptions.Item label="所属区域">
-              {(profile.regionGroups ?? []).map((g) => g.name).join(" → ") || "-"}
-            </Descriptions.Item>
-            <Descriptions.Item label="官方语言">
-              {(profile.languages ?? []).map((l) => `${l.name} (${l.tag})`).join("、") || "-"}
-            </Descriptions.Item>
-            <Descriptions.Item label="货币">
-              {(profile.currencies ?? [])
-                .map((cur) => `${cur.flagEmoji ?? ""} ${cur.name} ${cur.symbol} (${cur.code})`)
-                .join("；") || "-"}
-            </Descriptions.Item>
-            <Descriptions.Item label="时区">
-              {(profile.timezones ?? []).map((tz) => `${tz.id}（${tz.name}）`).join("、") || "-"}
-            </Descriptions.Item>
-            <Descriptions.Item label="默认时区">
-              {defaults ? `${defaults.timezoneName}（${defaults.timezoneId}）` : "…"}
-            </Descriptions.Item>
-            <Descriptions.Item label="默认语言">
-              {defaults ? `${defaults.languageName}（${defaults.languageTag}）` : "…"}
-            </Descriptions.Item>
-            <Descriptions.Item label="示例号码">
-              {profile.country?.exampleNumber || "-"}
-            </Descriptions.Item>
-            <Descriptions.Item label="数据版本">{profile.dataVersion}</Descriptions.Item>
-          </Descriptions>
-        )}
-      </Spin>
-    </Drawer>
-  );
+      for (let cur = g.code; cur; cur = groupByCode.get(cur)?.parentCode) {
+        set.add(cur);
+      }
+    }
+  }
+  const regionChain = new Map<string, string[]>();
+  for (const [cc, set] of regionCodes) {
+    const chain: string[] = [];
+    for (const g of groups) {
+      if (set.has(g.code)) chain.push(g.name ?? g.code);
+    }
+    regionChain.set(cc, chain);
+  }
+
+  const currenciesOf = new Map<string, API.v1Currency[]>();
+  for (const cur of currencies) {
+    for (const cc of cur.countryCodes ?? []) {
+      const list = currenciesOf.get(cc) ?? [];
+      list.push(cur);
+      currenciesOf.set(cc, list);
+    }
+  }
+  const timezonesOf = new Map<string, API.v1Timezone[]>();
+  for (const tz of timezones) {
+    for (const cc of tz.countryCodes ?? []) {
+      const list = timezonesOf.get(cc) ?? [];
+      list.push(tz);
+      timezonesOf.set(cc, list);
+    }
+  }
+  return { regionChain, currenciesOf, timezonesOf, langName };
 }
 
 export default function ReferenceDirectoryPage() {
-  const [detailCode, setDetailCode] = useState<string>();
   const [regionCountries, setRegionCountries] = useState<API.v1Country[]>();
   const [regionTitle, setRegionTitle] = useState<string>();
   const [regionLoading, setRegionLoading] = useState(false);
@@ -178,15 +142,29 @@ export default function ReferenceDirectoryPage() {
 
   // Fetch the CURRENT tab whenever the tab or the locale changes — the
   // tables are keyed off both, so a locale switch re-renders in place
-  // instead of waiting for a tab round-trip.
+  // instead of waiting for a tab round-trip. The countries tab also pulls
+  // the four join inputs (all static, fetched once per locale).
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
       setLoading(true);
       try {
         if (domain === "countries") {
-          const r = await listCountries({ locale });
-          if (!cancelled) { setCountries(r.countries ?? []); setVersion(r.dataVersion); }
+          const [r, g, cur, tz, lang] = await Promise.all([
+            listCountries({ locale }),
+            listRegionGroups({ locale }),
+            listCurrencies({ locale }),
+            listTimezones({ locale }),
+            listLanguages({ locale }),
+          ]);
+          if (!cancelled) {
+            setCountries(r.countries ?? []);
+            setGroups(g.regionGroups ?? []);
+            setCurrencies(cur.currencies ?? []);
+            setTimezones(tz.timezones ?? []);
+            setLanguages(lang.languages ?? []);
+            setVersion(r.dataVersion);
+          }
         } else if (domain === "timezones") {
           const r = await listTimezones({ locale });
           if (!cancelled) { setTimezones(r.timezones ?? []); setVersion(r.dataVersion); }
@@ -214,15 +192,58 @@ export default function ReferenceDirectoryPage() {
   const match = (...fields: (string | undefined)[]) =>
     !kw || fields.some((f) => (f ?? "").toLowerCase().includes(kw));
 
+  const join = useMemo(
+    () => buildCountryJoin(groups ?? [], currencies ?? [], timezones ?? [], languages ?? []),
+    [groups, currencies, timezones, languages],
+  );
+
   const countryColumns = useMemo(
     () => [
-      { title: "国旗", dataIndex: "flagEmoji", width: 56, render: (v: string) => <span style={{ fontSize: 18 }}>{v}</span> },
-      { title: "alpha-2", dataIndex: "code", width: 90 },
-      { title: "alpha-3", dataIndex: "alpha3", width: 90 },
-      { title: "区号", dataIndex: "dialCode", width: 90 },
-      { title: "名称", dataIndex: "name" },
+      { title: "国旗", dataIndex: "flagEmoji", width: 52, render: (v: string) => <span style={{ fontSize: 18 }}>{v}</span> },
+      { title: "alpha-2", dataIndex: "code", width: 76 },
+      { title: "alpha-3", dataIndex: "alpha3", width: 76, render: (v: string) => v || "—" },
+      { title: "区号", dataIndex: "dialCode", width: 80 },
+      { title: "名称", dataIndex: "name", width: 150 },
+      { title: "示例号码", dataIndex: "exampleNumber", width: 165, render: (v: string) => v || "—" },
+      {
+        title: "官方语言",
+        dataIndex: "languageTags",
+        width: 130,
+        render: (tags: string[]) =>
+          tags?.length ? tags.map((t) => join.langName.get(t) ?? t).join("、") : "—",
+      },
+      {
+        title: "货币",
+        dataIndex: "currencies",
+        width: 175,
+        render: (list: API.v1Currency[]) =>
+          list?.length
+            ? list.map((c) => `${c.name} ${c.symbol} (${c.code})`).join("；")
+            : "—",
+      },
+      {
+        title: "时区",
+        dataIndex: "timezones",
+        width: 185,
+        render: (list: API.v1Timezone[]) => {
+          if (!list?.length) return "—";
+          const ids = list.map((t) => t.id);
+          if (ids.length <= 2) return ids.join("、");
+          return (
+            <Tooltip title={ids.join("、")}>
+              <Tag>{ids[0]} 等 {ids.length} 个</Tag>
+            </Tooltip>
+          );
+        },
+      },
+      {
+        title: "区域",
+        dataIndex: "regionChain",
+        width: 195,
+        render: (chain: string[]) => chain?.join(" · ") || "—",
+      },
     ],
-    [],
+    [join],
   );
   const timezoneColumns = useMemo(
     () => [
@@ -307,8 +328,29 @@ export default function ReferenceDirectoryPage() {
     countries: {
       columns: countryColumns,
       rows: (countries ?? [])
-        .filter((c) => match(c.code, c.alpha3, c.dialCode, c.name))
-        .map((c) => ({ ...c, key: c.code ?? "" })),
+        .map((c) => {
+          const chain = join.regionChain.get(c.code ?? "") ?? [];
+          const curs = join.currenciesOf.get(c.code ?? "") ?? [];
+          const tzs = join.timezonesOf.get(c.code ?? "") ?? [];
+          const langText = (c.languageTags ?? []).map((t) => join.langName.get(t) ?? t);
+          return {
+            ...c,
+            regionChain: chain,
+            currencies: curs,
+            timezones: tzs,
+            // Fold the joined fields into the search corpus so "欧元" / "EUR"
+            // / "Asia/Shanghai" / "东亚" all filter rows.
+            searchText: [
+              c.code, c.alpha3, c.dialCode, c.name, c.exampleNumber,
+              langText.join(" "), (c.languageTags ?? []).join(" "),
+              curs.map((x) => `${x.code} ${x.name}`).join(" "),
+              tzs.map((x) => x.id).join(" "),
+              chain.join(" "),
+            ].join(" "),
+            key: c.code ?? "",
+          };
+        })
+        .filter((r) => !kw || r.searchText.toLowerCase().includes(kw)),
     },
     timezones: {
       columns: timezoneColumns,
@@ -386,20 +428,17 @@ export default function ReferenceDirectoryPage() {
             columns={current.columns}
             dataSource={current.rows}
             onRow={
-              domain === "countries"
-                ? (r) => ({ onClick: () => setDetailCode(String(r.code)), style: { cursor: "pointer" } })
-                : domain === "groups"
-                  ? (r) => ({
-                      onClick: () => openRegion(String(r.code), String(r.name)),
-                      style: { cursor: "pointer" },
-                    })
-                  : undefined
+              domain === "groups"
+                ? (r) => ({
+                    onClick: () => openRegion(String(r.code), String(r.name)),
+                    style: { cursor: "pointer" },
+                  })
+                : undefined
             }
             pagination={listPagination}
           />
         </Spin>
       </ProCard>
-      <ProfileDrawer code={detailCode} locale={locale} onClose={() => setDetailCode(undefined)} />
       <Drawer
         open={!!regionTitle}
         onClose={() => {
@@ -411,14 +450,7 @@ export default function ReferenceDirectoryPage() {
       >
         <Spin spinning={regionLoading}>
           {(regionCountries ?? []).map((c) => (
-            <div
-              key={c.code}
-              style={{ padding: "4px 0", cursor: "pointer" }}
-              onClick={() => {
-                setRegionTitle(undefined);
-                setDetailCode(c.code);
-              }}
-            >
+            <div key={c.code} style={{ padding: "4px 0" }}>
               {c.flagEmoji} {c.name} <Text type="secondary">{c.code} · {c.dialCode}</Text>
             </div>
           ))}

@@ -182,6 +182,11 @@ declare namespace API {
     days?: number;
   };
 
+  type GetCountriesParams = {
+    countryCodes?: string[];
+    locale?: string;
+  };
+
   type GetCountryDefaultsParams = {
     countryCode: string;
     locale?: string;
@@ -1423,6 +1428,9 @@ user_id injected from ctx */
     name?: string;
     /** libphonenumber example, e.g. "+86 138 0013 8000"; */
     exampleNumber?: string;
+    /** "" when the metadata has none — use as a phone
+input placeholder / format hint official languages, most-spoken first */
+    languageTags?: string[];
   };
 
   type v1CreateAppRequest = {
@@ -1755,6 +1763,14 @@ user_id injected from ctx */
     days?: v1DailyStat[];
     drops?: Record<string, any>;
     sigFails?: Record<string, any>;
+  };
+
+  type v1GetCountriesResponse = {
+    /** request order */
+    countries?: v1Country[];
+    /** unknown alpha-2 codes, request order */
+    missingCountries?: string[];
+    dataVersion?: string;
   };
 
   type v1GetCountryDefaultsResponse = {
