@@ -23,7 +23,7 @@ import {
   listSms,
   listSmsByCursor,
   listSmsRegions,
-  listSmsSenders,
+  messageListApps,
 } from "@/services/testkit/testkitService";
 import {
   MESSAGE_STATUS_VALUE_ENUM,
@@ -37,13 +37,13 @@ import {
  * SMS records ops console. Offset paging via listSms (ProTable native). region
  * is a genuine forwarded filter (sourced from listSmsRegions as a select); phone
  * is a text filter. Stats via getSmsStats; senders/regions are surfaced in the
- * modal for audit context (sender_id is NOT a forwarded filter — plan decision
+ * modal for audit context (app_key is NOT a forwarded filter — plan decision
  * 2). All data flows through GENERATED services — no hand-written fetch.
  */
 export default function SMSRecordsPage() {
   const { message } = App.useApp();
   const [regions, setRegions] = useState<string[]>([]);
-  const [senders, setSenders] = useState<string[]>([]);
+  const [appKeys, setAppKeys] = useState<string[]>([]);
   const [detail, setDetail] = useState<API.v1SMSRecord | null>(null);
   const [stats, setStats] = useState<API.v1SMSStatsResponse | null>(null);
 
@@ -70,8 +70,8 @@ export default function SMSRecordsPage() {
     listSmsRegions()
       .then((r) => setRegions(r.regionCodes ?? []))
       .catch(() => {});
-    listSmsSenders()
-      .then((r) => setSenders(r.senderIds ?? []))
+    messageListApps({})
+      .then((r) => setAppKeys((r.apps ?? []).map((a) => a.appKey as string)))
       .catch(() => {});
   }, []);
 
@@ -110,8 +110,8 @@ export default function SMSRecordsPage() {
     },
     { title: "手机号", dataIndex: "phone", width: 150 },
     {
-      title: "发送方",
-      dataIndex: "senderId",
+      title: "应用",
+      dataIndex: "appKey",
       width: 150,
       search: false,
     },
@@ -242,7 +242,7 @@ export default function SMSRecordsPage() {
                 {detail.templateId || "-"}
               </Descriptions.Item>
               <Descriptions.Item label="发送方">
-                {detail.senderId || "-"}
+                {detail.appKey || "-"}
               </Descriptions.Item>
               <Descriptions.Item label="错误">
                 {detail.errorMessage || "-"}
@@ -313,7 +313,7 @@ export default function SMSRecordsPage() {
               />
               <div style={{ marginTop: 16, color: "rgba(0,0,0,0.65)" }}>
                 <div>已知区域：{regions.join(", ") || "-"}</div>
-                <div>已知发送方：{senders.join(", ") || "-"}</div>
+                <div>已知发送方：</div>
               </div>
             </div>
           )}

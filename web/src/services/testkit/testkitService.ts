@@ -103,6 +103,44 @@ export async function adminListBuckets(
   });
 }
 
+/** 此处后端没有提供注释 PUT /api/v1/admin/storage/buckets/${param0} */
+export async function adminUpsertBucket(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminUpsertBucketParams
+    ,body: API.TestkitServiceAdminUpsertBucketBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'name': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1AdminUpsertBucketResponse>(`/api/v1/admin/storage/buckets/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/admin/storage/buckets/${param0} */
+export async function adminDeleteBucket(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminDeleteBucketParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'name': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/admin/storage/buckets/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /api/v1/admin/storage/owners${delete} */
 export async function adminDeleteOwner(body: API.v1AdminDeleteOwnerRequest,
   options ?: {[key: string]: any}
@@ -141,6 +179,59 @@ export async function adminListProviders(
   });
 }
 
+/** Provider / bucket / settings management (1:1 forwards to
+storage-service admin RPCs; the live registry rebuilds immediately). POST /api/v1/admin/storage/providers */
+export async function adminCreateProvider(body: API.v1AdminCreateProviderRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1AdminCreateProviderResponse>('/api/v1/admin/storage/providers', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/admin/storage/providers/${param0} */
+export async function adminUpdateProvider(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminUpdateProviderParams
+    ,body: API.TestkitServiceAdminUpdateProviderBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'name': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1AdminUpdateProviderResponse>(`/api/v1/admin/storage/providers/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/admin/storage/providers/${param0} */
+export async function adminDeleteProvider(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminDeleteProviderParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'name': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/admin/storage/providers/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/v1/admin/storage/quota */
 export async function adminGetQuota(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -163,6 +254,30 @@ export async function adminSetQuota(body: API.v1AdminSetQuotaRequest,
   options ?: {[key: string]: any}
 ) {
   return request<API.v1QuotaInfo>('/api/v1/admin/storage/quota', {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/admin/storage/settings */
+export async function adminGetSettings(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1AdminGetSettingsResponse>('/api/v1/admin/storage/settings', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/admin/storage/settings */
+export async function adminUpdateSettings(body: API.v1AdminUpdateSettingsRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1AdminUpdateSettingsResponse>('/api/v1/admin/storage/settings', {
   method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -341,16 +456,6 @@ export async function listEmailsByCursor(
         
         
         ...params,},
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 GET /api/v1/emails${senders} */
-export async function listEmailSenders(
-  options ?: {[key: string]: any}
-) {
-  return request<API.v1ListEmailSendersResponse>(`/api/v1/emails:senders`, {
-  method: 'GET',
     ...(options || {}),
   });
 }
@@ -1067,7 +1172,369 @@ export async function getFileLinkDownload(
   });
 }
 
-/** Send (sender_id injected from config). POST /api/v1/messages${email} */
+/** 此处后端没有提供注释 GET /api/v1/message/admin/accounts */
+export async function messageListChannelAccounts(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListChannelAccountsResponse>('/api/v1/message/admin/accounts', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/message/admin/accounts */
+export async function messageCreateChannelAccount(body: API.v1CreateChannelAccountRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1CreateChannelAccountResponse>('/api/v1/message/admin/accounts', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/message/admin/accounts/${param0} */
+export async function messageUpdateChannelAccount(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageUpdateChannelAccountParams
+    ,body: API.TestkitServiceMessageUpdateChannelAccountBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1UpdateChannelAccountResponse>(`/api/v1/message/admin/accounts/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/message/admin/accounts/${param0} */
+export async function messageDeleteChannelAccount(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageDeleteChannelAccountParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/message/admin/accounts/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/message/admin/apps */
+export async function messageListApps(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListAppsResponse>('/api/v1/message/admin/apps', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/message/admin/apps */
+export async function messageCreateApp(body: API.messagingV1CreateAppRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.messagingV1CreateAppResponse>('/api/v1/message/admin/apps', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/message/admin/apps/${param0} */
+export async function messageGetApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageGetAppParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.messagingV1GetAppResponse>(`/api/v1/message/admin/apps/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/message/admin/apps/${param0} */
+export async function messageUpdateApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageUpdateAppParams
+    ,body: API.TestkitServiceMessageUpdateAppBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.messagingV1UpdateAppResponse>(`/api/v1/message/admin/apps/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/message/admin/apps/${param0} */
+export async function messageDeleteApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageDeleteAppParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/message/admin/apps/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/message/admin/apps/${param0}/secret${rotate} */
+export async function messageRotateAppSecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageRotateAppSecretParams
+    ,body: API.TestkitServiceMessageRotateAppSecretBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1RotateAppSecretResponse>(`/api/v1/message/admin/apps/${param0}/secret:rotate`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/message/admin/policies */
+export async function listPolicies(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.ListPoliciesParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListPoliciesResponse>('/api/v1/message/admin/policies', {
+  method: 'GET',
+    params: {
+        
+        // channel has a default value: TEMPLATE_CHANNEL_UNSPECIFIED
+          'channel': 'TEMPLATE_CHANNEL_UNSPECIFIED',...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/message/admin/policies */
+export async function messageCreatePolicy(body: API.v1CreatePolicyRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1CreatePolicyResponse>('/api/v1/message/admin/policies', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/message/admin/policies/${param0} */
+export async function messageUpdatePolicy(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageUpdatePolicyParams
+    ,body: API.TestkitServiceMessageUpdatePolicyBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1UpdatePolicyResponse>(`/api/v1/message/admin/policies/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/message/admin/policies/${param0} */
+export async function messageDeletePolicy(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageDeletePolicyParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/message/admin/policies/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/message/admin/signatures */
+export async function messageListSignatures(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListSignaturesResponse>('/api/v1/message/admin/signatures', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/message/admin/signatures */
+export async function messageCreateSignature(body: API.v1CreateSignatureRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1CreateSignatureResponse>('/api/v1/message/admin/signatures', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/message/admin/signatures/${param0} */
+export async function messageUpdateSignature(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageUpdateSignatureParams
+    ,body: API.TestkitServiceMessageUpdateSignatureBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1UpdateSignatureResponse>(`/api/v1/message/admin/signatures/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/message/admin/signatures/${param0} */
+export async function messageDeleteSignature(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageDeleteSignatureParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/message/admin/signatures/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/message/admin/templates */
+export async function messageListTemplates(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageListTemplatesParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListTemplatesResponse>('/api/v1/message/admin/templates', {
+  method: 'GET',
+    params: {
+        
+        // channel has a default value: TEMPLATE_CHANNEL_UNSPECIFIED
+          'channel': 'TEMPLATE_CHANNEL_UNSPECIFIED',...params,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/message/admin/templates */
+export async function messageCreateTemplate(body: API.v1CreateTemplateRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1CreateTemplateResponse>('/api/v1/message/admin/templates', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/message/admin/templates/${param0} */
+export async function messageUpdateTemplate(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageUpdateTemplateParams
+    ,body: API.TestkitServiceMessageUpdateTemplateBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1UpdateTemplateResponse>(`/api/v1/message/admin/templates/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/message/admin/templates/${param0} */
+export async function messageDeleteTemplate(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageDeleteTemplateParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/message/admin/templates/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** Send (app credentials injected from config). POST /api/v1/messages${email} */
 export async function sendEmail(body: API.v1SendEmailRequest,
   options ?: {[key: string]: any}
 ) {
@@ -1678,7 +2145,7 @@ export async function getCountryDefaults(
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'countryCode': param0, 
+  const { 'regionCode': param0, 
   ...queryParams
   } = params;
   return request<API.v1GetCountryDefaultsResponse>(`/api/v1/reference/countries/${param0}/defaults`, {
@@ -1696,7 +2163,7 @@ export async function getCountryProfile(
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'countryCode': param0, 
+  const { 'regionCode': param0, 
   ...queryParams
   } = params;
   return request<API.v1GetCountryProfileResponse>(`/api/v1/reference/countries/${param0}/profile`, {
@@ -1793,17 +2260,17 @@ export async function listRegionGroups(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/v1/reference/regions/${param0}/countries */
+/** 此处后端没有提供注释 GET /api/v1/reference/region-groups/${param0}/countries */
 export async function listCountriesByRegion(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.ListCountriesByRegionParams
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'regionCode': param0, 
+  const { 'groupCode': param0, 
   ...queryParams
   } = params;
-  return request<API.v1ListCountriesByRegionResponse>(`/api/v1/reference/regions/${param0}/countries`, {
+  return request<API.v1ListCountriesByRegionResponse>(`/api/v1/reference/region-groups/${param0}/countries`, {
   method: 'GET',
     params: {
         ...queryParams,},
@@ -2016,16 +2483,6 @@ export async function listSmsRegions(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/v1/sms${senders} */
-export async function listSmsSenders(
-  options ?: {[key: string]: any}
-) {
-  return request<API.v1ListSMSSendersResponse>(`/api/v1/sms:senders`, {
-  method: 'GET',
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 GET /api/v1/sms${stats} */
 export async function getSmsStats(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -2140,10 +2597,10 @@ export async function getMyQuota(
 }
 
 /** 此处后端没有提供注释 POST /api/v1/telemetry/admin/apps */
-export async function createApp(body: API.v1CreateAppRequest,
+export async function createApp(body: API.testkitV1CreateAppRequest,
   options ?: {[key: string]: any}
 ) {
-  return request<API.v1CreateAppResponse>('/api/v1/telemetry/admin/apps', {
+  return request<API.testkitV1CreateAppResponse>('/api/v1/telemetry/admin/apps', {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -2163,7 +2620,7 @@ export async function getApp(
   const { 'slug': param0, 
   ...queryParams
   } = params;
-  return request<API.v1GetAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
+  return request<API.testkitV1GetAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
   method: 'GET',
     params: {...queryParams,},
     ...(options || {}),
@@ -2180,7 +2637,7 @@ export async function updateApp(
   const { 'slug': param0, 
   ...queryParams
   } = params;
-  return request<API.v1UpdateAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
+  return request<API.testkitV1UpdateAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
   method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

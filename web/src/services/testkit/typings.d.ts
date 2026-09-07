@@ -9,11 +9,19 @@ declare namespace API {
     groupId: string;
   };
 
+  type AdminDeleteBucketParams = {
+    name: string;
+  };
+
   type AdminDeleteFileParams = {
     fileId: string;
     /** request_id is optional; recorded in audit logs for traceability
 (mirror of storage-service *Request.request_id). */
     requestId?: string;
+  };
+
+  type AdminDeleteProviderParams = {
+    name: string;
   };
 
   type AdminGetFileParams = {
@@ -60,12 +68,21 @@ declare namespace API {
       | "AUDIT_ACTION_UPLOAD_SESSION_CREATE"
       | "AUDIT_ACTION_UPLOAD_SESSION_CONFIRM"
       | "AUDIT_ACTION_UPLOAD_SESSION_CANCEL"
-      | "AUDIT_ACTION_UPLOAD_SESSION_GC";
+      | "AUDIT_ACTION_UPLOAD_SESSION_GC"
+      | "AUDIT_ACTION_ADMIN_CREATE_PROVIDER"
+      | "AUDIT_ACTION_ADMIN_UPDATE_PROVIDER"
+      | "AUDIT_ACTION_ADMIN_DELETE_PROVIDER"
+      | "AUDIT_ACTION_ADMIN_UPSERT_BUCKET"
+      | "AUDIT_ACTION_ADMIN_DELETE_BUCKET"
+      | "AUDIT_ACTION_ADMIN_UPDATE_SETTINGS";
     targetType?:
       | "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED"
       | "AUDIT_LOG_TARGET_TYPE_FILE"
       | "AUDIT_LOG_TARGET_TYPE_QUOTA"
-      | "AUDIT_LOG_TARGET_TYPE_OWNER";
+      | "AUDIT_LOG_TARGET_TYPE_OWNER"
+      | "AUDIT_LOG_TARGET_TYPE_PROVIDER"
+      | "AUDIT_LOG_TARGET_TYPE_BUCKET"
+      | "AUDIT_LOG_TARGET_TYPE_SETTINGS";
     status?:
       | "AUDIT_LOG_STATUS_UNSPECIFIED"
       | "AUDIT_LOG_STATUS_SUCCESS"
@@ -109,6 +126,14 @@ declare namespace API {
     pageToken?: string;
     provider?: string;
     bucket?: string;
+  };
+
+  type AdminUpdateProviderParams = {
+    name: string;
+  };
+
+  type AdminUpsertBucketParams = {
+    name: string;
   };
 
   type AssignRoleParams = {
@@ -183,17 +208,17 @@ declare namespace API {
   };
 
   type GetCountriesParams = {
-    countryCodes?: string[];
+    regionCodes?: string[];
     locale?: string;
   };
 
   type GetCountryDefaultsParams = {
-    countryCode: string;
+    regionCode: string;
     locale?: string;
   };
 
   type GetCountryProfileParams = {
-    countryCode: string;
+    regionCode: string;
     locale?: string;
   };
 
@@ -216,7 +241,8 @@ declare namespace API {
  - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.
  - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.
  - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.
- - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address. */
+ - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address.
+ - EMAIL_SCENE_TEST: Ops-console test send (message admin UI). */
     scene?:
       | "EMAIL_SCENE_UNSPECIFIED"
       | "EMAIL_SCENE_LOGIN_CODE"
@@ -225,7 +251,8 @@ declare namespace API {
       | "EMAIL_SCENE_CHANGE_PASSWORD"
       | "EMAIL_SCENE_BIND_ACCOUNT"
       | "EMAIL_SCENE_NOTIFICATION"
-      | "EMAIL_SCENE_VERIFY_EMAIL";
+      | "EMAIL_SCENE_VERIFY_EMAIL"
+      | "EMAIL_SCENE_TEST";
     startTime?: string;
     endTime?: string;
   };
@@ -347,7 +374,8 @@ when both are set; an unknown username yields an empty page. */
  - SMS_SCENE_REGISTER: Registration verification code.
  - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.
  - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.
- - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number. */
+ - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number.
+ - SMS_SCENE_TEST: Ops-console test send (message admin UI). */
     scene?:
       | "SMS_SCENE_UNSPECIFIED"
       | "SMS_SCENE_LOGIN_CODE"
@@ -355,7 +383,8 @@ when both are set; an unknown username yields an empty page. */
       | "SMS_SCENE_REGISTER"
       | "SMS_SCENE_CHANGE_PASSWORD"
       | "SMS_SCENE_BIND_ACCOUNT"
-      | "SMS_SCENE_VERIFY_PHONE";
+      | "SMS_SCENE_VERIFY_PHONE"
+      | "SMS_SCENE_TEST";
     startTime?: string;
     endTime?: string;
   };
@@ -377,7 +406,7 @@ when both are set; an unknown username yields an empty page. */
   };
 
   type ListCountriesByRegionParams = {
-    regionCode: string;
+    groupCode: string;
     locale?: string;
   };
 
@@ -404,7 +433,8 @@ when both are set; an unknown username yields an empty page. */
  - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.
  - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.
  - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.
- - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address. */
+ - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address.
+ - EMAIL_SCENE_TEST: Ops-console test send (message admin UI). */
     scene?:
       | "EMAIL_SCENE_UNSPECIFIED"
       | "EMAIL_SCENE_LOGIN_CODE"
@@ -413,7 +443,8 @@ when both are set; an unknown username yields an empty page. */
       | "EMAIL_SCENE_CHANGE_PASSWORD"
       | "EMAIL_SCENE_BIND_ACCOUNT"
       | "EMAIL_SCENE_NOTIFICATION"
-      | "EMAIL_SCENE_VERIFY_EMAIL";
+      | "EMAIL_SCENE_VERIFY_EMAIL"
+      | "EMAIL_SCENE_TEST";
     /**  - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.
  - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;
 the sync flow does NOT write PENDING (currently unused).
@@ -443,8 +474,8 @@ or context was cancelled. error_message carries the last error. */
     pageSize?: number;
     pageToken?: string;
     includeTotal?: boolean;
-    /** sender_id filter (mirror of message-service ListEmailsByCursorRequest.sender_id). */
-    senderId?: string;
+    /** app_key filter (mirror of message-service ListEmailsByCursorRequest.app_key). */
+    appKey?: string;
   };
 
   type ListEmailsParams = {
@@ -462,7 +493,8 @@ or context was cancelled. error_message carries the last error. */
  - EMAIL_SCENE_CHANGE_PASSWORD: Confirmation of password change.
  - EMAIL_SCENE_BIND_ACCOUNT: Bind a new email/identity to an account.
  - EMAIL_SCENE_NOTIFICATION: Generic transactional notification.
- - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address. */
+ - EMAIL_SCENE_VERIFY_EMAIL: Verify ownership of an email address.
+ - EMAIL_SCENE_TEST: Ops-console test send (message admin UI). */
     scene?:
       | "EMAIL_SCENE_UNSPECIFIED"
       | "EMAIL_SCENE_LOGIN_CODE"
@@ -471,7 +503,8 @@ or context was cancelled. error_message carries the last error. */
       | "EMAIL_SCENE_CHANGE_PASSWORD"
       | "EMAIL_SCENE_BIND_ACCOUNT"
       | "EMAIL_SCENE_NOTIFICATION"
-      | "EMAIL_SCENE_VERIFY_EMAIL";
+      | "EMAIL_SCENE_VERIFY_EMAIL"
+      | "EMAIL_SCENE_TEST";
     /**  - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.
  - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;
 the sync flow does NOT write PENDING (currently unused).
@@ -500,9 +533,9 @@ or context was cancelled. error_message carries the last error. */
       | "SORT_DIRECTION_UNSPECIFIED"
       | "SORT_DIRECTION_ASC"
       | "SORT_DIRECTION_DESC";
-    /** sender_id filters by the calling service label recorded on each record
-(mirror of message-service ListEmailsRequest.sender_id). */
-    senderId?: string;
+    /** app_key filters by the calling app recorded on each record (mirror of
+message-service ListEmailsRequest.app_key). */
+    appKey?: string;
   };
 
   type ListGroupMembersParams = {
@@ -555,12 +588,21 @@ or context was cancelled. error_message carries the last error. */
       | "AUDIT_ACTION_UPLOAD_SESSION_CREATE"
       | "AUDIT_ACTION_UPLOAD_SESSION_CONFIRM"
       | "AUDIT_ACTION_UPLOAD_SESSION_CANCEL"
-      | "AUDIT_ACTION_UPLOAD_SESSION_GC";
+      | "AUDIT_ACTION_UPLOAD_SESSION_GC"
+      | "AUDIT_ACTION_ADMIN_CREATE_PROVIDER"
+      | "AUDIT_ACTION_ADMIN_UPDATE_PROVIDER"
+      | "AUDIT_ACTION_ADMIN_DELETE_PROVIDER"
+      | "AUDIT_ACTION_ADMIN_UPSERT_BUCKET"
+      | "AUDIT_ACTION_ADMIN_DELETE_BUCKET"
+      | "AUDIT_ACTION_ADMIN_UPDATE_SETTINGS";
     targetType?:
       | "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED"
       | "AUDIT_LOG_TARGET_TYPE_FILE"
       | "AUDIT_LOG_TARGET_TYPE_QUOTA"
-      | "AUDIT_LOG_TARGET_TYPE_OWNER";
+      | "AUDIT_LOG_TARGET_TYPE_OWNER"
+      | "AUDIT_LOG_TARGET_TYPE_PROVIDER"
+      | "AUDIT_LOG_TARGET_TYPE_BUCKET"
+      | "AUDIT_LOG_TARGET_TYPE_SETTINGS";
     startTime?: string;
     endTime?: string;
     pageSize?: number;
@@ -603,6 +645,15 @@ or context was cancelled. error_message carries the last error. */
   type ListPermissionsParams = {
     pageSize?: number;
     cursor?: string;
+  };
+
+  type ListPoliciesParams = {
+    /** app_id 0 = all apps. */
+    appId?: string;
+    channel?:
+      | "TEMPLATE_CHANNEL_UNSPECIFIED"
+      | "TEMPLATE_CHANNEL_EMAIL"
+      | "TEMPLATE_CHANNEL_SMS";
   };
 
   type ListRegionGroupsParams = {
@@ -650,7 +701,8 @@ REVOKED/EXPIRED page the matching tombstones.
  - SMS_SCENE_REGISTER: Registration verification code.
  - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.
  - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.
- - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number. */
+ - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number.
+ - SMS_SCENE_TEST: Ops-console test send (message admin UI). */
     scene?:
       | "SMS_SCENE_UNSPECIFIED"
       | "SMS_SCENE_LOGIN_CODE"
@@ -658,7 +710,8 @@ REVOKED/EXPIRED page the matching tombstones.
       | "SMS_SCENE_REGISTER"
       | "SMS_SCENE_CHANGE_PASSWORD"
       | "SMS_SCENE_BIND_ACCOUNT"
-      | "SMS_SCENE_VERIFY_PHONE";
+      | "SMS_SCENE_VERIFY_PHONE"
+      | "SMS_SCENE_TEST";
     /**  - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.
  - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;
 the sync flow does NOT write PENDING (currently unused).
@@ -689,8 +742,8 @@ or context was cancelled. error_message carries the last error. */
     pageSize?: number;
     pageToken?: string;
     includeTotal?: boolean;
-    /** sender_id filter (mirror of message-service ListSMSByCursorRequest.sender_id). */
-    senderId?: string;
+    /** app_key filter (mirror of message-service ListSMSByCursorRequest.app_key). */
+    appKey?: string;
   };
 
   type ListSMSParams = {
@@ -711,7 +764,8 @@ or context was cancelled. error_message carries the last error. */
  - SMS_SCENE_REGISTER: Registration verification code.
  - SMS_SCENE_CHANGE_PASSWORD: Confirmation of password change.
  - SMS_SCENE_BIND_ACCOUNT: Bind a new phone to an account.
- - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number. */
+ - SMS_SCENE_VERIFY_PHONE: Verify ownership of a phone number.
+ - SMS_SCENE_TEST: Ops-console test send (message admin UI). */
     scene?:
       | "SMS_SCENE_UNSPECIFIED"
       | "SMS_SCENE_LOGIN_CODE"
@@ -719,7 +773,8 @@ or context was cancelled. error_message carries the last error. */
       | "SMS_SCENE_REGISTER"
       | "SMS_SCENE_CHANGE_PASSWORD"
       | "SMS_SCENE_BIND_ACCOUNT"
-      | "SMS_SCENE_VERIFY_PHONE";
+      | "SMS_SCENE_VERIFY_PHONE"
+      | "SMS_SCENE_TEST";
     /**  - MESSAGE_STATUS_UNSPECIFIED: UNSPECIFIED — never persisted.
  - MESSAGE_STATUS_PENDING: PENDING — send in progress. Reserved for future async-send flow;
 the sync flow does NOT write PENDING (currently unused).
@@ -749,8 +804,8 @@ or context was cancelled. error_message carries the last error. */
       | "SORT_DIRECTION_UNSPECIFIED"
       | "SORT_DIRECTION_ASC"
       | "SORT_DIRECTION_DESC";
-    /** sender_id filter (mirror of message-service ListSMSRequest.sender_id). */
-    senderId?: string;
+    /** app_key filter (mirror of message-service ListSMSRequest.app_key). */
+    appKey?: string;
   };
 
   type ListTimezonesParams = {
@@ -888,6 +943,85 @@ or context was cancelled. error_message carries the last error. */
     descending?: boolean;
   };
 
+  type MessageDeleteAppParams = {
+    id: string;
+  };
+
+  type MessageDeleteChannelAccountParams = {
+    id: string;
+  };
+
+  type MessageDeletePolicyParams = {
+    id: string;
+  };
+
+  type MessageDeleteSignatureParams = {
+    id: string;
+  };
+
+  type MessageDeleteTemplateParams = {
+    id: string;
+  };
+
+  type MessageGetAppParams = {
+    id: string;
+  };
+
+  type MessageListTemplatesParams = {
+    /** app_id 0 = all templates (shared + every app's). */
+    appId?: string;
+    channel?:
+      | "TEMPLATE_CHANNEL_UNSPECIFIED"
+      | "TEMPLATE_CHANNEL_EMAIL"
+      | "TEMPLATE_CHANNEL_SMS";
+  };
+
+  type MessageRotateAppSecretParams = {
+    id: string;
+  };
+
+  type MessageUpdateAppParams = {
+    id: string;
+  };
+
+  type MessageUpdateChannelAccountParams = {
+    id: string;
+  };
+
+  type MessageUpdatePolicyParams = {
+    id: string;
+  };
+
+  type MessageUpdateSignatureParams = {
+    id: string;
+  };
+
+  type MessageUpdateTemplateParams = {
+    id: string;
+  };
+
+  type messagingV1CreateAppRequest = {
+    /** app_key must be a stable slug identifying the calling service
+(e.g. "testkit", "user-service"). Unique. Immutable after creation. */
+    appKey?: string;
+    name?: string;
+    smsDailyLimit?: string;
+    emailDailyLimit?: string;
+  };
+
+  type messagingV1CreateAppResponse = {
+    app?: v1MessageAppInfo;
+    appSecret?: string;
+  };
+
+  type messagingV1GetAppResponse = {
+    app?: v1MessageAppInfo;
+  };
+
+  type messagingV1UpdateAppResponse = {
+    app?: v1MessageAppInfo;
+  };
+
   type protobufAny = {
     "@type"?: string;
   };
@@ -966,6 +1100,30 @@ or context was cancelled. error_message carries the last error. */
     module?: "MODULE_UNSPECIFIED" | "MODULE_DOWNLOADS" | "MODULE_TOOLS";
   };
 
+  type storageV1BucketInfo = {
+    name?: string;
+    provider?: string;
+    keyPrefix?: string;
+    acl?: v1BucketACL;
+    vendor?: v1Vendor;
+    cdn?: v1CDNConfig;
+  };
+
+  type storageV1ProviderInfo = {
+    name?: string;
+    vendor?: v1Vendor;
+    endpoint?: string;
+    region?: string;
+    /** disabled providers are skipped for new uploads (existing objects stay
+readable through their buckets... until the provider is deleted). */
+    disabled?: boolean;
+    /** sts_enabled reports whether role_arn is configured (STS credentials
+available for direct browser uploads). */
+    stsEnabled?: boolean;
+    /** bucket_count is the number of buckets bound to this provider. */
+    bucketCount?: number;
+  };
+
   type TestkitServiceAddGroupMemberBody = {
     /** target member (kept) */
     userId?: string;
@@ -974,6 +1132,25 @@ or context was cancelled. error_message carries the last error. */
 
   type TestkitServiceAddGroupRoleBody = {
     roleId?: string;
+  };
+
+  type TestkitServiceAdminUpdateProviderBody = {
+    endpoint?: string;
+    region?: string;
+    accessKey?: string;
+    secretKey?: string;
+    /** role_arn is replace-on-present: explicitly sending an empty value
+disables STS. */
+    roleArn?: string;
+    domainId?: string;
+    disabled?: boolean;
+  };
+
+  type TestkitServiceAdminUpsertBucketBody = {
+    provider?: string;
+    keyPrefix?: string;
+    acl?: v1BucketACL;
+    cdn?: v1CDNConfig;
   };
 
   type TestkitServiceAssignRoleBody = {
@@ -1022,6 +1199,41 @@ or context was cancelled. error_message carries the last error. */
     kind?: v1EntitlementKind;
     durationDays?: number;
     expiresAt?: string;
+  };
+
+  type TestkitServiceMessageRotateAppSecretBody = true;
+
+  type TestkitServiceMessageUpdateAppBody = {
+    name?: string;
+    disabled?: boolean;
+    smsDailyLimit?: string;
+    emailDailyLimit?: string;
+  };
+
+  type TestkitServiceMessageUpdateChannelAccountBody = {
+    remark?: string;
+    disabled?: boolean;
+    credentials?: v1ChannelAccountCredentials;
+  };
+
+  type TestkitServiceMessageUpdatePolicyBody = {
+    disabled?: boolean;
+    templateId?: string;
+    /** routes replaces the CN/email chain (required, non-empty). */
+    routes?: v1RouteRule[];
+    /** intl_routes replaces the intl chain (required field for SMS policies —
+send an empty list to disable intl; ignored for email). */
+    intlRoutes?: v1RouteRule[];
+  };
+
+  type TestkitServiceMessageUpdateSignatureBody = {
+    remark?: string;
+    disabled?: boolean;
+    accountIds?: v1AccountIds;
+  };
+
+  type TestkitServiceMessageUpdateTemplateBody = {
+    template?: v1TemplateInfo;
   };
 
   type TestkitServiceReplaceEventRulesBody = {
@@ -1104,6 +1316,48 @@ user_id injected from ctx */
     permissionGroupIds?: string[];
   };
 
+  type testkitV1BucketInfo = {
+    name?: string;
+    provider?: string;
+    keyPrefix?: string;
+    acl?: v1BucketACL;
+    vendor?: v1Vendor;
+    cdn?: v1CDNConfig;
+  };
+
+  type testkitV1CreateAppRequest = {
+    slug?: string;
+    name?: string;
+    email?: string;
+  };
+
+  type testkitV1CreateAppResponse = {
+    app?: v1App;
+    token?: string;
+  };
+
+  type testkitV1GetAppResponse = {
+    app?: v1App;
+    tokens?: v1IngestTokenInfo[];
+    signingKeys?: v1TelemetrySigningKeyInfo[];
+    rules?: v1EventRule[];
+    versions?: v1VersionInfo[];
+  };
+
+  type testkitV1ProviderInfo = {
+    name?: string;
+    vendor?: v1Vendor;
+    endpoint?: string;
+    region?: string;
+    disabled?: boolean;
+    stsEnabled?: boolean;
+    bucketCount?: number;
+  };
+
+  type testkitV1UpdateAppResponse = {
+    app?: v1App;
+  };
+
   type UnbindIdentityParams = {
     /** target identity */
     identityId: string;
@@ -1141,6 +1395,10 @@ user_id injected from ctx */
     roleId: string;
   };
 
+  type v1AccountIds = {
+    ids?: string[];
+  };
+
   type v1ActivateRequest = {
     key?: string;
     licenseKey?: string;
@@ -1153,6 +1411,27 @@ user_id injected from ctx */
     payload?: string;
     signature?: string;
     slots?: v1SlotSummary;
+  };
+
+  type v1AdminCreateProviderRequest = {
+    /** name uniquely identifies the provider (referenced by buckets).
+Immutable after creation. */
+    name?: string;
+    vendor?: v1Vendor;
+    endpoint?: string;
+    region?: string;
+    accessKey?: string;
+    secretKey?: string;
+    /** role_arn enables STS (GetSTSCredential) for this provider; empty =
+STS unavailable. */
+    roleArn?: string;
+    /** domain_id is the Huawei Cloud account UID; required for
+VENDOR_HUAWEI_OBS, unused otherwise. */
+    domainId?: string;
+  };
+
+  type v1AdminCreateProviderResponse = {
+    provider?: storageV1ProviderInfo;
   };
 
   type v1AdminDeleteOwnerRequest = {
@@ -1189,6 +1468,10 @@ user_id injected from ctx */
     updatedAt?: string;
   };
 
+  type v1AdminGetSettingsResponse = {
+    settings?: v1StorageSettings;
+  };
+
   type v1AdminGetStatsResponse = {
     /** deduped physical files */
     totalObjects?: string;
@@ -1210,7 +1493,7 @@ user_id injected from ctx */
   };
 
   type v1AdminListBucketsResponse = {
-    buckets?: v1BucketInfo[];
+    buckets?: testkitV1BucketInfo[];
   };
 
   type v1AdminListFilesResponse = {
@@ -1220,7 +1503,7 @@ user_id injected from ctx */
   };
 
   type v1AdminListProvidersResponse = {
-    providers?: v1ProviderInfo[];
+    providers?: testkitV1ProviderInfo[];
   };
 
   type v1AdminSetQuotaRequest = {
@@ -1243,6 +1526,31 @@ user_id injected from ctx */
   type v1AdminSoftDeleteOwnerFilesResponse = {
     filesDeleted?: string;
     bytesReleased?: string;
+  };
+
+  type v1AdminUpdateProviderResponse = {
+    provider?: storageV1ProviderInfo;
+  };
+
+  type v1AdminUpdateSettingsRequest = {
+    defaultBucket?: string;
+    /** public_bucket may be explicitly set to "" to reject PUBLIC uploads. */
+    publicBucket?: string;
+  };
+
+  type v1AdminUpdateSettingsResponse = {
+    settings?: v1StorageSettings;
+  };
+
+  type v1AdminUpsertBucketResponse = {
+    bucket?: storageV1BucketInfo;
+  };
+
+  type v1AliyunSmsCredentials = {
+    accessKeyId?: string;
+    accessKeySecret?: string;
+    /** region_id defaults to "cn-hangzhou" server-side when empty. */
+    regionId?: string;
   };
 
   type v1App = {
@@ -1276,7 +1584,13 @@ user_id injected from ctx */
     | "AUDIT_ACTION_UPLOAD_SESSION_CREATE"
     | "AUDIT_ACTION_UPLOAD_SESSION_CONFIRM"
     | "AUDIT_ACTION_UPLOAD_SESSION_CANCEL"
-    | "AUDIT_ACTION_UPLOAD_SESSION_GC";
+    | "AUDIT_ACTION_UPLOAD_SESSION_GC"
+    | "AUDIT_ACTION_ADMIN_CREATE_PROVIDER"
+    | "AUDIT_ACTION_ADMIN_UPDATE_PROVIDER"
+    | "AUDIT_ACTION_ADMIN_DELETE_PROVIDER"
+    | "AUDIT_ACTION_ADMIN_UPSERT_BUCKET"
+    | "AUDIT_ACTION_ADMIN_DELETE_BUCKET"
+    | "AUDIT_ACTION_ADMIN_UPDATE_SETTINGS";
 
   type v1AuditLogEntry = {
     id?: string;
@@ -1302,7 +1616,10 @@ user_id injected from ctx */
     | "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED"
     | "AUDIT_LOG_TARGET_TYPE_FILE"
     | "AUDIT_LOG_TARGET_TYPE_QUOTA"
-    | "AUDIT_LOG_TARGET_TYPE_OWNER";
+    | "AUDIT_LOG_TARGET_TYPE_OWNER"
+    | "AUDIT_LOG_TARGET_TYPE_PROVIDER"
+    | "AUDIT_LOG_TARGET_TYPE_BUCKET"
+    | "AUDIT_LOG_TARGET_TYPE_SETTINGS";
 
   type v1AuthMode =
     | "AUTH_MODE_UNSPECIFIED"
@@ -1356,7 +1673,7 @@ user_id injected from ctx */
     email?: string;
     code?: string;
     password?: string;
-    regionCode?: string;
+    dialCode?: string;
     phone?: string;
   };
 
@@ -1376,19 +1693,19 @@ user_id injected from ctx */
     | "BUCKET_ACL_PUBLIC_READ"
     | "BUCKET_ACL_PUBLIC_READ_WRITE";
 
-  type v1BucketInfo = {
-    name?: string;
-    provider?: string;
-    keyPrefix?: string;
-    acl?: v1BucketACL;
-    vendor?: v1Vendor;
-  };
-
   type v1BucketStats = {
     bucket?: string;
     objectCount?: string;
     totalBytes?: string;
     fileCount?: string;
+  };
+
+  type v1ByteplusSmsCredentials = {
+    accessKey?: string;
+    secretKey?: string;
+    smsAccount?: string;
+    /** region defaults to "ap-singapore-1" server-side when empty. */
+    region?: string;
   };
 
   type v1CancelUploadRequest = {
@@ -1398,9 +1715,38 @@ user_id injected from ctx */
     requestId?: string;
   };
 
+  type v1CDNConfig = {
+    domain?: string;
+    authKey?: string;
+    keyPairId?: string;
+  };
+
   type v1ChangePasswordRequest = {
     oldPassword?: string;
     newPassword?: string;
+  };
+
+  type v1ChannelAccountCredentials = {
+    aliyunSms?: v1AliyunSmsCredentials;
+    tencentSms?: v1TencentSmsCredentials;
+    volcengineSms?: v1VolcengineSmsCredentials;
+    byteplusSms?: v1ByteplusSmsCredentials;
+    huaweiSms?: v1HuaweiSmsCredentials;
+    smtp?: v1SmtpEmailCredentials;
+  };
+
+  type v1ChannelAccountInfo = {
+    id?: string;
+    /** name uniquely identifies the account (referenced by policies), e.g.
+"aliyun-main". Unique across all vendors. */
+    name?: string;
+    disabled?: boolean;
+    remark?: string;
+    smsVendor?: v1SmsVendor;
+    emailVendor?: v1EmailVendor;
+    credentials?: v1ChannelAccountCredentials;
+    createdAt?: string;
+    updatedAt?: string;
   };
 
   type v1ConfirmUploadRequest = {
@@ -1416,8 +1762,8 @@ user_id injected from ctx */
   };
 
   type v1Country = {
-    /** alpha-2, e.g. "CN" */
-    code?: string;
+    /** ISO 3166-1 alpha-2, e.g. "CN" */
+    regionCode?: string;
     /** alpha-3, e.g. "CHN" */
     alpha3?: string;
     /** ITU E.164 with "+", e.g. "+86" */
@@ -1433,15 +1779,16 @@ input placeholder / format hint official languages, most-spoken first */
     languageTags?: string[];
   };
 
-  type v1CreateAppRequest = {
-    slug?: string;
+  type v1CreateChannelAccountRequest = {
+    /** name uniquely identifies the account across vendors (referenced by
+policies). Immutable after creation. */
     name?: string;
-    email?: string;
+    remark?: string;
+    credentials?: v1ChannelAccountCredentials;
   };
 
-  type v1CreateAppResponse = {
-    app?: v1App;
-    token?: string;
+  type v1CreateChannelAccountResponse = {
+    account?: v1ChannelAccountInfo;
   };
 
   type v1CreateFileLinkResponse = {
@@ -1479,6 +1826,21 @@ input placeholder / format hint official languages, most-spoken first */
     description?: string;
   };
 
+  type v1CreatePolicyRequest = {
+    appId?: string;
+    scene?: v1PolicyScene;
+    templateId?: string;
+    /** routes is the ordered chain for EMAIL and CN-domestic SMS. */
+    routes?: v1RouteRule[];
+    /** intl_routes is the ordered chain for international SMS. Optional: an
+SMS policy with no intl chain rejects non-CN destinations at send time. */
+    intlRoutes?: v1RouteRule[];
+  };
+
+  type v1CreatePolicyResponse = {
+    policy?: v1PolicyInfo;
+  };
+
   type v1CreateRoleRequest = {
     name?: string;
     description?: string;
@@ -1486,9 +1848,32 @@ input placeholder / format hint official languages, most-spoken first */
     permissionGroupIds?: string[];
   };
 
+  type v1CreateSignatureRequest = {
+    /** name is the signature string itself (CN, e.g. "XX科技") or the intl
+sender ID (e.g. "MyApp"). Unique. Immutable after creation. */
+    name?: string;
+    remark?: string;
+    /** account_ids lists the channel accounts the signature is registered on
+(报备). Full replace on every update; at least one binding required. */
+    accountIds?: string[];
+  };
+
+  type v1CreateSignatureResponse = {
+    signature?: v1SignatureInfo;
+  };
+
   type v1CreateSigningKeyResponse = {
     keyId?: string;
     secret?: string;
+  };
+
+  type v1CreateTemplateRequest = {
+    appId?: string;
+    template?: v1TemplateInfo;
+  };
+
+  type v1CreateTemplateResponse = {
+    template?: v1TemplateInfo;
   };
 
   type v1CreateUserRequest = {
@@ -1497,7 +1882,7 @@ input placeholder / format hint official languages, most-spoken first */
     nickname?: string;
     realName?: string;
     email?: string;
-    regionCode?: string;
+    dialCode?: string;
     phone?: string;
     password?: string;
     gender?: v1Gender;
@@ -1517,7 +1902,7 @@ input placeholder / format hint official languages, most-spoken first */
     /** 0 (JPY) / 2 (CNY) / 3 (BHD) */
     minorUnits?: number;
     /** current official users */
-    countryCodes?: string[];
+    regionCodes?: string[];
     /** display name in the request locale */
     name?: string;
     /** issuer flag, e.g. "🇨🇳" — derived from the */
@@ -1593,8 +1978,8 @@ input placeholder / format hint official languages, most-spoken first */
     scene?: v1EmailScene;
     status?: v1MessageStatus;
     target?: v1EmailAddress;
-    /** read-only echo (testkit's sends echo cfg.Message.SenderID) */
-    senderId?: string;
+    /** app_key identifies the calling app (authenticated sender identity). */
+    appKey?: string;
     cc?: v1EmailAddress[];
     bcc?: v1EmailAddress[];
     subject?: string;
@@ -1619,7 +2004,8 @@ input placeholder / format hint official languages, most-spoken first */
     | "EMAIL_SCENE_CHANGE_PASSWORD"
     | "EMAIL_SCENE_BIND_ACCOUNT"
     | "EMAIL_SCENE_NOTIFICATION"
-    | "EMAIL_SCENE_VERIFY_EMAIL";
+    | "EMAIL_SCENE_VERIFY_EMAIL"
+    | "EMAIL_SCENE_TEST";
 
   type v1EmailStats = {
     total?: string;
@@ -1637,6 +2023,12 @@ input placeholder / format hint official languages, most-spoken first */
     /** [0,100]; -1 = no data */
     successRate?: number;
     vendors?: v1EmailVendorStats[];
+  };
+
+  type v1EmailTemplateContent = {
+    subject?: string;
+    textBody?: string;
+    htmlBody?: string;
   };
 
   type v1EmailVendor =
@@ -1751,14 +2143,6 @@ input placeholder / format hint official languages, most-spoken first */
     headers?: Record<string, any>;
   };
 
-  type v1GetAppResponse = {
-    app?: v1App;
-    tokens?: v1IngestTokenInfo[];
-    signingKeys?: v1TelemetrySigningKeyInfo[];
-    rules?: v1EventRule[];
-    versions?: v1VersionInfo[];
-  };
-
   type v1GetAppStatsResponse = {
     days?: v1DailyStat[];
     drops?: Record<string, any>;
@@ -1769,7 +2153,7 @@ input placeholder / format hint official languages, most-spoken first */
     /** request order */
     countries?: v1Country[];
     /** unknown alpha-2 codes, request order */
-    missingCountries?: string[];
+    missingRegions?: string[];
     dataVersion?: string;
   };
 
@@ -1811,7 +2195,7 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
   type v1GetDataInfoResponse = {
     dataVersion?: string;
     locales?: string[];
-    countryCount?: number;
+    regionCount?: number;
     timezoneCount?: number;
     languageCount?: number;
     currencyCount?: number;
@@ -1915,6 +2299,18 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
   type v1HealthResponse = {
     status?: string;
     checks?: v1HealthChecks;
+  };
+
+  type v1HuaweiSmsCredentials = {
+    appKey?: string;
+    appSecret?: string;
+    /** sign is the default signature bound to the Huawei app (Huawei carries
+the sign on the account, not per request). */
+    sign?: string;
+    /** endpoint defaults to
+"https://smsapi.cn-north-4.myhuaweicloud.com" server-side when empty. */
+    endpoint?: string;
+    region?: string;
   };
 
   type v1Identity = {
@@ -2039,6 +2435,14 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     nativeName?: string;
   };
 
+  type v1ListAppsResponse = {
+    apps?: v1MessageAppInfo[];
+  };
+
+  type v1ListChannelAccountsResponse = {
+    accounts?: v1ChannelAccountInfo[];
+  };
+
   type v1ListCountriesByRegionResponse = {
     countries?: v1Country[];
     dataVersion?: string;
@@ -2060,10 +2464,6 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     records?: v1EmailRecord[];
     total?: number;
     nextPageToken?: string;
-  };
-
-  type v1ListEmailSendersResponse = {
-    senderIds?: string[];
   };
 
   type v1ListEmailsResponse = {
@@ -2137,6 +2537,10 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     total?: number;
   };
 
+  type v1ListPoliciesResponse = {
+    policies?: v1PolicyInfo[];
+  };
+
   type v1ListRegionCodesResponse = {
     regionCodes?: v1RegionCode[];
   };
@@ -2158,6 +2562,10 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     nextCursor?: string;
   };
 
+  type v1ListSignaturesResponse = {
+    signatures?: v1SignatureInfo[];
+  };
+
   type v1ListSMSByCursorResponse = {
     records?: v1SMSRecord[];
     total?: number;
@@ -2175,8 +2583,8 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     hasMore?: boolean;
   };
 
-  type v1ListSMSSendersResponse = {
-    senderIds?: string[];
+  type v1ListTemplatesResponse = {
+    templates?: v1TemplateInfo[];
   };
 
   type v1ListTimezonesResponse = {
@@ -2250,10 +2658,26 @@ resolves (see user.v1). */
     password?: string;
     code?: string;
     email?: string;
-    regionCode?: string;
+    dialCode?: string;
     phone?: string;
     /** captcha_id returned by SendVerificationCode; required for code-based login. */
     captchaId?: string;
+  };
+
+  type v1MessageAppInfo = {
+    id?: string;
+    /** app_key is the public credential identifier passed in x-app-key
+metadata (e.g. "testkit"). Unique. */
+    appKey?: string;
+    name?: string;
+    /** disabled apps fail every send with ErrAppUnauthorized. */
+    disabled?: boolean;
+    /** Daily send-attempt caps (0 = unlimited). Counts attempts, not
+deliveries; protects vendor accounts from runaway loops. */
+    smsDailyLimit?: string;
+    emailDailyLimit?: string;
+    createdAt?: string;
+    updatedAt?: string;
   };
 
   type v1MessageStatus =
@@ -2313,7 +2737,7 @@ resolves (see user.v1). */
     /** canonical E.164 when parseable */
     e164?: string;
     /** inferred alpha-2, "" when unknown */
-    countryCode?: string;
+    regionCode?: string;
     /** e.g. "+86", "" when unknown */
     dialCode?: string;
     nationalNumber?: string;
@@ -2355,6 +2779,30 @@ resolves (see user.v1). */
     | "PHONE_TYPE_VOICE_MAIL"
     | "PHONE_TYPE_UNKNOWN";
 
+  type v1PolicyInfo = {
+    id?: string;
+    appId?: string;
+    channel?: v1TemplateChannel;
+    emailScene?: v1EmailScene;
+    smsScene?: v1SmsScene;
+    /** template_id references the template rendered for every send of this
+policy. Its channel must match. */
+    templateId?: string;
+    /** routes is the ordered route chain for EMAIL and for CN-domestic SMS. */
+    routes?: v1RouteRule[];
+    /** intl_routes is the ordered route chain for international SMS
+(destination country != CN). Unused for email. */
+    intlRoutes?: v1RouteRule[];
+    disabled?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
+  type v1PolicyScene = {
+    emailScene?: v1EmailScene;
+    smsScene?: v1SmsScene;
+  };
+
   type v1Pong = {
     /** service name, e.g. "user-service" */
     service?: string;
@@ -2374,13 +2822,6 @@ resolves (see user.v1). */
     now?: string;
     /** process start time, Unix millis (client computes uptime) */
     startedAt?: string;
-  };
-
-  type v1ProviderInfo = {
-    name?: string;
-    vendor?: v1Vendor;
-    endpoint?: string;
-    region?: string;
   };
 
   type v1ProviderStats = {
@@ -2405,11 +2846,11 @@ resolves (see user.v1). */
 
   type v1RegionGroup = {
     /** UN M49, e.g. "142" (Asia) */
-    code?: string;
+    groupCode?: string;
     /** "" for top level */
     parentCode?: string;
     /** direct members; recurse client-side */
-    countryCodes?: string[];
+    regionCodes?: string[];
     /** e.g. "亚洲" / "Asia" */
     name?: string;
   };
@@ -2421,7 +2862,7 @@ resolves (see user.v1). */
     username?: string;
     nickname?: string;
     password?: string;
-    regionCode?: string;
+    dialCode?: string;
     phone?: string;
     /** captcha_id returned by SendVerificationCode; required to verify the code. */
     captchaId?: string;
@@ -2438,7 +2879,7 @@ resolves (see user.v1). */
     email?: string;
     code?: string;
     newPassword?: string;
-    regionCode?: string;
+    dialCode?: string;
     phone?: string;
   };
 
@@ -2448,7 +2889,7 @@ resolves (see user.v1). */
 
   type v1ResolveCodesRequest = {
     locale?: string;
-    countryCodes?: string[];
+    regionCodes?: string[];
     timezoneIds?: string[];
     languageTags?: string[];
     currencyCodes?: string[];
@@ -2459,7 +2900,7 @@ resolves (see user.v1). */
     timezones?: v1Timezone[];
     languages?: v1Language[];
     currencies?: v1Currency[];
-    missingCountries?: string[];
+    missingRegions?: string[];
     missingTimezones?: string[];
     missingLanguages?: string[];
     missingCurrencies?: string[];
@@ -2487,26 +2928,34 @@ resolves (see user.v1). */
     updatedAt?: string;
   };
 
+  type v1RotateAppSecretResponse = {
+    app?: v1MessageAppInfo;
+    appSecret?: string;
+  };
+
   type v1RotateTokenResponse = {
     token?: string;
+  };
+
+  type v1RouteRule = {
+    /** account_id references a channel account (the vendor pool entry). */
+    accountId?: string;
+    /** signature_id references the signature used with that account.
+Required for SMS routes (0 is invalid); unused for email routes. */
+    signatureId?: string;
+    /** weight >= 1; higher weight = higher start probability. Default 1. */
+    weight?: number;
   };
 
   type v1SendEmailRequest = {
     to?: v1EmailAddress[];
     cc?: v1EmailAddress[];
     bcc?: v1EmailAddress[];
-    subject?: string;
-    body?: string;
-    htmlBody?: string;
     replyTo?: v1EmailAddress;
-    vendor?: v1EmailVendor;
-    account?: string;
-    templateId?: string;
-    templateParams?: Record<string, any>;
     scene?: v1EmailScene;
-    /** sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1). */
+    /** TemplateParams feed the policy template's {{param}} placeholders. */
+    templateParams?: Record<string, any>;
     idempotencyKey?: string;
-    from?: v1EmailAddress;
     attachments?: v1EmailAttachment[];
   };
 
@@ -2518,43 +2967,20 @@ resolves (see user.v1). */
   };
 
   type v1SendSMSRequest = {
-    regionCode?: string;
+    dialCode?: string;
     phone?: string;
-    content?: string;
-    templateId?: string;
-    templateParams?: Record<string, any>;
-    vendor?: v1SmsVendor;
-    account?: string;
     scene?: v1SmsScene;
-    /** sender_id NOT exposed — BFF fills from cfg.Message.SenderID (decision 1). */
+    /** TemplateParams feed the policy template's {{param}} placeholders. */
+    templateParams?: Record<string, any>;
     idempotencyKey?: string;
-    signName?: string;
   };
 
   type v1SendVerificationCodeRequest = {
     email?: string;
     channel?: v1VerificationChannel;
     purpose?: v1VerificationPurpose;
-    regionCode?: string;
+    dialCode?: string;
     phone?: string;
-    /** sender_id is the audit actor triggering this send (user id, service name,
-platform identifier, ...). user-service is stateless and passes it through
-verbatim; for unauthenticated flows (register/login) the frontend supplies
-a platform identifier (e.g. the target email/phone or "testkit-web"). */
-    senderId?: string;
-    /** ---- Delivery templates (mirror user-service SendVerificationCodeRequest
-1:1 — field numbers match). Required per channel by user-service's
-validateDeliverySpec: EMAIL needs email_subject + email_body ({code}
-placeholder substituted by user-service); SMS+CN needs sms_template_id +
-sign_name (domestic vendors reject raw content); SMS international needs
-exactly one of sms_template_id / sms_content. */
-    smsTemplateId?: string;
-    smsCodeParamKey?: string;
-    smsContent?: string;
-    emailSubject?: string;
-    emailBody?: string;
-    signName?: string;
-    emailHtmlBody?: string;
   };
 
   type v1SendVerificationCodeResponse = {
@@ -2600,6 +3026,19 @@ exactly one of sms_template_id / sms_content. */
     trials?: v1TrialInfo[];
   };
 
+  type v1SignatureInfo = {
+    id?: string;
+    /** name is the signature string itself (e.g. "XX科技") or the intl
+sender ID (e.g. "MyApp"). Unique. */
+    name?: string;
+    disabled?: boolean;
+    remark?: string;
+    /** account_ids lists the channel accounts this signature is registered on. */
+    accountIds?: string[];
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
   type v1SigningKeyInfo = {
     keyId?: string;
     publicKeyB64?: string;
@@ -2611,6 +3050,10 @@ exactly one of sms_template_id / sms_content. */
     devices?: v1DeviceSlotInfo[];
   };
 
+  type v1SmsContentTemplate = {
+    content?: string;
+  };
+
   type v1SMSRecord = {
     id?: string;
     vendor?: v1SmsVendor;
@@ -2619,7 +3062,8 @@ exactly one of sms_template_id / sms_content. */
     status?: v1MessageStatus;
     regionCode?: string;
     phone?: string;
-    senderId?: string;
+    /** app_key identifies the calling app (authenticated sender identity). */
+    appKey?: string;
     content?: string;
     templateId?: string;
     templateParams?: Record<string, any>;
@@ -2628,6 +3072,8 @@ exactly one of sms_template_id / sms_content. */
     sentAt?: string;
     createdAt?: string;
     updatedAt?: string;
+    /** sign_name is the SMS signature / intl sender ID the policy route used. */
+    signName?: string;
   };
 
   type v1SmsScene =
@@ -2637,7 +3083,8 @@ exactly one of sms_template_id / sms_content. */
     | "SMS_SCENE_REGISTER"
     | "SMS_SCENE_CHANGE_PASSWORD"
     | "SMS_SCENE_BIND_ACCOUNT"
-    | "SMS_SCENE_VERIFY_PHONE";
+    | "SMS_SCENE_VERIFY_PHONE"
+    | "SMS_SCENE_TEST";
 
   type v1SMSStats = {
     total?: string;
@@ -2663,11 +3110,25 @@ exactly one of sms_template_id / sms_content. */
     | "SMS_VENDOR_BYTEPLUS"
     | "SMS_VENDOR_HUAWEI";
 
+  type v1SmsVendorCodesContent = {
+    codes?: v1VendorTemplateCode[];
+  };
+
   type v1SmsVendorStats = {
     vendor?: v1SmsVendor;
     total?: string;
     sent?: string;
     failed?: string;
+  };
+
+  type v1SmtpEmailCredentials = {
+    brand?: v1EmailVendor;
+    host?: string;
+    /** port defaults to 587 server-side when zero. */
+    port?: number;
+    username?: string;
+    password?: string;
+    fromAddress?: string;
   };
 
   type v1SocialLoginRequest = {
@@ -2696,11 +3157,62 @@ exactly one of sms_template_id / sms_content. */
     | "SORT_FIELD_FILENAME"
     | "SORT_FIELD_SIZE";
 
+  type v1StorageSettings = {
+    /** default_bucket receives uploads that do not specify a bucket. */
+    defaultBucket?: string;
+    /** public_bucket receives visibility=PUBLIC uploads; empty = PUBLIC
+uploads are rejected. */
+    publicBucket?: string;
+  };
+
   type v1TelemetrySigningKeyInfo = {
     keyId?: string;
     revoked?: boolean;
     createdAt?: string;
     lastUsedAt?: string;
+  };
+
+  type v1TemplateChannel =
+    | "TEMPLATE_CHANNEL_UNSPECIFIED"
+    | "TEMPLATE_CHANNEL_EMAIL"
+    | "TEMPLATE_CHANNEL_SMS";
+
+  type v1TemplateInfo = {
+    id?: string;
+    appId?: string;
+    name?: string;
+    channel?: v1TemplateChannel;
+    kind?: v1TemplateKind;
+    params?: v1TemplateParamSpec[];
+    disabled?: boolean;
+    email?: v1EmailTemplateContent;
+    vendorCodes?: v1SmsVendorCodesContent;
+    smsContent?: v1SmsContentTemplate;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
+  type v1TemplateKind =
+    | "TEMPLATE_KIND_UNSPECIFIED"
+    | "TEMPLATE_KIND_EMAIL_RENDER"
+    | "TEMPLATE_KIND_SMS_VENDOR_CODES"
+    | "TEMPLATE_KIND_SMS_CONTENT";
+
+  type v1TemplateParamSpec = {
+    name?: string;
+    /** required params must be present in template_params on every send. */
+    required?: boolean;
+    description?: string;
+  };
+
+  type v1TencentSmsCredentials = {
+    secretId?: string;
+    secretKey?: string;
+    smsSdkAppId?: string;
+    /** region defaults to "ap-guangzhou" server-side when empty. */
+    region?: string;
+    /** endpoint is optional (e.g. a dedicated intl endpoint). */
+    endpoint?: string;
   };
 
   type v1Timezone = {
@@ -2709,7 +3221,7 @@ exactly one of sms_template_id / sms_content. */
     /** backward links, e.g. "PRC"; input */
     aliases?: string[];
     /** normalization only — never in pickers ISO alpha-2 members */
-    countryCodes?: string[];
+    regionCodes?: string[];
     /** CLDR exemplar city in the request locale */
     name?: string;
   };
@@ -2750,12 +3262,16 @@ empty for password/code logins). */
     key?: v1KeyInfo;
   };
 
-  type v1UpdateAppResponse = {
-    app?: v1App;
+  type v1UpdateChannelAccountResponse = {
+    account?: v1ChannelAccountInfo;
   };
 
   type v1UpdateKeyResponse = {
     key?: v1KeyInfo;
+  };
+
+  type v1UpdatePolicyResponse = {
+    policy?: v1PolicyInfo;
   };
 
   type v1UpdateProfileRequest = {
@@ -2768,6 +3284,18 @@ empty for password/code logins). */
     timezone?: string;
     locale?: string;
     bio?: string;
+    /** ISO 4217 alpha-3; "" leaves the stored value untouched. */
+    defaultCurrency?: string;
+    /** The user's country/region (ISO 3166-1 alpha-2); "" leaves it untouched. */
+    regionCode?: string;
+  };
+
+  type v1UpdateSignatureResponse = {
+    signature?: v1SignatureInfo;
+  };
+
+  type v1UpdateTemplateResponse = {
+    template?: v1TemplateInfo;
   };
 
   type v1UploadCredentialItem = {
@@ -2814,6 +3342,13 @@ empty for password/code logins). */
     lastLoginAt?: string;
     createdAt?: string;
     updatedAt?: string;
+    /** Derived from region_code at read time, never stored — mirrors
+user.v1.User.dial_code. */
+    dialCode?: string;
+    /** ISO 4217 alpha-3, "" = unset. */
+    defaultCurrency?: string;
+    /** Reserved for MFA; false until an MFA flow exists. */
+    mfaEnabled?: boolean;
   };
 
   type v1UserRole = {
@@ -2856,6 +3391,11 @@ empty for password/code logins). */
     | "VENDOR_HUAWEI_OBS"
     | "VENDOR_VOLCENGINE_TOS";
 
+  type v1VendorTemplateCode = {
+    vendor?: v1SmsVendor;
+    templateCode?: string;
+  };
+
   type v1VerificationChannel =
     | "VERIFICATION_CHANNEL_UNSPECIFIED"
     | "VERIFICATION_CHANNEL_EMAIL"
@@ -2881,4 +3421,12 @@ empty for password/code logins). */
     | "VISIBILITY_UNSPECIFIED"
     | "VISIBILITY_PUBLIC"
     | "VISIBILITY_PRIVATE";
+
+  type v1VolcengineSmsCredentials = {
+    accessKey?: string;
+    secretKey?: string;
+    smsAccount?: string;
+    /** region defaults to "cn-north-1" server-side when empty. */
+    region?: string;
+  };
 }

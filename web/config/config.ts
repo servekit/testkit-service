@@ -211,6 +211,11 @@ export default defineConfig({
               name: "Buckets",
               component: "./Admin/Storage/Buckets",
             },
+            {
+              path: "/admin/storage/settings",
+              name: "存储设置",
+              component: "./Admin/Storage/Settings",
+            },
           ],
         },
         {
@@ -241,6 +246,31 @@ export default defineConfig({
           path: "/message/send/sms",
           name: "发送短信",
           component: "./Message/SendSMS",
+        },
+        {
+          path: "/message/admin/apps",
+          name: "应用管理",
+          component: "./Message/Apps",
+        },
+        {
+          path: "/message/admin/accounts",
+          name: "通道账号",
+          component: "./Message/Accounts",
+        },
+        {
+          path: "/message/admin/signatures",
+          name: "签名管理",
+          component: "./Message/Signatures",
+        },
+        {
+          path: "/message/admin/templates",
+          name: "模板管理",
+          component: "./Message/Templates",
+        },
+        {
+          path: "/message/admin/policies",
+          name: "策略管理",
+          component: "./Message/Policies",
         },
         {
           path: "/message/emails",

@@ -43,6 +43,7 @@ export const EMAIL_SCENE_VALUE_ENUM = {
   EMAIL_SCENE_BIND_ACCOUNT: { text: "绑定账号" },
   EMAIL_SCENE_NOTIFICATION: { text: "通知" },
   EMAIL_SCENE_VERIFY_EMAIL: { text: "验证邮箱" },
+  EMAIL_SCENE_TEST: { text: "控制台测试" },
 };
 
 export const SMS_SCENE_VALUE_ENUM = {
@@ -53,6 +54,7 @@ export const SMS_SCENE_VALUE_ENUM = {
   SMS_SCENE_CHANGE_PASSWORD: { text: "修改密码" },
   SMS_SCENE_BIND_ACCOUNT: { text: "绑定账号" },
   SMS_SCENE_VERIFY_PHONE: { text: "验证手机" },
+  SMS_SCENE_TEST: { text: "控制台测试" },
 };
 
 /** Options for ProFormSelect (vendor dropdowns on the send forms). */
@@ -81,6 +83,7 @@ export const EMAIL_SCENE_OPTIONS = [
   { label: "绑定账号", value: "EMAIL_SCENE_BIND_ACCOUNT" },
   { label: "通知", value: "EMAIL_SCENE_NOTIFICATION" },
   { label: "验证邮箱", value: "EMAIL_SCENE_VERIFY_EMAIL" },
+  { label: "控制台测试", value: "EMAIL_SCENE_TEST" },
 ];
 
 export const SMS_SCENE_OPTIONS = [
@@ -90,6 +93,7 @@ export const SMS_SCENE_OPTIONS = [
   { label: "修改密码", value: "SMS_SCENE_CHANGE_PASSWORD" },
   { label: "绑定账号", value: "SMS_SCENE_BIND_ACCOUNT" },
   { label: "验证手机", value: "SMS_SCENE_VERIFY_PHONE" },
+  { label: "控制台测试", value: "SMS_SCENE_TEST" },
 ];
 
 const STATUS_COLOR: Record<string, string> = {

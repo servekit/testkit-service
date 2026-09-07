@@ -24,7 +24,6 @@ import {
 const { Link, Text } = Typography;
 
 const USER_TYPE_INTERNAL = "USER_TYPE_INTERNAL";
-const SENDER_ID = "testkit-web";
 
 interface RegisterFormValues {
   channel?: "email" | "phone";
@@ -122,7 +121,6 @@ export default function RegisterPage() {
           ? "VERIFICATION_CHANNEL_EMAIL"
           : "VERIFICATION_CHANNEL_SMS",
         purpose: "VERIFICATION_PURPOSE_REGISTER",
-        senderId: SENDER_ID,
         ...(isEmail
           ? {
               email: vals.email,

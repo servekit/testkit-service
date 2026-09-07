@@ -23,7 +23,7 @@ import {
   getEmail,
   getEmailStats,
   listEmailsByCursor,
-  listEmailSenders,
+  messageListApps,
   listEmails,
 } from "@/services/testkit/testkitService";
 import {
@@ -38,14 +38,14 @@ import {
  * Email records ops console: ProTable over the offset-paginated listEmails
  * RPC (the unified list style — filter form + toolbar refresh + numbered
  * pagination). All data flows through GENERATED services — no hand-written
- * fetch. `sender_id` is NOT a table filter (plan decision 2: not forwarded);
+ * fetch. `app_key` is NOT a table filter (plan decision 2: not forwarded);
  * known senders are surfaced in the stats modal for audit context.
  */
 export default function EmailRecordsPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(undefined);
 
-  const [senders, setSenders] = useState<string[]>([]);
+  const [appKeys, setAppKeys] = useState<string[]>([]);
   const [detail, setDetail] = useState<API.v1EmailRecord | null>(null);
   const [stats, setStats] = useState<API.v1EmailStatsResponse | null>(null);
 
@@ -69,8 +69,8 @@ export default function EmailRecordsPage() {
   });
 
   useEffect(() => {
-    listEmailSenders()
-      .then((r) => setSenders(r.senderIds ?? []))
+    messageListApps({})
+      .then((r) => setAppKeys((r.apps ?? []).map((a) => a.appKey as string)))
       .catch(() => {
         /* 401 handled by interceptor; ignore list-load failures */
       });
@@ -108,8 +108,8 @@ export default function EmailRecordsPage() {
     },
     { title: "主题", dataIndex: "subject", ellipsis: true, search: false },
     {
-      title: "发送方",
-      dataIndex: "senderId",
+      title: "应用",
+      dataIndex: "appKey",
       width: 150,
       search: false,
     },
@@ -250,7 +250,7 @@ export default function EmailRecordsPage() {
                 {detail.templateId || "-"}
               </Descriptions.Item>
               <Descriptions.Item label="发送方">
-                {detail.senderId || "-"}
+                {detail.appKey || "-"}
               </Descriptions.Item>
               <Descriptions.Item label="错误信息">
                 {detail.errorMessage || "-"}
@@ -327,8 +327,7 @@ export default function EmailRecordsPage() {
                 ]}
               />
               <div style={{ marginTop: 16, color: "rgba(0,0,0,0.65)" }}>
-                已知发送方：{senders.join(", ") || "-"}
-              </div>
+                已知发送方：              </div>
             </div>
           )}
         </Modal>

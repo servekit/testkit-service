@@ -260,7 +260,6 @@ export default function IdentityPage() {
                                 ? "VERIFICATION_CHANNEL_EMAIL"
                                 : "VERIFICATION_CHANNEL_SMS",
                               purpose: "VERIFICATION_PURPOSE_BIND",
-                              senderId: "testkit-web",
                               ...(isEmail
                                 ? {
                                     email: email ?? "",
@@ -341,7 +340,6 @@ export default function IdentityPage() {
                   purpose: isEmail
                     ? "VERIFICATION_PURPOSE_VERIFY_EMAIL"
                     : "VERIFICATION_PURPOSE_VERIFY_PHONE",
-                  senderId: "testkit-web",
                   ...(isEmail
                     ? {
                         email: unbindTarget.providerUid ?? "",
