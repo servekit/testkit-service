@@ -1,8 +1,9 @@
 /**
- * Common-usage examples (internal-only). One page, four patterns consumers
+ * Common-usage examples (internal-only). One page, five patterns consumers
  * ask for: a searchable country box, a continent→country cascade, an
- * in-form country dropdown (flag + dial), and a dial-prefixed phone input
- * wired to ParsePhone. All client-side over the directory + existing RPCs.
+ * in-form country dropdown (flag + dial), a dial-prefixed phone input
+ * wired to ParsePhone, and the country-picked defaults auto-fill. All
+ * client-side over the directory + existing RPCs.
  */
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import {
@@ -13,12 +14,14 @@ import {
   List,
   Select,
   Space,
+  Spin,
   Tag,
   Typography,
 } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import CountrySelect from "../components/CountrySelect";
 import {
+  getCountryDefaults,
   listCountries,
   listCountriesByRegion,
   listRegionGroups,
@@ -120,11 +123,48 @@ export default function ReferenceExamplesPage() {
     }
   };
 
+  // 5. defaults auto-fill: pick a country once, GetCountryDefaults fills
+  // the rest of the form in a single call — the registration-form pattern.
+  // This card IS the defaults demo (the former standalone Defaults page
+  // folded into here).
+  const [fillCode, setFillCode] = useState<string>();
+  const [fill, setFill] = useState<API.v1GetCountryDefaultsResponse>();
+  const [filling, setFilling] = useState(false);
+  useEffect(() => {
+    if (!fillCode) {
+      setFill(undefined);
+      return;
+    }
+    let cancelled = false;
+    setFilling(true);
+    getCountryDefaults({ countryCode: fillCode, locale: "zh-Hans" })
+      .then((d) => {
+        if (!cancelled) setFill(d);
+      })
+      .catch(() => undefined) /* interceptor surfaces errors */
+      .finally(() => {
+        if (!cancelled) setFilling(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [fillCode]);
+  const filledField = (label: string, value: string | undefined, extra?: string) => (
+    <Input
+      addonBefore={label}
+      value={value ?? ""}
+      placeholder={fillCode ? "无数据" : "选择国家后自动填充"}
+      suffix={extra ? <Text type="secondary">{extra}</Text> : undefined}
+      readOnly
+      style={{ width: 320 }}
+    />
+  );
+
   return (
     <PageContainer
       header={{
         title: "常用用法示例",
-        subTitle: "reference-service · 搜索 / 级联 / 下拉 / 区号前缀输入",
+        subTitle: "reference-service · 搜索 / 级联 / 下拉 / 区号前缀 / 默认值填充",
       }}
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
@@ -236,6 +276,27 @@ export default function ReferenceExamplesPage() {
               </Text>
             </div>
           )}
+        </ProCard>
+
+        <ProCard title="⑤ 选国家自动填默认值（GetCountryDefaults 一次调用）" headerBordered>
+          <Space direction="vertical" size="middle">
+            <CountrySelect
+              countries={countries}
+              value={fillCode}
+              onChange={setFillCode}
+              placeholder="像注册表单第一步那样选择国家"
+              style={{ minWidth: 300 }}
+            />
+            <Spin spinning={filling}>
+              <Space direction="vertical" size="small" style={{ width: "100%" }}>
+                {filledField("区号", fill?.dialCode)}
+                {filledField("默认时区", fill?.timezoneName, fill?.timezoneId)}
+                {filledField("默认货币", fill?.currencyName ? `${fill.currencySymbol ?? ""} ${fill.currencyName}` : undefined, fill?.currencyCode)}
+                {filledField("默认语言", fill?.languageName, fill?.languageTag)}
+                {filledField("号码占位", fill?.exampleNumber)}
+              </Space>
+            </Spin>
+          </Space>
         </ProCard>
       </Space>
     </PageContainer>

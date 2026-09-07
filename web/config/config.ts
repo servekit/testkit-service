@@ -327,11 +327,6 @@ export default defineConfig({
           component: "./Reference/Regions",
         },
         {
-          path: "/reference/defaults",
-          name: "默认值填充",
-          component: "./Reference/Defaults",
-        },
-        {
           path: "/reference/examples",
           name: "常用示例",
           component: "./Reference/Examples",
