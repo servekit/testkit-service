@@ -154,12 +154,6 @@ export default function MessageAppsPage() {
               }
             }}
           >
-            <ProFormText
-              name="appKey"
-              label="AppKey"
-              placeholder="如 testkit（小写字母数字连字符）"
-              rules={[{ required: true }]}
-            />
             <ProFormText name="name" label="名称" rules={[{ required: true }]} />
             <ProFormDigit
               name="smsDailyLimit"
@@ -177,7 +171,7 @@ export default function MessageAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        凭据即权限：app_secret 只在创建/轮换时展示一次；发送端配置到 message.app_key/app_secret。
+        凭据即权限：app_key 由系统自动生成，app_secret 只在创建/轮换时展示一次；发送端配置到 message.app_key/app_secret（见创建后的凭据弹窗）。
       </Space>
     </PageContainer>
   );

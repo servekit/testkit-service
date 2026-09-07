@@ -1001,8 +1001,9 @@ or context was cancelled. error_message carries the last error. */
   };
 
   type messagingV1CreateAppRequest = {
-    /** app_key must be a stable slug identifying the calling service
-(e.g. "testkit", "user-service"). Unique. Immutable after creation. */
+    /** app_key optionally carries a caller-chosen slug (e.g. "testkit").
+Empty = the server generates one ("app_" + 8 random chars). Unique and
+immutable after creation either way. */
     appKey?: string;
     name?: string;
     smsDailyLimit?: string;
@@ -2953,10 +2954,16 @@ Required for SMS routes (0 is invalid); unused for email routes. */
     bcc?: v1EmailAddress[];
     replyTo?: v1EmailAddress;
     scene?: v1EmailScene;
-    /** TemplateParams feed the policy template's {{param}} placeholders. */
+    /** TemplateParams render {{param}} placeholders — in the policy template
+(template mode) or in the free-form content below. */
     templateParams?: Record<string, any>;
     idempotencyKey?: string;
     attachments?: v1EmailAttachment[];
+    /** Free-form content: subject non-empty → content comes from these fields
+({{param}} still rendered); subject empty → policy template renders. */
+    subject?: string;
+    body?: string;
+    htmlBody?: string;
   };
 
   type v1SendResponse = {

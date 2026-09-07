@@ -246,6 +246,11 @@ func toMessageSendEmailRequest(r *testkitv1.SendEmailRequest) *messagev1.SendEma
 		TemplateParams: r.GetTemplateParams(),
 		IdempotencyKey: r.GetIdempotencyKey(),
 		Attachments:    toMessageEmailAttachments(r.GetAttachments()),
+		// Free-form content (subject non-empty): {{param}} in it still
+		// renders with TemplateParams downstream.
+		Subject:  r.GetSubject(),
+		Body:     r.GetBody(),
+		HtmlBody: r.GetHtmlBody(),
 	}
 }
 
