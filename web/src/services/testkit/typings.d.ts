@@ -2980,6 +2980,9 @@ Required for SMS routes (0 is invalid); unused for email routes. */
     /** TemplateParams feed the policy template's {{param}} placeholders. */
     templateParams?: Record<string, any>;
     idempotencyKey?: string;
+    /** Free-form international SMS content ({{param}} rendered with
+template_params; CN destinations reject it — vendor templates only). */
+    content?: string;
   };
 
   type v1SendVerificationCodeRequest = {

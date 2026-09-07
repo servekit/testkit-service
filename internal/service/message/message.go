@@ -260,6 +260,9 @@ func toMessageSendSMSRequest(r *testkitv1.SendSMSRequest) *messagev1.SendSMSRequ
 		Scene:          messagev1.SmsScene(r.GetScene()),
 		TemplateParams: r.GetTemplateParams(),
 		IdempotencyKey: r.GetIdempotencyKey(),
+		// Free-form international content ({{param}} rendered downstream;
+		// CN destinations rejected server-side).
+		Content: r.GetContent(),
 	}
 }
 

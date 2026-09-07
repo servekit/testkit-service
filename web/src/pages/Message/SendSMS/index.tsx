@@ -19,7 +19,26 @@ interface SmsFormValues {
   phone?: string;
   scene?: string;
   templateParams?: string;
+  content?: string;
   idempotencyKey?: string;
+}
+
+// One character outside the GSM 7-bit set makes the whole message UCS-2
+// encoded: 70 chars per segment (67 multi-segment) instead of 160/153.
+const GSM_CHAR_RE =
+  /^[\r\n@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ!"#¤%&'()*+,./:;<=>?¡ÄÖÑÜ§¿äöñüà^{}[\]~|€A-Za-z0-9 -]*$/;
+
+function isGsmOnly(text: string): boolean {
+  return GSM_CHAR_RE.test(text);
+}
+
+function smsSegments(text: string): { count: number; perSegment: number } {
+  const len = [...text].length;
+  if (len === 0) return { count: 0, perSegment: 0 };
+  const gsm = isGsmOnly(text);
+  const single = gsm ? 160 : 70;
+  const multi = gsm ? 153 : 67;
+  return { count: len <= single ? 1 : Math.ceil(len / multi), perSegment: single };
 }
 
 const paramsValidator = (_: unknown, value?: string) => {
@@ -59,6 +78,10 @@ export default function SendSMSPage() {
   const [sending, setSending] = useState(false);
   const [lastResp, setLastResp] = useState<string>("");
   const regionOptions = useRegionOptions();
+  const dialCode = Form.useWatch("dialCode", form) ?? "+86";
+  const content = Form.useWatch("content", form) ?? "";
+  const isIntl = dialCode !== "+86";
+  const seg = smsSegments(content);
 
   const onFinish = async (vals: SmsFormValues) => {
     let params: Record<string, string> = {};
@@ -77,6 +100,7 @@ export default function SendSMSPage() {
         phone: vals.phone,
         scene: vals.scene,
         templateParams: params,
+        ...(isIntl && (vals.content ?? "").trim() ? { content: vals.content } : {}),
         ...(vals.idempotencyKey ? { idempotencyKey: vals.idempotencyKey } : {}),
       });
       message.success(`已提交（记录 #${resp.id}）`);
@@ -130,6 +154,21 @@ export default function SendSMSPage() {
                   />
                 </Form.Item>,
               )}
+              {isIntl &&
+                fieldRow(
+                  "内容",
+                  <Form.Item name="content" noStyle>
+                    <Input.TextArea
+                      rows={4}
+                      placeholder="国际短信正文（自由撰写，支持 {{param}} 占位符，留空走模板渲染）"
+                      showCount
+                      maxLength={1000}
+                    />
+                  </Form.Item>,
+                  <Text type="secondary" style={{ fontSize: 12, whiteSpace: "nowrap" }}>
+                    {seg.count > 0 ? `${seg.count} 段 / 每段 ${seg.perSegment} 字` : "GSM/UCS-2 自动分段"}
+                  </Text>,
+                )}
               {fieldRow(
                 "幂等键",
                 <Form.Item name="idempotencyKey" noStyle>
