@@ -694,7 +694,7 @@ func (s *Service) AdminListBuckets(ctx context.Context, _ *emptypb.Empty) (*test
 			Name:     b.GetName(),
 			Provider: b.GetProvider(),
 			Acl:      storagev1.BucketACL(b.GetAcl()),
-			Vendor:    storagev1.Vendor(b.GetVendor()),
+			Vendor:   storagev1.Vendor(b.GetVendor()),
 		}
 		if b.GetCdn() != nil {
 			bucket.Cdn = &storagev1.CDNConfig{
@@ -973,6 +973,39 @@ func (s *Service) AdminDeleteProvider(ctx context.Context, req *storagev1.AdminD
 // AdminUpsertBucket creates or fully replaces a bucket binding.
 func (s *Service) AdminUpsertBucket(ctx context.Context, req *storagev1.AdminUpsertBucketRequest) (*storagev1.AdminUpsertBucketResponse, error) {
 	return s.storage.AdminUpsertBucket(ctx, req)
+}
+
+// --- Storage app management (1:1 forwards; auth is human-permission at the
+// gateway, app identity is data-plane only) ---
+
+// AdminListApps lists all storage apps.
+func (s *Service) AdminListApps(ctx context.Context, req *storagev1.AdminListAppsRequest) (*storagev1.AdminListAppsResponse, error) {
+	return s.storage.AdminListApps(ctx, req)
+}
+
+// AdminCreateApp registers a calling app (secret shown once).
+func (s *Service) AdminCreateApp(ctx context.Context, req *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error) {
+	return s.storage.AdminCreateApp(ctx, req)
+}
+
+// AdminGetApp returns one app by app_key.
+func (s *Service) AdminGetApp(ctx context.Context, req *storagev1.AdminGetAppRequest) (*storagev1.AdminGetAppResponse, error) {
+	return s.storage.AdminGetApp(ctx, req)
+}
+
+// AdminUpdateApp edits name/disabled/bucket; app_key and key_prefix immutable.
+func (s *Service) AdminUpdateApp(ctx context.Context, req *storagev1.AdminUpdateAppRequest) (*storagev1.AdminUpdateAppResponse, error) {
+	return s.storage.AdminUpdateApp(ctx, req)
+}
+
+// AdminRotateAppSecret mints a new secret (shown once).
+func (s *Service) AdminRotateAppSecret(ctx context.Context, req *storagev1.AdminRotateAppSecretRequest) (*storagev1.AdminRotateAppSecretResponse, error) {
+	return s.storage.AdminRotateAppSecret(ctx, req)
+}
+
+// AdminDeleteApp soft-deletes an app; data-plane calls fail immediately.
+func (s *Service) AdminDeleteApp(ctx context.Context, req *storagev1.AdminDeleteAppRequest) (*emptypb.Empty, error) {
+	return s.storage.AdminDeleteApp(ctx, req)
 }
 
 // AdminDeleteBucket removes a bucket binding (rejected while objects exist).

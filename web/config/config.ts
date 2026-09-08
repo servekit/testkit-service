@@ -212,6 +212,11 @@ export default defineConfig({
               component: "./Admin/Storage/Buckets",
             },
             {
+              path: "/admin/storage/apps",
+              name: "应用管理",
+              component: "./Admin/Storage/Apps",
+            },
+            {
               path: "/admin/storage/settings",
               name: "存储设置",
               component: "./Admin/Storage/Settings",

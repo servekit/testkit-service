@@ -159,10 +159,6 @@ third_party:
         # platform tables now (admin pages / admin RPCs). To import legacy
         # YAML providers once: put the providers block back temporarily and
         # run `storage-service migrate --seed-from-config`, then remove it.
-storage:
-  app_key: ${TESTKIT_SERVICE_STORAGE_APP_KEY}
-  app_secret: ${TESTKIT_SERVICE_STORAGE_APP_SECRET}
-
   user:
     mode: ${TESTKIT_SERVICE_USER_MODE}         # module | grpc
     target: ${TESTKIT_SERVICE_USER_TARGET}
@@ -288,6 +284,15 @@ storage:
 message:
   app_key: ${TESTKIT_SERVICE_MESSAGE_APP_KEY}
   app_secret: ${TESTKIT_SERVICE_MESSAGE_APP_SECRET}
+
+# Storage-domain settings. App credentials identify the BFF to
+# storage-service (seeded by `storage-service migrate --seed-from-config`
+# with storage.bootstrap_app, or created on the storage admin surface);
+# injected into the context of every data-plane call. Object keys, STS
+# scope, and the dedup domain hang off the app's key_prefix.
+storage:
+  app_key: ${TESTKIT_SERVICE_STORAGE_APP_KEY}
+  app_secret: ${TESTKIT_SERVICE_STORAGE_APP_SECRET}
 
 # Cron scheduler settings. jobs.Scheduler is wired but registers no jobs in P1.
 cron:
