@@ -10,8 +10,8 @@
 //     ConfirmUpload / CancelUpload / GenerateDownloadURL / GenerateProcessURL /
 //     GenerateCDNURL / ListMyFiles / ListMyFilesPaged / GetMyFile / UpdateMyFile /
 //     DeleteMyFile / BatchDeleteMyFiles / GetMyQuota / ListMyAuditLogs) drop the
-//     caller's owner from the request — it is read from the authenticated context
-//     (grpcx.GetUserIDFromCtx, injected by the P1 auth interceptor) and injected
+//     caller's owner from the request — it is derived from the verified request
+//     actor (grpcx.MustActorFromCtx, set by the edge auth middleware) and injected
 //     into the downstream request as Owner{OWNER_TYPE_USER, user_id} via the
 //     linkd ownerFromCtx helper. The testkit request carries no owner field.
 //   - Admin and owner-quota RPCs (AdminListFiles / AdminGetFile / AdminDeleteFile /
