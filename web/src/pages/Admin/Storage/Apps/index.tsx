@@ -70,7 +70,7 @@ export default function AdminStorageAppsPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await adminUpdateApp({ appKey: r.appKey, body: { disabled: !r.disabled } } as never);
+              await adminUpdateApp({ appKey: r.appKey }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用（数据面立即拒绝）");
               reload();
             } catch (err) {
@@ -85,7 +85,7 @@ export default function AdminStorageAppsPage() {
           key="rotate"
           onClick={async () => {
             try {
-              const resp = await adminRotateAppSecret({ appKey: r.appKey, body: {} } as never);
+              const resp = await adminRotateAppSecret({ appKey: r.appKey }, {});
               showSecret(r.appKey, (resp as { appSecret?: string }).appSecret ?? "");
               reload();
             } catch (err) {

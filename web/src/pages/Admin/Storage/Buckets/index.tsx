@@ -70,14 +70,14 @@ export default function AdminBucketsPage() {
           key="upsert"
           onClick={async () => {
             try {
-              await adminUpsertBucket({
-                name: r.name,
-                body: {
+              await adminUpsertBucket(
+                { name: r.name },
+                {
                   provider: r.provider,
                   acl: r.acl,
                   cdn: r.cdn ?? undefined,
                 },
-              } as never);
+              );
               message.success("已保存（立即生效）");
               reload();
             } catch (err) {
@@ -129,9 +129,9 @@ export default function AdminBucketsPage() {
             trigger={<Button type="primary">新建/覆盖桶</Button>}
             onFinish={async (vals) => {
               try {
-                await adminUpsertBucket({
-                  name: vals.name,
-                  body: {
+                await adminUpsertBucket(
+                  { name: vals.name },
+                  {
                     provider: vals.provider,
                     acl: vals.acl,
                     cdn: vals.cdnDomain
@@ -142,7 +142,7 @@ export default function AdminBucketsPage() {
                       }
                     : undefined,
                   },
-                } as never);
+                );
                 message.success("已保存（立即生效）");
                 reload();
                 return true;

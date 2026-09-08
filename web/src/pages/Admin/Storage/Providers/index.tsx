@@ -59,7 +59,7 @@ export default function AdminProvidersPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await adminUpdateProvider({ name: r.name, body: { disabled: !r.disabled } } as never);
+              await adminUpdateProvider({ name: r.name }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用（存量对象仍可读，新上传拒绝）");
               reload();
             } catch (err) {
