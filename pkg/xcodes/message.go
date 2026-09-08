@@ -11,9 +11,10 @@ package xcodes
 
 import "github.com/servekit/go-common/xerr"
 
-// ErrAppNotConfigured is returned when cfg.Message.AppKey/AppSecret are
-// empty at service construction time — fail fast on a misconfigured
-// deployment rather than sending unauthenticated.
+// ErrAppNotConfigured is returned when app credentials (cfg.Message or
+// cfg.Storage AppKey/AppSecret) are empty at service construction time —
+// fail fast on a misconfigured deployment rather than sending
+// unauthenticated.
 var ErrAppNotConfigured = xerr.New(
 	"app_not_configured",
 	xerr.CategoryInternal,

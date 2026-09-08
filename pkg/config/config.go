@@ -52,6 +52,7 @@ type Config struct {
 	CORS       *CORSConfig
 	ThirdParty *ThirdPartyConfig
 	Message    *MessageConfig
+	Storage    *StorageConfig
 	Cron       *CronConfig
 	Log        *logging.Config
 }
@@ -108,6 +109,20 @@ type ThirdPartyConfig struct {
 // RemoteServiceConfig is the shared third_party.<name> section shape,
 // aliased from go-common so Mode is the configx.Mode enum.
 type RemoteServiceConfig[T any] = configx.RemoteServiceConfig[T]
+
+// StorageConfig holds testkit-side storage-domain settings.
+//
+// AppKey/AppSecret are the BFF's storage-service app credentials: created by
+// `storage-service migrate --seed-from-config` (storage.bootstrap_app) or on
+// the storage admin surface, injected into the downstream context of every
+// data-plane call. Object keys, STS scope, and the dedup domain all hang off
+// the app's key_prefix.
+type StorageConfig struct {
+	// AppKey identifies the calling app; service.New fail-fasts on empty.
+	AppKey string
+	// AppSecret authenticates the app (internal-trust, DB-plaintext).
+	AppSecret string
+}
 
 // MessageConfig holds testkit-side message-domain settings.
 //

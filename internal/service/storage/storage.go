@@ -57,6 +57,11 @@ import (
 // and add a no-op Close (Task 2).
 type Service struct {
 	storage storageservice.Service
+
+	// appKey/appSecret authenticate the BFF on every data-plane call; empty
+	// values fail every such call downstream with APP_UNAUTHORIZED.
+	appKey    string
+	appSecret string
 }
 
 // Option configures a Service (for test injection).
@@ -65,6 +70,18 @@ type Option func(*Service)
 // WithStorageClient overrides the embedded storage client (tests).
 func WithStorageClient(c storageservice.Service) Option {
 	return func(s *Service) { s.storage = c }
+}
+
+// WithAppCredentials sets the storage-service app credentials the BFF
+// authenticates with on data-plane RPCs (service.New fail-fasts on empty
+// cfg.Storage.AppKey); the option form keeps tests dependency-light.
+func WithAppCredentials(appKey, appSecret string) Option {
+	return func(s *Service) { s.appKey, s.appSecret = appKey, appSecret }
+}
+
+// withApp wraps ctx with the app credentials for a data-plane call.
+func (s *Service) withApp(ctx context.Context) context.Context {
+	return storageservice.WithApp(ctx, s.appKey, s.appSecret)
 }
 
 // New constructs the storage-domain service. client is the embedded
@@ -102,12 +119,11 @@ func (s *Service) GenerateUploadURL(ctx context.Context, req *testkitv1.Generate
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.GenerateUploadURL(ctx, &storagev1.GenerateUploadURLRequest{
+	resp, err := s.storage.GenerateUploadURL(s.withApp(ctx), &storagev1.GenerateUploadURLRequest{
 		Filename:    req.GetFilename(),
 		Size:        req.GetSize(),
 		Md5:         req.GetMd5(),
 		ContentType: req.GetContentType(),
-		Bucket:      req.GetBucket(),
 		FilePath:    req.GetFilePath(),
 		Description: req.GetDescription(),
 		Metadata:    req.GetMetadata(),
@@ -137,8 +153,7 @@ func (s *Service) GetSTSCredential(ctx context.Context, req *testkitv1.GetSTSCre
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.GetSTSCredential(ctx, &storagev1.GetSTSCredentialRequest{
-		Bucket:            req.GetBucket(),
+	resp, err := s.storage.GetSTSCredential(s.withApp(ctx), &storagev1.GetSTSCredentialRequest{
 		MaxSize:           req.GetMaxSize(),
 		Filename:          req.GetFilename(),
 		Md5:               req.GetMd5(),
@@ -190,9 +205,8 @@ func (s *Service) BatchGetSTSCredential(ctx context.Context, req *testkitv1.Batc
 			Metadata:    f.GetMetadata(),
 		})
 	}
-	resp, err := s.storage.BatchGetSTSCredential(ctx, &storagev1.BatchGetSTSCredentialRequest{
+	resp, err := s.storage.BatchGetSTSCredential(s.withApp(ctx), &storagev1.BatchGetSTSCredentialRequest{
 		Files:             files,
-		Bucket:            req.GetBucket(),
 		Ttl:               req.GetTtl(),
 		AllowedExtensions: req.GetAllowedExtensions(),
 		Visibility:        storagev1.Visibility(req.GetVisibility()),
@@ -224,7 +238,7 @@ func (s *Service) ConfirmUpload(ctx context.Context, req *testkitv1.ConfirmUploa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.ConfirmUpload(ctx, &storagev1.ConfirmUploadRequest{
+	resp, err := s.storage.ConfirmUpload(s.withApp(ctx), &storagev1.ConfirmUploadRequest{
 		UploadToken: req.GetUploadToken(),
 		Owner:       owner,
 		RequestId:   req.GetRequestId(),
@@ -244,7 +258,7 @@ func (s *Service) CancelUpload(ctx context.Context, req *testkitv1.CancelUploadR
 	if err != nil {
 		return nil, err
 	}
-	return s.storage.CancelUpload(ctx, &storagev1.CancelUploadRequest{
+	return s.storage.CancelUpload(s.withApp(ctx), &storagev1.CancelUploadRequest{
 		UploadToken: req.GetUploadToken(),
 		Owner:       owner,
 		RequestId:   req.GetRequestId(),
@@ -260,7 +274,7 @@ func (s *Service) GenerateDownloadURL(ctx context.Context, req *testkitv1.Genera
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.GenerateDownloadURL(ctx, &storagev1.GenerateDownloadURLRequest{
+	resp, err := s.storage.GenerateDownloadURL(s.withApp(ctx), &storagev1.GenerateDownloadURLRequest{
 		FileId:     req.GetFileId(),
 		TtlSeconds: req.GetTtlSeconds(),
 		Filename:   req.Filename, // optional string → *string forwarded verbatim
@@ -284,7 +298,7 @@ func (s *Service) CreateFileLink(ctx context.Context, req *testkitv1.CreateFileL
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.CreateFileLink(ctx, &storagev1.CreateFileLinkRequest{
+	resp, err := s.storage.CreateFileLink(s.withApp(ctx), &storagev1.CreateFileLinkRequest{
 		FileId:              req.GetFileId(),
 		RetentionTtlSeconds: req.GetRetentionTtlSeconds(),
 		Owner:               owner,
@@ -302,7 +316,7 @@ func (s *Service) CreateFileLink(ctx context.Context, req *testkitv1.CreateFileL
 // the token IS the credential, no owner context is injected (and the RPC is
 // on the interceptor's public-methods list).
 func (s *Service) GetFileLinkDownload(ctx context.Context, req *testkitv1.GetFileLinkDownloadRequest) (*testkitv1.GetFileLinkDownloadResponse, error) {
-	resp, err := s.storage.GetFileLinkDownload(ctx, &storagev1.GetFileLinkDownloadRequest{
+	resp, err := s.storage.GetFileLinkDownload(s.withApp(ctx), &storagev1.GetFileLinkDownloadRequest{
 		LinkToken: req.GetLinkToken(),
 	})
 	if err != nil {
@@ -325,7 +339,7 @@ func (s *Service) GenerateProcessURL(ctx context.Context, req *testkitv1.Generat
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.GenerateProcessURL(ctx, &storagev1.GenerateProcessURLRequest{
+	resp, err := s.storage.GenerateProcessURL(s.withApp(ctx), &storagev1.GenerateProcessURLRequest{
 		FileId:     req.GetFileId(),
 		Ops:        toStorageImageProcessOps(req.GetOps()),
 		TtlSeconds: req.GetTtlSeconds(),
@@ -346,7 +360,7 @@ func (s *Service) GenerateCDNURL(ctx context.Context, req *testkitv1.GenerateCDN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.GenerateCDNURL(ctx, &storagev1.GenerateCDNURLRequest{
+	resp, err := s.storage.GenerateCDNURL(s.withApp(ctx), &storagev1.GenerateCDNURLRequest{
 		FileId:    req.GetFileId(),
 		Ops:       toStorageImageProcessOps(req.GetOps()),
 		Ttl:       req.GetTtl(),
@@ -373,7 +387,7 @@ func (s *Service) ListMyFiles(ctx context.Context, req *testkitv1.ListMyFilesReq
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.ListMyFiles(ctx, &storagev1.ListMyFilesRequest{
+	resp, err := s.storage.ListMyFiles(s.withApp(ctx), &storagev1.ListMyFilesRequest{
 		PathPrefix:        req.GetPathPrefix(),
 		Extension:         req.GetExtension(),
 		ContentTypePrefix: req.GetContentTypePrefix(),
@@ -403,7 +417,7 @@ func (s *Service) ListMyFilesPaged(ctx context.Context, req *testkitv1.ListMyFil
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.ListMyFilesPaged(ctx, &storagev1.ListMyFilesPagedRequest{
+	resp, err := s.storage.ListMyFilesPaged(s.withApp(ctx), &storagev1.ListMyFilesPagedRequest{
 		Page:              req.GetPage(),
 		PageSize:          req.GetPageSize(),
 		PathPrefix:        req.GetPathPrefix(),
@@ -435,7 +449,7 @@ func (s *Service) GetMyFile(ctx context.Context, req *testkitv1.GetMyFileRequest
 	if err != nil {
 		return nil, err
 	}
-	f, err := s.storage.GetMyFile(ctx, &storagev1.GetMyFileRequest{
+	f, err := s.storage.GetMyFile(s.withApp(ctx), &storagev1.GetMyFileRequest{
 		FileId: req.GetFileId(),
 		Owner:  owner,
 	})
@@ -452,7 +466,7 @@ func (s *Service) UpdateMyFile(ctx context.Context, req *testkitv1.UpdateMyFileR
 	if err != nil {
 		return nil, err
 	}
-	f, err := s.storage.UpdateMyFile(ctx, &storagev1.UpdateMyFileRequest{
+	f, err := s.storage.UpdateMyFile(s.withApp(ctx), &storagev1.UpdateMyFileRequest{
 		FileId:        req.GetFileId(),
 		Filename:      req.Filename,
 		FilePath:      req.FilePath,
@@ -474,7 +488,7 @@ func (s *Service) DeleteMyFile(ctx context.Context, req *testkitv1.DeleteMyFileR
 	if err != nil {
 		return nil, err
 	}
-	return s.storage.DeleteMyFile(ctx, &storagev1.DeleteMyFileRequest{
+	return s.storage.DeleteMyFile(s.withApp(ctx), &storagev1.DeleteMyFileRequest{
 		FileId:    req.GetFileId(),
 		Owner:     owner,
 		RequestId: req.GetRequestId(),
@@ -488,7 +502,7 @@ func (s *Service) BatchDeleteMyFiles(ctx context.Context, req *testkitv1.BatchDe
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.storage.BatchDeleteMyFiles(ctx, &storagev1.BatchDeleteMyFilesRequest{
+	resp, err := s.storage.BatchDeleteMyFiles(s.withApp(ctx), &storagev1.BatchDeleteMyFilesRequest{
 		FileIds:   req.GetFileIds(),
 		Owner:     owner,
 		RequestId: req.GetRequestId(),
@@ -510,7 +524,7 @@ func (s *Service) GetMyQuota(ctx context.Context, _ *emptypb.Empty) (*testkitv1.
 	if err != nil {
 		return nil, err
 	}
-	q, err := s.storage.GetMyQuota(ctx, &storagev1.GetMyQuotaRequest{Owner: owner})
+	q, err := s.storage.GetMyQuota(s.withApp(ctx), &storagev1.GetMyQuotaRequest{Owner: owner})
 	if err != nil {
 		return nil, err
 	}
@@ -573,7 +587,6 @@ func (s *Service) AdminListFiles(ctx context.Context, req *testkitv1.AdminListFi
 		PageSize:          req.GetPageSize(),
 		PageToken:         req.GetPageToken(),
 		Provider:          req.GetProvider(),
-		Bucket:            req.GetBucket(),
 	})
 	if err != nil {
 		return nil, err
@@ -678,10 +691,9 @@ func (s *Service) AdminListBuckets(ctx context.Context, _ *emptypb.Empty) (*test
 	buckets := make([]*testkitv1.BucketInfo, 0, len(resp.GetBuckets()))
 	for _, b := range resp.GetBuckets() {
 		bucket := &testkitv1.BucketInfo{
-			Name:      b.GetName(),
-			Provider:  b.GetProvider(),
-			KeyPrefix: b.GetKeyPrefix(),
-			Acl:       storagev1.BucketACL(b.GetAcl()),
+			Name:     b.GetName(),
+			Provider: b.GetProvider(),
+			Acl:      storagev1.BucketACL(b.GetAcl()),
 			Vendor:    storagev1.Vendor(b.GetVendor()),
 		}
 		if b.GetCdn() != nil {

@@ -194,7 +194,12 @@ func New(cfg *config.Config) (*Service, error) {
 	svc.userSvc = user.New(usr)
 
 	// P3 storage domain.
-	svc.storageSvc = storage.New(st)
+	if cfg.Storage == nil || cfg.Storage.AppKey == "" || cfg.Storage.AppSecret == "" {
+		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New("cfg.Storage.AppKey/AppSecret are required: every storage data-plane call authenticates as an app (storage.bootstrap_app seeds one at migrate time)"))
+	}
+	svc.storageSvc = storage.New(st,
+		storage.WithAppCredentials(cfg.Storage.AppKey, cfg.Storage.AppSecret),
+	)
 
 	// P4 message domain. App credentials are injected into the downstream
 	// context of every Send — fail fast on empty rather than sending

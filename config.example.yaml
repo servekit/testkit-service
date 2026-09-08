@@ -159,6 +159,9 @@ third_party:
         # platform tables now (admin pages / admin RPCs). To import legacy
         # YAML providers once: put the providers block back temporarily and
         # run `storage-service migrate --seed-from-config`, then remove it.
+storage:
+  app_key: ${TESTKIT_SERVICE_STORAGE_APP_KEY}
+  app_secret: ${TESTKIT_SERVICE_STORAGE_APP_SECRET}
 
   user:
     mode: ${TESTKIT_SERVICE_USER_MODE}         # module | grpc
