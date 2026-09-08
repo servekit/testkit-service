@@ -77,19 +77,19 @@ func New(client storageservice.Service, opts ...Option) *Service {
 	return s
 }
 
-// ownerFromCtx is the trust-boundary injection for all "my-*" RPCs: it reads the
-// caller's user_id from ctx (injected by the P1 auth interceptor) and builds
-// Owner{OWNER_TYPE_USER, user_id}. A missing user_id maps to a 401 — this should
-// never happen behind the interceptor (every storage RPC requires login), but is
-// surfaced as Unauthorized rather than panicking. Mirrors user.userIDFromCtx.
+// ownerFromCtx is the trust-boundary injection for all "my-*" RPCs: it reads
+// the verified request actor (set by the edge auth middleware) and builds
+// Owner{OWNER_TYPE_USER, user_id}. A missing actor maps to a 401 — this should
+// never happen behind the middleware (every storage RPC requires login), but is
+// surfaced as Unauthorized rather than panicking. Mirrors user.requireActor.
 func ownerFromCtx(ctx context.Context) (*storagev1.Owner, error) {
-	uid, err := grpcx.GetUserIDFromCtx(ctx)
+	actor, err := grpcx.MustActorFromCtx(ctx)
 	if err != nil {
 		return nil, xcodes.ErrUnauthorized.Wrap(err)
 	}
 	return &storagev1.Owner{
 		OwnerType: storagev1.OwnerType_OWNER_TYPE_USER,
-		OwnerId:   uid,
+		OwnerId:   actor.GetUserId(),
 	}, nil
 }
 

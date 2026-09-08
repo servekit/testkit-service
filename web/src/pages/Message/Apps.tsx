@@ -1,10 +1,17 @@
 /**
  * 消息平台 · 应用管理。调用方的身份注册表：每个接入方一个 App，
- * 凭据（app_key/app_secret）只在此页创建/轮换时明文展示一次。
+ * 凭据（app_key/app_secret）列表可见（内网信任 posture）：默认掩码，
+ * 点眼睛显示明文、点复制取值，方便配置到发送端的
+ * message.app_key / app_secret。
  */
 import { ModalForm, ProFormDigit, ProFormText } from "@ant-design/pro-components";
-import { App, Button, Modal, Popconfirm, Space, Tag } from "antd";
-import { useRef } from "react";
+import {
+  CopyOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
+import { App, Button, Popconfirm, Space, Tag } from "antd";
+import { useRef, useState } from "react";
 import {
   PageContainer,
   ProTable,
@@ -19,27 +26,91 @@ import {
   messageUpdateApp,
 } from "@/services/testkit/testkitService";
 
-function showSecret(title: string, resp: { appSecret?: string; app?: API.v1MessageAppInfo }) {
-  Modal.info({
-    title,
-    width: 640,
-    content: (
-      <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
-        {JSON.stringify(resp, null, 2)}
-      </pre>
-    ),
-  });
+/** 凭据单元格：默认星号掩码，眼睛切换明文，复制按钮取值。显隐状态由页面持有。 */
+function SecretText({
+  value,
+  visible,
+  onToggle,
+}: {
+  value?: string;
+  visible: boolean;
+  onToggle: () => void;
+}) {
+  const { message } = App.useApp();
+  return (
+    <Space size={2}>
+      <span
+        style={{
+          fontFamily: "monospace",
+          wordBreak: "break-all",
+          display: "inline-block",
+          minWidth: 64,
+        }}
+      >
+        {visible ? value || "-" : "••••••••••"}
+      </span>
+      <Button
+        type="text"
+        size="small"
+        icon={visible ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+        onClick={onToggle}
+      />
+      <Button
+        type="text"
+        size="small"
+        icon={<CopyOutlined />}
+        onClick={async () => {
+          if (!value) return;
+          try {
+            await navigator.clipboard.writeText(value);
+            message.success("已复制");
+          } catch {
+            message.error("复制失败，请手动选择复制");
+          }
+        }}
+      />
+    </Space>
+  );
 }
 
 export default function MessageAppsPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
+  // 掩码开关按 "id:字段" 记忆；创建/轮换后自动点亮对应行的 AppSecret
+  const [revealed, setRevealed] = useState<Record<string, boolean>>({});
+  const toggleReveal = (key: string) =>
+    setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
+  const reveal = (id: string | undefined, field: string) => {
+    if (id) setRevealed((prev) => ({ ...prev, [`${id}:${field}`]: true }));
+  };
 
   const columns: ProColumns<API.v1MessageAppInfo>[] = [
-    { title: "ID", dataIndex: "id", width: 90, hideInSearch: true },
-    { title: "AppKey", dataIndex: "appKey", copyable: true },
-    { title: "名称", dataIndex: "name", hideInSearch: true },
+    { title: "名称", dataIndex: "name", hideInSearch: true, width: 140, ellipsis: true },
+    {
+      title: "AppKey",
+      dataIndex: "appKey",
+      width: 240,
+      render: (_, r) => (
+        <SecretText
+          value={r.appKey}
+          visible={!!revealed[`${r.id}:appKey`]}
+          onToggle={() => toggleReveal(`${r.id}:appKey`)}
+        />
+      ),
+    },
+    {
+      title: "AppSecret",
+      dataIndex: "appSecret",
+      width: 420,
+      render: (_, r) => (
+        <SecretText
+          value={r.appSecret}
+          visible={!!revealed[`${r.id}:appSecret`]}
+          onToggle={() => toggleReveal(`${r.id}:appSecret`)}
+        />
+      ),
+    },
     {
       title: "状态",
       dataIndex: "disabled",
@@ -52,27 +123,27 @@ export default function MessageAppsPage() {
       dataIndex: "smsDailyLimit",
       hideInSearch: true,
       width: 100,
-      render: (_, r) => (r.smsDailyLimit > 0 ? r.smsDailyLimit : "不限"),
+      render: (_, r) => (Number(r.smsDailyLimit) > 0 ? Number(r.smsDailyLimit) : "不限"),
     },
     {
       title: "邮件日上限",
       dataIndex: "emailDailyLimit",
       hideInSearch: true,
       width: 100,
-      render: (_, r) => (r.emailDailyLimit > 0 ? r.emailDailyLimit : "不限"),
+      render: (_, r) => (Number(r.emailDailyLimit) > 0 ? Number(r.emailDailyLimit) : "不限"),
     },
     {
       title: "操作",
       valueType: "option",
-      width: 240,
+      width: 200,
       render: (_, r) => [
         <a
           key="rotate"
           onClick={async () => {
             try {
-              const resp = await messageRotateAppSecret({ id: r.id, body: {} } as never);
-              message.success("已轮换（新 secret 仅此一次展示）");
-              showSecret("新 App Secret", resp);
+              await messageRotateAppSecret({ id: r.id! }, {} as never);
+              message.success("已轮换，新 AppSecret 见列表");
+              reveal(r.id, "appSecret");
               reload();
             } catch (err) {
               const e = err as { data?: { message?: string } };
@@ -86,7 +157,7 @@ export default function MessageAppsPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await messageUpdateApp({ id: r.id, body: { disabled: !r.disabled } } as never);
+              await messageUpdateApp({ id: r.id! }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用");
               reload();
             } catch (err) {
@@ -102,7 +173,7 @@ export default function MessageAppsPage() {
           title="删除后该应用的发送立即失败，确定？"
           onConfirm={async () => {
             try {
-              await messageDeleteApp({ id: r.id } as never);
+              await messageDeleteApp({ id: r.id! });
               message.success("已删除");
               reload();
             } catch (err) {
@@ -126,6 +197,7 @@ export default function MessageAppsPage() {
         rowKey="id"
         search={false}
         pagination={false}
+        scroll={{ x: 1280 }}
         request={async () => {
           const resp = await messageListApps({});
           return { data: resp.apps ?? [], success: true };
@@ -138,13 +210,12 @@ export default function MessageAppsPage() {
             onFinish={async (vals) => {
               try {
                 const resp = await messageCreateApp({
-                  appKey: vals.appKey,
                   name: vals.name,
-                  smsDailyLimit: Number(vals.smsDailyLimit ?? 0),
-                  emailDailyLimit: Number(vals.emailDailyLimit ?? 0),
+                  smsDailyLimit: String(Number(vals.smsDailyLimit ?? 0)),
+                  emailDailyLimit: String(Number(vals.emailDailyLimit ?? 0)),
                 });
-                message.success("已创建（secret 仅此一次展示）");
-                showSecret("App 凭据", resp);
+                message.success("已创建，AppKey/AppSecret 见列表");
+                reveal(resp.app?.id, "appSecret");
                 reload();
                 return true;
               } catch (err) {
@@ -171,7 +242,8 @@ export default function MessageAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        凭据即权限：app_key 由系统自动生成，app_secret 只在创建/轮换时展示一次；发送端配置到 message.app_key/app_secret（见创建后的凭据弹窗）。
+        凭据即权限：app_key/app_secret 由系统生成，列表默认掩码；点眼睛显示明文、点复制取值，配置到发送端的
+        message.app_key / message.app_secret。轮换后旧 secret 立即失效。
       </Space>
     </PageContainer>
   );

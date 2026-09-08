@@ -85,8 +85,8 @@ func (s *Service) SendVerificationCode(ctx context.Context, req *testkitv1.SendV
 }
 
 // Logout revokes the caller's current session. The session id is read from the
-// authenticated context by the handler (auth.SessionIDFromCtx) — it never
-// appears in a request message — and passed in here.
+// authenticated context by the handler (the request actor's session_id) — it
+// never appears in a request message — and passed in here.
 func (s *Service) Logout(ctx context.Context, sessionID string) (*emptypb.Empty, error) {
 	if sessionID == "" {
 		return nil, errors.New("auth: logout requires a session id in context")

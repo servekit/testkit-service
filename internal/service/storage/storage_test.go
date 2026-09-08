@@ -11,6 +11,7 @@ import (
 	"github.com/servekit/go-common/xerr"
 	"github.com/stretchr/testify/require"
 
+	commonv1 "github.com/servekit/api/gen/go/common/v1"
 	storagev1 "github.com/servekit/api/gen/go/storage/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service/storage"
@@ -78,10 +79,10 @@ func (s *stubServer) ListMyAuditLogs(ctx context.Context, req *storagev1.ListMyA
 // adds Close for lifecycle) without owning any real backend.
 func (s *stubServer) Close() error { return nil }
 
-// ctxWithUser returns a context carrying an authenticated user_id, mirroring
-// what the P1 auth interceptor injects.
+// ctxWithUser returns a context carrying a verified request actor, mirroring
+// what the edge auth middleware injects.
 func ctxWithUser(uid int64) context.Context {
-	return context.WithValue(context.Background(), grpcx.UserIDKey, uid)
+	return grpcx.WithActor(context.Background(), &commonv1.RequestActor{UserId: uid})
 }
 
 // TestListMyFilesPaged_InjectsOwnerFromCtx is the template "my" RPC: it proves

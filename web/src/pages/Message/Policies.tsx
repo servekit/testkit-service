@@ -200,7 +200,10 @@ export default function MessagePoliciesPage() {
     };
     try {
       if (id) {
-        await messageUpdatePolicy({ id, body: { templateId: body.templateId, routes: body.routes, intlRoutes: body.intlRoutes } } as never);
+        await messageUpdatePolicy(
+          { id },
+          { templateId: body.templateId as string, routes: body.routes, intlRoutes: body.intlRoutes },
+        );
       } else {
         await messageCreatePolicy(body as never);
       }

@@ -89,7 +89,7 @@ export default function MessageAccountsPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await messageUpdateChannelAccount({ id: r.id, body: { disabled: !r.disabled } } as never);
+              await messageUpdateChannelAccount({ id: r.id! }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用");
               reload();
             } catch (err) {

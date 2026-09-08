@@ -13,9 +13,9 @@
 // Curation rules (v2 §3.2):
 //   - "My" RPCs (GetProfile / UpdateProfile / ChangePassword / ListIdentities /
 //     BindIdentity / BindOAuthIdentity / UnbindIdentity / ListSessions /
-//     RevokeAllSessions) drop the caller's user_id from the request — it is read
-//     from the authenticated context (grpcx.GetUserIDFromCtx, injected by the
-//     P1 auth interceptor) and injected into the downstream request.
+//     RevokeAllSessions) carry no caller identity — the verified actor
+//     (common.v1.RequestActor, set by the edge auth middleware) travels in the
+//     context and downstream user-service reads it from there.
 //   - Target resource IDs stay in the request. For self-service RPCs these are
 //     UnbindIdentity.identity_id and the session_id on
 //     RevokeSession/GetSession/IssueSessionCode. For the admin and RBAC RPCs
@@ -59,7 +59,6 @@ import (
 	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/testkit-service/internal/phone"
 	userservice "github.com/servekit/user-service/pkg"
-	usauth "github.com/servekit/user-service/pkg/auth"
 )
 
 // Service implements testkit's user domain. The user field is typed as the
@@ -92,11 +91,10 @@ func New(userClient userservice.Service, opts ...Option) *Service {
 
 // GetProfile returns the CALLER's profile. user_id is injected from ctx.
 func (s *Service) GetProfile(ctx context.Context, _ *testkitv1.GetProfileRequest) (*testkitv1.User, error) {
-	userID, err := userIDFromCtx(ctx)
-	if err != nil {
+	if err := requireActor(ctx); err != nil {
 		return nil, err
 	}
-	resp, err := s.user.GetProfile(ctx, &userv1.GetProfileRequest{UserId: userID})
+	resp, err := s.user.GetProfile(ctx, &userv1.GetProfileRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -105,11 +103,10 @@ func (s *Service) GetProfile(ctx context.Context, _ *testkitv1.GetProfileRequest
 
 // UpdateProfile updates the CALLER's profile. user_id is injected from ctx.
 func (s *Service) UpdateProfile(ctx context.Context, req *testkitv1.UpdateProfileRequest) (*testkitv1.User, error) {
-	userID, err := userIDFromCtx(ctx)
-	if err != nil {
+	if err := requireActor(ctx); err != nil {
 		return nil, err
 	}
-	resp, err := s.user.UpdateProfile(ctx, toUserUpdateProfileRequest(req, userID))
+	resp, err := s.user.UpdateProfile(ctx, toUserUpdateProfileRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -119,12 +116,10 @@ func (s *Service) UpdateProfile(ctx context.Context, req *testkitv1.UpdateProfil
 // ChangePassword verifies the caller's old password and sets a new one. user_id
 // is injected from ctx.
 func (s *Service) ChangePassword(ctx context.Context, req *testkitv1.ChangePasswordRequest) (*emptypb.Empty, error) {
-	userID, err := userIDFromCtx(ctx)
-	if err != nil {
+	if err := requireActor(ctx); err != nil {
 		return nil, err
 	}
 	return s.user.ChangePassword(ctx, &userv1.ChangePasswordRequest{
-		UserId:      userID,
 		OldPassword: req.GetOldPassword(),
 		NewPassword: req.GetNewPassword(),
 	})
@@ -144,11 +139,10 @@ func (s *Service) ResetPassword(ctx context.Context, req *testkitv1.ResetPasswor
 
 // ListIdentities lists the CALLER's bound identities. user_id is injected from ctx.
 func (s *Service) ListIdentities(ctx context.Context, _ *testkitv1.ListIdentitiesRequest) (*testkitv1.ListIdentitiesResponse, error) {
-	userID, err := userIDFromCtx(ctx)
-	if err != nil {
+	if err := requireActor(ctx); err != nil {
 		return nil, err
 	}
-	resp, err := s.user.ListIdentities(ctx, &userv1.ListIdentitiesRequest{UserId: userID})
+	resp, err := s.user.ListIdentities(ctx, &userv1.ListIdentitiesRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -162,12 +156,10 @@ func (s *Service) ListIdentities(ctx context.Context, _ *testkitv1.ListIdentitie
 // BindIdentity binds an email/phone identity to the CALLER. user_id is injected
 // from ctx.
 func (s *Service) BindIdentity(ctx context.Context, req *testkitv1.BindIdentityRequest) (*testkitv1.Identity, error) {
-	userID, err := userIDFromCtx(ctx)
-	if err != nil {
+	if err := requireActor(ctx); err != nil {
 		return nil, err
 	}
 	resp, err := s.user.BindIdentity(ctx, &userv1.BindIdentityRequest{
-		UserId:   userID,
 		Provider: userv1.IdentityProvider(req.GetProvider()),
 		Email:    req.GetEmail(),
 		Code:     req.GetCode(),
@@ -183,12 +175,10 @@ func (s *Service) BindIdentity(ctx context.Context, req *testkitv1.BindIdentityR
 // BindOAuthIdentity binds an OAuth identity to the CALLER. user_id is injected
 // from ctx.
 func (s *Service) BindOAuthIdentity(ctx context.Context, req *testkitv1.BindOAuthIdentityRequest) (*testkitv1.BindOAuthIdentityResponse, error) {
-	userID, err := userIDFromCtx(ctx)
-	if err != nil {
+	if err := requireActor(ctx); err != nil {
 		return nil, err
 	}
 	resp, err := s.user.BindOAuthIdentity(ctx, &userv1.BindOAuthIdentityRequest{
-		UserId:   userID,
 		Provider: userv1.IdentityProvider(req.GetProvider()),
 		Code:     req.GetCode(),
 		State:    req.GetState(),
@@ -202,12 +192,10 @@ func (s *Service) BindOAuthIdentity(ctx context.Context, req *testkitv1.BindOAut
 // UnbindIdentity removes a target identity from the CALLER. user_id is injected
 // from ctx; identity_id is the target resource ID carried on the request.
 func (s *Service) UnbindIdentity(ctx context.Context, req *testkitv1.UnbindIdentityRequest) (*emptypb.Empty, error) {
-	userID, err := userIDFromCtx(ctx)
-	if err != nil {
+	if err := requireActor(ctx); err != nil {
 		return nil, err
 	}
 	return s.user.UnbindIdentity(ctx, &userv1.UnbindIdentityRequest{
-		UserId:     userID,
 		IdentityId: req.GetIdentityId(),
 		Code:       req.GetCode(),
 	})
@@ -219,14 +207,12 @@ func (s *Service) UnbindIdentity(ctx context.Context, req *testkitv1.UnbindIdent
 // caller is currently using. user_id is injected from ctx; the current
 // session id likewise comes from the edge middleware's trusted identity.
 func (s *Service) ListSessions(ctx context.Context, req *testkitv1.ListSessionsRequest) (*testkitv1.ListSessionsResponse, error) {
-	userID, err := userIDFromCtx(ctx)
-	if err != nil {
+	if err := requireActor(ctx); err != nil {
 		return nil, err
 	}
-	currentSID, _ := usauth.SessionIDFromCtx(ctx) // absent outside gateway calls
+	currentSID := currentSessionID(ctx)
 
 	resp, err := s.user.ListSessions(ctx, &userv1.ListSessionsRequest{
-		UserId:   userID,
 		PageSize: req.GetPageSize(),
 		Cursor:   req.GetCursor(),
 		Status:   userv1.SessionStatus(req.GetStatus()),
@@ -251,20 +237,13 @@ func (s *Service) RevokeSession(ctx context.Context, req *testkitv1.RevokeSessio
 }
 
 // RevokeAllSessions revokes every OTHER session owned by the CALLER ("log
-// out other devices" on the testkit session page). user_id is injected from
-// ctx; so is the caller's current session id, passed down as
-// exclude_session_id so the backend spares it. Absent ctx (direct gRPC
-// tests) excludes nothing and revokes all.
+// out other devices" on the testkit session page). The actor flows to
+// user-service via the context; the backend spares the actor's own session.
 func (s *Service) RevokeAllSessions(ctx context.Context, _ *testkitv1.RevokeAllSessionsRequest) (*emptypb.Empty, error) {
-	userID, err := userIDFromCtx(ctx)
-	if err != nil {
+	if err := requireActor(ctx); err != nil {
 		return nil, err
 	}
-	currentSID, _ := usauth.SessionIDFromCtx(ctx) // absent outside gateway calls
-	return s.user.RevokeAllSessions(ctx, &userv1.RevokeAllSessionsRequest{
-		UserId:           userID,
-		ExcludeSessionId: currentSID,
-	})
+	return s.user.RevokeAllSessions(ctx, &userv1.RevokeAllSessionsRequest{})
 }
 
 // GetSession fetches a target session. session_id is the target resource ID.
@@ -787,14 +766,24 @@ func (s *Service) ListPermissionGroups(ctx context.Context, req *testkitv1.ListP
 }
 
 // userIDFromCtx reads the caller's user_id (injected by the P1 auth
-// interceptor) and maps the missing-ctx case to a 401. Used by every "my"
-// resource RPC.
-func userIDFromCtx(ctx context.Context) (int64, error) {
-	uid, err := grpcx.GetUserIDFromCtx(ctx)
-	if err != nil {
-		return 0, xcodes.ErrUnauthorized.Wrap(err)
+// edge auth middleware) and maps the missing-actor case to a 401. Used by
+// every "my" resource RPC as the auth gate; the actor itself travels to
+// user-service via the context (module mode in-process, grpc mode via
+// ForwardActorUnary).
+func requireActor(ctx context.Context) error {
+	if _, err := grpcx.MustActorFromCtx(ctx); err != nil {
+		return xcodes.ErrUnauthorized.Wrap(err)
 	}
-	return uid, nil
+	return nil
+}
+
+// currentSessionID returns the caller's session id from the actor ("" when
+// called outside an authenticated request path, e.g. direct gRPC tests).
+func currentSessionID(ctx context.Context) string {
+	if a, ok := grpcx.ActorFromCtx(ctx); ok {
+		return a.GetSessionId()
+	}
+	return ""
 }
 
 // --- converters: testkit DTO ↔ user-service proto ---
@@ -802,9 +791,8 @@ func userIDFromCtx(ctx context.Context) (int64, error) {
 // Enums are mirrored same-name/same-number between testkit.proto and
 // user-service, so each is a plain int cast. Field names line up 1:1.
 
-func toUserUpdateProfileRequest(r *testkitv1.UpdateProfileRequest, userID int64) *userv1.UpdateProfileRequest {
+func toUserUpdateProfileRequest(r *testkitv1.UpdateProfileRequest) *userv1.UpdateProfileRequest {
 	return &userv1.UpdateProfileRequest{
-		UserId:          userID,
 		Username:        r.GetUsername(),
 		Nickname:        r.GetNickname(),
 		RealName:        r.GetRealName(),

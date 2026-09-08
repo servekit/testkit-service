@@ -5,7 +5,8 @@ import (
 	"context"
 
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
-	usauth "github.com/servekit/user-service/pkg/auth"
+	"github.com/servekit/go-common/grpcx"
+	"github.com/servekit/go-common/xerr/xcodes"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -34,13 +35,12 @@ func (h *Handler) SendVerificationCode(ctx context.Context, req *testkitv1.SendV
 	return h.svc.Auth().SendVerificationCode(ctx, req)
 }
 
-// Logout revokes the caller's current session. session_id is read from the
-// authenticated context (injected from the edge middleware's trusted
-// identity) — the request body is empty.
+// Logout revokes the caller's current session. The session id comes from the
+// request actor in the authenticated context — the request body is empty.
 func (h *Handler) Logout(ctx context.Context, _ *emptypb.Empty) (*emptypb.Empty, error) {
-	sessionID, err := usauth.SessionIDFromCtx(ctx)
+	actor, err := grpcx.MustActorFromCtx(ctx)
 	if err != nil {
-		return nil, err
+		return nil, xcodes.ErrUnauthorized.Wrap(err)
 	}
-	return h.svc.Auth().Logout(ctx, sessionID)
+	return h.svc.Auth().Logout(ctx, actor.GetSessionId())
 }

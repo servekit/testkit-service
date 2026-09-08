@@ -45,11 +45,12 @@ func New(user userservice.Service, storage storageservice.Service, message messa
 // GetMyQuota is injected from ctx (v2 §3.2 rule 1); it is never present in the
 // request. Downstream xerr surfaces unchanged (§9 passthrough).
 func (s *Service) GetDashboard(ctx context.Context, _ *testkitv1.GetDashboardRequest) (*testkitv1.DashboardResponse, error) {
-	userID, err := grpcx.GetUserIDFromCtx(ctx)
+	actor, err := grpcx.MustActorFromCtx(ctx)
 	if err != nil {
-		// Defensive: the auth interceptor guarantees user_id on protected RPCs.
+		// Defensive: the edge auth middleware guarantees an actor on protected RPCs.
 		return nil, xcodes.ErrCallerUnresolved.New()
 	}
+	userID := actor.GetUserId()
 
 	var (
 		emailStats *messagev1.EmailStatsResponse

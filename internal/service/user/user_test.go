@@ -9,11 +9,11 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	commonv1 "github.com/servekit/api/gen/go/common/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/go-common/grpcx"
 	"github.com/servekit/testkit-service/internal/service/user"
-	usauth "github.com/servekit/user-service/pkg/auth"
 )
 
 // stubUserClient stands in for the embedded user-service handler. It embeds
@@ -25,6 +25,7 @@ type stubUserClient struct {
 	userv1.UnimplementedUserServiceServer
 
 	// captured downstream requests (for asserting the mapping forwarded correctly)
+	gotCtx            context.Context
 	gotGetProfile     *userv1.GetProfileRequest
 	gotUpdateProfile  *userv1.UpdateProfileRequest
 	gotChangePassword *userv1.ChangePasswordRequest
@@ -82,7 +83,21 @@ func newSvc(t *testing.T, stub *stubUserClient) *user.Service {
 }
 
 func ctxWithUser(uid int64) context.Context {
-	return context.WithValue(context.Background(), grpcx.UserIDKey, uid)
+	return grpcx.WithActor(context.Background(), &commonv1.RequestActor{UserId: uid})
+}
+
+// ctxWithUserSession adds the caller's current session to the actor.
+func ctxWithUserSession(uid int64, sid string) context.Context {
+	return grpcx.WithActor(context.Background(), &commonv1.RequestActor{UserId: uid, SessionId: sid})
+}
+
+// actorUserID extracts the actor's user id from a captured downstream ctx —
+// the identity now travels on the context, not on request fields.
+func actorUserID(ctx context.Context) int64 {
+	if a, ok := grpcx.ActorFromCtx(ctx); ok {
+		return a.GetUserId()
+	}
+	return 0
 }
 
 func fullUser(id int64) *userv1.User {
@@ -111,21 +126,21 @@ func fullUser(id int64) *userv1.User {
 
 // --- overrides ---
 
-func (s *stubUserClient) GetProfile(_ context.Context, req *userv1.GetProfileRequest) (*userv1.User, error) {
-	s.gotGetProfile = req
+func (s *stubUserClient) GetProfile(ctx context.Context, req *userv1.GetProfileRequest) (*userv1.User, error) {
+	s.gotCtx, s.gotGetProfile = ctx, req
 	if s.profileUser == nil {
-		return fullUser(req.GetUserId()), nil
+		return fullUser(actorUserID(ctx)), nil
 	}
 	return s.profileUser, nil
 }
 
-func (s *stubUserClient) UpdateProfile(_ context.Context, req *userv1.UpdateProfileRequest) (*userv1.User, error) {
-	s.gotUpdateProfile = req
-	return fullUser(req.GetUserId()), nil
+func (s *stubUserClient) UpdateProfile(ctx context.Context, req *userv1.UpdateProfileRequest) (*userv1.User, error) {
+	s.gotCtx, s.gotUpdateProfile = ctx, req
+	return fullUser(actorUserID(ctx)), nil
 }
 
-func (s *stubUserClient) ChangePassword(_ context.Context, req *userv1.ChangePasswordRequest) (*emptypb.Empty, error) {
-	s.gotChangePassword = req
+func (s *stubUserClient) ChangePassword(ctx context.Context, req *userv1.ChangePasswordRequest) (*emptypb.Empty, error) {
+	s.gotCtx, s.gotChangePassword = ctx, req
 	return &emptypb.Empty{}, nil
 }
 
@@ -133,18 +148,18 @@ func (s *stubUserClient) ResetPassword(_ context.Context, req *userv1.ResetPassw
 	return &emptypb.Empty{}, nil
 }
 
-func (s *stubUserClient) ListIdentities(_ context.Context, req *userv1.ListIdentitiesRequest) (*userv1.ListIdentitiesResponse, error) {
-	s.gotListIdentities = req
+func (s *stubUserClient) ListIdentities(ctx context.Context, req *userv1.ListIdentitiesRequest) (*userv1.ListIdentitiesResponse, error) {
+	s.gotCtx, s.gotListIdentities = ctx, req
 	return &userv1.ListIdentitiesResponse{Identities: s.identities}, nil
 }
 
-func (s *stubUserClient) UnbindIdentity(_ context.Context, req *userv1.UnbindIdentityRequest) (*emptypb.Empty, error) {
-	s.gotUnbindIdentity = req
+func (s *stubUserClient) UnbindIdentity(ctx context.Context, req *userv1.UnbindIdentityRequest) (*emptypb.Empty, error) {
+	s.gotCtx, s.gotUnbindIdentity = ctx, req
 	return &emptypb.Empty{}, nil
 }
 
-func (s *stubUserClient) ListSessions(_ context.Context, req *userv1.ListSessionsRequest) (*userv1.ListSessionsResponse, error) {
-	s.gotListSessions = req
+func (s *stubUserClient) ListSessions(ctx context.Context, req *userv1.ListSessionsRequest) (*userv1.ListSessionsResponse, error) {
+	s.gotCtx, s.gotListSessions = ctx, req
 	return &userv1.ListSessionsResponse{Sessions: s.sessions}, nil
 }
 
@@ -153,8 +168,8 @@ func (s *stubUserClient) RevokeSession(_ context.Context, req *userv1.RevokeSess
 	return &emptypb.Empty{}, nil
 }
 
-func (s *stubUserClient) RevokeAllSessions(_ context.Context, req *userv1.RevokeAllSessionsRequest) (*emptypb.Empty, error) {
-	s.gotRevokeAll = req
+func (s *stubUserClient) RevokeAllSessions(ctx context.Context, req *userv1.RevokeAllSessionsRequest) (*emptypb.Empty, error) {
+	s.gotCtx, s.gotRevokeAll = ctx, req
 	return &emptypb.Empty{}, nil
 }
 
@@ -184,8 +199,8 @@ func TestGetProfile_InjectsUserIDFromCtx(t *testing.T) {
 
 	resp, err := svc.GetProfile(ctxWithUser(42), &testkitv1.GetProfileRequest{})
 	require.NoError(t, err)
-	require.Equal(t, int64(42), resp.GetId())                   // mapped back through toTestkitUser
-	require.Equal(t, int64(42), stub.gotGetProfile.GetUserId()) // forwarded to downstream
+	require.Equal(t, int64(42), resp.GetId())             // mapped back through toTestkitUser
+	require.Equal(t, int64(42), actorUserID(stub.gotCtx)) // forwarded to downstream via ctx
 }
 
 func TestGetProfile_NoUserIDInCtx_Unauthorized(t *testing.T) {
@@ -211,8 +226,8 @@ func TestUpdateProfile_ForwardsFieldsAndUserID(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	// user_id came from ctx, not the request.
-	require.Equal(t, int64(7), stub.gotUpdateProfile.GetUserId())
+	// the actor rides on ctx to the downstream call.
+	require.Equal(t, int64(7), actorUserID(stub.gotCtx))
 	// remaining fields forwarded 1:1, gender int-cast.
 	require.Equal(t, "alice2", stub.gotUpdateProfile.GetUsername())
 	require.Equal(t, "newnick", stub.gotUpdateProfile.GetNickname())
@@ -234,7 +249,7 @@ func TestChangePassword_InjectsUserIDFromCtx(t *testing.T) {
 		NewPassword: "newnewnew",
 	})
 	require.NoError(t, err)
-	require.Equal(t, int64(99), stub.gotChangePassword.GetUserId())
+	require.Equal(t, int64(99), actorUserID(stub.gotCtx))
 	require.Equal(t, "old", stub.gotChangePassword.GetOldPassword())
 	require.Equal(t, "newnewnew", stub.gotChangePassword.GetNewPassword())
 }
@@ -262,7 +277,7 @@ func TestListIdentities_InjectsUserIDFromCtx_AndMapsIdentity(t *testing.T) {
 
 	resp, err := svc.ListIdentities(ctxWithUser(5), &testkitv1.ListIdentitiesRequest{})
 	require.NoError(t, err)
-	require.Equal(t, int64(5), stub.gotListIdentities.GetUserId())
+	require.Equal(t, int64(5), actorUserID(stub.gotCtx))
 
 	require.Len(t, resp.GetIdentities(), 1)
 	got := resp.GetIdentities()[0]
@@ -280,8 +295,8 @@ func TestUnbindIdentity_ForwardsUserIDFromCtx_AndTargetIdentityID(t *testing.T) 
 	_, err := svc.UnbindIdentity(ctxWithUser(13), &testkitv1.UnbindIdentityRequest{IdentityId: 77, Code: "999"})
 	require.NoError(t, err)
 
-	// user_id from ctx (caller), identity_id from request (target resource).
-	require.Equal(t, int64(13), stub.gotUnbindIdentity.GetUserId())
+	// actor from ctx (caller), identity_id from request (target resource).
+	require.Equal(t, int64(13), actorUserID(stub.gotCtx))
 	require.Equal(t, int64(77), stub.gotUnbindIdentity.GetIdentityId())
 	require.Equal(t, "999", stub.gotUnbindIdentity.GetCode())
 }
@@ -298,11 +313,11 @@ func TestListSessions_InjectsUserIDFromCtx_AndMapsSession(t *testing.T) {
 	// The caller's session id rides on the ctx (edge middleware identity);
 	// the Current flag is testkit's own marking, overriding whatever the
 	// downstream happened to set.
-	ctx := usauth.WithSessionID(ctxWithUser(8), "sess-2")
+	ctx := ctxWithUserSession(8, "sess-2")
 
 	resp, err := svc.ListSessions(ctx, &testkitv1.ListSessionsRequest{})
 	require.NoError(t, err)
-	require.Equal(t, int64(8), stub.gotListSessions.GetUserId())
+	require.Equal(t, int64(8), actorUserID(stub.gotCtx))
 
 	require.Len(t, resp.GetSessions(), 2)
 	byID := map[string]*testkitv1.Session{}
@@ -346,7 +361,7 @@ func TestRevokeAllSessions_InjectsUserIDFromCtx(t *testing.T) {
 
 	_, err := svc.RevokeAllSessions(ctxWithUser(21), &testkitv1.RevokeAllSessionsRequest{})
 	require.NoError(t, err)
-	require.Equal(t, int64(21), stub.gotRevokeAll.GetUserId())
+	require.Equal(t, int64(21), actorUserID(stub.gotCtx))
 }
 
 // --- Social ---

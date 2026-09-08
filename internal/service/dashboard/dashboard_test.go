@@ -6,6 +6,7 @@ import (
 	messagingv1 "github.com/servekit/api/gen/go/messaging/v1"
 	"testing"
 
+	commonv1 "github.com/servekit/api/gen/go/common/v1"
 	messagev1 "github.com/servekit/api/gen/go/messaging/v1"
 	storagev1 "github.com/servekit/api/gen/go/storage/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
@@ -85,7 +86,7 @@ func (s *stubMessage) GetSMSStats(ctx context.Context, req *messagev1.GetSMSStat
 func (s *stubMessage) Close() error { return nil }
 
 func ctxWithUser(id int64) context.Context {
-	return context.WithValue(context.Background(), grpcx.UserIDKey, id)
+	return grpcx.WithActor(context.Background(), &commonv1.RequestActor{UserId: id})
 }
 
 func TestGetDashboard_AssemblesAllFour(t *testing.T) {

@@ -248,29 +248,38 @@ export default defineConfig({
           component: "./Message/SendSMS",
         },
         {
-          path: "/message/admin/apps",
-          name: "应用管理",
-          component: "./Message/Apps",
-        },
-        {
-          path: "/message/admin/accounts",
-          name: "通道账号",
-          component: "./Message/Accounts",
-        },
-        {
-          path: "/message/admin/signatures",
-          name: "签名管理",
-          component: "./Message/Signatures",
-        },
-        {
-          path: "/message/admin/templates",
-          name: "模板管理",
-          component: "./Message/Templates",
-        },
-        {
-          path: "/message/admin/policies",
-          name: "策略管理",
-          component: "./Message/Policies",
+          // 平台资源配置（应用/通道/签名/模板/策略）——发送与记录之外的
+          // 全部静态配置面,收进一个子菜单保持顶层简洁。
+          path: "/message/admin",
+          name: "消息配置",
+          routes: [
+            { path: "/message/admin", redirect: "/message/admin/apps" },
+            {
+              path: "/message/admin/apps",
+              name: "应用管理",
+              component: "./Message/Apps",
+            },
+            {
+              path: "/message/admin/accounts",
+              name: "通道账号",
+              component: "./Message/Accounts",
+            },
+            {
+              path: "/message/admin/signatures",
+              name: "签名管理",
+              component: "./Message/Signatures",
+            },
+            {
+              path: "/message/admin/templates",
+              name: "模板管理",
+              component: "./Message/Templates",
+            },
+            {
+              path: "/message/admin/policies",
+              name: "策略管理",
+              component: "./Message/Policies",
+            },
+          ],
         },
         {
           path: "/message/emails",

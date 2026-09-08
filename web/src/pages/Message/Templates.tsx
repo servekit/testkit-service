@@ -278,10 +278,10 @@ export default function MessageTemplatesPage() {
         onFinish={async (vals) => {
           if (!editing) return false;
           try {
-            await messageUpdateTemplate({
-              id: editing.id,
-              template: buildTemplateBody(vals),
-            } as never);
+            await messageUpdateTemplate(
+              { id: editing.id! },
+              { template: buildTemplateBody(vals) },
+            );
             message.success("已更新");
             setEditing(null);
             reload();

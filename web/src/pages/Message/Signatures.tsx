@@ -69,10 +69,7 @@ export default function MessageSignaturesPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await messageUpdateSignature({
-                id: r.id,
-                body: { disabled: !r.disabled },
-              } as never);
+              await messageUpdateSignature({ id: r.id! }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用");
               reload();
             } catch (err) {

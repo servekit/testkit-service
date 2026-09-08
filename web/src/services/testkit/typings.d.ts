@@ -2670,6 +2670,11 @@ resolves (see user.v1). */
     /** app_key is the public credential identifier passed in x-app-key
 metadata (e.g. "testkit"). Unique. */
     appKey?: string;
+    /** app_secret echoes the stored secret (internal-trust posture: plaintext
+at rest, internal-network transport — the ops console needs to copy
+credentials for service configuration, so it is list-visible rather
+than show-once). */
+    appSecret?: string;
     name?: string;
     /** disabled apps fail every send with ErrAppUnauthorized. */
     disabled?: boolean;

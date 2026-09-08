@@ -50,19 +50,20 @@ type Server struct {
 // user-service auth middleware (user-service pkg/auth), which verifies the
 // bearer token — a user-service session id, validate-on-use so every request
 // slides the session TTL — against the embedded user-service and answers 401
-// in HTTP before the request reaches transcoding. On success it rewrites the
-// trusted identity headers, which grpc-gateway forwards as gRPC metadata;
-// the gRPC chain below only lifts that identity into the handler ctx.
+// in HTTP before the request reaches transcoding. On success it writes the
+// serialized verified actor into the single trusted Grpc-Metadata-X-Actor
+// header, which grpc-gateway forwards as gRPC metadata; the gRPC chain below
+// only lifts that actor into the handler ctx.
 //
 // The gRPC server runs a three-interceptor chain (outermost first):
 //   - grpcx.ErrorInterceptor: maps *xerr.Error returned by inner layers to
 //     gRPC status codes (Unauthorized → Unauthenticated/401, NotFound → 404,
 //     BadRequest → InvalidArgument/400, ...).
-//   - usauth.TrustedIdentityUnary: copies the trusted identity metadata set
-//     by the edge middleware into the handler ctx (grpcx.UserIDKey + session
-//     id). It performs NO verification — the gRPC port is internal-only
-//     (nginx exposes only the gateway), the same trusted-network posture as
-//     the other embedded services. Requests without identity metadata pass
+//   - grpcx.TrustedActorUnary: copies the trusted x-actor metadata set by
+//     the edge middleware into the handler ctx as the RequestActor. It
+//     performs NO verification — the gRPC port is internal-only (nginx
+//     exposes only the gateway), the same trusted-network posture as the
+//     other embedded services. Requests without actor metadata pass
 //     through; handlers that need identity enforce its presence themselves.
 //   - protovalidate.UnaryServerInterceptor: enforces (buf.validate.field)
 //     rules declared in testkit.proto.
@@ -72,7 +73,7 @@ type Server struct {
 // Authorization header to gRPC metadata under the unprefixed "authorization"
 // key by default (verified in grpc-gateway runtime/context.go), and custom
 // headers under the Grpc-Metadata- prefix — which is how the middleware's
-// identity headers cross the transcode boundary.
+// actor header crosses the transcode boundary.
 func NewServer(cfg *config.Config) (*Server, error) {
 	svc, err := service.New(cfg)
 	if err != nil {
@@ -144,7 +145,7 @@ func NewServer(cfg *config.Config) (*Server, error) {
 		// ErrorInterceptor maps *xerr.Error rejections (and protovalidate's)
 		// to gRPC status / HTTP codes.
 		grpcx.ErrorInterceptor,
-		usauth.TrustedIdentityUnary(),
+		grpcx.TrustedActorUnary(),
 		protovalidate_middleware.UnaryServerInterceptor(validator),
 	)
 

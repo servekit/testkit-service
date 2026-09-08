@@ -62,11 +62,11 @@ func (s *stubTestkit) Login(ctx context.Context, _ *testkitv1.LoginRequest) (*te
 }
 
 func (stubTestkit) GetProfile(ctx context.Context, _ *testkitv1.GetProfileRequest) (*testkitv1.User, error) {
-	uid, err := grpcx.GetUserIDFromCtx(ctx)
+	actor, err := grpcx.MustActorFromCtx(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &testkitv1.User{Id: uid}, nil
+	return &testkitv1.User{Id: actor.GetUserId()}, nil
 }
 
 func freeAddr(t *testing.T) string {
@@ -105,7 +105,7 @@ func newSmokeServer(t *testing.T) (*stubTestkit, string) {
 			return testkitv1.RegisterTestkitServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
 		},
 		grpcx.ErrorInterceptor,
-		usauth.TrustedIdentityUnary(),
+		grpcx.TrustedActorUnary(),
 	)
 	require.NoError(t, srv.Start())
 	t.Cleanup(func() { _ = srv.Stop() })
@@ -198,9 +198,11 @@ func TestEdgeAuth_EndToEnd(t *testing.T) {
 		require.Contains(t, body, `"id":"7"`)
 	})
 
-	t.Run("spoofed identity header is stripped", func(t *testing.T) {
+	t.Run("spoofed actor header is stripped", func(t *testing.T) {
+		spoofed, err := grpcx.MarshalActor(&commonv1.RequestActor{UserId: 666})
+		require.NoError(t, err)
 		resp, body := get(t, "http://"+gw+"/api/v1/profile", "sess-7",
-			map[string]string{"Grpc-Metadata-X-User-Id": "666"})
+			map[string]string{grpcx.WireActorHeader: spoofed})
 		require.Equal(t, http.StatusOK, resp.StatusCode)
 		require.Contains(t, body, `"id":"7"`)
 		require.NotContains(t, body, "666")
