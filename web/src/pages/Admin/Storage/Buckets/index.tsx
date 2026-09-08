@@ -47,7 +47,6 @@ export default function AdminBucketsPage() {
   const columns: ProColumns<API.v1BucketInfo>[] = [
     { title: "桶名", dataIndex: "name" },
     { title: "服务商", dataIndex: "provider" },
-    { title: "前缀", dataIndex: "keyPrefix", search: false },
     {
       title: "ACL",
       dataIndex: "acl",
@@ -73,10 +72,11 @@ export default function AdminBucketsPage() {
             try {
               await adminUpsertBucket({
                 name: r.name,
-                provider: r.provider,
-                keyPrefix: r.keyPrefix ?? "",
-                acl: r.acl,
-                cdn: r.cdn ?? undefined,
+                body: {
+                  provider: r.provider,
+                  acl: r.acl,
+                  cdn: r.cdn ?? undefined,
+                },
               } as never);
               message.success("已保存（立即生效）");
               reload();
@@ -131,16 +131,17 @@ export default function AdminBucketsPage() {
               try {
                 await adminUpsertBucket({
                   name: vals.name,
-                  provider: vals.provider,
-                  keyPrefix: vals.keyPrefix ?? "",
-                  acl: vals.acl,
-                  cdn: vals.cdnDomain
+                  body: {
+                    provider: vals.provider,
+                    acl: vals.acl,
+                    cdn: vals.cdnDomain
                     ? {
                         domain: vals.cdnDomain,
                         authKey: vals.cdnAuthKey ?? "",
                         keyPairId: vals.cdnKeyPairId ?? "",
                       }
                     : undefined,
+                  },
                 } as never);
                 message.success("已保存（立即生效）");
                 reload();
@@ -154,7 +155,6 @@ export default function AdminBucketsPage() {
           >
             <ProFormText name="name" label="桶名" rules={[{ required: true }]} />
             <ProFormSelect name="provider" label="服务商" options={providers} rules={[{ required: true }]} />
-            <ProFormText name="keyPrefix" label="Key 前缀（如 uploads/）" />
             <ProFormSelect
               name="acl"
               label="ACL"
