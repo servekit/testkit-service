@@ -183,5 +183,6 @@ func toTestkitUser(u *userv1.User) *testkitv1.User {
 		Phone:    u.GetPhone(),
 		Nickname: u.GetNickname(),
 		UserType: userv1.UserType(u.GetUserType()),
+		AppKey:   u.GetAppKey(),
 	}
 }
