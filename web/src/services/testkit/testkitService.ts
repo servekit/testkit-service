@@ -3030,6 +3030,106 @@ export async function ingest(body: API.v1IngestRequest,
   });
 }
 
+/** 此处后端没有提供注释 GET /api/v1/user/admin/apps */
+export async function userListApps(
+  options ?: {[key: string]: any}
+) {
+  return request<API.userV1ListAppsResponse>('/api/v1/user/admin/apps', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/user/admin/apps */
+export async function userCreateApp(body: API.userV1CreateAppRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.userV1CreateAppResponse>('/api/v1/user/admin/apps', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/user/admin/apps/${param0} */
+export async function userGetApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.UserGetAppParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.userV1GetAppResponse>(`/api/v1/user/admin/apps/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/user/admin/apps/${param0} */
+export async function userUpdateApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.UserUpdateAppParams
+    ,body: API.TestkitServiceUserUpdateAppBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.userV1UpdateAppResponse>(`/api/v1/user/admin/apps/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/user/admin/apps/${param0} */
+export async function userDeleteApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.UserDeleteAppParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/user/admin/apps/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/user/admin/apps/${param0}${rotateSecret} */
+export async function userRotateAppSecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.UserRotateAppSecretParams
+    ,body: API.TestkitServiceUserRotateAppSecretBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.userV1RotateAppSecretResponse>(`/api/v1/user/admin/apps/${param0}:rotateSecret`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/v1/users */
 export async function listUsers(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

@@ -89,6 +89,12 @@ export default defineConfig({
           component: "./Session",
         },
         {
+          path: "/user/apps",
+          name: "应用管理",
+          access: "canInternal",
+          component: "./User/Apps",
+        },
+        {
           path: "/users",
           name: "用户运营",
           access: "canInternal",

@@ -188,10 +188,18 @@ func New(cfg *config.Config) (*Service, error) {
 
 	// P1 auth domain: forward to user-service; login returns the session id
 	// as the bearer token.
-	svc.auth = auth.New(auth.WithUserClient(usr))
+	// User-domain tenant credentials: every credential-presenting user
+	// surface (login/register/reset/social/admin user CRUD) identifies the
+	// BFF to user-service — the tenant is the verified caller. Fail fast.
+	if cfg.User == nil || cfg.User.AppKey == "" || cfg.User.AppSecret == "" {
+		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New())
+	}
+	svc.auth = auth.New(auth.WithUserClient(usr),
+		auth.WithAppCredentials(cfg.User.AppKey, cfg.User.AppSecret))
 
 	// P2 user domain.
-	svc.userSvc = user.New(usr)
+	svc.userSvc = user.New(usr,
+		user.WithAppCredentials(cfg.User.AppKey, cfg.User.AppSecret))
 
 	// P3 storage domain.
 	if cfg.Storage == nil || cfg.Storage.AppKey == "" || cfg.Storage.AppSecret == "" {

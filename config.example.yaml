@@ -310,6 +310,13 @@ telemetry:
   app_key: ${TESTKIT_SERVICE_TELEMETRY_APP_KEY}
   app_secret: ${TESTKIT_SERVICE_TELEMETRY_APP_SECRET}
 
+# User-domain tenant credentials: identify the BFF to user-service on every
+# credential-presenting surface (login/register/reset/social/admin user
+# CRUD) — the tenant is the verified caller; users land in this tenant.
+user:
+  app_key: ${TESTKIT_SERVICE_USER_APP_KEY}
+  app_secret: ${TESTKIT_SERVICE_USER_APP_SECRET}
+
 # Cron scheduler settings. jobs.Scheduler is wired but registers no jobs in P1.
 cron:
   timezone: ${TESTKIT_SERVICE_CRON_TIMEZONE}

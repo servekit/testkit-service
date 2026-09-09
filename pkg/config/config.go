@@ -55,6 +55,7 @@ type Config struct {
 	Storage    *StorageConfig
 	License    *LicenseConfig
 	Telemetry  *TelemetryConfig
+	User       *UserConfig
 	Cron       *CronConfig
 	Log        *logging.Config
 }
@@ -159,6 +160,19 @@ type LicenseConfig struct {
 // 新建), injected into the downstream context of every ingest-surface call
 // (the gRPC Ingest forward AND the raw /v1/e/ HTTP mounts — the internal
 // hop carries them; end-user clients keep the token contract).
+// UserConfig holds testkit-side user-domain tenant credentials.
+//
+// AppKey/AppSecret identify the BFF to user-service on every credential-
+// presenting surface (login / register / codes / password reset / social
+// logins / admin user management) — the tenant is the verified caller;
+// users created through testkit belong to this tenant.
+type UserConfig struct {
+	// AppKey identifies the calling app; service.New fail-fasts on empty.
+	AppKey string
+	// AppSecret authenticates the app (internal-trust, DB-plaintext).
+	AppSecret string
+}
+
 type TelemetryConfig struct {
 	// AppKey identifies the calling app (the telemetry app slug).
 	AppKey string

@@ -1471,6 +1471,13 @@ user_id injected from ctx */
     permissionGroupIds?: string[];
   };
 
+  type TestkitServiceUserRotateAppSecretBody = true;
+
+  type TestkitServiceUserUpdateAppBody = {
+    name?: string;
+    disabled?: boolean;
+  };
+
   type testkitV1App = {
     id?: string;
     appKey?: string;
@@ -1568,6 +1575,53 @@ user_id injected from ctx */
 
   type UpdateRoleParams = {
     roleId: string;
+  };
+
+  type UserDeleteAppParams = {
+    appKey: string;
+  };
+
+  type UserGetAppParams = {
+    appKey: string;
+  };
+
+  type UserRotateAppSecretParams = {
+    appKey: string;
+  };
+
+  type UserUpdateAppParams = {
+    appKey: string;
+  };
+
+  type userV1CreateAppRequest = {
+    /** app_key pattern: lowercase letter followed by lowercase alphanumerics
+and dashes. Optional; empty = server-generated. */
+    appKey?: string;
+    name?: string;
+  };
+
+  type userV1CreateAppResponse = {
+    app?: v1UserAppInfo;
+    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    appSecret?: string;
+  };
+
+  type userV1GetAppResponse = {
+    app?: v1UserAppInfo;
+  };
+
+  type userV1ListAppsResponse = {
+    apps?: v1UserAppInfo[];
+  };
+
+  type userV1RotateAppSecretResponse = {
+    app?: v1UserAppInfo;
+    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    appSecret?: string;
+  };
+
+  type userV1UpdateAppResponse = {
+    app?: v1UserAppInfo;
   };
 
   type v1AccountIds = {
@@ -3589,6 +3643,21 @@ user.v1.User.dial_code. */
     defaultCurrency?: string;
     /** Reserved for MFA; false until an MFA flow exists. */
     mfaEnabled?: boolean;
+  };
+
+  type v1UserAppInfo = {
+    id?: string;
+    /** app_key identifies the tenant on every tenant-scoped surface; unique,
+immutable after creation. */
+    appKey?: string;
+    /** app_secret is the tenant credential. Echoed on every read —
+internal-trust posture, same convention as the other platform apps. */
+    appSecret?: string;
+    name?: string;
+    /** disabled tenants fail every tenant-scoped surface immediately. */
+    disabled?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
   };
 
   type v1UserRole = {

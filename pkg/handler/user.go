@@ -5,6 +5,7 @@ import (
 	"context"
 
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -296,4 +297,30 @@ func (h *Handler) DeletePermissionGroup(ctx context.Context, req *testkitv1.Dele
 // ListPermissionGroups returns cursor-paginated permission groups.
 func (h *Handler) ListPermissionGroups(ctx context.Context, req *testkitv1.ListPermissionGroupsRequest) (*testkitv1.ListPermissionGroupsResponse, error) {
 	return h.svc.User().ListPermissionGroups(ctx, req)
+}
+
+// --- tenant-registry forwards (user.v1 types) ---
+
+func (h *Handler) UserListApps(ctx context.Context, req *userv1.ListAppsRequest) (*userv1.ListAppsResponse, error) {
+	return h.svc.User().UserListApps(ctx, req)
+}
+
+func (h *Handler) UserCreateApp(ctx context.Context, req *userv1.CreateAppRequest) (*userv1.CreateAppResponse, error) {
+	return h.svc.User().UserCreateApp(ctx, req)
+}
+
+func (h *Handler) UserGetApp(ctx context.Context, req *userv1.GetAppRequest) (*userv1.GetAppResponse, error) {
+	return h.svc.User().UserGetApp(ctx, req)
+}
+
+func (h *Handler) UserUpdateApp(ctx context.Context, req *userv1.UpdateAppRequest) (*userv1.UpdateAppResponse, error) {
+	return h.svc.User().UserUpdateApp(ctx, req)
+}
+
+func (h *Handler) UserRotateAppSecret(ctx context.Context, req *userv1.RotateAppSecretRequest) (*userv1.RotateAppSecretResponse, error) {
+	return h.svc.User().UserRotateAppSecret(ctx, req)
+}
+
+func (h *Handler) UserDeleteApp(ctx context.Context, req *userv1.DeleteAppRequest) (*emptypb.Empty, error) {
+	return h.svc.User().UserDeleteApp(ctx, req)
 }

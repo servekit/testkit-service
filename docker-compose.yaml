@@ -92,6 +92,10 @@ services:
       # every ingest-surface call (row in telemetry.apps must match).
       - TESTKIT_SERVICE_TELEMETRY_APP_KEY=${TESTKIT_SERVICE_TELEMETRY_APP_KEY:-testkit}
       - TESTKIT_SERVICE_TELEMETRY_APP_SECRET=${TESTKIT_SERVICE_TELEMETRY_APP_SECRET:-}
+      # User-domain tenant credentials: identify the BFF to user-service on
+      # every credential-presenting surface (row in user_apps must match).
+      - TESTKIT_SERVICE_USER_APP_KEY=${TESTKIT_SERVICE_USER_APP_KEY:-testkit}
+      - TESTKIT_SERVICE_USER_APP_SECRET=${TESTKIT_SERVICE_USER_APP_SECRET:-}
       - TESTKIT_SERVICE_TELEMETRY_MODE=${TESTKIT_SERVICE_TELEMETRY_MODE:-module}
       - TESTKIT_SERVICE_TELEMETRY_TARGET=${TESTKIT_SERVICE_TELEMETRY_TARGET:-}
       - TESTKIT_SERVICE_TELEMETRY_ADMIN_TOKEN=${TESTKIT_SERVICE_TELEMETRY_ADMIN_TOKEN:-}
