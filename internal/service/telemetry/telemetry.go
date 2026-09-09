@@ -195,6 +195,7 @@ func toDnApp(src *testkitv1.App) *dnv1.App {
 	out.RawRetentionDays = src.RawRetentionDays
 	out.DailyEventBudget = src.DailyEventBudget
 	out.Disabled = src.Disabled
+	out.AppSecret = src.AppSecret
 	out.CreatedAt = src.CreatedAt
 	out.UpdatedAt = src.UpdatedAt
 	return out
@@ -217,6 +218,7 @@ func toTestkitApp(src *dnv1.App) *testkitv1.App {
 	out.RawRetentionDays = src.RawRetentionDays
 	out.DailyEventBudget = src.DailyEventBudget
 	out.Disabled = src.Disabled
+	out.AppSecret = src.AppSecret
 	out.CreatedAt = src.CreatedAt
 	out.UpdatedAt = src.UpdatedAt
 	return out
