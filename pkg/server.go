@@ -170,13 +170,16 @@ func registerGateway(svc *service.Service) grpcx.RegisterGatewayFunc {
 		// resolves the token path parameter and hands it to the
 		// routing-agnostic endpoint handler (no inner mux re-matching).
 		backend := svc.Telemetry().Backend()
+		// The internal hop carries the BFF's ak/sk (business identity); the
+		// end-user contract (token in path / bearer) is unchanged.
+		ingestOpts := svc.Telemetry().IngestHTTPOptions()
 		if err := mux.HandlePath(http.MethodPost, "/v1/e/{token}/events", func(w http.ResponseWriter, r *http.Request, params map[string]string) {
-			ingesthttp.Endpoint(backend, params["token"]).ServeHTTP(w, r)
+			ingesthttp.Endpoint(backend, params["token"], ingestOpts).ServeHTTP(w, r)
 		}); err != nil {
 			return err
 		}
 		if err := mux.HandlePath(http.MethodPost, "/v1/collect/events", func(w http.ResponseWriter, r *http.Request, _ map[string]string) {
-			ingesthttp.Bearer(backend).ServeHTTP(w, r)
+			ingesthttp.Bearer(backend, ingestOpts).ServeHTTP(w, r)
 		}); err != nil {
 			return err
 		}

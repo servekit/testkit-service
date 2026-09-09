@@ -56,3 +56,7 @@ func (h *Handler) GetAppStats(ctx context.Context, req *testkitv1.GetAppStatsReq
 func (h *Handler) ListApps(ctx context.Context, req *telemetryv1.ListAppsRequest) (*telemetryv1.ListAppsResponse, error) {
 	return h.svc.Telemetry().ListApps(ctx, req)
 }
+
+func (h *Handler) RotateAppSecret(ctx context.Context, req *telemetryv1.RotateAppSecretRequest) (*telemetryv1.RotateAppSecretResponse, error) {
+	return h.svc.Telemetry().RotateAppSecret(ctx, req)
+}

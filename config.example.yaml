@@ -302,6 +302,14 @@ license:
   app_key: ${TESTKIT_SERVICE_LICENSE_APP_KEY}
   app_secret: ${TESTKIT_SERVICE_LICENSE_APP_SECRET}
 
+# Telemetry-domain settings. App credentials identify the BFF to
+# telemetry-service on every ingest-surface call (gRPC forward AND the raw
+# /v1/e/ HTTP mounts — the internal hop carries them; end-user clients keep
+# the ingest-token contract). Created on the telemetry admin surface.
+telemetry:
+  app_key: ${TESTKIT_SERVICE_TELEMETRY_APP_KEY}
+  app_secret: ${TESTKIT_SERVICE_TELEMETRY_APP_SECRET}
+
 # Cron scheduler settings. jobs.Scheduler is wired but registers no jobs in P1.
 cron:
   timezone: ${TESTKIT_SERVICE_CRON_TIMEZONE}

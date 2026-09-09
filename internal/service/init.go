@@ -226,7 +226,14 @@ func New(cfg *config.Config) (*Service, error) {
 	svc.licenseSvc = licsvc.New(lic, "",
 		licsvc.WithAppCredentials(cfg.License.AppKey, cfg.License.AppSecret),
 	)
-	svc.telemetrySvc = telemetriesvc.New(tel, telAdminToken)
+	// Telemetry app credentials ride every ingest-surface call (gRPC forward
+	// + raw /v1/e/ mounts) — fail fast on empty.
+	if cfg.Telemetry == nil || cfg.Telemetry.AppKey == "" || cfg.Telemetry.AppSecret == "" {
+		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New())
+	}
+	svc.telemetrySvc = telemetriesvc.New(tel, telAdminToken,
+		telemetriesvc.WithAppCredentials(cfg.Telemetry.AppKey, cfg.Telemetry.AppSecret),
+	)
 
 	if err := svc.setupJobs(); err != nil {
 		return nil, rollback(mgr, err)

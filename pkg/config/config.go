@@ -54,6 +54,7 @@ type Config struct {
 	Message    *MessageConfig
 	Storage    *StorageConfig
 	License    *LicenseConfig
+	Telemetry  *TelemetryConfig
 	Cron       *CronConfig
 	Log        *logging.Config
 }
@@ -146,6 +147,20 @@ type MessageConfig struct {
 // the client surface is fail-closed without them).
 type LicenseConfig struct {
 	// AppKey identifies the calling app; service.New fail-fasts on empty.
+	AppKey string
+	// AppSecret authenticates the app (internal-trust, DB-plaintext).
+	AppSecret string
+}
+
+// TelemetryConfig holds testkit-side telemetry-domain settings.
+//
+// AppKey/AppSecret are the BFF's telemetry business-identity credentials
+// (platform ak/sk pair): created on the telemetry admin surface (应用管理 →
+// 新建), injected into the downstream context of every ingest-surface call
+// (the gRPC Ingest forward AND the raw /v1/e/ HTTP mounts — the internal
+// hop carries them; end-user clients keep the token contract).
+type TelemetryConfig struct {
+	// AppKey identifies the calling app (the telemetry app slug).
 	AppKey string
 	// AppSecret authenticates the app (internal-trust, DB-plaintext).
 	AppSecret string
