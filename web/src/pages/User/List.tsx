@@ -55,9 +55,6 @@ export default function UserListPage() {
   }, []);
 
   const columns: ProColumns<API.User>[] = [
-    { title: "ID", dataIndex: "id", width: 180 },
-    { title: "用户名", dataIndex: "username" },
-    { title: "昵称", dataIndex: "nickname" },
     {
       title: "租户",
       dataIndex: "appKey",
@@ -66,6 +63,9 @@ export default function UserListPage() {
       width: 140,
       render: (_, r) => (r.appKey ? <code>{r.appKey}</code> : "-"),
     },
+    { title: "ID", dataIndex: "id", width: 180 },
+    { title: "用户名", dataIndex: "username" },
+    { title: "昵称", dataIndex: "nickname" },
     { title: "邮箱", dataIndex: "email" },
     {
       title: "类型",

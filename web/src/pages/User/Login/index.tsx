@@ -1,5 +1,6 @@
 import { LoginForm, ProFormText } from "@ant-design/pro-components";
 import { App, Typography } from "antd";
+import { useEffect } from "react";
 import { history, useModel } from "@umijs/max";
 import { login } from "@/services/testkit/testkitService";
 
@@ -20,6 +21,21 @@ const USER_TYPE_INTERNAL = "USER_TYPE_INTERNAL";
 export default function LoginPage() {
   const { message } = App.useApp();
   const { setInitialState } = useModel("@@initialState");
+
+  // An already-authenticated visitor has no business on the login page —
+  // send them home (same routing rules as the post-login push). A stale
+  // token self-corrects: the first protected request 401s and bounces back.
+  useEffect(() => {
+    const token = localStorage.getItem("testkit_token");
+    if (!token) return;
+    let userType = "";
+    try {
+      userType = JSON.parse(localStorage.getItem("testkit_user") ?? "{}").userType ?? "";
+    } catch {
+      // corrupt cache — fall through to the login form
+    }
+    history.replace(userType === USER_TYPE_INTERNAL ? "/dashboard" : "/profile");
+  }, []);
 
   return (
     <LoginForm<{ username: string; password: string }>
