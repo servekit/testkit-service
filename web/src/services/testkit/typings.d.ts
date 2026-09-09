@@ -1507,6 +1507,8 @@ user_id injected from ctx */
   type testkitV1CreateAppResponse = {
     app?: testkitV1App;
     token?: string;
+    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    appSecret?: string;
   };
 
   type testkitV1GetAppResponse = {

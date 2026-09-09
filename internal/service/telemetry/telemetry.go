@@ -261,6 +261,7 @@ func toTestkitCreateAppResponse(src *dnv1.CreateAppResponse) *testkitv1.CreateAp
 	out := &testkitv1.CreateAppResponse{}
 	out.App = toTestkitApp(src.App)
 	out.Token = src.Token
+	out.AppSecret = src.AppSecret
 	return out
 }
 

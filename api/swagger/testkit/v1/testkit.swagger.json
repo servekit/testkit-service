@@ -8485,6 +8485,10 @@
         },
         "token": {
           "type": "string"
+        },
+        "appSecret": {
+          "type": "string",
+          "description": "app_secret convenience echo (also visible via ListApps/GetApp)."
         }
       }
     },
