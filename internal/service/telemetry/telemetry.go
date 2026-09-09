@@ -184,7 +184,7 @@ func toDnApp(src *testkitv1.App) *dnv1.App {
 	}
 	out := &dnv1.App{}
 	out.Id = src.Id
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Name = src.Name
 	out.Email = src.Email
 	out.StrictVersions = src.StrictVersions
@@ -206,7 +206,7 @@ func toTestkitApp(src *dnv1.App) *testkitv1.App {
 	}
 	out := &testkitv1.App{}
 	out.Id = src.Id
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Name = src.Name
 	out.Email = src.Email
 	out.StrictVersions = src.StrictVersions
@@ -227,7 +227,7 @@ func toDnCreateAppRequest(src *testkitv1.CreateAppRequest) *dnv1.CreateAppReques
 		return nil
 	}
 	out := &dnv1.CreateAppRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Name = src.Name
 	out.Email = src.Email
 	return out
@@ -238,7 +238,7 @@ func toTestkitCreateAppRequest(src *dnv1.CreateAppRequest) *testkitv1.CreateAppR
 		return nil
 	}
 	out := &testkitv1.CreateAppRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Name = src.Name
 	out.Email = src.Email
 	return out
@@ -269,7 +269,7 @@ func toDnCreateSigningKeyRequest(src *testkitv1.CreateSigningKeyRequest) *dnv1.C
 		return nil
 	}
 	out := &dnv1.CreateSigningKeyRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.KeyId = src.KeyId
 	return out
 }
@@ -279,7 +279,7 @@ func toTestkitCreateSigningKeyRequest(src *dnv1.CreateSigningKeyRequest) *testki
 		return nil
 	}
 	out := &testkitv1.CreateSigningKeyRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.KeyId = src.KeyId
 	return out
 }
@@ -357,7 +357,7 @@ func toDnGetAppRequest(src *testkitv1.GetAppRequest) *dnv1.GetAppRequest {
 		return nil
 	}
 	out := &dnv1.GetAppRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	return out
 }
 
@@ -366,7 +366,7 @@ func toTestkitGetAppRequest(src *dnv1.GetAppRequest) *testkitv1.GetAppRequest {
 		return nil
 	}
 	out := &testkitv1.GetAppRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	return out
 }
 
@@ -417,7 +417,7 @@ func toDnGetAppStatsRequest(src *testkitv1.GetAppStatsRequest) *dnv1.GetAppStats
 		return nil
 	}
 	out := &dnv1.GetAppStatsRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Days = src.Days
 	return out
 }
@@ -427,7 +427,7 @@ func toTestkitGetAppStatsRequest(src *dnv1.GetAppStatsRequest) *testkitv1.GetApp
 		return nil
 	}
 	out := &testkitv1.GetAppStatsRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Days = src.Days
 	return out
 }
@@ -555,7 +555,7 @@ func toDnReplaceEventRulesRequest(src *testkitv1.ReplaceEventRulesRequest) *dnv1
 		return nil
 	}
 	out := &dnv1.ReplaceEventRulesRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	for _, item := range src.Rules {
 		out.Rules = append(out.Rules, toDnEventRule(item))
 	}
@@ -567,7 +567,7 @@ func toTestkitReplaceEventRulesRequest(src *dnv1.ReplaceEventRulesRequest) *test
 		return nil
 	}
 	out := &testkitv1.ReplaceEventRulesRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	for _, item := range src.Rules {
 		out.Rules = append(out.Rules, toTestkitEventRule(item))
 	}
@@ -601,7 +601,7 @@ func toDnRevokeSigningKeyRequest(src *testkitv1.RevokeSigningKeyRequest) *dnv1.R
 		return nil
 	}
 	out := &dnv1.RevokeSigningKeyRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.KeyId = src.KeyId
 	return out
 }
@@ -611,7 +611,7 @@ func toTestkitRevokeSigningKeyRequest(src *dnv1.RevokeSigningKeyRequest) *testki
 		return nil
 	}
 	out := &testkitv1.RevokeSigningKeyRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.KeyId = src.KeyId
 	return out
 }
@@ -639,7 +639,7 @@ func toDnRevokeTokenRequest(src *testkitv1.RevokeTokenRequest) *dnv1.RevokeToken
 		return nil
 	}
 	out := &dnv1.RevokeTokenRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Prefix = src.Prefix
 	return out
 }
@@ -649,7 +649,7 @@ func toTestkitRevokeTokenRequest(src *dnv1.RevokeTokenRequest) *testkitv1.Revoke
 		return nil
 	}
 	out := &testkitv1.RevokeTokenRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Prefix = src.Prefix
 	return out
 }
@@ -677,7 +677,7 @@ func toDnRotateTokenRequest(src *testkitv1.RotateTokenRequest) *dnv1.RotateToken
 		return nil
 	}
 	out := &dnv1.RotateTokenRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	return out
 }
 
@@ -686,7 +686,7 @@ func toTestkitRotateTokenRequest(src *dnv1.RotateTokenRequest) *testkitv1.Rotate
 		return nil
 	}
 	out := &testkitv1.RotateTokenRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	return out
 }
 
@@ -713,7 +713,7 @@ func toDnSetVersionBlockedRequest(src *testkitv1.SetVersionBlockedRequest) *dnv1
 		return nil
 	}
 	out := &dnv1.SetVersionBlockedRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Version = src.Version
 	out.Blocked = src.Blocked
 	return out
@@ -724,7 +724,7 @@ func toTestkitSetVersionBlockedRequest(src *dnv1.SetVersionBlockedRequest) *test
 		return nil
 	}
 	out := &testkitv1.SetVersionBlockedRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	out.Version = src.Version
 	out.Blocked = src.Blocked
 	return out
@@ -777,7 +777,7 @@ func toDnUpdateAppRequest(src *testkitv1.UpdateAppRequest) *dnv1.UpdateAppReques
 		return nil
 	}
 	out := &dnv1.UpdateAppRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	if src.Name != nil {
 		out.Name = src.Name
 	}
@@ -818,7 +818,7 @@ func toTestkitUpdateAppRequest(src *dnv1.UpdateAppRequest) *testkitv1.UpdateAppR
 		return nil
 	}
 	out := &testkitv1.UpdateAppRequest{}
-	out.Slug = src.Slug
+	out.AppKey = src.AppKey
 	if src.Name != nil {
 		out.Name = src.Name
 	}

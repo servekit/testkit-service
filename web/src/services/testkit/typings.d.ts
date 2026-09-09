@@ -167,7 +167,7 @@ declare namespace API {
   };
 
   type CreateSigningKeyParams = {
-    slug: string;
+    appKey: string;
   };
 
   type DecomposeParams = {
@@ -220,11 +220,11 @@ declare namespace API {
   };
 
   type GetAppParams = {
-    slug: string;
+    appKey: string;
   };
 
   type GetAppStatsParams = {
-    slug: string;
+    appKey: string;
     days?: number;
   };
 
@@ -1122,7 +1122,7 @@ immutable after creation either way. */
   };
 
   type ReplaceEventRulesParams = {
-    slug: string;
+    appKey: string;
   };
 
   type ResetTrialParams = {
@@ -1150,21 +1150,21 @@ immutable after creation either way. */
   };
 
   type RevokeSigningKeyParams = {
-    slug: string;
+    appKey: string;
     keyId: string;
   };
 
   type RevokeTokenParams = {
-    slug: string;
+    appKey: string;
     prefix: string;
   };
 
   type RotateAppSecretParams = {
-    slug: string;
+    appKey: string;
   };
 
   type RotateTokenParams = {
-    slug: string;
+    appKey: string;
   };
 
   type rpcStatus = {
@@ -1174,7 +1174,7 @@ immutable after creation either way. */
   };
 
   type SetVersionBlockedParams = {
-    slug: string;
+    appKey: string;
     version: string;
   };
 
@@ -1213,8 +1213,11 @@ available for direct browser uploads). */
   type telemetryV1App = {
     /** uuid */
     id?: string;
-    /** unique, url-safe */
-    slug?: string;
+    /** app_key is the machine identity and the "ak" half of the platform-wide
+ak/sk pair: minted server-side on creation ("tel_" + 8 base36 chars,
+collision-checked; a caller-chosen key is accepted when non-empty),
+unique, immutable. The admin surface keys every per-app route by it. */
+    appKey?: string;
     name?: string;
     /** optional operator contact */
     email?: string;
@@ -1238,7 +1241,7 @@ per-device limits cannot provide (spec §4.6 #1). */
 kill-switch; tokens and signing keys stay in place for re-enable. */
     disabled?: boolean;
     /** app_secret is the business-identity credential (the "sk" half of the
-platform-wide ak/sk pair; the slug is the "ak"). Required by the
+platform-wide ak/sk pair; app_key is the "ak"). Required by the
 gRPC/module ingest surface — backend callers present it as x-app-key /
 x-app-secret metadata; the raw client endpoints (/v1/e/…) keep using
 the ingest token instead. Echoed on every read — internal-trust
@@ -1470,7 +1473,7 @@ user_id injected from ctx */
 
   type testkitV1App = {
     id?: string;
-    slug?: string;
+    appKey?: string;
     name?: string;
     email?: string;
     strictVersions?: boolean;
@@ -1495,7 +1498,8 @@ user_id injected from ctx */
   };
 
   type testkitV1CreateAppRequest = {
-    slug?: string;
+    /** app_key optional; empty = server-generated. */
+    appKey?: string;
     name?: string;
     email?: string;
   };
@@ -1537,7 +1541,7 @@ user_id injected from ctx */
   };
 
   type UpdateAppParams = {
-    slug: string;
+    appKey: string;
   };
 
   type UpdateGroupParams = {

@@ -50,20 +50,20 @@ export default function TelemetryAppsPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
-  // 「配置」弹窗：按 slug 加载完整快照（tokens / 签名密钥 / 规则 / 版本门禁）
-  const [detailSlug, setDetailSlug] = useState<string | null>(null);
+  // 「配置」弹窗：按 appKey 加载完整快照（tokens / 签名密钥 / 规则 / 版本门禁）
+  const [detailAppKey, setDetailSlug] = useState<string | null>(null);
   const [detail, setDetail] = useState<AppDetail | null>(null);
-  // 掩码开关按 "slug:appSecret" 记忆；轮换后自动点亮对应行
+  // 掩码开关按 "appKey:appSecret" 记忆；轮换后自动点亮对应行
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const toggleReveal = (key: string) =>
     setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
-  const reveal = (slug: string | undefined) => {
-    if (slug) setRevealed((prev) => ({ ...prev, [`${slug}:appSecret`]: true }));
+  const reveal = (appKey: string | undefined) => {
+    if (appKey) setRevealed((prev) => ({ ...prev, [`${appKey}:appSecret`]: true }));
   };
 
-  const loadDetail = async (slug: string) => {
+  const loadDetail = async (appKey: string) => {
     try {
-      setDetail(await getApp({ slug }));
+      setDetail(await getApp({ appKey }));
     } catch (err) {
       const e = err as { data?: { message?: string } };
       message.error(e?.data?.message ?? "加载失败");
@@ -86,7 +86,7 @@ export default function TelemetryAppsPage() {
           ),
         });
       }
-      if (detailSlug) void loadDetail(detailSlug);
+      if (detailAppKey) void loadDetail(detailAppKey);
       reload();
     } catch (err) {
       const e = err as { data?: { message?: string } };
@@ -96,10 +96,10 @@ export default function TelemetryAppsPage() {
 
   const columns: ProColumns<AppRow>[] = [
     {
-      title: "AppKey（Slug）",
-      dataIndex: "slug",
+      title: "AppKey（AppKey）",
+      dataIndex: "appKey",
       width: 160,
-      render: (_, r) => <code>{r.slug}</code>,
+      render: (_, r) => <code>{r.appKey}</code>,
     },
     {
       title: "AppSecret",
@@ -108,8 +108,8 @@ export default function TelemetryAppsPage() {
       render: (_, r) => (
         <SecretText
           value={r.appSecret}
-          visible={!!revealed[`${r.slug}:appSecret`]}
-          onToggle={() => toggleReveal(`${r.slug}:appSecret`)}
+          visible={!!revealed[`${r.appKey}:appSecret`]}
+          onToggle={() => toggleReveal(`${r.appKey}:appSecret`)}
         />
       ),
     },
@@ -151,9 +151,9 @@ export default function TelemetryAppsPage() {
         <a
           key="config"
           onClick={() => {
-            setDetailSlug(r.slug ?? null);
+            setDetailSlug(r.appKey ?? null);
             setDetail(null);
-            void loadDetail(r.slug ?? "");
+            void loadDetail(r.appKey ?? "");
           }}
         >
           配置
@@ -162,9 +162,9 @@ export default function TelemetryAppsPage() {
           key="rotateSecret"
           onClick={async () => {
             try {
-              await rotateAppSecret({ slug: r.slug ?? "" }, {} as never);
+              await rotateAppSecret({ appKey: r.appKey ?? "" }, {} as never);
               message.success("已轮换，新 AppSecret 见列表");
-              reveal(r.slug);
+              reveal(r.appKey);
               reload();
             } catch (err) {
               const e = err as { data?: { message?: string } };
@@ -177,7 +177,7 @@ export default function TelemetryAppsPage() {
         <a
           key="rotate"
           onClick={() => {
-            void act("轮换 Token", () => rotateToken({ slug: r.slug ?? "" }, {} as never));
+            void act("轮换 Token", () => rotateToken({ appKey: r.appKey ?? "" }, {} as never));
           }}
         >
           轮换令牌
@@ -186,7 +186,7 @@ export default function TelemetryAppsPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await updateApp({ slug: r.slug ?? "" }, { disabled: !r.disabled });
+              await updateApp({ appKey: r.appKey ?? "" }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用（上报立即 401）");
               reload();
             } catch (err) {
@@ -222,14 +222,15 @@ export default function TelemetryAppsPage() {
             onFinish={async (vals) => {
               try {
                 const resp = await createApp({
-                  slug: vals.slug,
                   name: vals.name,
                   email: vals.email,
                 });
-                // 严格版本 / 鉴权模式不在创建协议里，创建后立即补一次更新。
-                if (vals.strictVersions || vals.authMode !== "AUTH_MODE_NONE") {
+                // 严格版本 / 鉴权模式不在创建协议里，创建后立即补一次更新
+                // （app_key 由服务端生成，从创建响应里取）。
+                const mintedKey = resp.app?.appKey;
+                if (mintedKey && (vals.strictVersions || vals.authMode !== "AUTH_MODE_NONE")) {
                   await updateApp(
-                    { slug: vals.slug },
+                    { appKey: mintedKey },
                     {
                       strictVersions: vals.strictVersions ?? false,
                       ...(vals.authMode !== "AUTH_MODE_NONE" ? { authMode: vals.authMode } : {}),
@@ -256,7 +257,7 @@ export default function TelemetryAppsPage() {
             }}
             trigger={<Button type="primary">创建应用</Button>}
           >
-            <ProFormText name="slug" label="Slug" rules={[{ required: true }]} />
+            <ProFormText name="appKey" label="AppKey" rules={[{ required: true }]} />
             <ProFormText name="name" label="名称" rules={[{ required: true }]} />
             <ProFormText name="email" label="联系邮箱" />
             <ProFormSwitch name="strictVersions" label="严格版本门禁" />
@@ -273,15 +274,15 @@ export default function TelemetryAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        AppKey/AppSecret（slug + app_secret）是业务方身份凭据：后端/模块面调用 Ingest
+        AppKey/AppSecret（appKey + app_secret）是业务方身份凭据：后端/模块面调用 Ingest
         需携带 x-app-key / x-app-secret，列表可见、轮换即换新；终端客户端的上报走 ingest
         token（仅创建/轮换时明文展示一次，落库即哈希），两个维度互不影响。停用是运维
         kill-switch：停用应用的上报立即 401（凭据保留，重新启用即恢复）；事件规则与版本门禁在行内「配置」维护。
       </Space>
 
       <Modal
-        open={detailSlug !== null}
-        title={`应用配置 — ${detailSlug ?? ""}`}
+        open={detailAppKey !== null}
+        title={`应用配置 — ${detailAppKey ?? ""}`}
         footer={null}
         width={860}
         onCancel={() => setDetailSlug(null)}
@@ -300,7 +301,7 @@ export default function TelemetryAppsPage() {
               extra={
                 <Button
                   size="small"
-                  onClick={() => act("轮换 Token", () => rotateToken({ slug: detailSlug ?? "" }, {} as never))}
+                  onClick={() => act("轮换 Token", () => rotateToken({ appKey: detailAppKey ?? "" }, {} as never))}
                 >
                   轮换 Token
                 </Button>
@@ -315,7 +316,7 @@ export default function TelemetryAppsPage() {
                       title="吊销该 Token？"
                       onConfirm={() => {
                         void act("吊销 Token", () =>
-                          revokeToken({ slug: detailSlug ?? "", prefix: t.prefix ?? "" }),
+                          revokeToken({ appKey: detailAppKey ?? "", prefix: t.prefix ?? "" }),
                         );
                       }}
                     >
@@ -338,7 +339,7 @@ export default function TelemetryAppsPage() {
                     const keyId = window.prompt("签名密钥 ID（如 k202609，一个客户端版本段一把）", "k1");
                     if (!keyId) return;
                     act("创建签名密钥", () =>
-                      createSigningKey({ slug: detailSlug ?? "" }, { keyId }),
+                      createSigningKey({ appKey: detailAppKey ?? "" }, { keyId }),
                     );
                   }}
                 >
@@ -355,7 +356,7 @@ export default function TelemetryAppsPage() {
                       title="吊销该签名密钥？"
                       onConfirm={() => {
                         void act("吊销签名密钥", () =>
-                          revokeSigningKey({ slug: detailSlug ?? "", keyId: k.keyId ?? "" }),
+                          revokeSigningKey({ appKey: detailAppKey ?? "", keyId: k.keyId ?? "" }),
                         );
                       }}
                     >
@@ -383,7 +384,7 @@ export default function TelemetryAppsPage() {
                       try {
                         act("替换事件规则", () =>
                           replaceEventRules(
-                            { slug: detailSlug ?? "" },
+                            { appKey: detailAppKey ?? "" },
                             { rules: JSON.parse(rules) },
                           ),
                         );
@@ -416,7 +417,7 @@ export default function TelemetryAppsPage() {
                       return;
                     }
                     void act("封锁版本", () =>
-                      setVersionBlocked({ slug: detailSlug ?? "", version }, { blocked: true }),
+                      setVersionBlocked({ appKey: detailAppKey ?? "", version }, { blocked: true }),
                     );
                   }}
                 >

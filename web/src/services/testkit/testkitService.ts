@@ -2828,7 +2828,7 @@ export async function getApp(
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 
+  const { 'appKey': param0, 
   ...queryParams
   } = params;
   return request<API.testkitV1GetAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
@@ -2845,7 +2845,7 @@ export async function updateApp(
     ,body: API.TestkitServiceUpdateAppBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 
+  const { 'appKey': param0, 
   ...queryParams
   } = params;
   return request<API.testkitV1UpdateAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
@@ -2866,7 +2866,7 @@ export async function replaceEventRules(
     ,body: API.TestkitServiceReplaceEventRulesBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 
+  const { 'appKey': param0, 
   ...queryParams
   } = params;
   return request<API.v1ReplaceEventRulesResponse>(`/api/v1/telemetry/admin/apps/${param0}/events`, {
@@ -2887,7 +2887,7 @@ export async function createSigningKey(
     ,body: API.TestkitServiceCreateSigningKeyBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 
+  const { 'appKey': param0, 
   ...queryParams
   } = params;
   return request<API.v1CreateSigningKeyResponse>(`/api/v1/telemetry/admin/apps/${param0}/signing-keys`, {
@@ -2908,7 +2908,7 @@ export async function revokeSigningKey(
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 'keyId': param1, 
+  const { 'appKey': param0, 'keyId': param1, 
   ...queryParams
   } = params;
   return request<API.v1RevokeSigningKeyResponse>(`/api/v1/telemetry/admin/apps/${param0}/signing-keys/${param1}`, {
@@ -2925,7 +2925,7 @@ export async function getAppStats(
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 
+  const { 'appKey': param0, 
   ...queryParams
   } = params;
   return request<API.v1GetAppStatsResponse>(`/api/v1/telemetry/admin/apps/${param0}/stats`, {
@@ -2943,7 +2943,7 @@ export async function rotateToken(
     ,body: API.TestkitServiceRotateTokenBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 
+  const { 'appKey': param0, 
   ...queryParams
   } = params;
   return request<API.v1RotateTokenResponse>(`/api/v1/telemetry/admin/apps/${param0}/tokens`, {
@@ -2964,7 +2964,7 @@ export async function revokeToken(
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 'prefix': param1, 
+  const { 'appKey': param0, 'prefix': param1, 
   ...queryParams
   } = params;
   return request<API.v1RevokeTokenResponse>(`/api/v1/telemetry/admin/apps/${param0}/tokens/${param1}`, {
@@ -2981,7 +2981,7 @@ export async function setVersionBlocked(
     ,body: API.TestkitServiceSetVersionBlockedBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 'version': param1, 
+  const { 'appKey': param0, 'version': param1, 
   ...queryParams
   } = params;
   return request<API.v1SetVersionBlockedResponse>(`/api/v1/telemetry/admin/apps/${param0}/versions/${param1}`, {
@@ -3002,7 +3002,7 @@ export async function rotateAppSecret(
     ,body: API.TestkitServiceRotateAppSecretBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'slug': param0, 
+  const { 'appKey': param0, 
   ...queryParams
   } = params;
   return request<API.telemetryV1RotateAppSecretResponse>(`/api/v1/telemetry/admin/apps/${param0}:rotateSecret`, {

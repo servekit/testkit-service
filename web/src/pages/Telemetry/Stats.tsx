@@ -18,15 +18,15 @@ export default function TelemetryStatsPage() {
   const [error, setError] = useState("");
   const [form] = Form.useForm();
 
-  const load = async (vals: { slug?: string; days?: number }) => {
-    if (!vals.slug) {
-      message.warning("请输入 slug");
+  const load = async (vals: { appKey?: string; days?: number }) => {
+    if (!vals.appKey) {
+      message.warning("请输入 AppKey");
       return;
     }
     setLoading(true);
     setError("");
     try {
-      setData(await getAppStats({ slug: vals.slug, days: vals.days ?? 14 }));
+      setData(await getAppStats({ appKey: vals.appKey, days: vals.days ?? 14 }));
     } catch (err) {
       const e = err as { data?: { message?: string } };
       setError(e?.data?.message ?? "加载失败");
@@ -40,9 +40,9 @@ export default function TelemetryStatsPage() {
     <Card title="应用统计">
       <Form form={form} layout="inline" onFinish={load} initialValues={{ days: 14 }}>
         <ProFormText
-          name="slug"
-          placeholder="slug（如 smoke-app）"
-          rules={[{ required: true, message: "请输入 slug" }]}
+          name="appKey"
+          placeholder="AppKey（如 smoke-app）"
+          rules={[{ required: true, message: "请输入 AppKey" }]}
         />
         <ProFormDigit name="days" label="天数" min={1} max={90} />
         <Button type="primary" htmlType="submit" loading={loading}>
