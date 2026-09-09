@@ -77,6 +77,12 @@ func (s *Service) UpdateApp(ctx context.Context, req *testkitv1.UpdateAppRequest
 	return toTestkitUpdateAppResponse(resp), nil
 }
 
+// ListApps lists every app (types imported across domains like the storage/
+// message app forwards — no mirrored DTO, no converters).
+func (s *Service) ListApps(ctx context.Context, req *telemetryv1.ListAppsRequest) (*telemetryv1.ListAppsResponse, error) {
+	return s.client.ListApps(s.adminCtx(ctx), req)
+}
+
 func (s *Service) RotateToken(ctx context.Context, req *testkitv1.RotateTokenRequest) (*testkitv1.RotateTokenResponse, error) {
 	ctx = s.adminCtx(ctx)
 	resp, err := s.client.RotateToken(ctx, toDnRotateTokenRequest(req))
@@ -156,6 +162,7 @@ func toDnApp(src *testkitv1.App) *dnv1.App {
 	out.RatePerDay = src.RatePerDay
 	out.RawRetentionDays = src.RawRetentionDays
 	out.DailyEventBudget = src.DailyEventBudget
+	out.Disabled = src.Disabled
 	out.CreatedAt = src.CreatedAt
 	out.UpdatedAt = src.UpdatedAt
 	return out
@@ -177,6 +184,7 @@ func toTestkitApp(src *dnv1.App) *testkitv1.App {
 	out.RatePerDay = src.RatePerDay
 	out.RawRetentionDays = src.RawRetentionDays
 	out.DailyEventBudget = src.DailyEventBudget
+	out.Disabled = src.Disabled
 	out.CreatedAt = src.CreatedAt
 	out.UpdatedAt = src.UpdatedAt
 	return out
@@ -767,6 +775,9 @@ func toDnUpdateAppRequest(src *testkitv1.UpdateAppRequest) *dnv1.UpdateAppReques
 	if src.DailyEventBudget != nil {
 		out.DailyEventBudget = src.DailyEventBudget
 	}
+	if src.Disabled != nil {
+		out.Disabled = src.Disabled
+	}
 	return out
 }
 
@@ -804,6 +815,9 @@ func toTestkitUpdateAppRequest(src *dnv1.UpdateAppRequest) *testkitv1.UpdateAppR
 	}
 	if src.DailyEventBudget != nil {
 		out.DailyEventBudget = src.DailyEventBudget
+	}
+	if src.Disabled != nil {
+		out.Disabled = src.Disabled
 	}
 	return out
 }

@@ -5,7 +5,10 @@ package handler
 import (
 	"context"
 
+	licensev1 "github.com/servekit/api/gen/go/license/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 func (h *Handler) Activate(ctx context.Context, req *testkitv1.ActivateRequest) (*testkitv1.ActivateResponse, error) {
@@ -78,4 +81,30 @@ func (h *Handler) ResetTrial(ctx context.Context, req *testkitv1.ResetTrialReque
 
 func (h *Handler) ShowPubKey(ctx context.Context, req *testkitv1.ShowPubKeyRequest) (*testkitv1.ShowPubKeyResponse, error) {
 	return h.svc.License().ShowPubKey(ctx, req)
+}
+
+// --- app-registry forwards (calling applications; license.v1 types) ---
+
+func (h *Handler) LicenseCreateApp(ctx context.Context, req *licensev1.CreateAppRequest) (*licensev1.CreateAppResponse, error) {
+	return h.svc.License().LicenseCreateApp(ctx, req)
+}
+
+func (h *Handler) LicenseGetApp(ctx context.Context, req *licensev1.GetAppRequest) (*licensev1.GetAppResponse, error) {
+	return h.svc.License().LicenseGetApp(ctx, req)
+}
+
+func (h *Handler) LicenseUpdateApp(ctx context.Context, req *licensev1.UpdateAppRequest) (*licensev1.UpdateAppResponse, error) {
+	return h.svc.License().LicenseUpdateApp(ctx, req)
+}
+
+func (h *Handler) LicenseRotateAppSecret(ctx context.Context, req *licensev1.RotateAppSecretRequest) (*licensev1.RotateAppSecretResponse, error) {
+	return h.svc.License().LicenseRotateAppSecret(ctx, req)
+}
+
+func (h *Handler) LicenseListApps(ctx context.Context, req *licensev1.ListAppsRequest) (*licensev1.ListAppsResponse, error) {
+	return h.svc.License().LicenseListApps(ctx, req)
+}
+
+func (h *Handler) LicenseDeleteApp(ctx context.Context, req *licensev1.DeleteAppRequest) (*emptypb.Empty, error) {
+	return h.svc.License().LicenseDeleteApp(ctx, req)
 }

@@ -68,6 +68,10 @@ services:
       # --- CORS (grpc-gateway HTTP surface) ---
       - TESTKIT_SERVICE_CORS_ALLOWED_ORIGINS=${TESTKIT_SERVICE_CORS_ALLOWED_ORIGINS:-http://localhost:8080}
       # --- Third-party: four downstream services, in-process (module) by default ---
+      # License app credentials: identify the BFF to license-service on every
+      # client-surface call (row in license_apps must match).
+      - TESTKIT_SERVICE_LICENSE_APP_KEY=${TESTKIT_SERVICE_LICENSE_APP_KEY:-testkit}
+      - TESTKIT_SERVICE_LICENSE_APP_SECRET=${TESTKIT_SERVICE_LICENSE_APP_SECRET:-}
       - TESTKIT_SERVICE_GID_MODE=${TESTKIT_SERVICE_GID_MODE:-module}
       - TESTKIT_SERVICE_GID_TARGET=${TESTKIT_SERVICE_GID_TARGET:-}
       - TESTKIT_SERVICE_GID_MACHINE_ID=${TESTKIT_SERVICE_GID_MACHINE_ID:-1}

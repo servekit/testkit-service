@@ -217,8 +217,15 @@ func New(cfg *config.Config) (*Service, error) {
 	svc.gidSvc = gidsvc.New(gid)
 	svc.dashboardSvc = dashboardsvc.New(usr, st, msg)
 
-	// P6 license + telemetry domains.
-	svc.licenseSvc = licsvc.New(lic, "")
+	// P6 license + telemetry domains. License app credentials are injected
+	// into the downstream context of every client-surface call — fail fast
+	// on empty (the license client surface is fail-closed without them).
+	if cfg.License == nil || cfg.License.AppKey == "" || cfg.License.AppSecret == "" {
+		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New())
+	}
+	svc.licenseSvc = licsvc.New(lic, "",
+		licsvc.WithAppCredentials(cfg.License.AppKey, cfg.License.AppSecret),
+	)
 	svc.telemetrySvc = telemetriesvc.New(tel, telAdminToken)
 
 	if err := svc.setupJobs(); err != nil {

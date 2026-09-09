@@ -12,6 +12,7 @@ import (
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	licenseservice "github.com/servekit/license-service/pkg"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // Service holds the license-service client (module or grpc mode — the
@@ -22,11 +23,28 @@ type Service struct {
 	// metadata on admin-surface RPCs (telemetry-service guards them;
 	// license-service has no guard today — empty token is a no-op).
 	adminToken string
+	// appKey/appSecret authenticate the BFF on every client-surface call;
+	// empty values fail fast at init (the client surface is fail-closed).
+	appKey    string
+	appSecret string
+}
+
+// Option customizes the license domain service.
+type Option func(*Service)
+
+// WithAppCredentials sets the license-service app credentials the BFF
+// presents on client-surface forwards (Activate/Deactivate/TrialStart).
+func WithAppCredentials(appKey, appSecret string) Option {
+	return func(s *Service) { s.appKey, s.appSecret = appKey, appSecret }
 }
 
 // New builds the license domain service.
-func New(client licenseservice.Service, adminToken string) *Service {
-	return &Service{client: client, adminToken: adminToken}
+func New(client licenseservice.Service, adminToken string, opts ...Option) *Service {
+	s := &Service{client: client, adminToken: adminToken}
+	for _, opt := range opts {
+		opt(s)
+	}
+	return s
 }
 
 // adminCtx appends the admin Bearer token to the outgoing metadata.
@@ -36,8 +54,13 @@ func (s *Service) adminCtx(ctx context.Context) context.Context {
 	}
 	return metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer "+s.adminToken)
 }
+
+// withApp wraps ctx with the app credentials for a client-surface call.
+func (s *Service) withApp(ctx context.Context) context.Context {
+	return licenseservice.WithApp(ctx, s.appKey, s.appSecret)
+}
 func (s *Service) Activate(ctx context.Context, req *testkitv1.ActivateRequest) (*testkitv1.ActivateResponse, error) {
-	resp, err := s.client.Activate(ctx, toDnActivateRequest(req))
+	resp, err := s.client.Activate(s.withApp(ctx), toDnActivateRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +68,7 @@ func (s *Service) Activate(ctx context.Context, req *testkitv1.ActivateRequest) 
 }
 
 func (s *Service) Deactivate(ctx context.Context, req *testkitv1.DeactivateRequest) (*testkitv1.DeactivateResponse, error) {
-	resp, err := s.client.Deactivate(ctx, toDnDeactivateRequest(req))
+	resp, err := s.client.Deactivate(s.withApp(ctx), toDnDeactivateRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +76,7 @@ func (s *Service) Deactivate(ctx context.Context, req *testkitv1.DeactivateReque
 }
 
 func (s *Service) TrialStart(ctx context.Context, req *testkitv1.TrialStartRequest) (*testkitv1.TrialStartResponse, error) {
-	resp, err := s.client.TrialStart(ctx, toDnTrialStartRequest(req))
+	resp, err := s.client.TrialStart(s.withApp(ctx), toDnTrialStartRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -1212,4 +1235,38 @@ func toTestkitUpdateKeyResponse(src *dnv1.UpdateKeyResponse) *testkitv1.UpdateKe
 	out := &testkitv1.UpdateKeyResponse{}
 	out.Key = toTestkitKeyInfo(src.Key)
 	return out
+}
+
+// --- app-registry forwards (calling applications; 1:1 pass-through of
+// license.v1 types, adminCtx only — the types are imported across domains
+// like the storage/message app forwards, so no converters are needed) ---
+
+// LicenseCreateApp registers a calling app and mints its secret.
+func (s *Service) LicenseCreateApp(ctx context.Context, req *licensev1.CreateAppRequest) (*licensev1.CreateAppResponse, error) {
+	return s.client.CreateApp(s.adminCtx(ctx), req)
+}
+
+// LicenseGetApp returns one app by app_key.
+func (s *Service) LicenseGetApp(ctx context.Context, req *licensev1.GetAppRequest) (*licensev1.GetAppResponse, error) {
+	return s.client.GetApp(s.adminCtx(ctx), req)
+}
+
+// LicenseUpdateApp edits mutable fields; app_key is immutable.
+func (s *Service) LicenseUpdateApp(ctx context.Context, req *licensev1.UpdateAppRequest) (*licensev1.UpdateAppResponse, error) {
+	return s.client.UpdateApp(s.adminCtx(ctx), req)
+}
+
+// LicenseRotateAppSecret mints a new app secret.
+func (s *Service) LicenseRotateAppSecret(ctx context.Context, req *licensev1.RotateAppSecretRequest) (*licensev1.RotateAppSecretResponse, error) {
+	return s.client.RotateAppSecret(s.adminCtx(ctx), req)
+}
+
+// LicenseListApps lists all calling apps (no paging).
+func (s *Service) LicenseListApps(ctx context.Context, req *licensev1.ListAppsRequest) (*licensev1.ListAppsResponse, error) {
+	return s.client.ListApps(s.adminCtx(ctx), req)
+}
+
+// LicenseDeleteApp removes the app row (hard delete).
+func (s *Service) LicenseDeleteApp(ctx context.Context, req *licensev1.DeleteAppRequest) (*emptypb.Empty, error) {
+	return s.client.DeleteApp(s.adminCtx(ctx), req)
 }

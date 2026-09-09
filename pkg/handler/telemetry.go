@@ -5,6 +5,7 @@ package handler
 import (
 	"context"
 
+	telemetryv1 "github.com/servekit/api/gen/go/telemetry/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 )
 
@@ -50,4 +51,8 @@ func (h *Handler) SetVersionBlocked(ctx context.Context, req *testkitv1.SetVersi
 
 func (h *Handler) GetAppStats(ctx context.Context, req *testkitv1.GetAppStatsRequest) (*testkitv1.GetAppStatsResponse, error) {
 	return h.svc.Telemetry().GetAppStats(ctx, req)
+}
+
+func (h *Handler) ListApps(ctx context.Context, req *telemetryv1.ListAppsRequest) (*telemetryv1.ListAppsResponse, error) {
+	return h.svc.Telemetry().ListApps(ctx, req)
 }

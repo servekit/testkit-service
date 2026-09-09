@@ -53,6 +53,7 @@ type Config struct {
 	ThirdParty *ThirdPartyConfig
 	Message    *MessageConfig
 	Storage    *StorageConfig
+	License    *LicenseConfig
 	Cron       *CronConfig
 	Log        *logging.Config
 }
@@ -131,6 +132,19 @@ type StorageConfig struct {
 // downstream context of every Send. Policy lookup, daily quota, and the
 // idempotency namespace all hang off the app identity.
 type MessageConfig struct {
+	// AppKey identifies the calling app; service.New fail-fasts on empty.
+	AppKey string
+	// AppSecret authenticates the app (internal-trust, DB-plaintext).
+	AppSecret string
+}
+
+// LicenseConfig holds testkit-side license-domain settings.
+//
+// AppKey/AppSecret are the BFF's license-service app credentials: created on
+// the license admin surface (应用管理 → 新建), injected into the downstream
+// context of every client-surface call (Activate/Deactivate/TrialStart —
+// the client surface is fail-closed without them).
+type LicenseConfig struct {
 	// AppKey identifies the calling app; service.New fail-fasts on empty.
 	AppKey string
 	// AppSecret authenticates the app (internal-trust, DB-plaintext).

@@ -294,6 +294,14 @@ storage:
   app_key: ${TESTKIT_SERVICE_STORAGE_APP_KEY}
   app_secret: ${TESTKIT_SERVICE_STORAGE_APP_SECRET}
 
+# License-domain settings. App credentials identify the BFF to
+# license-service (created on the license admin surface: 应用管理 → 新建);
+# they are injected into the context of every client-surface call
+# (Activate/Deactivate/TrialStart — fail-closed without them).
+license:
+  app_key: ${TESTKIT_SERVICE_LICENSE_APP_KEY}
+  app_secret: ${TESTKIT_SERVICE_LICENSE_APP_SECRET}
+
 # Cron scheduler settings. jobs.Scheduler is wired but registers no jobs in P1.
 cron:
   timezone: ${TESTKIT_SERVICE_CRON_TIMEZONE}
