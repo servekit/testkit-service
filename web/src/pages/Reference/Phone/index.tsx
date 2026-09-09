@@ -59,7 +59,7 @@ export default function ReferencePhonePage() {
       .catch(() => undefined);
   }, []);
 
-  const selected = (countries ?? []).find((c) => c.code === region);
+  const selected = (countries ?? []).find((c) => c.regionCode === region);
 
   const doParse = async (payload?: { raw: string; region?: string }) => {
     const target = payload ?? { raw, region };
@@ -148,7 +148,7 @@ export default function ReferencePhonePage() {
               {result.e164 ? <Text copyable>{result.e164}</Text> : "-"}
             </Descriptions.Item>
             <Descriptions.Item label="归属国">
-              {result.countryCode || "-"}
+              {result.regionCode || "-"}
               {result.dialCode ? `（${result.dialCode}）` : ""}
             </Descriptions.Item>
             <Descriptions.Item label="国家号（NSN）">

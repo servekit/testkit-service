@@ -40,15 +40,15 @@ export default function ReferenceRegionsPage() {
     }
     const build = (parent: string): GroupNode[] =>
       (byParent.get(parent) ?? []).map((g) => ({
-        value: g.code ?? "",
-        label: `${g.name}（${g.code}）`,
-        children: build(g.code ?? ""),
+        value: g.groupCode ?? "",
+        label: `${g.name}（${g.groupCode}）`,
+        children: build(g.groupCode ?? ""),
       }));
     return build("");
   }, [groups]);
 
   const selectedCode = selected?.[selected.length - 1];
-  const selectedName = (groups ?? []).find((g) => g.code === selectedCode)?.name;
+  const selectedName = (groups ?? []).find((g) => g.groupCode === selectedCode)?.name;
 
   useEffect(() => {
     if (!selectedCode) {
@@ -58,7 +58,7 @@ export default function ReferenceRegionsPage() {
     let cancelled = false;
     setLoading(true);
     setCountries(undefined);
-    listCountriesByRegion({ regionCode: selectedCode, locale: "zh-Hans" })
+    listCountriesByRegion({ groupCode: selectedCode, locale: "zh-Hans" })
       .then((r) => {
         if (!cancelled) setCountries(r.countries ?? []);
       })
@@ -98,7 +98,7 @@ export default function ReferenceRegionsPage() {
           </Space>
           <Text type="secondary">
             选“亚洲”递归返回全部 51 国；选“东亚”只返回直接成员 8 国。接口：
-            GET /api/v1/reference/regions/&#123;code&#125;/countries
+            GET /api/v1/reference/region-groups/&#123;groupCode&#125;/countries
           </Text>
         </Space>
       </ProCard>
@@ -112,7 +112,7 @@ export default function ReferenceRegionsPage() {
           <Spin spinning={loading}>
             <Table
               size="small"
-              rowKey="code"
+              rowKey="regionCode"
               pagination={listPagination}
               dataSource={countries ?? []}
               columns={[
@@ -123,7 +123,7 @@ export default function ReferenceRegionsPage() {
                   render: (v: string) => <span style={{ fontSize: 18 }}>{v}</span>,
                 },
                 { title: "名称", dataIndex: "name" },
-                { title: "alpha-2", dataIndex: "code", width: 90 },
+                { title: "alpha-2", dataIndex: "regionCode", width: 90 },
                 { title: "区号", dataIndex: "dialCode", width: 90 },
                 { title: "示例号码", dataIndex: "exampleNumber" },
               ]}

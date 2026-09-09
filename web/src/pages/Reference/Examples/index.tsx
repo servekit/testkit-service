@@ -52,7 +52,7 @@ export default function ReferenceExamplesPage() {
     return (countries ?? [])
       .filter(
         (c) =>
-          (c.code ?? "").toLowerCase().includes(k) ||
+          (c.regionCode ?? "").toLowerCase().includes(k) ||
           (c.name ?? "").toLowerCase().includes(k) ||
           (c.dialCode ?? "").includes(k),
       )
@@ -69,7 +69,7 @@ export default function ReferenceExamplesPage() {
       return;
     }
     let cancelled = false;
-    listCountriesByRegion({ regionCode, locale: "zh-Hans" })
+    listCountriesByRegion({ groupCode: regionCode, locale: "zh-Hans" })
       .then((r) => {
         if (!cancelled) setRegionCountries(r.countries ?? []);
       })
@@ -87,20 +87,20 @@ export default function ReferenceExamplesPage() {
     }
     const build = (parent: string): any[] =>
       (byParent.get(parent) ?? []).map((g) => ({
-        value: g.code,
+        value: g.groupCode,
         label: g.name,
-        children: build(g.code ?? ""),
+        children: build(g.groupCode ?? ""),
       }));
     return build("");
   }, [groups]);
 
   // 3. in-form dropdown
   const [formCode, setFormCode] = useState<string>();
-  const formCountry = (countries ?? []).find((c) => c.code === formCode);
+  const formCountry = (countries ?? []).find((c) => c.regionCode === formCode);
 
   // 4. dial-prefixed phone input
   const [dialCode, setDialCode] = useState<string>("CN");
-  const dialCountry = (countries ?? []).find((c) => c.code === dialCode);
+  const dialCountry = (countries ?? []).find((c) => c.regionCode === dialCode);
   const [phone, setPhone] = useState("");
   const [parsed, setParsed] = useState<API.v1ParsePhoneResponse>();
   const [parsing, setParsing] = useState(false);
@@ -137,7 +137,7 @@ export default function ReferenceExamplesPage() {
     }
     let cancelled = false;
     setFilling(true);
-    getCountryDefaults({ countryCode: fillCode, locale: "zh-Hans" })
+    getCountryDefaults({ regionCode: fillCode, locale: "zh-Hans" })
       .then((d) => {
         if (!cancelled) setFill(d);
       })
@@ -186,7 +186,7 @@ export default function ReferenceExamplesPage() {
                   {c.flagEmoji} {c.name}
                   <Text type="secondary">
                     {" "}
-                    {c.code} · {c.dialCode} · 示例 {c.exampleNumber}
+                    {c.regionCode} · {c.dialCode} · 示例 {c.exampleNumber}
                   </Text>
                 </List.Item>
               )}
@@ -228,7 +228,7 @@ export default function ReferenceExamplesPage() {
           {formCountry && (
             <div style={{ marginTop: 12 }}>
               <Text>
-                已选：{formCountry.flagEmoji} {formCountry.name}（{formCountry.code}）
+                已选：{formCountry.flagEmoji} {formCountry.name}（{formCountry.regionCode}）
               </Text>
             </div>
           )}
@@ -245,11 +245,11 @@ export default function ReferenceExamplesPage() {
                 (option?.search ?? "").toLowerCase().includes(input.trim().toLowerCase())
               }
               options={(countries ?? []).map((c) => ({
-                value: c.code,
-                search: `${c.code} ${c.name} ${c.dialCode}`,
+                value: c.regionCode,
+                search: `${c.regionCode} ${c.name} ${c.dialCode}`,
                 label: (
                   <span>
-                    {c.flagEmoji} {c.dialCode} {c.code}
+                    {c.flagEmoji} {c.dialCode} {c.regionCode}
                   </span>
                 ),
               }))}
@@ -270,7 +270,7 @@ export default function ReferenceExamplesPage() {
               {parsed.isValid ? <Tag color="green">有效</Tag> : <Tag color="red">无效</Tag>}
               <Text>
                 {" "}
-                {parsed.e164 || "-"} · 归属 {parsed.countryCode || "-"}
+                {parsed.e164 || "-"} · 归属 {parsed.regionCode || "-"}
                 {parsed.dialCode || ""} · {parsed.type}
                 {parsed.errorReason ? ` · ${parsed.errorReason}` : ""}
               </Text>

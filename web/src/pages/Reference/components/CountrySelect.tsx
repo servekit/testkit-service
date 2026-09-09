@@ -37,20 +37,20 @@ export default function CountrySelect({
         if (!kw || !option?.country) return true;
         const c = option.country;
         return (
-          (c.code ?? "").toLowerCase().includes(kw) ||
+          (c.regionCode ?? "").toLowerCase().includes(kw) ||
           (c.alpha3 ?? "").toLowerCase().includes(kw) ||
           (c.name ?? "").toLowerCase().includes(kw) ||
           (c.dialCode ?? "").includes(kw)
         );
       }}
       options={list.map((c) => ({
-        value: c.code,
+        value: c.regionCode,
         country: c,
         label: (
           <span>
             {c.flagEmoji} {c.name}
             <span style={{ color: "#999", marginLeft: 8 }}>
-              {c.code} · {c.dialCode}
+              {c.regionCode} · {c.dialCode}
             </span>
           </span>
         ),

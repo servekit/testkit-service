@@ -67,7 +67,7 @@ function buildCountryJoin(
   timezones: API.v1Timezone[],
   languages: API.v1Language[],
 ) {
-  const groupByCode = new Map(groups.map((g) => [g.code, g]));
+  const groupByCode = new Map(groups.map((g) => [g.groupCode, g]));
   const langName = new Map(languages.map((l) => [l.tag, l.name ?? l.tag]));
 
   // Country -> set of group codes (direct membership plus ancestors), then
@@ -75,13 +75,13 @@ function buildCountryJoin(
   // returns (continent before sub-region).
   const regionCodes = new Map<string, Set<string>>();
   for (const g of groups) {
-    for (const cc of g.countryCodes ?? []) {
+    for (const cc of g.regionCodes ?? []) {
       let set = regionCodes.get(cc);
       if (!set) {
         set = new Set();
         regionCodes.set(cc, set);
       }
-      for (let cur = g.code; cur; cur = groupByCode.get(cur)?.parentCode) {
+      for (let cur = g.groupCode; cur; cur = groupByCode.get(cur)?.parentCode) {
         set.add(cur);
       }
     }
@@ -90,14 +90,14 @@ function buildCountryJoin(
   for (const [cc, set] of regionCodes) {
     const chain: string[] = [];
     for (const g of groups) {
-      if (set.has(g.code)) chain.push(g.name ?? g.code);
+      if (set.has(g.groupCode ?? "")) chain.push(g.name ?? g.groupCode ?? "");
     }
     regionChain.set(cc, chain);
   }
 
   const currenciesOf = new Map<string, API.v1Currency[]>();
   for (const cur of currencies) {
-    for (const cc of cur.countryCodes ?? []) {
+    for (const cc of cur.regionCodes ?? []) {
       const list = currenciesOf.get(cc) ?? [];
       list.push(cur);
       currenciesOf.set(cc, list);
@@ -105,7 +105,7 @@ function buildCountryJoin(
   }
   const timezonesOf = new Map<string, API.v1Timezone[]>();
   for (const tz of timezones) {
-    for (const cc of tz.countryCodes ?? []) {
+    for (const cc of tz.regionCodes ?? []) {
       const list = timezonesOf.get(cc) ?? [];
       list.push(tz);
       timezonesOf.set(cc, list);
@@ -123,7 +123,7 @@ export default function ReferenceDirectoryPage() {
     setRegionTitle(name);
     setRegionCountries(undefined);
     setRegionLoading(true);
-    listCountriesByRegion({ regionCode: code, locale })
+    listCountriesByRegion({ groupCode: code, locale })
       .then((r) => setRegionCountries(r.countries ?? []))
       .catch(() => undefined)
       .finally(() => setRegionLoading(false));
@@ -200,7 +200,7 @@ export default function ReferenceDirectoryPage() {
   const countryColumns = useMemo(
     () => [
       { title: "国旗", dataIndex: "flagEmoji", width: 52, render: (v: string) => <span style={{ fontSize: 18 }}>{v}</span> },
-      { title: "alpha-2", dataIndex: "code", width: 76 },
+      { title: "alpha-2", dataIndex: "regionCode", width: 76 },
       { title: "alpha-3", dataIndex: "alpha3", width: 76, render: (v: string) => v || "—" },
       { title: "区号", dataIndex: "dialCode", width: 80 },
       { title: "名称", dataIndex: "name", width: 150 },
@@ -251,7 +251,7 @@ export default function ReferenceDirectoryPage() {
       { title: "名称", dataIndex: "name", width: 140 },
       {
         title: "国家",
-        dataIndex: "countryCodes",
+        dataIndex: "regionCodes",
         render: (v: string[]) => v?.join(", "),
       },
       {
@@ -299,7 +299,7 @@ export default function ReferenceDirectoryPage() {
       { title: "名称", dataIndex: "name" },
       {
         title: "使用国家/地区",
-        dataIndex: "countryCodes",
+        dataIndex: "regionCodes",
         render: (v: string[]) => v?.length ?? 0,
       },
     ],
@@ -307,7 +307,7 @@ export default function ReferenceDirectoryPage() {
   );
   const groupColumns = useMemo(
     () => [
-      { title: "M49", dataIndex: "code", width: 80 },
+      { title: "M49", dataIndex: "groupCode", width: 80 },
       { title: "名称", dataIndex: "name", width: 140 },
       {
         title: "层级",
@@ -317,7 +317,7 @@ export default function ReferenceDirectoryPage() {
       },
       {
         title: "直接成员",
-        dataIndex: "countryCodes",
+        dataIndex: "regionCodes",
         render: (v: string[]) => v?.length ?? 0,
       },
     ],
@@ -329,9 +329,9 @@ export default function ReferenceDirectoryPage() {
       columns: countryColumns,
       rows: (countries ?? [])
         .map((c) => {
-          const chain = join.regionChain.get(c.code ?? "") ?? [];
-          const curs = join.currenciesOf.get(c.code ?? "") ?? [];
-          const tzs = join.timezonesOf.get(c.code ?? "") ?? [];
+          const chain = join.regionChain.get(c.regionCode ?? "") ?? [];
+          const curs = join.currenciesOf.get(c.regionCode ?? "") ?? [];
+          const tzs = join.timezonesOf.get(c.regionCode ?? "") ?? [];
           const langText = (c.languageTags ?? []).map((t) => join.langName.get(t) ?? t);
           return {
             ...c,
@@ -341,13 +341,13 @@ export default function ReferenceDirectoryPage() {
             // Fold the joined fields into the search corpus so "欧元" / "EUR"
             // / "Asia/Shanghai" / "东亚" all filter rows.
             searchText: [
-              c.code, c.alpha3, c.dialCode, c.name, c.exampleNumber,
+              c.regionCode, c.alpha3, c.dialCode, c.name, c.exampleNumber,
               langText.join(" "), (c.languageTags ?? []).join(" "),
               curs.map((x) => `${x.code} ${x.name}`).join(" "),
               tzs.map((x) => x.id).join(" "),
               chain.join(" "),
             ].join(" "),
-            key: c.code ?? "",
+            key: c.regionCode ?? "",
           };
         })
         .filter((r) => !kw || r.searchText.toLowerCase().includes(kw)),
@@ -355,7 +355,7 @@ export default function ReferenceDirectoryPage() {
     timezones: {
       columns: timezoneColumns,
       rows: (timezones ?? [])
-        .filter((t) => match(t.id, t.name, ...(t.countryCodes ?? [])))
+        .filter((t) => match(t.id, t.name, ...(t.regionCodes ?? [])))
         .map((t) => ({ ...t, key: t.id ?? "" })),
     },
     languages: {
@@ -373,8 +373,8 @@ export default function ReferenceDirectoryPage() {
     groups: {
       columns: groupColumns,
       rows: (groups ?? [])
-        .filter((g) => match(g.code, g.name))
-        .map((g) => ({ ...g, key: g.code ?? "" })),
+        .filter((g) => match(g.groupCode, g.name))
+        .map((g) => ({ ...g, key: g.groupCode ?? "" })),
     },
   };
 
@@ -430,7 +430,7 @@ export default function ReferenceDirectoryPage() {
             onRow={
               domain === "groups"
                 ? (r) => ({
-                    onClick: () => openRegion(String(r.code), String(r.name)),
+                    onClick: () => openRegion(String(r.groupCode), String(r.name)),
                     style: { cursor: "pointer" },
                   })
                 : undefined
@@ -450,8 +450,8 @@ export default function ReferenceDirectoryPage() {
       >
         <Spin spinning={regionLoading}>
           {(regionCountries ?? []).map((c) => (
-            <div key={c.code} style={{ padding: "4px 0" }}>
-              {c.flagEmoji} {c.name} <Text type="secondary">{c.code} · {c.dialCode}</Text>
+            <div key={c.regionCode} style={{ padding: "4px 0" }}>
+              {c.flagEmoji} {c.name} <Text type="secondary">{c.regionCode} · {c.dialCode}</Text>
             </div>
           ))}
           {!regionLoading && (regionCountries ?? []).length === 0 && <Text type="secondary">无直接成员国</Text>}
