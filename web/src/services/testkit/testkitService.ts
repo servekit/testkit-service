@@ -2995,6 +2995,27 @@ export async function setVersionBlocked(
   });
 }
 
+/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/apps/${param0}${rotateSecret} */
+export async function rotateAppSecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.RotateAppSecretParams
+    ,body: API.TestkitServiceRotateAppSecretBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'slug': param0, 
+  ...queryParams
+  } = params;
+  return request<API.telemetryV1RotateAppSecretResponse>(`/api/v1/telemetry/admin/apps/${param0}:rotateSecret`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /api/v1/telemetry/ingest */
 export async function ingest(body: API.v1IngestRequest,
   options ?: {[key: string]: any}

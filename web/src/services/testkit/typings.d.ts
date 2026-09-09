@@ -1159,6 +1159,10 @@ immutable after creation either way. */
     prefix: string;
   };
 
+  type RotateAppSecretParams = {
+    slug: string;
+  };
+
   type RotateTokenParams = {
     slug: string;
   };
@@ -1233,12 +1237,25 @@ per-device limits cannot provide (spec §4.6 #1). */
     /** Disabled apps fail every ingest call immediately (401) — the operator
 kill-switch; tokens and signing keys stay in place for re-enable. */
     disabled?: boolean;
+    /** app_secret is the business-identity credential (the "sk" half of the
+platform-wide ak/sk pair; the slug is the "ak"). Required by the
+gRPC/module ingest surface — backend callers present it as x-app-key /
+x-app-secret metadata; the raw client endpoints (/v1/e/…) keep using
+the ingest token instead. Echoed on every read — internal-trust
+posture, same convention as the messaging/storage/license apps. */
+    appSecret?: string;
     createdAt?: string;
     updatedAt?: string;
   };
 
   type telemetryV1ListAppsResponse = {
     apps?: telemetryV1App[];
+  };
+
+  type telemetryV1RotateAppSecretResponse = {
+    app?: telemetryV1App;
+    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    appSecret?: string;
   };
 
   type TestkitServiceAddGroupMemberBody = {
@@ -1380,6 +1397,8 @@ send an empty list to disable intl; ignored for email). */
     reason?: string;
   };
 
+  type TestkitServiceRotateAppSecretBody = true;
+
   type TestkitServiceRotateTokenBody = true;
 
   type TestkitServiceSetVersionBlockedBody = {
@@ -1462,6 +1481,7 @@ user_id injected from ctx */
     rawRetentionDays?: number;
     dailyEventBudget?: string;
     disabled?: boolean;
+    appSecret?: string;
     createdAt?: string;
     updatedAt?: string;
   };

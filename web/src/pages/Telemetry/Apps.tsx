@@ -28,6 +28,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { SecretText } from "@/components/SecretText";
 import {
   createApp,
   createSigningKey,
@@ -36,6 +37,7 @@ import {
   replaceEventRules,
   revokeSigningKey,
   revokeToken,
+  rotateAppSecret,
   rotateToken,
   setVersionBlocked,
   updateApp,
@@ -51,6 +53,13 @@ export default function TelemetryAppsPage() {
   // 「配置」弹窗：按 slug 加载完整快照（tokens / 签名密钥 / 规则 / 版本门禁）
   const [detailSlug, setDetailSlug] = useState<string | null>(null);
   const [detail, setDetail] = useState<AppDetail | null>(null);
+  // 掩码开关按 "slug:appSecret" 记忆；轮换后自动点亮对应行
+  const [revealed, setRevealed] = useState<Record<string, boolean>>({});
+  const toggleReveal = (key: string) =>
+    setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
+  const reveal = (slug: string | undefined) => {
+    if (slug) setRevealed((prev) => ({ ...prev, [`${slug}:appSecret`]: true }));
+  };
 
   const loadDetail = async (slug: string) => {
     try {
@@ -87,10 +96,22 @@ export default function TelemetryAppsPage() {
 
   const columns: ProColumns<AppRow>[] = [
     {
-      title: "Slug",
+      title: "AppKey（Slug）",
       dataIndex: "slug",
       width: 160,
       render: (_, r) => <code>{r.slug}</code>,
+    },
+    {
+      title: "AppSecret",
+      dataIndex: "appSecret",
+      width: 360,
+      render: (_, r) => (
+        <SecretText
+          value={r.appSecret}
+          visible={!!revealed[`${r.slug}:appSecret`]}
+          onToggle={() => toggleReveal(`${r.slug}:appSecret`)}
+        />
+      ),
     },
     { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
     {
@@ -125,7 +146,7 @@ export default function TelemetryAppsPage() {
     {
       title: "操作",
       valueType: "option",
-      width: 260,
+      width: 320,
       render: (_, r) => [
         <a
           key="config"
@@ -136,6 +157,22 @@ export default function TelemetryAppsPage() {
           }}
         >
           配置
+        </a>,
+        <a
+          key="rotateSecret"
+          onClick={async () => {
+            try {
+              await rotateAppSecret({ slug: r.slug ?? "" }, {} as never);
+              message.success("已轮换，新 AppSecret 见列表");
+              reveal(r.slug);
+              reload();
+            } catch (err) {
+              const e = err as { data?: { message?: string } };
+              message.error(e?.data?.message ?? "轮换失败");
+            }
+          }}
+        >
+          轮换密钥
         </a>,
         <a
           key="rotate"
@@ -173,7 +210,7 @@ export default function TelemetryAppsPage() {
         rowKey="id"
         search={false}
         pagination={false}
-        scroll={{ x: 1200 }}
+        scroll={{ x: 1500 }}
         request={async () => {
           const resp = await listApps();
           return { data: (resp.apps ?? []) as AppRow[], success: true };
@@ -236,8 +273,10 @@ export default function TelemetryAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        停用是运维 kill-switch：停用应用的上报立即返回 401（令牌与签名密钥保留，重新启用即恢复）。
-        ingest token 仅创建/轮换时明文展示一次（落库即哈希）；事件规则与版本门禁在行内「配置」维护。
+        AppKey/AppSecret（slug + app_secret）是业务方身份凭据：后端/模块面调用 Ingest
+        需携带 x-app-key / x-app-secret，列表可见、轮换即换新；终端客户端的上报走 ingest
+        token（仅创建/轮换时明文展示一次，落库即哈希），两个维度互不影响。停用是运维
+        kill-switch：停用应用的上报立即 401（凭据保留，重新启用即恢复）；事件规则与版本门禁在行内「配置」维护。
       </Space>
 
       <Modal
