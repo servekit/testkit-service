@@ -223,7 +223,12 @@ func New(cfg *config.Config) (*Service, error) {
 
 	// P5 gid + dashboard domains.
 	svc.gidSvc = gidsvc.New(gid)
-	svc.dashboardSvc = dashboardsvc.New(usr, st, msg)
+	svc.dashboardSvc = dashboardsvc.New(usr, st, msg,
+		dashboardsvc.WithAppCredentials(
+			cfg.User.AppKey, cfg.User.AppSecret,
+			cfg.Storage.AppKey, cfg.Storage.AppSecret,
+			cfg.Message.AppKey, cfg.Message.AppSecret,
+		))
 
 	// P6 license + telemetry domains. License app credentials are injected
 	// into the downstream context of every client-surface call — fail fast
