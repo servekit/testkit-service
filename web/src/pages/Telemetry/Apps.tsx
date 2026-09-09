@@ -95,6 +95,7 @@ export default function TelemetryAppsPage() {
   };
 
   const columns: ProColumns<AppRow>[] = [
+    { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
     {
       title: "AppKey",
       dataIndex: "appKey",
@@ -113,7 +114,6 @@ export default function TelemetryAppsPage() {
         />
       ),
     },
-    { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
     {
       title: "状态",
       dataIndex: "disabled",
