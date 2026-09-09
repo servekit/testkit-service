@@ -911,6 +911,7 @@ func toUserCreateUserRequest(r *testkitv1.CreateUserRequest) *userv1.CreateUserR
 		Gender:   userv1.Gender(r.GetGender()),
 		Timezone: r.GetTimezone(),
 		Locale:   r.GetLocale(),
+		AppKey:   r.GetAppKey(),
 	}
 }
 
@@ -939,6 +940,7 @@ func toUserListUsersRequest(r *testkitv1.ListUsersRequest) *userv1.ListUsersRequ
 		UserType:         userv1.UserType(r.GetUserType()),
 		OrderBy:          userv1.UserSortField(r.GetOrderBy()),
 		Descending:       r.GetDescending(),
+		AppKey:           r.GetAppKey(),
 	}
 }
 
@@ -972,6 +974,7 @@ func ToUserListUsersPagedRequest(r *testkitv1.ListUsersPagedRequest) *userv1.Lis
 		Page:             r.GetPage(),
 		PageSize:         r.GetPageSize(),
 		Count:            r.GetCount(),
+		AppKey:           r.GetAppKey(),
 	}
 }
 

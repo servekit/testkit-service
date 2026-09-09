@@ -13,11 +13,12 @@ import { spinReload } from "@/components/TableOptions";
 import dayjs from "dayjs";
 import { App, Button, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   createUser,
   disableUser,
   listUsersPaged,
+  userListApps,
 } from "@/services/testkit/testkitService";
 import {
   GENDER_VALUE_ENUM,
@@ -40,11 +41,31 @@ export default function UserListPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(undefined);
   const [createOpen, setCreateOpen] = useState(false);
+  // 租户选项（平台运营视角可跨租户筛选；普通租户视角服务端会忽略并锁定自己）
+  const [apps, setApps] = useState<{ value: string; label: string }[]>([]);
+  useEffect(() => {
+    void userListApps().then((resp) => {
+      setApps(
+        (resp.apps ?? []).map((a) => ({
+          value: a.appKey ?? "",
+          label: `${a.name}（${a.appKey}）`,
+        })),
+      );
+    });
+  }, []);
 
   const columns: ProColumns<API.User>[] = [
     { title: "ID", dataIndex: "id", width: 180 },
     { title: "用户名", dataIndex: "username" },
     { title: "昵称", dataIndex: "nickname" },
+    {
+      title: "租户",
+      dataIndex: "appKey",
+      valueType: "select",
+      fieldProps: { options: apps, allowClear: true },
+      width: 140,
+      render: (_, r) => (r.appKey ? <code>{r.appKey}</code> : "-"),
+    },
     { title: "邮箱", dataIndex: "email" },
     {
       title: "类型",
@@ -122,6 +143,7 @@ export default function UserListPage() {
             username,
             email,
             userType,
+            appKey,
           } = params;
           const resp = await listUsersPaged({
             page: current,
@@ -132,6 +154,7 @@ export default function UserListPage() {
             username,
             email,
             userType: userType as API.ListUsersPagedParams["userType"],
+            appKey: (appKey as string) || undefined,
           });
           return {
             data: resp.users ?? [],
@@ -161,6 +184,12 @@ export default function UserListPage() {
           return true;
         }}
       >
+        <ProFormSelect
+          name="appKey"
+          label="目标租户"
+          rules={[{ required: true, message: "请选择租户" }]}
+          options={apps}
+        />
         <ProFormSelect
           name="userType"
           label="账号类型"

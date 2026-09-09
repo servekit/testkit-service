@@ -951,6 +951,8 @@ or context was cancelled. error_message carries the last error. */
     page?: number;
     pageSize?: number;
     count?: boolean;
+    /** Tenant filter (user_apps.app_key). Platform-operator callers only. */
+    appKey?: string;
   };
 
   type ListUsersParams = {
@@ -1014,6 +1016,8 @@ or context was cancelled. error_message carries the last error. */
       | "USER_SORT_FIELD_UPDATED_AT"
       | "USER_SORT_FIELD_LAST_LOGIN_AT";
     descending?: boolean;
+    /** Tenant filter (user_apps.app_key). Platform-operator callers only. */
+    appKey?: string;
   };
 
   type MessageDeleteAppParams = {
@@ -2141,6 +2145,8 @@ sender ID (e.g. "MyApp"). Unique. Immutable after creation. */
     gender?: v1Gender;
     timezone?: string;
     locale?: string;
+    /** Target tenant (user_apps.app_key). Platform-operator callers only. */
+    appKey?: string;
   };
 
   type v1CreateUserResponse = {
@@ -3662,6 +3668,10 @@ internal-trust posture, same convention as the other platform apps. */
     disabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
+    /** is_platform marks the platform-operator tenant: its admin surfaces see
+across ALL tenants (with an optional app_key filter) instead of being
+pinned to its own directory. */
+    isPlatform?: boolean;
   };
 
   type v1UserRole = {

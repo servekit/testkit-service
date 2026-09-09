@@ -3168,6 +3168,7 @@ export async function listUsers(
           'userType': 'USER_TYPE_UNSPECIFIED',
         // orderBy has a default value: USER_SORT_FIELD_UNSPECIFIED
           'orderBy': 'USER_SORT_FIELD_UNSPECIFIED',
+        
         ...params,},
     ...(options || {}),
   });
@@ -3286,6 +3287,7 @@ export async function listUsersPaged(
         
         // orderBy has a default value: USER_SORT_FIELD_UNSPECIFIED
           'orderBy': 'USER_SORT_FIELD_UNSPECIFIED',
+        
         
         
         
