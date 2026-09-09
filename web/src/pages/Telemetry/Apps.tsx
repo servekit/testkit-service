@@ -96,7 +96,7 @@ export default function TelemetryAppsPage() {
 
   const columns: ProColumns<AppRow>[] = [
     {
-      title: "AppKey（AppKey）",
+      title: "AppKey",
       dataIndex: "appKey",
       width: 160,
       render: (_, r) => <code>{r.appKey}</code>,
@@ -257,7 +257,6 @@ export default function TelemetryAppsPage() {
             }}
             trigger={<Button type="primary">创建应用</Button>}
           >
-            <ProFormText name="appKey" label="AppKey" rules={[{ required: true }]} />
             <ProFormText name="name" label="名称" rules={[{ required: true }]} />
             <ProFormText name="email" label="联系邮箱" />
             <ProFormSwitch name="strictVersions" label="严格版本门禁" />
