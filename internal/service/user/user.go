@@ -278,6 +278,7 @@ func (s *Service) GetSession(ctx context.Context, req *testkitv1.GetSessionReque
 		Browser:       resp.GetBrowser(),
 		LoginMethod:   resp.GetLoginMethod(),
 		LoginProvider: resp.GetLoginProvider(),
+		AppKey:        resp.GetAppKey(),
 	}, nil
 }
 
@@ -852,6 +853,7 @@ func toTestkitUser(u *userv1.User) *testkitv1.User {
 		DialCode:        u.GetDialCode(),
 		DefaultCurrency: u.GetDefaultCurrency(),
 		MfaEnabled:      u.GetMfaEnabled(),
+		AppKey:          u.GetAppKey(),
 	}
 }
 

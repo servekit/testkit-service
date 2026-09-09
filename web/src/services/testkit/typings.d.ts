@@ -2486,6 +2486,8 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     browser?: string;
     loginMethod?: v1LoginMethod;
     loginProvider?: v1IdentityProvider;
+    /** Tenant the session lives in (user_apps.app_key). */
+    appKey?: string;
   };
 
   type v1GetSTSCredentialRequest = {
@@ -3643,6 +3645,8 @@ user.v1.User.dial_code. */
     defaultCurrency?: string;
     /** Reserved for MFA; false until an MFA flow exists. */
     mfaEnabled?: boolean;
+    /** Tenant label (user_apps.app_key) the user belongs to. */
+    appKey?: string;
   };
 
   type v1UserAppInfo = {
