@@ -9,6 +9,10 @@ declare namespace API {
     groupId: string;
   };
 
+  type AdminDeleteAppParams = {
+    appKey: string;
+  };
+
   type AdminDeleteBucketParams = {
     name: string;
   };
@@ -22,6 +26,10 @@ declare namespace API {
 
   type AdminDeleteProviderParams = {
     name: string;
+  };
+
+  type AdminGetAppParams = {
+    appKey: string;
   };
 
   type AdminGetFileParams = {
@@ -74,7 +82,11 @@ declare namespace API {
       | "AUDIT_ACTION_ADMIN_DELETE_PROVIDER"
       | "AUDIT_ACTION_ADMIN_UPSERT_BUCKET"
       | "AUDIT_ACTION_ADMIN_DELETE_BUCKET"
-      | "AUDIT_ACTION_ADMIN_UPDATE_SETTINGS";
+      | "AUDIT_ACTION_ADMIN_UPDATE_SETTINGS"
+      | "AUDIT_ACTION_ADMIN_CREATE_APP"
+      | "AUDIT_ACTION_ADMIN_UPDATE_APP"
+      | "AUDIT_ACTION_ADMIN_DELETE_APP"
+      | "AUDIT_ACTION_ADMIN_ROTATE_APP_SECRET";
     targetType?:
       | "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED"
       | "AUDIT_LOG_TARGET_TYPE_FILE"
@@ -82,7 +94,8 @@ declare namespace API {
       | "AUDIT_LOG_TARGET_TYPE_OWNER"
       | "AUDIT_LOG_TARGET_TYPE_PROVIDER"
       | "AUDIT_LOG_TARGET_TYPE_BUCKET"
-      | "AUDIT_LOG_TARGET_TYPE_SETTINGS";
+      | "AUDIT_LOG_TARGET_TYPE_SETTINGS"
+      | "AUDIT_LOG_TARGET_TYPE_APP";
     status?:
       | "AUDIT_LOG_STATUS_UNSPECIFIED"
       | "AUDIT_LOG_STATUS_SUCCESS"
@@ -126,6 +139,14 @@ declare namespace API {
     pageToken?: string;
     provider?: string;
     bucket?: string;
+  };
+
+  type AdminRotateAppSecretParams = {
+    appKey: string;
+  };
+
+  type AdminUpdateAppParams = {
+    appKey: string;
   };
 
   type AdminUpdateProviderParams = {
@@ -405,6 +426,53 @@ when both are set; an unknown username yields an empty page. */
     reason?: string;
   };
 
+  type LicenseDeleteAppParams = {
+    appKey: string;
+  };
+
+  type LicenseGetAppParams = {
+    appKey: string;
+  };
+
+  type LicenseRotateAppSecretParams = {
+    appKey: string;
+  };
+
+  type LicenseUpdateAppParams = {
+    appKey: string;
+  };
+
+  type licenseV1CreateAppRequest = {
+    /** app_key pattern: lowercase letter followed by lowercase alphanumerics
+and dashes. Optional; empty = server-generated. */
+    appKey?: string;
+    name?: string;
+  };
+
+  type licenseV1CreateAppResponse = {
+    app?: v1LicenseAppInfo;
+    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    appSecret?: string;
+  };
+
+  type licenseV1GetAppResponse = {
+    app?: v1LicenseAppInfo;
+  };
+
+  type licenseV1ListAppsResponse = {
+    apps?: v1LicenseAppInfo[];
+  };
+
+  type licenseV1RotateAppSecretResponse = {
+    app?: v1LicenseAppInfo;
+    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    appSecret?: string;
+  };
+
+  type licenseV1UpdateAppResponse = {
+    app?: v1LicenseAppInfo;
+  };
+
   type ListCountriesByRegionParams = {
     groupCode: string;
     locale?: string;
@@ -594,7 +662,11 @@ message-service ListEmailsRequest.app_key). */
       | "AUDIT_ACTION_ADMIN_DELETE_PROVIDER"
       | "AUDIT_ACTION_ADMIN_UPSERT_BUCKET"
       | "AUDIT_ACTION_ADMIN_DELETE_BUCKET"
-      | "AUDIT_ACTION_ADMIN_UPDATE_SETTINGS";
+      | "AUDIT_ACTION_ADMIN_UPDATE_SETTINGS"
+      | "AUDIT_ACTION_ADMIN_CREATE_APP"
+      | "AUDIT_ACTION_ADMIN_UPDATE_APP"
+      | "AUDIT_ACTION_ADMIN_DELETE_APP"
+      | "AUDIT_ACTION_ADMIN_ROTATE_APP_SECRET";
     targetType?:
       | "AUDIT_LOG_TARGET_TYPE_UNSPECIFIED"
       | "AUDIT_LOG_TARGET_TYPE_FILE"
@@ -602,7 +674,8 @@ message-service ListEmailsRequest.app_key). */
       | "AUDIT_LOG_TARGET_TYPE_OWNER"
       | "AUDIT_LOG_TARGET_TYPE_PROVIDER"
       | "AUDIT_LOG_TARGET_TYPE_BUCKET"
-      | "AUDIT_LOG_TARGET_TYPE_SETTINGS";
+      | "AUDIT_LOG_TARGET_TYPE_SETTINGS"
+      | "AUDIT_LOG_TARGET_TYPE_APP";
     startTime?: string;
     endTime?: string;
     pageSize?: number;
@@ -1019,6 +1092,15 @@ immutable after creation either way. */
     app?: v1MessageAppInfo;
   };
 
+  type messagingV1ListAppsResponse = {
+    apps?: v1MessageAppInfo[];
+  };
+
+  type messagingV1RotateAppSecretResponse = {
+    app?: v1MessageAppInfo;
+    appSecret?: string;
+  };
+
   type messagingV1UpdateAppResponse = {
     app?: v1MessageAppInfo;
   };
@@ -1104,7 +1186,6 @@ immutable after creation either way. */
   type storageV1BucketInfo = {
     name?: string;
     provider?: string;
-    keyPrefix?: string;
     acl?: v1BucketACL;
     vendor?: v1Vendor;
     cdn?: v1CDNConfig;
@@ -1125,6 +1206,41 @@ available for direct browser uploads). */
     bucketCount?: number;
   };
 
+  type telemetryV1App = {
+    /** uuid */
+    id?: string;
+    /** unique, url-safe */
+    slug?: string;
+    name?: string;
+    /** optional operator contact */
+    email?: string;
+    /** drop unknown versions instead of auto-registering */
+    strictVersions?: boolean;
+    authMode?: v1AuthMode;
+    /** while set+future: hmac apps still accept unsigned batches */
+    authGraceUntil?: string;
+    /** per device */
+    ratePerMinute?: number;
+    /** per device */
+    ratePerDay?: number;
+    /** events_raw TTL (≥ partition horizon) */
+    rawRetentionDays?: number;
+    /** Per-app daily ingestion budget (events/day, attempts counted). Exceeding
+it drops the batch's events silently with a 204 and fires the
+app_budget_exceeded metric — the bounded-garbage abuse backstop that
+per-device limits cannot provide (spec §4.6 #1). */
+    dailyEventBudget?: string;
+    /** Disabled apps fail every ingest call immediately (401) — the operator
+kill-switch; tokens and signing keys stay in place for re-enable. */
+    disabled?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
+  type telemetryV1ListAppsResponse = {
+    apps?: telemetryV1App[];
+  };
+
   type TestkitServiceAddGroupMemberBody = {
     /** target member (kept) */
     userId?: string;
@@ -1133,6 +1249,15 @@ available for direct browser uploads). */
 
   type TestkitServiceAddGroupRoleBody = {
     roleId?: string;
+  };
+
+  type TestkitServiceAdminRotateAppSecretBody = true;
+
+  type TestkitServiceAdminUpdateAppBody = {
+    name?: string;
+    disabled?: boolean;
+    /** bucket_id 0 rebinds the app to the default bucket. */
+    bucketId?: string;
   };
 
   type TestkitServiceAdminUpdateProviderBody = {
@@ -1149,7 +1274,6 @@ disables STS. */
 
   type TestkitServiceAdminUpsertBucketBody = {
     provider?: string;
-    keyPrefix?: string;
     acl?: v1BucketACL;
     cdn?: v1CDNConfig;
   };
@@ -1200,6 +1324,13 @@ disables STS. */
     kind?: v1EntitlementKind;
     durationDays?: number;
     expiresAt?: string;
+  };
+
+  type TestkitServiceLicenseRotateAppSecretBody = true;
+
+  type TestkitServiceLicenseUpdateAppBody = {
+    name?: string;
+    disabled?: boolean;
   };
 
   type TestkitServiceMessageRotateAppSecretBody = true;
@@ -1275,6 +1406,7 @@ user_id injected from ctx */
     ratePerDay?: number;
     rawRetentionDays?: number;
     dailyEventBudget?: string;
+    disabled?: boolean;
   };
 
   type TestkitServiceUpdateGroupBody = {
@@ -1317,10 +1449,26 @@ user_id injected from ctx */
     permissionGroupIds?: string[];
   };
 
+  type testkitV1App = {
+    id?: string;
+    slug?: string;
+    name?: string;
+    email?: string;
+    strictVersions?: boolean;
+    authMode?: v1AuthMode;
+    authGraceUntil?: string;
+    ratePerMinute?: number;
+    ratePerDay?: number;
+    rawRetentionDays?: number;
+    dailyEventBudget?: string;
+    disabled?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
   type testkitV1BucketInfo = {
     name?: string;
     provider?: string;
-    keyPrefix?: string;
     acl?: v1BucketACL;
     vendor?: v1Vendor;
     cdn?: v1CDNConfig;
@@ -1333,12 +1481,12 @@ user_id injected from ctx */
   };
 
   type testkitV1CreateAppResponse = {
-    app?: v1App;
+    app?: testkitV1App;
     token?: string;
   };
 
   type testkitV1GetAppResponse = {
-    app?: v1App;
+    app?: testkitV1App;
     tokens?: v1IngestTokenInfo[];
     signingKeys?: v1TelemetrySigningKeyInfo[];
     rules?: v1EventRule[];
@@ -1356,7 +1504,7 @@ user_id injected from ctx */
   };
 
   type testkitV1UpdateAppResponse = {
-    app?: v1App;
+    app?: testkitV1App;
   };
 
   type UnbindIdentityParams = {
@@ -1414,6 +1562,24 @@ user_id injected from ctx */
     slots?: v1SlotSummary;
   };
 
+  type v1AdminCreateAppRequest = {
+    /** app_key pattern: lowercase letter followed by lowercase alphanumerics
+and dashes. Optional; empty = server-generated. */
+    appKey?: string;
+    name?: string;
+    /** key_prefix namespaces the app's objects; globally unique, immutable,
+must end with '/'. */
+    keyPrefix?: string;
+    /** bucket_id: 0 = the platform default bucket. */
+    bucketId?: string;
+  };
+
+  type v1AdminCreateAppResponse = {
+    app?: v1StorageAppInfo;
+    /** app_secret convenience echo (also visible via AdminListApps/GetApp). */
+    appSecret?: string;
+  };
+
   type v1AdminCreateProviderRequest = {
     /** name uniquely identifies the provider (referenced by buckets).
 Immutable after creation. */
@@ -1469,6 +1635,10 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     updatedAt?: string;
   };
 
+  type v1AdminGetAppResponse = {
+    app?: v1StorageAppInfo;
+  };
+
   type v1AdminGetSettingsResponse = {
     settings?: v1StorageSettings;
   };
@@ -1485,6 +1655,10 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     ownerStats?: v1OwnerStats[];
     providerStats?: v1ProviderStats[];
     bucketStats?: v1BucketStats[];
+  };
+
+  type v1AdminListAppsResponse = {
+    apps?: v1StorageAppInfo[];
   };
 
   type v1AdminListAuditLogsResponse = {
@@ -1507,6 +1681,12 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     providers?: testkitV1ProviderInfo[];
   };
 
+  type v1AdminRotateAppSecretResponse = {
+    app?: v1StorageAppInfo;
+    /** app_secret convenience echo (also visible via AdminListApps/GetApp). */
+    appSecret?: string;
+  };
+
   type v1AdminSetQuotaRequest = {
     ownerType?: v1OwnerType;
     ownerId?: string;
@@ -1527,6 +1707,10 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
   type v1AdminSoftDeleteOwnerFilesResponse = {
     filesDeleted?: string;
     bytesReleased?: string;
+  };
+
+  type v1AdminUpdateAppResponse = {
+    app?: v1StorageAppInfo;
   };
 
   type v1AdminUpdateProviderResponse = {
@@ -1554,22 +1738,6 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     regionId?: string;
   };
 
-  type v1App = {
-    id?: string;
-    slug?: string;
-    name?: string;
-    email?: string;
-    strictVersions?: boolean;
-    authMode?: v1AuthMode;
-    authGraceUntil?: string;
-    ratePerMinute?: number;
-    ratePerDay?: number;
-    rawRetentionDays?: number;
-    dailyEventBudget?: string;
-    createdAt?: string;
-    updatedAt?: string;
-  };
-
   type v1AuditAction =
     | "AUDIT_ACTION_UNSPECIFIED"
     | "AUDIT_ACTION_UPLOAD"
@@ -1591,7 +1759,11 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     | "AUDIT_ACTION_ADMIN_DELETE_PROVIDER"
     | "AUDIT_ACTION_ADMIN_UPSERT_BUCKET"
     | "AUDIT_ACTION_ADMIN_DELETE_BUCKET"
-    | "AUDIT_ACTION_ADMIN_UPDATE_SETTINGS";
+    | "AUDIT_ACTION_ADMIN_UPDATE_SETTINGS"
+    | "AUDIT_ACTION_ADMIN_CREATE_APP"
+    | "AUDIT_ACTION_ADMIN_UPDATE_APP"
+    | "AUDIT_ACTION_ADMIN_DELETE_APP"
+    | "AUDIT_ACTION_ADMIN_ROTATE_APP_SECRET";
 
   type v1AuditLogEntry = {
     id?: string;
@@ -1620,7 +1792,8 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     | "AUDIT_LOG_TARGET_TYPE_OWNER"
     | "AUDIT_LOG_TARGET_TYPE_PROVIDER"
     | "AUDIT_LOG_TARGET_TYPE_BUCKET"
-    | "AUDIT_LOG_TARGET_TYPE_SETTINGS";
+    | "AUDIT_LOG_TARGET_TYPE_SETTINGS"
+    | "AUDIT_LOG_TARGET_TYPE_APP";
 
   type v1AuthMode =
     | "AUTH_MODE_UNSPECIFIED"
@@ -1641,7 +1814,6 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
 
   type v1BatchGetSTSCredentialRequest = {
     files?: v1UploadFileMeta[];
-    bucket?: string;
     ttl?: string;
     allowedExtensions?: string[];
     visibility?: v1Visibility;
@@ -2123,7 +2295,6 @@ sender ID (e.g. "MyApp"). Unique. Immutable after creation. */
     size?: string;
     md5?: string;
     contentType?: string;
-    bucket?: string;
     filePath?: string;
     description?: string;
     metadata?: Record<string, any>;
@@ -2238,7 +2409,6 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
   };
 
   type v1GetSTSCredentialRequest = {
-    bucket?: string;
     maxSize?: string;
     filename?: string;
     md5?: string;
@@ -2436,8 +2606,19 @@ the sign on the account, not per request). */
     nativeName?: string;
   };
 
-  type v1ListAppsResponse = {
-    apps?: v1MessageAppInfo[];
+  type v1LicenseAppInfo = {
+    id?: string;
+    /** app_key identifies the app on every data-plane call; unique, immutable. */
+    appKey?: string;
+    /** app_secret is the data-plane credential. Echoed on every read —
+internal-trust posture, same convention as the messaging/storage apps;
+the ops console is the intended reader. */
+    appSecret?: string;
+    name?: string;
+    /** disabled apps fail every data-plane call immediately. */
+    disabled?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
   };
 
   type v1ListChannelAccountsResponse = {
@@ -2934,11 +3115,6 @@ policy. Its channel must match. */
     updatedAt?: string;
   };
 
-  type v1RotateAppSecretResponse = {
-    app?: v1MessageAppInfo;
-    appSecret?: string;
-  };
-
   type v1RotateTokenResponse = {
     token?: string;
   };
@@ -3171,6 +3347,29 @@ sender ID (e.g. "MyApp"). Unique. */
     | "SORT_FIELD_CREATED_AT"
     | "SORT_FIELD_FILENAME"
     | "SORT_FIELD_SIZE";
+
+  type v1StorageAppInfo = {
+    id?: string;
+    /** app_key identifies the app on every data-plane call (x-app-key metadata);
+immutable after creation. */
+    appKey?: string;
+    name?: string;
+    /** key_prefix namespaces every object the app writes. Global unique,
+immutable, must end with '/'. All key composition is plain concatenation. */
+    keyPrefix?: string;
+    /** bucket_id selects the app's private bucket; 0 = the platform default
+bucket. PUBLIC uploads always land in the public bucket regardless.
+Changing buckets only affects new uploads. */
+    bucketId?: string;
+    /** disabled apps fail every data-plane call immediately. */
+    disabled?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+    /** app_secret is the data-plane credential (x-app-secret metadata). Echoed
+on every read — internal-trust posture, same convention as messaging
+apps; the ops console is the intended reader. */
+    appSecret?: string;
+  };
 
   type v1StorageSettings = {
     /** default_bucket receives uploads that do not specify a bucket. */

@@ -93,6 +93,107 @@ export async function adminDeleteFile(
   });
 }
 
+/** App management (calling applications of the storage platform;
+1:1 forwards to storage-service admin RPCs). GET /api/v1/admin/storage/apps */
+export async function adminListApps(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1AdminListAppsResponse>('/api/v1/admin/storage/apps', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/admin/storage/apps */
+export async function adminCreateApp(body: API.v1AdminCreateAppRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1AdminCreateAppResponse>('/api/v1/admin/storage/apps', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/admin/storage/apps/${param0} */
+export async function adminGetApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminGetAppParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1AdminGetAppResponse>(`/api/v1/admin/storage/apps/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/admin/storage/apps/${param0} */
+export async function adminUpdateApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminUpdateAppParams
+    ,body: API.TestkitServiceAdminUpdateAppBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1AdminUpdateAppResponse>(`/api/v1/admin/storage/apps/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/admin/storage/apps/${param0} */
+export async function adminDeleteApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminDeleteAppParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/admin/storage/apps/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/admin/storage/apps/${param0}${rotateSecret} */
+export async function adminRotateAppSecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminRotateAppSecretParams
+    ,body: API.TestkitServiceAdminRotateAppSecretBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1AdminRotateAppSecretResponse>(`/api/v1/admin/storage/apps/${param0}:rotateSecret`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/v1/admin/storage/buckets */
 export async function adminListBuckets(
   options ?: {[key: string]: any}
@@ -863,6 +964,106 @@ export async function activate(body: API.v1ActivateRequest,
   });
 }
 
+/** 此处后端没有提供注释 GET /api/v1/license/admin/apps */
+export async function licenseListApps(
+  options ?: {[key: string]: any}
+) {
+  return request<API.licenseV1ListAppsResponse>('/api/v1/license/admin/apps', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/admin/apps */
+export async function licenseCreateApp(body: API.licenseV1CreateAppRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.licenseV1CreateAppResponse>('/api/v1/license/admin/apps', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/license/admin/apps/${param0} */
+export async function licenseGetApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.LicenseGetAppParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.licenseV1GetAppResponse>(`/api/v1/license/admin/apps/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/license/admin/apps/${param0} */
+export async function licenseUpdateApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.LicenseUpdateAppParams
+    ,body: API.TestkitServiceLicenseUpdateAppBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.licenseV1UpdateAppResponse>(`/api/v1/license/admin/apps/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/license/admin/apps/${param0} */
+export async function licenseDeleteApp(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.LicenseDeleteAppParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/license/admin/apps/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/admin/apps/${param0}${rotateSecret} */
+export async function licenseRotateAppSecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.LicenseRotateAppSecretParams
+    ,body: API.TestkitServiceLicenseRotateAppSecretBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'appKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.licenseV1RotateAppSecretResponse>(`/api/v1/license/admin/apps/${param0}:rotateSecret`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/v1/license/admin/keys */
 export async function listKeys(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -1238,7 +1439,7 @@ export async function messageDeleteChannelAccount(
 export async function messageListApps(
   options ?: {[key: string]: any}
 ) {
-  return request<API.v1ListAppsResponse>('/api/v1/message/admin/apps', {
+  return request<API.messagingV1ListAppsResponse>('/api/v1/message/admin/apps', {
   method: 'GET',
     ...(options || {}),
   });
@@ -1323,7 +1524,7 @@ export async function messageRotateAppSecret(
   const { 'id': param0, 
   ...queryParams
   } = params;
-  return request<API.v1RotateAppSecretResponse>(`/api/v1/message/admin/apps/${param0}/secret:rotate`, {
+  return request<API.messagingV1RotateAppSecretResponse>(`/api/v1/message/admin/apps/${param0}/secret:rotate`, {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -2591,6 +2792,16 @@ export async function getMyQuota(
   options ?: {[key: string]: any}
 ) {
   return request<API.v1QuotaInfo>('/api/v1/storage/quota', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/telemetry/admin/apps */
+export async function listApps(
+  options ?: {[key: string]: any}
+) {
+  return request<API.telemetryV1ListAppsResponse>('/api/v1/telemetry/admin/apps', {
   method: 'GET',
     ...(options || {}),
   });

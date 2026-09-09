@@ -1,10 +1,10 @@
 /**
- * 存储平台 · 应用管理。与消息平台的应用管理同一套交互：每个接入方一个
- * App，凭据（app_key/app_secret）列表可见（内网信任 posture），默认掩码、
- * 点眼睛显示明文、点复制取值。存储特有的两列：Key Prefix（对象命名空间
- * = 隔离与去重域，全局唯一且不可改）与绑定桶。
+ * License 平台 · 应用管理。与消息/存储平台同一套交互：调用方（业务系统）
+ * 的身份注册表，凭据（app_key/app_secret）列表可见（内网信任 posture），
+ * 默认掩码、点眼睛显示明文、点复制取值。注意区分：App 是接入方身份，
+ * 不是终端用户的 License Key（密钥管理在另一页）。
  */
-import { ModalForm, ProFormDigit, ProFormText } from "@ant-design/pro-components";
+import { ModalForm, ProFormText } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
 import { useRef, useState } from "react";
 import {
@@ -15,14 +15,14 @@ import {
 } from "@ant-design/pro-components";
 import { SecretText } from "@/components/SecretText";
 import {
-  adminCreateApp,
-  adminDeleteApp,
-  adminListApps,
-  adminRotateAppSecret,
-  adminUpdateApp,
+  licenseCreateApp,
+  licenseDeleteApp,
+  licenseListApps,
+  licenseRotateAppSecret,
+  licenseUpdateApp,
 } from "@/services/testkit/testkitService";
 
-export default function AdminStorageAppsPage() {
+export default function LicenseAppsPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
@@ -34,8 +34,8 @@ export default function AdminStorageAppsPage() {
     if (appKey) setRevealed((prev) => ({ ...prev, [`${appKey}:${field}`]: true }));
   };
 
-  const columns: ProColumns<API.v1StorageAppInfo>[] = [
-    { title: "名称", dataIndex: "name", hideInSearch: true, width: 140, ellipsis: true },
+  const columns: ProColumns<API.v1LicenseAppInfo>[] = [
+    { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
     {
       title: "AppKey",
       dataIndex: "appKey",
@@ -51,7 +51,7 @@ export default function AdminStorageAppsPage() {
     {
       title: "AppSecret",
       dataIndex: "appSecret",
-      width: 380,
+      width: 420,
       render: (_, r) => (
         <SecretText
           value={r.appSecret}
@@ -61,25 +61,18 @@ export default function AdminStorageAppsPage() {
       ),
     },
     {
-      title: "Key Prefix",
-      dataIndex: "keyPrefix",
-      width: 160,
-      render: (_, r) => <Tag color="blue">{r.keyPrefix}</Tag>,
-    },
-    {
-      title: "绑定桶",
-      dataIndex: "bucketId",
-      hideInSearch: true,
-      width: 100,
-      render: (_, r) =>
-        Number(r.bucketId) === 0 ? <Tag>默认桶</Tag> : <Tag color="geekblue">#{r.bucketId}</Tag>,
-    },
-    {
       title: "状态",
       dataIndex: "disabled",
       hideInSearch: true,
       width: 80,
       render: (_, r) => (r.disabled ? <Tag color="red">停用</Tag> : <Tag color="green">启用</Tag>),
+    },
+    {
+      title: "创建时间",
+      dataIndex: "createdAt",
+      hideInSearch: true,
+      width: 170,
+      render: (_, r) => (r.createdAt ? new Date(r.createdAt).toLocaleString() : "-"),
     },
     {
       title: "操作",
@@ -90,7 +83,7 @@ export default function AdminStorageAppsPage() {
           key="rotate"
           onClick={async () => {
             try {
-              await adminRotateAppSecret({ appKey: r.appKey! }, {} as never);
+              await licenseRotateAppSecret({ appKey: r.appKey! }, {} as never);
               message.success("已轮换，新 AppSecret 见列表");
               reveal(r.appKey, "appSecret");
               reload();
@@ -106,8 +99,8 @@ export default function AdminStorageAppsPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await adminUpdateApp({ appKey: r.appKey! }, { disabled: !r.disabled });
-              message.success(r.disabled ? "已启用" : "已停用（数据面立即拒绝）");
+              await licenseUpdateApp({ appKey: r.appKey! }, { disabled: !r.disabled });
+              message.success(r.disabled ? "已启用" : "已停用（客户端面立即拒绝）");
               reload();
             } catch (err) {
               const e = err as { data?: { message?: string } };
@@ -119,10 +112,10 @@ export default function AdminStorageAppsPage() {
         </a>,
         <Popconfirm
           key="del"
-          title="删除后数据面立即拒绝；存量对象仍可读。确定？"
+          title="硬删除：app_key 立即失效且可被重新注册；已发的 License 不受影响。确定？"
           onConfirm={async () => {
             try {
-              await adminDeleteApp({ appKey: r.appKey! });
+              await licenseDeleteApp({ appKey: r.appKey! });
               message.success("已删除");
               reload();
             } catch (err) {
@@ -139,31 +132,26 @@ export default function AdminStorageAppsPage() {
 
   return (
     <PageContainer>
-      <ProTable<API.v1StorageAppInfo>
+      <ProTable<API.v1LicenseAppInfo>
         headerTitle="应用列表"
         actionRef={actionRef}
         columns={columns}
         rowKey="appKey"
         search={false}
         pagination={false}
-        scroll={{ x: 1400 }}
+        scroll={{ x: 1280 }}
         request={async () => {
-          const resp = await adminListApps();
+          const resp = await licenseListApps();
           return { data: resp.apps ?? [], success: true };
         }}
         toolBarRender={() => [
           <ModalForm
             key="create"
             title="创建应用"
-            width={560}
             trigger={<Button type="primary">创建应用</Button>}
             onFinish={async (vals) => {
               try {
-                const resp = await adminCreateApp({
-                  name: vals.name,
-                  keyPrefix: vals.keyPrefix,
-                  bucketId: String(Number(vals.bucketId ?? 0)),
-                });
+                const resp = await licenseCreateApp({ name: vals.name });
                 message.success("已创建，AppKey/AppSecret 见列表");
                 reveal(resp.app?.appKey, "appSecret");
                 reload();
@@ -176,32 +164,13 @@ export default function AdminStorageAppsPage() {
             }}
           >
             <ProFormText name="name" label="名称" rules={[{ required: true }]} />
-            <ProFormText
-              name="keyPrefix"
-              label="Key Prefix（对象命名空间，全局唯一且不可改，必须以 / 结尾）"
-              rules={[
-                { required: true },
-                {
-                  pattern: /^[a-z][a-z0-9-]{1,62}\/$/,
-                  message: "格式：小写字母开头，字母/数字/短横线，以 / 结尾",
-                },
-              ]}
-              placeholder="如 my-app/"
-            />
-            <ProFormDigit
-              name="bucketId"
-              label="绑定桶 ID（0 = 默认桶；PUBLIC 上传始终落公共桶）"
-              min={0}
-              fieldProps={{ precision: 0 }}
-              placeholder="0"
-            />
           </ModalForm>,
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        每个应用的对象都写在自己的 key_prefix 下，去重域 = prefix（跨应用同内容各存一份）；数据面调用需携带
-        x-app-key / x-app-secret（列表可见，配置到调用方如 testkit 的 storage.app_key /
-        app_secret）。轮换后旧 secret 立即失效。
+        App 是接入方（业务系统）身份：客户端面调用（激活 / 停用 / 试用启动）需携带 x-app-key /
+        x-app-secret，缺凭据、应用停用或密钥不符都会被拒绝；终端用户的 License Key
+        在「密钥管理」页维护。轮换后旧 secret 立即失效。
       </Space>
     </PageContainer>
   );

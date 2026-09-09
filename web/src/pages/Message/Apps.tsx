@@ -5,11 +5,6 @@
  * message.app_key / app_secret。
  */
 import { ModalForm, ProFormDigit, ProFormText } from "@ant-design/pro-components";
-import {
-  CopyOutlined,
-  EyeInvisibleOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
 import { useRef, useState } from "react";
 import {
@@ -18,6 +13,7 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
+import { SecretText } from "@/components/SecretText";
 import {
   messageCreateApp,
   messageDeleteApp,
@@ -25,53 +21,6 @@ import {
   messageRotateAppSecret,
   messageUpdateApp,
 } from "@/services/testkit/testkitService";
-
-/** 凭据单元格：默认星号掩码，眼睛切换明文，复制按钮取值。显隐状态由页面持有。 */
-function SecretText({
-  value,
-  visible,
-  onToggle,
-}: {
-  value?: string;
-  visible: boolean;
-  onToggle: () => void;
-}) {
-  const { message } = App.useApp();
-  return (
-    <Space size={2}>
-      <span
-        style={{
-          fontFamily: "monospace",
-          wordBreak: "break-all",
-          display: "inline-block",
-          minWidth: 64,
-        }}
-      >
-        {visible ? value || "-" : "••••••••••"}
-      </span>
-      <Button
-        type="text"
-        size="small"
-        icon={visible ? <EyeInvisibleOutlined /> : <EyeOutlined />}
-        onClick={onToggle}
-      />
-      <Button
-        type="text"
-        size="small"
-        icon={<CopyOutlined />}
-        onClick={async () => {
-          if (!value) return;
-          try {
-            await navigator.clipboard.writeText(value);
-            message.success("已复制");
-          } catch {
-            message.error("复制失败，请手动选择复制");
-          }
-        }}
-      />
-    </Space>
-  );
-}
 
 export default function MessageAppsPage() {
   const { message } = App.useApp();

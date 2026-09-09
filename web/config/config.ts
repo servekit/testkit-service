@@ -316,7 +316,12 @@ export default defineConfig({
       icon: "KeyOutlined",
       access: "canInternal",
       routes: [
-        { path: "/license", redirect: "/license/keys" },
+        { path: "/license", redirect: "/license/apps" },
+        {
+          path: "/license/apps",
+          name: "应用管理",
+          component: "./License/Apps",
+        },
         {
           path: "/license/keys",
           name: "密钥管理",
