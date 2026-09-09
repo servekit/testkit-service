@@ -2,7 +2,8 @@ import { PageContainer, ProTable, type ProColumns } from "@ant-design/pro-compon
 import { spinReload } from "@/components/TableOptions";
 import { Tag, Typography } from "antd";
 import dayjs from "dayjs";
-import { getLoginLogs } from "@/services/testkit/testkitService";
+import { useEffect, useState } from "react";
+import { getLoginLogs, userListApps } from "@/services/testkit/testkitService";
 import {
   DEVICE_TYPE_VALUE_ENUM,
   LOGIN_ACTION_VALUE_ENUM,
@@ -26,7 +27,20 @@ const ACTION_OPTIONS = toEnumOptions(LOGIN_ACTION_VALUE_ENUM);
  * useCursorTable surfaces it as progressive prev/next paging.
  */
 export default function LoginLogsPage() {
-  const logs = useCursorTable(async ({ cursor, pageSize, username, userId, method, action, success }) => {
+  // 租户选项（平台运营视角可跨租户审计；普通租户视角服务端会忽略并锁定自己）
+  const [apps, setApps] = useState<{ value: string; label: string }[]>([]);
+  useEffect(() => {
+    void userListApps().then((resp) => {
+      setApps(
+        (resp.apps ?? []).map((a) => ({
+          value: a.appKey ?? "",
+          label: `${a.name}（${a.appKey}）`,
+        })),
+      );
+    });
+  }, []);
+
+  const logs = useCursorTable(async ({ cursor, pageSize, username, userId, method, action, success, appKey }) => {
     const resp = await getLoginLogs({
       username: (username as string) || undefined,
       userId: (userId as string) || undefined,
@@ -36,6 +50,7 @@ export default function LoginLogsPage() {
         success === undefined || success === ""
           ? undefined
           : success === "true" || success === true,
+      appKey: (appKey as string) || undefined,
       pageSize,
       cursor: cursor || undefined,
     });
@@ -43,6 +58,14 @@ export default function LoginLogsPage() {
   });
 
   const columns: ProColumns<API.LoginLog>[] = [
+    {
+      title: "租户",
+      dataIndex: "appKey",
+      valueType: "select",
+      fieldProps: { options: apps, allowClear: true },
+      width: 150,
+      render: (_, r) => (r.appKey ? <code>{r.appKey}</code> : "-"),
+    },
     {
       title: "用户名",
       dataIndex: "username",

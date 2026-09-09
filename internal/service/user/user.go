@@ -988,6 +988,7 @@ func toUserGetLoginLogsRequest(r *testkitv1.GetLoginLogsRequest) *userv1.GetLogi
 		Username: r.GetUsername(),
 		PageSize: r.GetPageSize(),
 		Cursor:   r.GetCursor(),
+		AppKey:   r.GetAppKey(),
 	}
 }
 
@@ -1055,6 +1056,7 @@ func toTestkitLoginLog(l *userv1.LoginLog) *testkitv1.LoginLog {
 		Country:    l.GetCountry(),
 		City:       l.GetCity(),
 		CreatedAt:  l.GetCreatedAt(),
+		AppKey:     l.GetAppKey(),
 	}
 }
 

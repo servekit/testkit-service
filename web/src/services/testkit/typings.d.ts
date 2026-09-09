@@ -336,6 +336,9 @@ declare namespace API {
     /** Alternative to user_id: resolve the username server-side. user_id wins
 when both are set; an unknown username yields an empty page. */
     username?: string;
+    /** Tenant filter (user_apps.app_key). Platform-operator callers only;
+tenant callers are pinned to their own directory regardless. */
+    appKey?: string;
   };
 
   type GetMyFileParams = {
@@ -2912,6 +2915,9 @@ resolves (see user.v1). */
     username?: string;
     /** The credential subject of the attempt (see user.v1). */
     target?: string;
+    /** Tenant the attempt happened in (user_apps.app_key); "" on rows from
+before tenancy. */
+    appKey?: string;
   };
 
   type v1LoginMethod =

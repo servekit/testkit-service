@@ -3246,6 +3246,7 @@ export async function getLoginLogs(
           'action': 'LOGIN_ACTION_UNSPECIFIED',
         // method has a default value: LOGIN_METHOD_UNSPECIFIED
           'method': 'LOGIN_METHOD_UNSPECIFIED',
+        
         ...params,},
     ...(options || {}),
   });
