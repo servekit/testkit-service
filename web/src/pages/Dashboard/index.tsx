@@ -1,8 +1,9 @@
 /**
  * Back-office landing dashboard (access: canPlatform). Aggregates the global
  * GetDashboard RPC (concurrent fan-in over message/storage/user downstream)
- * into KPI tiles + per-vendor Pie charts. This is the page PLATFORM /
- * TENANT_ADMIN users land on after login (login redirects them → /dashboard).
+ * into KPI tiles + per-vendor Pie charts. PLATFORM lands here after login;
+ * TENANT_ADMIN lands on /profile until phase ④ tenant surfaces ship
+ * (login redirects accordingly — /dashboard is canPlatform-only).
  *
  * int64 counts/bytes arrive as STRING (fix-int64) — message counts are well
  * under 2^53 so Number() is safe for chart angles; bytes are formatted via the

@@ -7,13 +7,14 @@ import { login } from "@/services/testkit/testkitService";
 const { Link, Text } = Typography;
 
 const USER_TYPE_PLATFORM = "USER_TYPE_PLATFORM";
-const USER_TYPE_TENANT_ADMIN = "USER_TYPE_TENANT_ADMIN";
 
 /**
  * Login page — uses the GENERATED `login` service (no hand-written fetch).
  * On success: persist token + user, then redirect by user_type
- * (PLATFORM / TENANT_ADMIN -> /dashboard back-office, END_USER -> /profile
- * self-service).
+ * (PLATFORM -> /dashboard back-office; TENANT_ADMIN / END_USER ->
+ * /profile self-service — /dashboard is canPlatform-gated, so
+ * TENANT_ADMIN would hit a 403 there until phase ④ ships tenant
+ * surfaces).
  *
  * regionCode defaults to 'CN' because the backend's LoginRequest validates
  * region_code against ^[A-Z]{2}$ even when empty (no ignore_empty), which would
@@ -36,10 +37,9 @@ export default function LoginPage() {
     } catch {
       // corrupt cache — fall through to the login form
     }
-    const target =
-      userType === USER_TYPE_PLATFORM || userType === USER_TYPE_TENANT_ADMIN
-        ? "/dashboard"
-        : "/profile";
+    // Same routing as the post-login push: only PLATFORM enters /dashboard
+    // (canPlatform-gated); TENANT_ADMIN uses /profile until phase ④.
+    const target = userType === USER_TYPE_PLATFORM ? "/dashboard" : "/profile";
     history.replace(target);
   }, []);
 
@@ -68,11 +68,10 @@ export default function LoginPage() {
           // the stored user) before the client-side redirect below.
           await setInitialState({ currentUser: user });
           message.success("登录成功");
+          // TENANT_ADMIN lands on /profile until phase ④ tenant surfaces
+          // ship (/dashboard is canPlatform-gated — a 403 dead angle).
           const target =
-            user.userType === USER_TYPE_PLATFORM ||
-            user.userType === USER_TYPE_TENANT_ADMIN
-              ? "/dashboard"
-              : "/profile";
+            user.userType === USER_TYPE_PLATFORM ? "/dashboard" : "/profile";
           history.push(target);
           return true;
         } catch (err) {

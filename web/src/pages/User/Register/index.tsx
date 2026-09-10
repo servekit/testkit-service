@@ -24,7 +24,6 @@ import {
 const { Link, Text } = Typography;
 
 const USER_TYPE_PLATFORM = "USER_TYPE_PLATFORM";
-const USER_TYPE_TENANT_ADMIN = "USER_TYPE_TENANT_ADMIN";
 
 interface RegisterFormValues {
   channel?: "email" | "phone";
@@ -222,11 +221,11 @@ export default function RegisterPage() {
           // the stored user) before the client-side redirect below.
           await setInitialState({ currentUser: user });
           message.success(`注册成功，欢迎 ${user.nickname || user.username}`);
+          // Mirrors the login redirect: only PLATFORM enters /dashboard
+          // (canPlatform-gated); TENANT_ADMIN / END_USER land on /profile
+          // until phase ④ tenant surfaces ship.
           const target =
-            user.userType === USER_TYPE_PLATFORM ||
-            user.userType === USER_TYPE_TENANT_ADMIN
-              ? "/dashboard"
-              : "/profile";
+            user.userType === USER_TYPE_PLATFORM ? "/dashboard" : "/profile";
           history.push(target);
           return true;
         } catch (err) {
