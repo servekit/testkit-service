@@ -3,6 +3,9 @@
  * 凭据（app_key/app_secret）列表可见（内网信任 posture）：默认掩码，
  * 点眼睛显示明文、点复制取值，方便配置到发送端的
  * message.app_key / app_secret。
+ * phase ④ 租户化：应用行经 tenant_key 一对一映射租户（③双栈）——归属列
+ * 展示映射；跨视图（PLATFORM）带租户筛选器；下钻视图创建的应用自动挂
+ * 当前租户。本页保持平台运营面（路由 access: canPlatform）。
  */
 import { ModalForm, ProFormDigit, ProFormText } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
@@ -21,11 +24,25 @@ import {
   messageRotateAppSecret,
   messageUpdateApp,
 } from "@/services/testkit/testkitService";
+import {
+  TenantFilterSelect,
+  applyTenantFilter,
+  filterTenantRows,
+  renderTenantScope,
+  tenantFilterOptions,
+  useTenantView,
+} from "@/components/tenantScope";
 
 export default function MessageAppsPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
+  const view = useTenantView();
+  // 跨视图租户筛选（选项来自已加载行的 tenant_key 去重）。
+  const [tenantFilter, setTenantFilter] = useState<string>("__all__");
+  const [filterOptions, setFilterOptions] = useState<
+    { value: string; label: string }[]
+  >([{ value: "__all__", label: "全部租户" }]);
   // 掩码开关按 "id:字段" 记忆；创建/轮换后自动点亮对应行的 AppSecret
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const toggleReveal = (key: string) =>
@@ -36,6 +53,12 @@ export default function MessageAppsPage() {
 
   const columns: ProColumns<API.v1MessageAppInfo>[] = [
     { title: "名称", dataIndex: "name", hideInSearch: true, width: 140, ellipsis: true },
+    {
+      title: "归属",
+      dataIndex: "tenantKey",
+      width: 150,
+      render: (_, r) => renderTenantScope(view, r.tenantKey),
+    },
     {
       title: "AppKey",
       dataIndex: "appKey",
@@ -147,11 +170,26 @@ export default function MessageAppsPage() {
         search={false}
         pagination={false}
         scroll={{ x: 1280 }}
+        params={{ tenantFilter }}
         request={async () => {
           const resp = await messageListApps({});
-          return { data: resp.apps ?? [], success: true };
+          // 下钻视图只看当前租户的配置行（其余租户行对下钻语义不可见）。
+          let rows = filterTenantRows(view, resp.apps ?? [], (r) => r.tenantKey);
+          if (view.crossView) {
+            setFilterOptions(tenantFilterOptions(resp.apps ?? [], (r) => r.tenantKey));
+            rows = applyTenantFilter(tenantFilter, rows, (r) => r.tenantKey);
+          }
+          return { data: rows, success: true };
         }}
         toolBarRender={() => [
+          view.crossView ? (
+            <TenantFilterSelect
+              key="tenant-filter"
+              value={tenantFilter}
+              onChange={setTenantFilter}
+              options={filterOptions}
+            />
+          ) : null,
           <ModalForm
             key="create"
             title="创建应用"
@@ -162,6 +200,9 @@ export default function MessageAppsPage() {
                   name: vals.name,
                   smsDailyLimit: String(Number(vals.smsDailyLimit ?? 0)),
                   emailDailyLimit: String(Number(vals.emailDailyLimit ?? 0)),
+                  // 租户映射：租户视图（下钻）建的应用挂当前租户；跨视图
+                  // 留空 = app_key 字面量（legacy→tenant 回退值）。
+                  tenantKey: view.crossView ? "" : view.tenantKey,
                 });
                 message.success("已创建，AppKey/AppSecret 见列表");
                 reveal(resp.app?.id, "appSecret");

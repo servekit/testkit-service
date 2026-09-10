@@ -7,7 +7,11 @@ import { requestConfig } from './request';
 import { installChunkReloadGuard } from './utils/chunkGuard';
 import { endSession } from './utils/session';
 import { portalWhoAmI } from './services/testkit/testkitService';
-import { ensureTenantChoice } from './utils/tenantChoice';
+import {
+  clearTenantChoice,
+  ensureTenantChoice,
+  readTenantChoice,
+} from './utils/tenantChoice';
 
 // Before anything renders: a stale-deploy tab whose lazy chunks 404 should
 // reload itself once instead of showing "Loading chunk ... failed" forever.
@@ -39,9 +43,12 @@ function readUser(): API.User | undefined {
  * choice is validated against it (single binding auto-selects; multi-binding
  * defaults to the stored choice or the first binding). WhoAmI is the one
  * console route allowed through the door without a choice — exactly so this
- * bootstrap can run before the first choice exists. Failures (portal down,
- * revoked bindings) degrade to an empty set: the switcher shows the
- * no-tenant state and management-plane calls surface their own errors.
+ * bootstrap can run before the first choice exists. A WhoAmI 403 with a
+ * stored choice means the choice went stale (e.g. the admin was unbound):
+ * it is cleared and WhoAmI retried choice-less through that exemption path
+ * before anything degrades. Remaining failures (portal down, revoked
+ * bindings) degrade to an empty set: the switcher shows the no-tenant state
+ * and management-plane calls surface their own errors.
  */
 export async function getInitialState(): Promise<{
   currentUser?: API.User;
@@ -63,8 +70,31 @@ export async function getInitialState(): Promise<{
     const memberships = who.memberships ?? [];
     ensureTenantChoice(memberships);
     return { currentUser, tenantMemberships: memberships };
-  } catch {
-    // Bootstrap degradation — see the doc comment above.
+  } catch (err) {
+    // Stale-choice dead-end (T3 follow-up, the unbind scenario): the request
+    // interceptor attaches x-tenant-choice to WhoAmI itself, so an admin
+    // unbound from their stored tenant gets ErrChoiceNotBound → 403 on the
+    // very call that should re-learn their binding set — and the blanket
+    // catch below would strand them on the "未绑定租户" red tag even with
+    // other live bindings. When the failure is a 403 WITH a stored choice,
+    // drop the choice and retry WhoAmI with NO choice: the choiceless
+    // bootstrap route crosses the door via its exemption path (single
+    // binding defaults server-side) and answers the real binding set.
+    const status = (err as { response?: { status?: number } })?.response
+      ?.status;
+    if (status === 403 && readTenantChoice() !== "") {
+      clearTenantChoice();
+      try {
+        const who = await portalWhoAmI();
+        const memberships = who.memberships ?? [];
+        ensureTenantChoice(memberships);
+        return { currentUser, tenantMemberships: memberships };
+      } catch {
+        // fall through to the degradation below
+      }
+    }
+    // Bootstrap degradation — see the doc comment above (portal down, or
+    // the binding set itself is empty: unbind-everything keeps the red tag).
     return { currentUser, tenantMemberships: [] };
   }
 }

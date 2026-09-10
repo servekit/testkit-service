@@ -3,10 +3,11 @@
  *   - canUser:        any logged-in user → self-service pages (/profile)
  *   - canPlatform:    USER_TYPE_PLATFORM → all back-office pages (cross-tenant view)
  *   - canTenantAdmin: USER_TYPE_TENANT_ADMIN (own-tenant pages) — PLATFORM is
- *                     included so the 租户管理 section renders for both the
- *                     self-service and the management view (phase ④: the
- *                     section's per-leaf splits pick PLATFORM-only pages like
- *                     member management)
+ *                     included so the mixed sections render for both the
+ *                     self-service and the management view (phase ④: 租户管理,
+ *                     plus 消息配置资源页 / Telemetry 上报令牌 whose per-leaf
+ *                     splits pick PLATFORM-only pages like member or app
+ *                     management)
  * Source of truth is the session stored at login (pages/User/Login).
  */
 const USER_TYPE_PLATFORM = 'USER_TYPE_PLATFORM';

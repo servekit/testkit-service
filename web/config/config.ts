@@ -269,30 +269,36 @@ export default defineConfig({
         },
       ],
     },
-    // --- Message ops console (P4) → access: canPlatform ---
-    // Internal-only ops surface: ad-hoc send (email/SMS) + full-fidelity record
-    // lists with stats. message = internal (per cross-plan decision); backend
-    // does no RBAC this phase (design §3.5), the split is a frontend route guard.
+    // --- Message ops console (P4) → mixed access (phase ④ T4) ---
+    // Resource self-service (accounts/signatures/templates/policies) opens to
+    // canTenantAdmin (TENANT_ADMIN own-tenant + PLATFORM); the internal-only
+    // surfaces (ad-hoc send, record lists, the app registry) stay canPlatform.
+    // Backend does no RBAC this phase (design §3.5); the split is a frontend
+    // route guard + per-page tenant scoping (components/tenantScope).
     {
       path: "/message",
       name: "消息服务",
       icon: "MessageOutlined",
-      access: "canPlatform",
+      access: "canTenantAdmin",
       routes: [
         { path: "/message", redirect: "/message/send/email" },
         {
           path: "/message/send/email",
           name: "发送邮件",
+          access: "canPlatform",
           component: "./Message/SendEmail",
         },
         {
           path: "/message/send/sms",
           name: "发送短信",
+          access: "canPlatform",
           component: "./Message/SendSMS",
         },
         {
           // 平台资源配置（应用/通道/签名/模板/策略）——发送与记录之外的
-          // 全部静态配置面,收进一个子菜单保持顶层简洁。
+          // 全部静态配置面,收进一个子菜单保持顶层简洁。phase ④ 资源自服务：
+          // 通道/签名/模板/策略四页开给租户（canTenantAdmin 继承），应用
+          // 注册表（一租户一配置行）保持平台运营面。
           path: "/message/admin",
           name: "消息配置",
           routes: [
@@ -300,6 +306,7 @@ export default defineConfig({
             {
               path: "/message/admin/apps",
               name: "应用管理",
+              access: "canPlatform",
               component: "./Message/Apps",
             },
             {
@@ -327,11 +334,13 @@ export default defineConfig({
         {
           path: "/message/emails",
           name: "邮件记录",
+          access: "canPlatform",
           component: "./Message/Emails",
         },
         {
           path: "/message/sms",
           name: "短信记录",
+          access: "canPlatform",
           component: "./Message/SMS",
         },
       ],
@@ -372,23 +381,32 @@ export default defineConfig({
         },
       ],
     },
-    // --- telemetry-service (P6): app registry + stats ---
+    // --- telemetry-service (P6): app registry + stats + tenant token
+    // self-service (phase ④ T4: 上报令牌 opens to canTenantAdmin — tokens
+    // belong to the injected tenant; the ops registry/stats stay platform). ---
     {
       key: "svc-telemetry",
       name: "Telemetry 服务",
       icon: "MonitorOutlined",
-      access: "canPlatform",
+      access: "canTenantAdmin",
       routes: [
         { path: "/telemetry", redirect: "/telemetry/apps" },
         {
           path: "/telemetry/apps",
           name: "应用管理",
+          access: "canPlatform",
           component: "./Telemetry/Apps",
         },
         {
           path: "/telemetry/stats",
           name: "应用统计",
+          access: "canPlatform",
           component: "./Telemetry/Stats",
+        },
+        {
+          path: "/telemetry/tokens",
+          name: "上报令牌",
+          component: "./Telemetry/Tokens",
         },
       ],
     },
