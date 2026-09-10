@@ -117,7 +117,7 @@ func fullUser(id int64) *userv1.User {
 		Bio:            "hello",
 		Status:         userv1.UserStatus_USER_STATUS_ACTIVE,
 		RegisterSource: userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL,
-		UserType:       userv1.UserType_USER_TYPE_INTERNAL,
+		UserType:       userv1.UserType_USER_TYPE_PLATFORM,
 		LastLoginAt:    timestamppb.Now(),
 		CreatedAt:      timestamppb.Now(),
 		UpdatedAt:      timestamppb.Now(),
@@ -459,7 +459,7 @@ func TestToTestkitUser_CuratesAllFieldsAndIntCastsEnums(t *testing.T) {
 	require.Equal(t, "hello", u.GetBio())
 	require.Equal(t, userv1.UserStatus_USER_STATUS_ACTIVE, u.GetStatus())
 	require.Equal(t, userv1.IdentityProvider_IDENTITY_PROVIDER_EMAIL, u.GetRegisterSource())
-	require.Equal(t, userv1.UserType_USER_TYPE_INTERNAL, u.GetUserType())
+	require.Equal(t, userv1.UserType_USER_TYPE_PLATFORM, u.GetUserType())
 	require.NotNil(t, u.GetLastLoginAt())
 	require.NotNil(t, u.GetCreatedAt())
 	require.NotNil(t, u.GetUpdatedAt())

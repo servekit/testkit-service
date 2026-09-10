@@ -86,7 +86,7 @@ func sampleUser() *userv1.User {
 		Email:    "alice@example.com",
 		Phone:    "13800138000",
 		Nickname: "Alice",
-		UserType: userv1.UserType_USER_TYPE_INTERNAL,
+		UserType: userv1.UserType_USER_TYPE_PLATFORM,
 	}
 }
 
@@ -231,6 +231,6 @@ func TestToTestkitUser_CuratesAndIntCastsUserType(t *testing.T) {
 	require.Equal(t, "alice@example.com", u.GetEmail())
 	require.Equal(t, "13800138000", u.GetPhone())
 	require.Equal(t, "Alice", u.GetNickname())
-	// user_type int-cast preserves INTERNAL for the frontend two-track split.
-	require.Equal(t, userv1.UserType_USER_TYPE_INTERNAL, u.GetUserType())
+	// user_type int-cast preserves PLATFORM for the frontend routing split.
+	require.Equal(t, userv1.UserType_USER_TYPE_PLATFORM, u.GetUserType())
 }

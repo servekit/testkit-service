@@ -127,7 +127,7 @@ func TestCreateUser_ForwardsAllFields_AndEnumIntCast(t *testing.T) {
 	svc := newSvc(t, stub)
 
 	resp, err := svc.CreateUser(context.Background(), &testkitv1.CreateUserRequest{
-		UserType: userv1.UserType_USER_TYPE_INTERNAL,
+		UserType: userv1.UserType_USER_TYPE_PLATFORM,
 		Username: "bob",
 		Nickname: "Bob",
 		RealName: "Bob Q",
@@ -152,12 +152,12 @@ func TestCreateUser_ForwardsAllFields_AndEnumIntCast(t *testing.T) {
 	require.Equal(t, "UTC", got.GetTimezone())
 	require.Equal(t, "en", got.GetLocale())
 	// Enums int-cast (mirrored same-number).
-	require.Equal(t, userv1.UserType_USER_TYPE_INTERNAL, got.GetUserType())
+	require.Equal(t, userv1.UserType_USER_TYPE_PLATFORM, got.GetUserType())
 	require.Equal(t, userv1.Gender_GENDER_MALE, got.GetGender())
 
 	// Response wraps the curated user.
 	require.NotNil(t, resp.GetUser())
-	require.Equal(t, userv1.UserType_USER_TYPE_INTERNAL, resp.GetUser().GetUserType())
+	require.Equal(t, userv1.UserType_USER_TYPE_PLATFORM, resp.GetUser().GetUserType())
 }
 
 // --- Pattern: paginated list mapping (ListUsersPaged) ---
@@ -203,7 +203,7 @@ func TestToUserListUsersPagedRequest_CoversAllFields(t *testing.T) {
 		Gender:           userv1.Gender_GENDER_MALE,
 		RegisterSource:   userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB,
 		RegisterDevice:   userv1.DeviceType_DEVICE_TYPE_WEB,
-		UserType:         userv1.UserType_USER_TYPE_INTERNAL,
+		UserType:         userv1.UserType_USER_TYPE_PLATFORM,
 		Locale:           "zh",
 		Timezone:         "UTC",
 		RegisterIp:       "1.1.1.1",
@@ -239,7 +239,7 @@ func TestToUserListUsersPagedRequest_CoversAllFields(t *testing.T) {
 	require.Equal(t, userv1.Gender_GENDER_MALE, got.GetGender())
 	require.Equal(t, userv1.IdentityProvider_IDENTITY_PROVIDER_GITHUB, got.GetRegisterSource())
 	require.Equal(t, userv1.DeviceType_DEVICE_TYPE_WEB, got.GetRegisterDevice())
-	require.Equal(t, userv1.UserType_USER_TYPE_INTERNAL, got.GetUserType())
+	require.Equal(t, userv1.UserType_USER_TYPE_PLATFORM, got.GetUserType())
 	require.Equal(t, userv1.UserSortField_USER_SORT_FIELD_ID, got.GetOrderBy())
 	// Repeated + timestamps + pagination carried by reference.
 	require.Equal(t, []int64{9, 10}, got.GetUserIds())
