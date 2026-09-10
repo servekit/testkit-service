@@ -23,7 +23,8 @@ import {
 
 const { Link, Text } = Typography;
 
-const USER_TYPE_INTERNAL = "USER_TYPE_INTERNAL";
+const USER_TYPE_PLATFORM = "USER_TYPE_PLATFORM";
+const USER_TYPE_TENANT_ADMIN = "USER_TYPE_TENANT_ADMIN";
 
 interface RegisterFormValues {
   channel?: "email" | "phone";
@@ -221,9 +222,12 @@ export default function RegisterPage() {
           // the stored user) before the client-side redirect below.
           await setInitialState({ currentUser: user });
           message.success(`注册成功，欢迎 ${user.nickname || user.username}`);
-          history.push(
-            user.userType === USER_TYPE_INTERNAL ? "/dashboard" : "/profile",
-          );
+          const target =
+            user.userType === USER_TYPE_PLATFORM ||
+            user.userType === USER_TYPE_TENANT_ADMIN
+              ? "/dashboard"
+              : "/profile";
+          history.push(target);
           return true;
         } catch (err) {
           message.error(bizMessage(err, "注册失败"));

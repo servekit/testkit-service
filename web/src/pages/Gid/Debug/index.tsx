@@ -7,7 +7,7 @@
  * fix-int64 pass) — no precision loss in the UI. The decompose input is
  * therefore a free-text Input, not an InputNumber. Calls the GENERATED
  * services only; no hand-written fetch (design v2 Delta C).
- * access: canInternal at the route level.
+ * access: canPlatform at the route level.
  */
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import {

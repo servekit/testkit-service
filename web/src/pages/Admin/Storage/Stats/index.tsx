@@ -2,7 +2,7 @@
  * Admin storage stats. adminGetStats returns aggregate totals plus per-owner /
  * per-provider / per-bucket breakdowns. Optional ownerType/ownerId filter;
  * empty = all owners. Byte fields arrive as string (int64) — formatBytes parses.
- * access: canInternal at the route level.
+ * access: canPlatform at the route level.
  */
 import {
   PageContainer,

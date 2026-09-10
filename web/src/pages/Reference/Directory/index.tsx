@@ -7,7 +7,7 @@
  * The countries tab shows every field inline: the list APIs are joined
  * client-side (region chain, currencies, timezones) and language_tags on
  * each row carry the official languages — no per-country detail round-trip.
- * access: canInternal at the route level.
+ * access: canPlatform at the route level.
  */
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import {

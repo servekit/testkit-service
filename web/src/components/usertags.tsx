@@ -8,14 +8,18 @@ import { Tag } from "antd";
  * proto string-union values generated into API.v1* (int mirrors downstream).
  */
 
-const USER_TYPE_INTERNAL = "USER_TYPE_INTERNAL";
+const USER_TYPE_PLATFORM = "USER_TYPE_PLATFORM";
+const USER_TYPE_TENANT_ADMIN = "USER_TYPE_TENANT_ADMIN";
 
-/** Read-only account-type tag (internal vs external per design spec §3.5). */
+/** Read-only account-type tag (three-way per tenant platform spec §7.2). */
 export function UserTypeTag({ userType }: { userType?: string }) {
-  const internal = userType === USER_TYPE_INTERNAL;
-  return (
-    <Tag color={internal ? "gold" : "blue"}>{internal ? "内部" : "外部"}</Tag>
-  );
+  if (userType === USER_TYPE_PLATFORM) {
+    return <Tag color="gold">平台用户</Tag>;
+  }
+  if (userType === USER_TYPE_TENANT_ADMIN) {
+    return <Tag color="purple">租户管理员</Tag>;
+  }
+  return <Tag color="blue">终端用户</Tag>;
 }
 
 /** User status tag (active / disabled / pending). */
@@ -49,8 +53,9 @@ export const USER_STATUS_VALUE_ENUM = {
 
 export const USER_TYPE_VALUE_ENUM = {
   USER_TYPE_UNSPECIFIED: { text: "全部" },
-  USER_TYPE_NORMAL: { text: "外部" },
-  USER_TYPE_INTERNAL: { text: "内部" },
+  USER_TYPE_END_USER: { text: "终端用户" },
+  USER_TYPE_PLATFORM: { text: "平台用户" },
+  USER_TYPE_TENANT_ADMIN: { text: "租户管理员" },
 };
 
 export const PROVIDER_VALUE_ENUM = {

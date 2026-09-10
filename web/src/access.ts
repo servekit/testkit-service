@@ -1,15 +1,12 @@
 /**
- * Two-track frontend access (design spec §3.5).
- *
- * This is a FRONTEND route/menu split driven by UserType — NOT RBAC. Backend
- * admin endpoints do login-state + identity injection only this phase; RBAC is
- * CRUD-only and arrives later (OPA). The split:
- *   - canUser:    any logged-in user (incl. internal) → self-service pages
- *   - canInternal: UserType = USER_TYPE_INTERNAL      → back-office pages
- * Source of truth is the session stored at login (see pages/User/Login).
+ * Three-track frontend access driven by UserType (tenant platform spec §7.2):
+ *   - canUser:        any logged-in user → self-service pages (/profile)
+ *   - canPlatform:    USER_TYPE_PLATFORM → all back-office pages (cross-tenant view)
+ *   - canTenantAdmin: USER_TYPE_TENANT_ADMIN → own-tenant admin pages (phase ④)
+ * Source of truth is the session stored at login (pages/User/Login).
  */
-
-const USER_TYPE_INTERNAL = 'USER_TYPE_INTERNAL';
+const USER_TYPE_PLATFORM = 'USER_TYPE_PLATFORM';
+const USER_TYPE_TENANT_ADMIN = 'USER_TYPE_TENANT_ADMIN';
 
 function readUser(): API.User | undefined {
   try {
@@ -22,10 +19,11 @@ function readUser(): API.User | undefined {
 
 export default function access(): Record<string, boolean> {
   const user = readUser();
-  const loggedIn =
-    !!localStorage.getItem('testkit_token') && !!user;
+  const loggedIn = !!localStorage.getItem('testkit_token') && !!user;
+  const type = user?.userType;
   return {
     canUser: loggedIn,
-    canInternal: loggedIn && user?.userType === USER_TYPE_INTERNAL,
+    canPlatform: loggedIn && type === USER_TYPE_PLATFORM,
+    canTenantAdmin: loggedIn && (type === USER_TYPE_TENANT_ADMIN || type === USER_TYPE_PLATFORM),
   };
 }

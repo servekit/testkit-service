@@ -6,12 +6,14 @@ import { login } from "@/services/testkit/testkitService";
 
 const { Link, Text } = Typography;
 
-const USER_TYPE_INTERNAL = "USER_TYPE_INTERNAL";
+const USER_TYPE_PLATFORM = "USER_TYPE_PLATFORM";
+const USER_TYPE_TENANT_ADMIN = "USER_TYPE_TENANT_ADMIN";
 
 /**
  * Login page — uses the GENERATED `login` service (no hand-written fetch).
  * On success: persist token + user, then redirect by user_type
- * (INTERNAL -> /dashboard back-office, NORMAL -> /profile self-service).
+ * (PLATFORM / TENANT_ADMIN -> /dashboard back-office, END_USER -> /profile
+ * self-service).
  *
  * regionCode defaults to 'CN' because the backend's LoginRequest validates
  * region_code against ^[A-Z]{2}$ even when empty (no ignore_empty), which would
@@ -34,7 +36,11 @@ export default function LoginPage() {
     } catch {
       // corrupt cache — fall through to the login form
     }
-    history.replace(userType === USER_TYPE_INTERNAL ? "/dashboard" : "/profile");
+    const target =
+      userType === USER_TYPE_PLATFORM || userType === USER_TYPE_TENANT_ADMIN
+        ? "/dashboard"
+        : "/profile";
+    history.replace(target);
   }, []);
 
   return (
@@ -62,9 +68,12 @@ export default function LoginPage() {
           // the stored user) before the client-side redirect below.
           await setInitialState({ currentUser: user });
           message.success("登录成功");
-          history.push(
-            user.userType === USER_TYPE_INTERNAL ? "/dashboard" : "/profile",
-          );
+          const target =
+            user.userType === USER_TYPE_PLATFORM ||
+            user.userType === USER_TYPE_TENANT_ADMIN
+              ? "/dashboard"
+              : "/profile";
+          history.push(target);
           return true;
         } catch (err) {
           // 401 is handled by the request interceptor (clears session, redirects

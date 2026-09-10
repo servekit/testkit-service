@@ -1,7 +1,7 @@
 /**
  * Admin quota: read (adminGetQuota) and set (adminSetQuota) a target owner's
  * quota. ownerType/ownerId are the OPERATION TARGET (kept in the request, not
- * injected from ctx) per the P3 curation rules. access: canInternal at route.
+ * injected from ctx) per the P3 curation rules. access: canPlatform at route.
  *
  * Byte fields arrive as string (int64). The set form sends totalBytes as a
  * string to match the generated request shape.

@@ -34,7 +34,7 @@ const DISABLED = "USER_STATUS_DISABLED";
 /**
  * Internal user-admin list. Offset pagination (listUsersPaged), status/type
  * tags, enable/disable (disableUser), and create-user (createUser).
- * access gated to canInternal at the route level.
+ * access gated to canPlatform at the route level.
  */
 export default function UserListPage() {
   const regionOptions = useRegionOptions();
@@ -195,8 +195,9 @@ export default function UserListPage() {
           label="账号类型"
           rules={[{ required: true, message: "请选择类型" }]}
           options={[
-            { value: "USER_TYPE_NORMAL", label: "外部" },
-            { value: "USER_TYPE_INTERNAL", label: "内部" },
+            { value: "USER_TYPE_END_USER", label: "终端用户" },
+            { value: "USER_TYPE_PLATFORM", label: "平台用户" },
+            { value: "USER_TYPE_TENANT_ADMIN", label: "租户管理员" },
           ]}
         />
         <ProFormText

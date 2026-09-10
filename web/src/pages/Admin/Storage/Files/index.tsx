@@ -2,7 +2,7 @@
  * Admin file list. adminListFiles is cursor-based (pageToken), so following the
  * P2 convention this fetches a bounded first page with server pagination
  * disabled. ownerType/ownerId are operation-target filters (kept in request, not
- * ctx-injected). adminDeleteFile hard-deletes. access: canInternal at route.
+ * ctx-injected). adminDeleteFile hard-deletes. access: canPlatform at route.
  */
 import {
   PageContainer,

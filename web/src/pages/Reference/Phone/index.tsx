@@ -4,7 +4,7 @@
  * LOCAL-format numbers (no "+country" prefix) — "+86…" never needs it;
  * "13800138000" is ambiguous until a country disambiguates it. Invalid
  * input is a valid response (is_valid=false + error_reason).
- * access: canInternal at the route level.
+ * access: canPlatform at the route level.
  */
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import {

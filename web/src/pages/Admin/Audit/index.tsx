@@ -4,7 +4,7 @@
  * Filters mirror AdminListAuditLogsParams: action / status / targetType /
  * requestId / ownerType / ownerId / targetId / time range. requestId is the
  * trace-id SEARCH filter (kept from the curated request), not caller identity.
- * access: canInternal at the route level.
+ * access: canPlatform at the route level.
  */
 import {
   PageContainer,

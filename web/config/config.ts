@@ -47,7 +47,7 @@ export default defineConfig({
     // A pathless parent only groups the MENU; matching behaves exactly as the
     // previous flat layout, so every leaf path/URL below is unchanged.
     // Access stays per leaf: self-service pages keep access: canUser,
-    // back-office pages keep access: canInternal. Mixed parents (用户服务 /
+    // back-office pages keep access: canPlatform. Mixed parents (用户服务 /
     // 存储服务) gate on canUser so the submenu filters down to the
     // self-service pages for normal users; internal users see all. Nameless
     // redirect entries (e.g. /files → /files/my) never render in the menu.
@@ -55,7 +55,7 @@ export default defineConfig({
       path: "/dashboard",
       name: "仪表盘",
       icon: "DashboardOutlined",
-      access: "canInternal",
+      access: "canPlatform",
       component: "./Dashboard",
     },
     // --- user-service: profile / identities / sessions + back-office ---
@@ -91,13 +91,13 @@ export default defineConfig({
         {
           path: "/user/apps",
           name: "应用管理",
-          access: "canInternal",
+          access: "canPlatform",
           component: "./User/Apps",
         },
         {
           path: "/users",
           name: "用户运营",
-          access: "canInternal",
+          access: "canPlatform",
           routes: [
             {
               path: "/users",
@@ -118,7 +118,7 @@ export default defineConfig({
         {
           path: "/rbac",
           name: "权限管理",
-          access: "canInternal",
+          access: "canPlatform",
           routes: [
             {
               path: "/rbac",
@@ -189,7 +189,7 @@ export default defineConfig({
         {
           path: "/admin/storage",
           name: "存储管理",
-          access: "canInternal",
+          access: "canPlatform",
           routes: [
             { path: "/admin/storage", redirect: "/admin/storage/files" },
             {
@@ -232,12 +232,12 @@ export default defineConfig({
         {
           path: "/admin/audit-logs",
           name: "审计日志",
-          access: "canInternal",
+          access: "canPlatform",
           component: "./Admin/Audit",
         },
       ],
     },
-    // --- Message ops console (P4) → access: canInternal ---
+    // --- Message ops console (P4) → access: canPlatform ---
     // Internal-only ops surface: ad-hoc send (email/SMS) + full-fidelity record
     // lists with stats. message = internal (per cross-plan decision); backend
     // does no RBAC this phase (design §3.5), the split is a frontend route guard.
@@ -245,7 +245,7 @@ export default defineConfig({
       path: "/message",
       name: "消息服务",
       icon: "MessageOutlined",
-      access: "canInternal",
+      access: "canPlatform",
       routes: [
         { path: "/message", redirect: "/message/send/email" },
         {
@@ -304,7 +304,7 @@ export default defineConfig({
         },
       ],
     },
-    // --- GID debug (P5) → access: canInternal ---
+    // --- GID debug (P5) → access: canPlatform ---
     // Internal-only snowflake ID debug tool: generate single/batch + decompose
     // an ID into time/sequence/machine_id. gid RPCs are authenticated; the split
     // is a frontend route guard (design §3.5).
@@ -312,7 +312,7 @@ export default defineConfig({
       path: "/gid",
       name: "GID 服务",
       icon: "NumberOutlined",
-      access: "canInternal",
+      access: "canPlatform",
       component: "./Gid/Debug",
     },
     // --- license-service (P6): key lifecycle + client activation surface ---
@@ -320,7 +320,7 @@ export default defineConfig({
       key: "svc-license",
       name: "License 服务",
       icon: "KeyOutlined",
-      access: "canInternal",
+      access: "canPlatform",
       routes: [
         { path: "/license", redirect: "/license/apps" },
         {
@@ -345,7 +345,7 @@ export default defineConfig({
       key: "svc-telemetry",
       name: "Telemetry 服务",
       icon: "MonitorOutlined",
-      access: "canInternal",
+      access: "canPlatform",
       routes: [
         { path: "/telemetry", redirect: "/telemetry/apps" },
         {
@@ -368,7 +368,7 @@ export default defineConfig({
       key: "svc-reference",
       name: "Reference 服务",
       icon: "GlobalOutlined",
-      access: "canInternal",
+      access: "canPlatform",
       routes: [
         { path: "/reference", redirect: "/reference/directory" },
         {
@@ -397,7 +397,7 @@ export default defineConfig({
       path: "/system",
       name: "系统",
       icon: "SettingOutlined",
-      access: "canInternal",
+      access: "canPlatform",
       component: "./Placeholder",
     },
     { path: "/", redirect: "/profile" },
