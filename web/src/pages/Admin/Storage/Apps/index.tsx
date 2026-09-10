@@ -1,8 +1,9 @@
 /**
- * 存储平台 · 应用管理。与消息平台的应用管理同一套交互：每个接入方一个
- * App，凭据（app_key/app_secret）列表可见（内网信任 posture），默认掩码、
- * 点眼睛显示明文、点复制取值。存储特有的两列：Key Prefix（对象命名空间
- * = 隔离与去重域，全局唯一且不可改）与绑定桶。
+ * 存储平台 · 租户配置（④T6 更名，原「应用管理」）。每个租户一行配置，行内
+ * 保留调用方凭据（app_key/app_secret，列表可见——内网信任 posture），默认
+ * 掩码、点眼睛显示明文、点复制取值。存储特有的两列：Key Prefix（对象命名
+ * 空间 = 隔离与去重域，全局唯一且不可改）与绑定桶。创建为幂等 ensure：租
+ * 户已有配置行时直接返回该行。
  */
 import { ModalForm, ProFormDigit, ProFormText } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
@@ -15,11 +16,11 @@ import {
 } from "@ant-design/pro-components";
 import { SecretText } from "@/components/SecretText";
 import {
-  adminCreateApp,
-  adminDeleteApp,
-  adminListApps,
-  adminRotateAppSecret,
-  adminUpdateApp,
+  adminDeleteTenantConfig,
+  adminEnsureTenantConfig,
+  adminListTenantConfigs,
+  adminRotateTenantConfigSecret,
+  adminUpdateTenantConfig,
 } from "@/services/testkit/testkitService";
 
 export default function AdminStorageAppsPage() {
@@ -34,7 +35,7 @@ export default function AdminStorageAppsPage() {
     if (appKey) setRevealed((prev) => ({ ...prev, [`${appKey}:${field}`]: true }));
   };
 
-  const columns: ProColumns<API.v1StorageAppInfo>[] = [
+  const columns: ProColumns<API.v1StorageTenantConfigInfo>[] = [
     { title: "名称", dataIndex: "name", hideInSearch: true, width: 140, ellipsis: true },
     {
       title: "AppKey",
@@ -90,7 +91,7 @@ export default function AdminStorageAppsPage() {
           key="rotate"
           onClick={async () => {
             try {
-              await adminRotateAppSecret({ appKey: r.appKey! }, {} as never);
+              await adminRotateTenantConfigSecret({ tenantKey: r.tenantKey! }, {} as never);
               message.success("已轮换，新 AppSecret 见列表");
               reveal(r.appKey, "appSecret");
               reload();
@@ -106,7 +107,7 @@ export default function AdminStorageAppsPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await adminUpdateApp({ appKey: r.appKey! }, { disabled: !r.disabled });
+              await adminUpdateTenantConfig({ tenantKey: r.tenantKey! }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用（数据面立即拒绝）");
               reload();
             } catch (err) {
@@ -122,7 +123,7 @@ export default function AdminStorageAppsPage() {
           title="删除后数据面立即拒绝；存量对象仍可读。确定？"
           onConfirm={async () => {
             try {
-              await adminDeleteApp({ appKey: r.appKey! });
+              await adminDeleteTenantConfig({ tenantKey: r.tenantKey! });
               message.success("已删除");
               reload();
             } catch (err) {
@@ -139,33 +140,33 @@ export default function AdminStorageAppsPage() {
 
   return (
     <PageContainer>
-      <ProTable<API.v1StorageAppInfo>
+      <ProTable<API.v1StorageTenantConfigInfo>
         headerTitle="应用列表"
         actionRef={actionRef}
         columns={columns}
-        rowKey="appKey"
+        rowKey="id"
         search={false}
         pagination={false}
         scroll={{ x: 1400 }}
         request={async () => {
-          const resp = await adminListApps();
-          return { data: resp.apps ?? [], success: true };
+          const resp = await adminListTenantConfigs();
+          return { data: resp.configs ?? [], success: true };
         }}
         toolBarRender={() => [
           <ModalForm
             key="create"
-            title="创建应用"
+            title="创建租户配置"
             width={560}
-            trigger={<Button type="primary">创建应用</Button>}
+            trigger={<Button type="primary">创建租户配置</Button>}
             onFinish={async (vals) => {
               try {
-                const resp = await adminCreateApp({
+                const resp = await adminEnsureTenantConfig({
                   name: vals.name,
                   keyPrefix: vals.keyPrefix,
                   bucketId: String(Number(vals.bucketId ?? 0)),
                 });
-                message.success("已创建，AppKey/AppSecret 见列表");
-                reveal(resp.app?.appKey, "appSecret");
+                message.success("已就绪，AppKey/AppSecret 见列表");
+                reveal(resp.config?.appKey, "appSecret");
                 reload();
                 return true;
               } catch (err) {

@@ -198,34 +198,34 @@ func (h *Handler) AdminUpsertBucket(ctx context.Context, req *storagev1.AdminUps
 	return h.svc.Storage().AdminUpsertBucket(ctx, req)
 }
 
-// AdminListApps lists all storage apps.
-func (h *Handler) AdminListApps(ctx context.Context, req *storagev1.AdminListAppsRequest) (*storagev1.AdminListAppsResponse, error) {
-	return h.svc.Storage().AdminListApps(ctx, req)
+// AdminListTenantConfigs lists all storage apps.
+func (h *Handler) AdminListTenantConfigs(ctx context.Context, req *storagev1.AdminListTenantConfigsRequest) (*storagev1.AdminListTenantConfigsResponse, error) {
+	return h.svc.Storage().AdminListTenantConfigs(ctx, req)
 }
 
-// AdminCreateApp registers a calling app (secret shown once).
-func (h *Handler) AdminCreateApp(ctx context.Context, req *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error) {
-	return h.svc.Storage().AdminCreateApp(ctx, req)
+// AdminEnsureTenantConfig registers a calling app (secret shown once).
+func (h *Handler) AdminEnsureTenantConfig(ctx context.Context, req *storagev1.AdminEnsureTenantConfigRequest) (*storagev1.AdminEnsureTenantConfigResponse, error) {
+	return h.svc.Storage().AdminEnsureTenantConfig(ctx, req)
 }
 
-// AdminGetApp returns one app by app_key.
-func (h *Handler) AdminGetApp(ctx context.Context, req *storagev1.AdminGetAppRequest) (*storagev1.AdminGetAppResponse, error) {
-	return h.svc.Storage().AdminGetApp(ctx, req)
+// AdminGetTenantConfig returns one app by app_key.
+func (h *Handler) AdminGetTenantConfig(ctx context.Context, req *storagev1.AdminGetTenantConfigRequest) (*storagev1.AdminGetTenantConfigResponse, error) {
+	return h.svc.Storage().AdminGetTenantConfig(ctx, req)
 }
 
-// AdminUpdateApp edits name/disabled/bucket; app_key and key_prefix immutable.
-func (h *Handler) AdminUpdateApp(ctx context.Context, req *storagev1.AdminUpdateAppRequest) (*storagev1.AdminUpdateAppResponse, error) {
-	return h.svc.Storage().AdminUpdateApp(ctx, req)
+// AdminUpdateTenantConfig edits name/disabled/bucket; app_key and key_prefix immutable.
+func (h *Handler) AdminUpdateTenantConfig(ctx context.Context, req *storagev1.AdminUpdateTenantConfigRequest) (*storagev1.AdminUpdateTenantConfigResponse, error) {
+	return h.svc.Storage().AdminUpdateTenantConfig(ctx, req)
 }
 
-// AdminRotateAppSecret mints a new secret (shown once).
-func (h *Handler) AdminRotateAppSecret(ctx context.Context, req *storagev1.AdminRotateAppSecretRequest) (*storagev1.AdminRotateAppSecretResponse, error) {
-	return h.svc.Storage().AdminRotateAppSecret(ctx, req)
+// AdminRotateTenantConfigSecret mints a new secret (shown once).
+func (h *Handler) AdminRotateTenantConfigSecret(ctx context.Context, req *storagev1.AdminRotateTenantConfigSecretRequest) (*storagev1.AdminRotateTenantConfigSecretResponse, error) {
+	return h.svc.Storage().AdminRotateTenantConfigSecret(ctx, req)
 }
 
-// AdminDeleteApp soft-deletes an app; data-plane calls fail immediately.
-func (h *Handler) AdminDeleteApp(ctx context.Context, req *storagev1.AdminDeleteAppRequest) (*emptypb.Empty, error) {
-	return h.svc.Storage().AdminDeleteApp(ctx, req)
+// AdminDeleteTenantConfig soft-deletes an app; data-plane calls fail immediately.
+func (h *Handler) AdminDeleteTenantConfig(ctx context.Context, req *storagev1.AdminDeleteTenantConfigRequest) (*emptypb.Empty, error) {
+	return h.svc.Storage().AdminDeleteTenantConfig(ctx, req)
 }
 
 // AdminDeleteBucket removes a bucket binding (rejected while objects exist).

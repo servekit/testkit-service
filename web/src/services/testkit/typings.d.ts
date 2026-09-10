@@ -9,10 +9,6 @@ declare namespace API {
     groupId: string;
   };
 
-  type AdminDeleteAppParams = {
-    appKey: string;
-  };
-
   type AdminDeleteBucketParams = {
     name: string;
   };
@@ -28,8 +24,8 @@ declare namespace API {
     name: string;
   };
 
-  type AdminGetAppParams = {
-    appKey: string;
+  type AdminDeleteTenantConfigParams = {
+    tenantKey: string;
   };
 
   type AdminGetFileParams = {
@@ -58,6 +54,10 @@ declare namespace API {
       | "OWNER_TYPE_SERVICE";
     /** 0 = all */
     ownerId?: string;
+  };
+
+  type AdminGetTenantConfigParams = {
+    tenantKey: string;
   };
 
   type AdminListAuditLogsParams = {
@@ -141,16 +141,16 @@ declare namespace API {
     bucket?: string;
   };
 
-  type AdminRotateAppSecretParams = {
-    appKey: string;
-  };
-
-  type AdminUpdateAppParams = {
-    appKey: string;
+  type AdminRotateTenantConfigSecretParams = {
+    tenantKey: string;
   };
 
   type AdminUpdateProviderParams = {
     name: string;
+  };
+
+  type AdminUpdateTenantConfigParams = {
+    tenantKey: string;
   };
 
   type AdminUpsertBucketParams = {
@@ -1297,14 +1297,7 @@ lazily created with the wire-contract defaults. */
     roleId?: string;
   };
 
-  type TestkitServiceAdminRotateAppSecretBody = true;
-
-  type TestkitServiceAdminUpdateAppBody = {
-    name?: string;
-    disabled?: boolean;
-    /** bucket_id 0 rebinds the app to the default bucket. */
-    bucketId?: string;
-  };
+  type TestkitServiceAdminRotateTenantConfigSecretBody = true;
 
   type TestkitServiceAdminUpdateProviderBody = {
     endpoint?: string;
@@ -1316,6 +1309,13 @@ disables STS. */
     roleArn?: string;
     domainId?: string;
     disabled?: boolean;
+  };
+
+  type TestkitServiceAdminUpdateTenantConfigBody = {
+    name?: string;
+    disabled?: boolean;
+    /** bucket_id 0 rebinds the row to the default bucket. */
+    bucketId?: string;
   };
 
   type TestkitServiceAdminUpsertBucketBody = {
@@ -1696,27 +1696,6 @@ and dashes. Optional; empty = server-generated. */
     slots?: v1SlotSummary;
   };
 
-  type v1AdminCreateAppRequest = {
-    /** app_key pattern: lowercase letter followed by lowercase alphanumerics
-and dashes. Optional; empty = server-generated. */
-    appKey?: string;
-    name?: string;
-    /** key_prefix namespaces the app's objects; globally unique, immutable,
-must end with '/'. */
-    keyPrefix?: string;
-    /** bucket_id: 0 = the platform default bucket. */
-    bucketId?: string;
-    /** tenant_key optionally maps the app to a tenant (phase ③). Empty = the
-app_key literal (the legacy→tenant fallback value). Unique across apps. */
-    tenantKey?: string;
-  };
-
-  type v1AdminCreateAppResponse = {
-    app?: v1StorageAppInfo;
-    /** app_secret convenience echo (also visible via AdminListApps/GetApp). */
-    appSecret?: string;
-  };
-
   type v1AdminCreateProviderRequest = {
     /** name uniquely identifies the provider (referenced by buckets).
 Immutable after creation. */
@@ -1751,6 +1730,28 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     bytesReleased?: string;
   };
 
+  type v1AdminEnsureTenantConfigRequest = {
+    name?: string;
+    /** key_prefix namespaces the row's objects; globally unique, immutable,
+must end with '/'. Ignored when the tenant already has a row. */
+    keyPrefix?: string;
+    /** bucket_id: 0 = the platform default bucket. Ignored when the tenant
+already has a row. */
+    bucketId?: string;
+    /** tenant_key names the tenant this config row belongs to. A scoped
+caller is clamped to the injected key; the PLATFORM cross-view needs
+it explicit — when empty there the server-minted app key literal is
+the legacy→tenant fallback value. Unique across rows. */
+    tenantKey?: string;
+  };
+
+  type v1AdminEnsureTenantConfigResponse = {
+    config?: v1StorageTenantConfigInfo;
+    /** app_secret convenience echo (also visible via
+AdminListTenantConfigs/AdminGetTenantConfig). */
+    appSecret?: string;
+  };
+
   type v1AdminFileInfo = {
     id?: string;
     ownerType?: v1OwnerType;
@@ -1772,10 +1773,6 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     updatedAt?: string;
   };
 
-  type v1AdminGetAppResponse = {
-    app?: v1StorageAppInfo;
-  };
-
   type v1AdminGetSettingsResponse = {
     settings?: v1StorageSettings;
   };
@@ -1794,8 +1791,8 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     bucketStats?: v1BucketStats[];
   };
 
-  type v1AdminListAppsResponse = {
-    apps?: v1StorageAppInfo[];
+  type v1AdminGetTenantConfigResponse = {
+    config?: v1StorageTenantConfigInfo;
   };
 
   type v1AdminListAuditLogsResponse = {
@@ -1818,9 +1815,14 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     providers?: testkitV1ProviderInfo[];
   };
 
-  type v1AdminRotateAppSecretResponse = {
-    app?: v1StorageAppInfo;
-    /** app_secret convenience echo (also visible via AdminListApps/GetApp). */
+  type v1AdminListTenantConfigsResponse = {
+    configs?: v1StorageTenantConfigInfo[];
+  };
+
+  type v1AdminRotateTenantConfigSecretResponse = {
+    config?: v1StorageTenantConfigInfo;
+    /** app_secret convenience echo (also visible via
+AdminListTenantConfigs/AdminGetTenantConfig). */
     appSecret?: string;
   };
 
@@ -1846,10 +1848,6 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     bytesReleased?: string;
   };
 
-  type v1AdminUpdateAppResponse = {
-    app?: v1StorageAppInfo;
-  };
-
   type v1AdminUpdateProviderResponse = {
     provider?: storageV1ProviderInfo;
   };
@@ -1862,6 +1860,10 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
 
   type v1AdminUpdateSettingsResponse = {
     settings?: v1StorageSettings;
+  };
+
+  type v1AdminUpdateTenantConfigResponse = {
+    config?: v1StorageTenantConfigInfo;
   };
 
   type v1AdminUpsertBucketResponse = {
@@ -3587,7 +3589,15 @@ Empty = platform pool (usable by every tenant's policies). */
     | "SORT_FIELD_FILENAME"
     | "SORT_FIELD_SIZE";
 
-  type v1StorageAppInfo = {
+  type v1StorageSettings = {
+    /** default_bucket receives uploads that do not specify a bucket. */
+    defaultBucket?: string;
+    /** public_bucket receives visibility=PUBLIC uploads; empty = PUBLIC
+uploads are rejected. */
+    publicBucket?: string;
+  };
+
+  type v1StorageTenantConfigInfo = {
     id?: string;
     /** app_key identifies the app on every data-plane call (x-app-key metadata);
 immutable after creation. */
@@ -3613,14 +3623,6 @@ Empty on rows not yet backfilled — the service falls back to the app_key
 literal until T10 clears the empties. New tenants first seen on the
 trusted path are lazily created with key_prefix "{tenant_key}/". */
     tenantKey?: string;
-  };
-
-  type v1StorageSettings = {
-    /** default_bucket receives uploads that do not specify a bucket. */
-    defaultBucket?: string;
-    /** public_bucket receives visibility=PUBLIC uploads; empty = PUBLIC
-uploads are rejected. */
-    publicBucket?: string;
   };
 
   type v1TelemetrySigningKeyInfo = {

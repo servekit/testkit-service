@@ -963,45 +963,49 @@ func (s *Service) AdminUpsertBucket(ctx context.Context, req *storagev1.AdminUps
 	return s.storage.AdminUpsertBucket(ctx, req)
 }
 
-// --- Storage app management (1:1 forwards; auth is human-permission at the
-// gateway, app identity is data-plane only) ---
+// --- Storage tenant-config management (1:1 forwards, phase ④ T6 rename of
+// the apps surface; auth is human-permission at the gateway, app identity
+// is data-plane only) ---
 //
 // Tenant-key naming creates are additionally clamped to the trusted key
 // the tenant gate injected for TENANT_ADMIN callers (bffscope, phase ④
 // T5) — the door-side mirror of storage-service's server-side closure;
 // PLATFORM drill-downs keep their target.
 
-// AdminListApps lists all storage apps.
-func (s *Service) AdminListApps(ctx context.Context, req *storagev1.AdminListAppsRequest) (*storagev1.AdminListAppsResponse, error) {
-	return s.storage.AdminListApps(ctx, req)
+// AdminListTenantConfigs lists the tenant configs in the caller's scope.
+func (s *Service) AdminListTenantConfigs(ctx context.Context, req *storagev1.AdminListTenantConfigsRequest) (*storagev1.AdminListTenantConfigsResponse, error) {
+	return s.storage.AdminListTenantConfigs(ctx, req)
 }
 
-// AdminCreateApp registers a calling app (secret shown once).
-func (s *Service) AdminCreateApp(ctx context.Context, req *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error) {
+// AdminEnsureTenantConfig idempotently provisions the tenant's config row
+// (secret shown once on a fresh create).
+func (s *Service) AdminEnsureTenantConfig(ctx context.Context, req *storagev1.AdminEnsureTenantConfigRequest) (*storagev1.AdminEnsureTenantConfigResponse, error) {
 	if err := bffscope.TenantKey(ctx, &req.TenantKey); err != nil {
 		return nil, err
 	}
-	return s.storage.AdminCreateApp(ctx, req)
+	return s.storage.AdminEnsureTenantConfig(ctx, req)
 }
 
-// AdminGetApp returns one app by app_key.
-func (s *Service) AdminGetApp(ctx context.Context, req *storagev1.AdminGetAppRequest) (*storagev1.AdminGetAppResponse, error) {
-	return s.storage.AdminGetApp(ctx, req)
+// AdminGetTenantConfig returns the tenant's config row.
+func (s *Service) AdminGetTenantConfig(ctx context.Context, req *storagev1.AdminGetTenantConfigRequest) (*storagev1.AdminGetTenantConfigResponse, error) {
+	return s.storage.AdminGetTenantConfig(ctx, req)
 }
 
-// AdminUpdateApp edits name/disabled/bucket; app_key and key_prefix immutable.
-func (s *Service) AdminUpdateApp(ctx context.Context, req *storagev1.AdminUpdateAppRequest) (*storagev1.AdminUpdateAppResponse, error) {
-	return s.storage.AdminUpdateApp(ctx, req)
+// AdminUpdateTenantConfig edits name/disabled/bucket; identity and
+// key_prefix immutable.
+func (s *Service) AdminUpdateTenantConfig(ctx context.Context, req *storagev1.AdminUpdateTenantConfigRequest) (*storagev1.AdminUpdateTenantConfigResponse, error) {
+	return s.storage.AdminUpdateTenantConfig(ctx, req)
 }
 
-// AdminRotateAppSecret mints a new secret (shown once).
-func (s *Service) AdminRotateAppSecret(ctx context.Context, req *storagev1.AdminRotateAppSecretRequest) (*storagev1.AdminRotateAppSecretResponse, error) {
-	return s.storage.AdminRotateAppSecret(ctx, req)
+// AdminRotateTenantConfigSecret mints a new secret (shown once).
+func (s *Service) AdminRotateTenantConfigSecret(ctx context.Context, req *storagev1.AdminRotateTenantConfigSecretRequest) (*storagev1.AdminRotateTenantConfigSecretResponse, error) {
+	return s.storage.AdminRotateTenantConfigSecret(ctx, req)
 }
 
-// AdminDeleteApp soft-deletes an app; data-plane calls fail immediately.
-func (s *Service) AdminDeleteApp(ctx context.Context, req *storagev1.AdminDeleteAppRequest) (*emptypb.Empty, error) {
-	return s.storage.AdminDeleteApp(ctx, req)
+// AdminDeleteTenantConfig soft-deletes a tenant config; data-plane calls
+// fail immediately.
+func (s *Service) AdminDeleteTenantConfig(ctx context.Context, req *storagev1.AdminDeleteTenantConfigRequest) (*emptypb.Empty, error) {
+	return s.storage.AdminDeleteTenantConfig(ctx, req)
 }
 
 // AdminDeleteBucket removes a bucket binding (rejected while objects exist).

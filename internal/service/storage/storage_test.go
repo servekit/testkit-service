@@ -33,14 +33,14 @@ type stubServer struct {
 	adminGetStats    func(context.Context, *storagev1.AdminGetStatsRequest) (*storagev1.AdminGetStatsResponse, error)
 	batchGetSTS      func(context.Context, *storagev1.BatchGetSTSCredentialRequest) (*storagev1.BatchGetSTSCredentialResponse, error)
 	listMyAuditLogs  func(context.Context, *storagev1.ListMyAuditLogsRequest) (*storagev1.ListMyAuditLogsResponse, error)
-	adminCreateApp   func(context.Context, *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error)
+	adminEnsureTenantConfig func(context.Context, *storagev1.AdminEnsureTenantConfigRequest) (*storagev1.AdminEnsureTenantConfigResponse, error)
 }
 
-func (s *stubServer) AdminCreateApp(ctx context.Context, req *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error) {
-	if s.adminCreateApp != nil {
-		return s.adminCreateApp(ctx, req)
+func (s *stubServer) AdminEnsureTenantConfig(ctx context.Context, req *storagev1.AdminEnsureTenantConfigRequest) (*storagev1.AdminEnsureTenantConfigResponse, error) {
+	if s.adminEnsureTenantConfig != nil {
+		return s.adminEnsureTenantConfig(ctx, req)
 	}
-	return s.UnimplementedStorageServiceServer.AdminCreateApp(ctx, req)
+	return s.UnimplementedStorageServiceServer.AdminEnsureTenantConfig(ctx, req)
 }
 
 func (s *stubServer) ListMyFilesPaged(ctx context.Context, req *storagev1.ListMyFilesPagedRequest) (*storagev1.ListMyFilesPagedResponse, error) {
@@ -391,29 +391,29 @@ func adminActorCtx(userType userv1.UserType, tenantKey string) context.Context {
 	return ctx
 }
 
-// TestAdminCreateApp_ClampsTenantKeyForTenantAdmin: the body's tenant_key
-// is overwritten with the trusted injected key for TENANT_ADMIN callers;
-// PLATFORM callers keep their target (bffscope, phase ④ T5).
-func TestAdminCreateApp_ClampsTenantKeyForTenantAdmin(t *testing.T) {
-	var got *storagev1.AdminCreateAppRequest
+// TestAdminEnsureTenantConfig_ClampsTenantKeyForTenantAdmin (④T6 rename):
+// the body's tenant_key is overwritten with the trusted injected key for
+// TENANT_ADMIN callers; PLATFORM callers keep their target (bffscope).
+func TestAdminEnsureTenantConfig_ClampsTenantKeyForTenantAdmin(t *testing.T) {
+	var got *storagev1.AdminEnsureTenantConfigRequest
 	stub := &stubServer{}
-	stub.adminCreateApp = func(_ context.Context, req *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error) {
+	stub.adminEnsureTenantConfig = func(_ context.Context, req *storagev1.AdminEnsureTenantConfigRequest) (*storagev1.AdminEnsureTenantConfigResponse, error) {
 		got = req
-		return &storagev1.AdminCreateAppResponse{}, nil
+		return &storagev1.AdminEnsureTenantConfigResponse{}, nil
 	}
 	svc := storage.New(stub)
 
-	_, err := svc.AdminCreateApp(
+	_, err := svc.AdminEnsureTenantConfig(
 		adminActorCtx(userv1.UserType_USER_TYPE_TENANT_ADMIN, "ten_alpha0000000"),
-		&storagev1.AdminCreateAppRequest{AppKey: "forged", KeyPrefix: "f/", TenantKey: "ten_beta0000000"},
+		&storagev1.AdminEnsureTenantConfigRequest{Name: "forged", KeyPrefix: "f/", TenantKey: "ten_beta0000000"},
 	)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "ten_alpha0000000", got.GetTenantKey(), "injected key replaces the body's foreign key")
 
-	_, err = svc.AdminCreateApp(
+	_, err = svc.AdminEnsureTenantConfig(
 		adminActorCtx(userv1.UserType_USER_TYPE_PLATFORM, "ten_beta0000000"),
-		&storagev1.AdminCreateAppRequest{AppKey: "drill", KeyPrefix: "d/", TenantKey: "ten_beta0000000"},
+		&storagev1.AdminEnsureTenantConfigRequest{Name: "drill", KeyPrefix: "d/", TenantKey: "ten_beta0000000"},
 	)
 	require.NoError(t, err)
 	require.Equal(t, "ten_beta0000000", got.GetTenantKey(), "PLATFORM drill-down keeps its target")

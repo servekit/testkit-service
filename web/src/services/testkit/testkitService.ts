@@ -93,107 +93,6 @@ export async function adminDeleteFile(
   });
 }
 
-/** App management (calling applications of the storage platform;
-1:1 forwards to storage-service admin RPCs). GET /api/v1/admin/storage/apps */
-export async function adminListApps(
-  options ?: {[key: string]: any}
-) {
-  return request<API.v1AdminListAppsResponse>('/api/v1/admin/storage/apps', {
-  method: 'GET',
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/v1/admin/storage/apps */
-export async function adminCreateApp(body: API.v1AdminCreateAppRequest,
-  options ?: {[key: string]: any}
-) {
-  return request<API.v1AdminCreateAppResponse>('/api/v1/admin/storage/apps', {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 GET /api/v1/admin/storage/apps/${param0} */
-export async function adminGetApp(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.AdminGetAppParams
-    ,
-  options ?: {[key: string]: any}
-) {
-  const { 'appKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.v1AdminGetAppResponse>(`/api/v1/admin/storage/apps/${param0}`, {
-  method: 'GET',
-    params: {...queryParams,},
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 PUT /api/v1/admin/storage/apps/${param0} */
-export async function adminUpdateApp(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.AdminUpdateAppParams
-    ,body: API.TestkitServiceAdminUpdateAppBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'appKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.v1AdminUpdateAppResponse>(`/api/v1/admin/storage/apps/${param0}`, {
-  method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 DELETE /api/v1/admin/storage/apps/${param0} */
-export async function adminDeleteApp(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.AdminDeleteAppParams
-    ,
-  options ?: {[key: string]: any}
-) {
-  const { 'appKey': param0, 
-  ...queryParams
-  } = params;
-  return request<Record<string, any>>(`/api/v1/admin/storage/apps/${param0}`, {
-  method: 'DELETE',
-    params: {...queryParams,},
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/v1/admin/storage/apps/${param0}${rotateSecret} */
-export async function adminRotateAppSecret(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.AdminRotateAppSecretParams
-    ,body: API.TestkitServiceAdminRotateAppSecretBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'appKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.v1AdminRotateAppSecretResponse>(`/api/v1/admin/storage/apps/${param0}:rotateSecret`, {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 GET /api/v1/admin/storage/buckets */
 export async function adminListBuckets(
   options ?: {[key: string]: any}
@@ -401,6 +300,108 @@ export async function adminGetStats(
         // ownerType has a default value: OWNER_TYPE_UNSPECIFIED
           'ownerType': 'OWNER_TYPE_UNSPECIFIED',
         ...params,},
+    ...(options || {}),
+  });
+}
+
+/** Tenant-config management (one config row per tenant of the storage
+platform; 1:1 forwards to storage-service admin RPCs — phase ④ T6
+rename of the apps forwards). GET /api/v1/admin/storage/tenant-configs */
+export async function adminListTenantConfigs(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1AdminListTenantConfigsResponse>('/api/v1/admin/storage/tenant-configs', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/admin/storage/tenant-configs/${param0} */
+export async function adminGetTenantConfig(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminGetTenantConfigParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1AdminGetTenantConfigResponse>(`/api/v1/admin/storage/tenant-configs/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/admin/storage/tenant-configs/${param0} */
+export async function adminUpdateTenantConfig(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminUpdateTenantConfigParams
+    ,body: API.TestkitServiceAdminUpdateTenantConfigBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1AdminUpdateTenantConfigResponse>(`/api/v1/admin/storage/tenant-configs/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/admin/storage/tenant-configs/${param0} */
+export async function adminDeleteTenantConfig(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminDeleteTenantConfigParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/admin/storage/tenant-configs/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/admin/storage/tenant-configs/${param0}${rotateSecret} */
+export async function adminRotateTenantConfigSecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.AdminRotateTenantConfigSecretParams
+    ,body: API.TestkitServiceAdminRotateTenantConfigSecretBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1AdminRotateTenantConfigSecretResponse>(`/api/v1/admin/storage/tenant-configs/${param0}:rotateSecret`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/admin/storage/tenant-configs${ensure} */
+export async function adminEnsureTenantConfig(body: API.v1AdminEnsureTenantConfigRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1AdminEnsureTenantConfigResponse>(`/api/v1/admin/storage/tenant-configs:ensure`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
