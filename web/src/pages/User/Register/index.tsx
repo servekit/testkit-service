@@ -16,14 +16,14 @@ import { history, useModel } from "@umijs/max";
 import { useRef, useState } from "react";
 import { GENDER_VALUE_ENUM } from "@/components/usertags";
 import { VERIFICATION_CODE_TEMPLATE } from "@/utils/emailTemplates";
+import { postLoginTarget } from "@/utils/landing";
+import { clearTenantChoice } from "@/utils/tenantChoice";
 import {
   register,
   sendVerificationCode,
 } from "@/services/testkit/testkitService";
 
 const { Link, Text } = Typography;
-
-const USER_TYPE_PLATFORM = "USER_TYPE_PLATFORM";
 
 interface RegisterFormValues {
   channel?: "email" | "phone";
@@ -77,7 +77,7 @@ export default function RegisterPage() {
   const timezoneOptions = useTimezoneOptions();
   const languageOptions = useLanguageOptions();
   const { message } = App.useApp();
-  const { setInitialState } = useModel("@@initialState");
+  const { refresh } = useModel("@@initialState");
   const formRef = useRef<ProFormInstance<RegisterFormValues>>();
   const [countdown, setCountdown] = useState(0);
   const [sending, setSending] = useState(false);
@@ -215,18 +215,18 @@ export default function RegisterPage() {
             message.error("注册失败：响应缺少 token 或用户信息");
             return false;
           }
+          // Drop the previous session's tenant choice before the new
+          // identity's first management request (same as login).
+          clearTenantChoice();
           localStorage.setItem("testkit_token", token);
           localStorage.setItem("testkit_user", JSON.stringify(user));
-          // Refresh initialState so the access plugin re-evaluates (it reads
-          // the stored user) before the client-side redirect below.
-          await setInitialState({ currentUser: user });
+          // refresh() re-runs getInitialState so the access plugin and the
+          // tenant switcher pick up the new identity before the redirect.
+          await refresh();
           message.success(`注册成功，欢迎 ${user.nickname || user.username}`);
-          // Mirrors the login redirect: only PLATFORM enters /dashboard
-          // (canPlatform-gated); TENANT_ADMIN / END_USER land on /profile
-          // until phase ④ tenant surfaces ship.
-          const target =
-            user.userType === USER_TYPE_PLATFORM ? "/dashboard" : "/profile";
-          history.push(target);
+          // Mirrors the login redirect (postLoginTarget): PLATFORM →
+          // /dashboard, TENANT_ADMIN → /tenant, END_USER → /profile.
+          history.push(postLoginTarget(user.userType));
           return true;
         } catch (err) {
           message.error(bizMessage(err, "注册失败"));

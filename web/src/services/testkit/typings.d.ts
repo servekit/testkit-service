@@ -1092,6 +1092,9 @@ immutable after creation either way. */
     name?: string;
     smsDailyLimit?: string;
     emailDailyLimit?: string;
+    /** tenant_key optionally maps the app to a tenant (phase ③). Empty = the
+app_key literal (the legacy→tenant fallback value). Unique across apps. */
+    tenantKey?: string;
   };
 
   type messagingV1CreateAppResponse = {
@@ -1114,6 +1117,47 @@ immutable after creation either way. */
 
   type messagingV1UpdateAppResponse = {
     app?: v1MessageAppInfo;
+  };
+
+  type PortalAddTenantMemberParams = {
+    tenantKey: string;
+  };
+
+  type PortalCreateApiKeyParams = {
+    /** TENANT_ADMIN callers may only target their own tenant (enforced
+server-side against the actor). */
+    tenantKey: string;
+  };
+
+  type PortalDisableApiKeyParams = {
+    accessKey: string;
+  };
+
+  type PortalDisableTenantParams = {
+    tenantKey: string;
+  };
+
+  type PortalListApiKeysParams = {
+    /** TENANT_ADMIN callers may only list their own tenant (enforced
+server-side against the actor). */
+    tenantKey: string;
+  };
+
+  type PortalListTenantMembersParams = {
+    tenantKey: string;
+  };
+
+  type PortalRemoveTenantMemberParams = {
+    tenantKey: string;
+    userId: string;
+  };
+
+  type PortalRotateApiKeySecretParams = {
+    accessKey: string;
+  };
+
+  type PortalSetCapabilityParams = {
+    tenantKey: string;
   };
 
   type protobufAny = {
@@ -1258,6 +1302,12 @@ x-app-secret metadata; the raw client endpoints (/v1/e/…) keep using
 the ingest token instead. Echoed on every read — internal-trust
 posture, same convention as the messaging/storage/license apps. */
     appSecret?: string;
+    /** tenant_key is the tenant this app maps to (phase ③ dual-stack window):
+the UUID row is the tenant's config row. Empty on rows not yet
+backfilled — the service falls back to the app_key literal until T10
+clears the empties. New tenants first seen on the trusted path are
+lazily created with the wire-contract defaults. */
+    tenantKey?: string;
     createdAt?: string;
     updatedAt?: string;
   };
@@ -1397,6 +1447,34 @@ send an empty list to disable intl; ignored for email). */
 
   type TestkitServiceMessageUpdateTemplateBody = {
     template?: v1TemplateInfo;
+  };
+
+  type TestkitServicePortalAddTenantMemberBody = {
+    userId?: string;
+  };
+
+  type TestkitServicePortalCreateApiKeyBody = {
+    name?: string;
+  };
+
+  type TestkitServicePortalDisableApiKeyBody = {
+    /** false re-enables a disabled key. */
+    disable?: boolean;
+    reason?: string;
+  };
+
+  type TestkitServicePortalDisableTenantBody = {
+    /** false re-enables a disabled tenant. */
+    disable?: boolean;
+    reason?: string;
+  };
+
+  type TestkitServicePortalRotateApiKeySecretBody = true;
+
+  type TestkitServicePortalSetCapabilityBody = {
+    /** service is one of the five capability strings. */
+    service?: string;
+    enabled?: boolean;
   };
 
   type TestkitServiceReplaceEventRulesBody = {
@@ -1663,6 +1741,9 @@ must end with '/'. */
     keyPrefix?: string;
     /** bucket_id: 0 = the platform default bucket. */
     bucketId?: string;
+    /** tenant_key optionally maps the app to a tenant (phase ③). Empty = the
+app_key literal (the legacy→tenant fallback value). Unique across apps. */
+    tenantKey?: string;
   };
 
   type v1AdminCreateAppResponse = {
@@ -1827,6 +1908,17 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     accessKeySecret?: string;
     /** region_id defaults to "cn-hangzhou" server-side when empty. */
     regionId?: string;
+  };
+
+  type v1ApiKeyInfo = {
+    accessKey?: string;
+    name?: string;
+    /** disabled keys fail authentication immediately. */
+    disabled?: boolean;
+    /** Unix seconds; 0 = never used. */
+    lastUsedAt?: string;
+    /** Unix seconds. */
+    createdAt?: string;
   };
 
   type v1AuditAction =
@@ -2011,6 +2103,9 @@ VENDOR_HUAWEI_OBS, unused otherwise. */
     credentials?: v1ChannelAccountCredentials;
     createdAt?: string;
     updatedAt?: string;
+    /** tenant_key marks a tenant-private account (phase ③ resource domain).
+Empty = platform pool (usable by every tenant's policies). */
+    tenantKey?: string;
   };
 
   type v1ConfirmUploadRequest = {
@@ -2043,12 +2138,21 @@ input placeholder / format hint official languages, most-spoken first */
     languageTags?: string[];
   };
 
+  type v1CreateApiKeyResponse = {
+    apiKey?: v1ApiKeyInfo;
+    /** new sk_…, shown once — never listed or echoed again. */
+    secret?: string;
+  };
+
   type v1CreateChannelAccountRequest = {
     /** name uniquely identifies the account across vendors (referenced by
 policies). Immutable after creation. */
     name?: string;
     remark?: string;
     credentials?: v1ChannelAccountCredentials;
+    /** tenant_key optionally makes the account tenant-private (phase ③
+resource domain). Empty = platform pool. */
+    tenantKey?: string;
   };
 
   type v1CreateChannelAccountResponse = {
@@ -2120,6 +2224,9 @@ sender ID (e.g. "MyApp"). Unique. Immutable after creation. */
     /** account_ids lists the channel accounts the signature is registered on
 (报备). Full replace on every update; at least one binding required. */
     accountIds?: string[];
+    /** tenant_key optionally makes the signature tenant-private (phase ③
+resource domain). Empty = platform pool. */
+    tenantKey?: string;
   };
 
   type v1CreateSignatureResponse = {
@@ -2716,6 +2823,10 @@ the ops console is the intended reader. */
     updatedAt?: string;
   };
 
+  type v1ListApiKeysResponse = {
+    apiKeys?: v1ApiKeyInfo[];
+  };
+
   type v1ListChannelAccountsResponse = {
     accounts?: v1ChannelAccountInfo[];
   };
@@ -2864,6 +2975,14 @@ the ops console is the intended reader. */
     templates?: v1TemplateInfo[];
   };
 
+  type v1ListTenantMembersResponse = {
+    members?: v1TenantMember[];
+  };
+
+  type v1ListTenantsResponse = {
+    tenants?: v1TenantInfo[];
+  };
+
   type v1ListTimezonesResponse = {
     timezones?: v1Timezone[];
     dataVersion?: string;
@@ -2963,6 +3082,10 @@ deliveries; protects vendor accounts from runaway loops. */
     emailDailyLimit?: string;
     createdAt?: string;
     updatedAt?: string;
+    /** tenant_key is the tenant this app maps to (phase ③ dual-stack window).
+Empty on rows not yet backfilled — the service falls back to the app_key
+literal until T10 clears the empties. */
+    tenantKey?: string;
   };
 
   type v1MessageStatus =
@@ -2985,6 +3108,10 @@ deliveries; protects vendor accounts from runaway loops. */
   };
 
   type v1Module = "MODULE_UNSPECIFIED" | "MODULE_DOWNLOADS" | "MODULE_TOOLS";
+
+  type v1MyCapabilitiesResponse = {
+    capabilities?: string[];
+  };
 
   type v1MyQuota = {
     totalBytes?: string;
@@ -3081,6 +3208,10 @@ policy. Its channel must match. */
     disabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
+    /** tenant_key is the tenant this policy belongs to (phase ③ re-keying:
+unique per (tenant_key, channel, scene)). Empty on rows not yet
+backfilled — resolved through the app mapping at load time. */
+    tenantKey?: string;
   };
 
   type v1PolicyScene = {
@@ -3213,6 +3344,12 @@ policy. Its channel must match. */
     updatedAt?: string;
   };
 
+  type v1RotateApiKeySecretResponse = {
+    apiKey?: v1ApiKeyInfo;
+    /** new sk_…, shown once — never listed or echoed again. */
+    secret?: string;
+  };
+
   type v1RotateTokenResponse = {
     token?: string;
   };
@@ -3300,6 +3437,10 @@ template_params; CN destinations reject it — vendor templates only). */
     | "SESSION_STATUS_REVOKED"
     | "SESSION_STATUS_EXPIRED";
 
+  type v1SetCapabilityResponse = {
+    tenant?: v1TenantInfo;
+  };
+
   type v1SetVersionBlockedResponse = true;
 
   type v1ShowKeyResponse = {
@@ -3326,6 +3467,9 @@ sender ID (e.g. "MyApp"). Unique. */
     accountIds?: string[];
     createdAt?: string;
     updatedAt?: string;
+    /** tenant_key marks a tenant-private signature (phase ③ resource domain).
+Empty = platform pool (usable by every tenant's policies). */
+    tenantKey?: string;
   };
 
   type v1SigningKeyInfo = {
@@ -3467,6 +3611,11 @@ Changing buckets only affects new uploads. */
 on every read — internal-trust posture, same convention as messaging
 apps; the ops console is the intended reader. */
     appSecret?: string;
+    /** tenant_key is the tenant this app maps to (phase ③ dual-stack window).
+Empty on rows not yet backfilled — the service falls back to the app_key
+literal until T10 clears the empties. New tenants first seen on the
+trusted path are lazily created with key_prefix "{tenant_key}/". */
+    tenantKey?: string;
   };
 
   type v1StorageSettings = {
@@ -3502,6 +3651,9 @@ uploads are rejected. */
     smsContent?: v1SmsContentTemplate;
     createdAt?: string;
     updatedAt?: string;
+    /** tenant_key scopes a template to one tenant (phase ③). Empty = shared
+across all tenants (the former app_id = 0 semantics). */
+    tenantKey?: string;
   };
 
   type v1TemplateKind =
@@ -3515,6 +3667,33 @@ uploads are rejected. */
     /** required params must be present in template_params on every send. */
     required?: boolean;
     description?: string;
+  };
+
+  type v1TenantInfo = {
+    tenantKey?: string;
+    name?: string;
+    remark?: string;
+    /** enabled_capabilities is a subset of the five service strings
+USER / MESSAGE / STORAGE / TELEMETRY / LICENSE. gid/reference/portal
+itself are platform plumbing and never appear here. */
+    enabledCapabilities?: string[];
+    /** disabled tenants fail every tenant-scoped surface immediately. */
+    disabled?: boolean;
+    /** Unix seconds. */
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
+  type v1TenantMember = {
+    userId?: string;
+    name?: string;
+    /** Unix seconds; when the binding was created. */
+    createdAt?: string;
+  };
+
+  type v1TenantMembership = {
+    tenantKey?: string;
+    tenantName?: string;
   };
 
   type v1TencentSmsCredentials = {
@@ -3758,5 +3937,10 @@ internal-trust posture, same convention as the other platform apps. */
     smsAccount?: string;
     /** region defaults to "cn-north-1" server-side when empty. */
     region?: string;
+  };
+
+  type v1WhoAmIResponse = {
+    userId?: string;
+    memberships?: v1TenantMembership[];
   };
 }

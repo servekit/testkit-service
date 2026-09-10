@@ -106,6 +106,82 @@ func TestGate_TenantAdmin_MultiBinding_OmittedChoiceForbidden(t *testing.T) {
 	require.False(t, cap.called, "denied requests never reach the handler")
 }
 
+func TestGate_TenantAdmin_MultiBinding_ChoicelessBootstrapRoutePasses(t *testing.T) {
+	// The switcher's bootstrap (spec §5.3): WhoAmI must be callable by a
+	// multi-binding TENANT_ADMIN BEFORE any choice exists — it is how they
+	// learn the binding set to choose from. The route is actor-scoped, so
+	// it crosses with NO injection (portal answers memberships only).
+	g := newGate(&stubPortal{memberships: []string{"ten_alpha", "ten_beta"}})
+
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/portal/whoami", nil)
+	rec := httptest.NewRecorder()
+	called := false
+	var ctxKey string
+	ctxKeyOK := false
+	g.Wrap(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		called = true
+		ctxKey, ctxKeyOK = tenantctx.TenantKeyFromCtx(r.Context())
+		w.WriteHeader(http.StatusOK)
+	})).ServeHTTP(rec, req.WithContext(grpcx.WithActor(req.Context(), tenantAdminActor())))
+
+	require.Equal(t, http.StatusOK, rec.Code)
+	require.True(t, called)
+	require.False(t, ctxKeyOK, "bootstrap route injects nothing")
+	require.Empty(t, ctxKey)
+}
+
+func TestGate_TenantAdmin_ZeroBindings_ChoicelessBootstrapRoutePasses(t *testing.T) {
+	// A revoked-everywhere admin can still see their (now empty) binding
+	// set; every other management-plane call stays 403.
+	g := newGate(&stubPortal{})
+
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/portal/whoami", nil)
+	rec := httptest.NewRecorder()
+	called := false
+	g.Wrap(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		called = true
+		w.WriteHeader(http.StatusOK)
+	})).ServeHTTP(rec, req.WithContext(grpcx.WithActor(req.Context(), tenantAdminActor())))
+
+	require.Equal(t, http.StatusOK, rec.Code)
+	require.True(t, called)
+}
+
+func TestGate_TenantAdmin_BootstrapRoute_OutOfRangeChoiceStillForbidden(t *testing.T) {
+	// The exemption is choice-less only: a smuggled out-of-range choice on
+	// the bootstrap route is still refused.
+	g := newGate(&stubPortal{memberships: []string{"ten_alpha"}})
+
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/portal/whoami", nil)
+	req.Header.Set(HeaderTenantChoice, "ten_other")
+	rec := httptest.NewRecorder()
+	called := false
+	g.Wrap(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		called = true
+		w.WriteHeader(http.StatusOK)
+	})).ServeHTTP(rec, req.WithContext(grpcx.WithActor(req.Context(), tenantAdminActor())))
+
+	require.Equal(t, http.StatusForbidden, rec.Code)
+	require.False(t, called)
+}
+
+func TestGate_TenantAdmin_OtherChoicelessEmptyRoutesStayForbidden(t *testing.T) {
+	// The exemption is route-scoped: MyCapabilities (and everything else)
+	// keeps the blanket choice rule for multi-binding admins.
+	g := newGate(&stubPortal{memberships: []string{"ten_alpha", "ten_beta"}})
+
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/portal/capabilities", nil)
+	rec := httptest.NewRecorder()
+	called := false
+	g.Wrap(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		called = true
+		w.WriteHeader(http.StatusOK)
+	})).ServeHTTP(rec, req.WithContext(grpcx.WithActor(req.Context(), tenantAdminActor())))
+
+	require.Equal(t, http.StatusForbidden, rec.Code)
+	require.False(t, called)
+}
+
 func TestGate_TenantAdmin_OutOfRangeChoiceForbidden(t *testing.T) {
 	g := newGate(&stubPortal{memberships: []string{"ten_alpha"}})
 

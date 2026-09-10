@@ -42,6 +42,7 @@ import (
 	gidsvc "github.com/servekit/testkit-service/internal/service/gid"
 	licsvc "github.com/servekit/testkit-service/internal/service/license"
 	"github.com/servekit/testkit-service/internal/service/message"
+	portalsvc "github.com/servekit/testkit-service/internal/service/portal"
 	"github.com/servekit/testkit-service/internal/service/storage"
 	telemetriesvc "github.com/servekit/testkit-service/internal/service/telemetry"
 	"github.com/servekit/testkit-service/internal/service/user"
@@ -218,6 +219,10 @@ func New(cfg *config.Config) (*Service, error) {
 	// P1 auth domain: forward to user-service; login returns the session id
 	// as the bearer token.
 	svc.auth = auth.New(auth.WithUserClient(usr))
+
+	// Phase ④ portal console forward domain (whoami / capabilities / api
+	// keys / platform registry writes) over the admin seam above.
+	svc.portalSvc = portalsvc.New(portal)
 
 	// P2 user domain.
 	svc.userSvc = user.New(usr)

@@ -34,6 +34,7 @@ import (
 	gidsvc "github.com/servekit/testkit-service/internal/service/gid"
 	licsvc "github.com/servekit/testkit-service/internal/service/license"
 	"github.com/servekit/testkit-service/internal/service/message"
+	portalsvc "github.com/servekit/testkit-service/internal/service/portal"
 	"github.com/servekit/testkit-service/internal/service/reference"
 	"github.com/servekit/testkit-service/internal/service/storage"
 	telemetriesvc "github.com/servekit/testkit-service/internal/service/telemetry"
@@ -79,6 +80,9 @@ type Service struct {
 	dashboardSvc *dashboardsvc.Service
 	licenseSvc   *licsvc.Service
 	telemetrySvc *telemetriesvc.Service
+	// portalSvc is the phase ④ console forward domain over the portal admin
+	// seam (whoami / capabilities / api keys / platform registry writes).
+	portalSvc *portalsvc.Service
 
 	startedAt int64
 }
@@ -118,6 +122,11 @@ func (s *Service) UserService() userservice.Service { return s.user }
 // Portal exposes the portal admin handle (grpc Client dialing the internal
 // admin listener) for the phase ④ console self-service forwards.
 func (s *Service) Portal() portalservice.Service { return s.portal }
+
+// PortalAdmin exposes the phase ④ console forward domain (whoami /
+// capabilities / api keys / platform registry management) over the portal
+// admin seam, with the door's actor-type re-checks and tenant-key scoping.
+func (s *Service) PortalAdmin() *portalsvc.Service { return s.portalSvc }
 
 // TenantGate exposes the console door's tenant gate — the HTTP middleware
 // pkg/server.go mounts inside the gateway wrap, downstream of the session

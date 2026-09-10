@@ -58,6 +58,38 @@ export default defineConfig({
       access: "canPlatform",
       component: "./Dashboard",
     },
+    // --- 租户管理（phase ④ tenant platform）：TENANT_ADMIN 自服务区 +
+    // PLATFORM 的租户注册面。canTenantAdmin 覆盖 TENANT_ADMIN（自服务）与
+    // PLATFORM（管理）双视角；成员管理仅 PLATFORM。TENANT_ADMIN 登录后的
+    // 落点（utils/landing.ts postLoginTarget）即本区首页 —— ①期 /profile
+    // 死角的收口。
+    {
+      key: "svc-tenant",
+      name: "租户管理",
+      icon: "ClusterOutlined",
+      access: "canTenantAdmin",
+      routes: [
+        { path: "/tenant", redirect: "/tenant/capabilities" },
+        {
+          path: "/tenant/capabilities",
+          name: "能力清单",
+          access: "canTenantAdmin",
+          component: "./Tenant/Capabilities",
+        },
+        {
+          path: "/tenant/credentials",
+          name: "密钥管理",
+          access: "canTenantAdmin",
+          component: "./Tenant/Credentials",
+        },
+        {
+          path: "/tenant/members",
+          name: "成员管理",
+          access: "canPlatform",
+          component: "./Tenant/Members",
+        },
+      ],
+    },
     // --- user-service: profile / identities / sessions + back-office ---
     // `key` is required on PATHLESS group parents: umi's menu transform
     // (route-utils transformRoute) derives a submenu's key from `item.key ||

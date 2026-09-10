@@ -1763,6 +1763,217 @@ export async function sendSms(body: API.v1SendSMSRequest,
   });
 }
 
+/** 此处后端没有提供注释 POST /api/v1/portal/api-keys/${param0}${disable} */
+export async function portalDisableApiKey(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalDisableApiKeyParams
+    ,body: API.TestkitServicePortalDisableApiKeyBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'accessKey': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/portal/api-keys/${param0}:disable`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/portal/api-keys/${param0}${rotateSecret} */
+export async function portalRotateApiKeySecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalRotateApiKeySecretParams
+    ,body: API.TestkitServicePortalRotateApiKeySecretBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'accessKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1RotateApiKeySecretResponse>(`/api/v1/portal/api-keys/${param0}:rotateSecret`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** MyCapabilities answers the enabled capability services (the union
+across the caller's bound tenants). GET /api/v1/portal/capabilities */
+export async function portalMyCapabilities(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1MyCapabilitiesResponse>('/api/v1/portal/capabilities', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/portal/tenants */
+export async function portalListTenants(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListTenantsResponse>('/api/v1/portal/tenants', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/portal/tenants/${param0}/api-keys */
+export async function portalListApiKeys(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalListApiKeysParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1ListApiKeysResponse>(`/api/v1/portal/tenants/${param0}/api-keys`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/portal/tenants/${param0}/api-keys */
+export async function portalCreateApiKey(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalCreateApiKeyParams
+    ,body: API.TestkitServicePortalCreateApiKeyBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1CreateApiKeyResponse>(`/api/v1/portal/tenants/${param0}/api-keys`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/portal/tenants/${param0}/members */
+export async function portalListTenantMembers(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalListTenantMembersParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1ListTenantMembersResponse>(`/api/v1/portal/tenants/${param0}/members`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/portal/tenants/${param0}/members */
+export async function portalAddTenantMember(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalAddTenantMemberParams
+    ,body: API.TestkitServicePortalAddTenantMemberBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/portal/tenants/${param0}/members`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/portal/tenants/${param0}/members/${param1} */
+export async function portalRemoveTenantMember(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalRemoveTenantMemberParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 'userId': param1, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/portal/tenants/${param0}/members/${param1}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/portal/tenants/${param0}${disable} */
+export async function portalDisableTenant(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalDisableTenantParams
+    ,body: API.TestkitServicePortalDisableTenantBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/portal/tenants/${param0}:disable`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/portal/tenants/${param0}${setCapability} */
+export async function portalSetCapability(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalSetCapabilityParams
+    ,body: API.TestkitServicePortalSetCapabilityBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1SetCapabilityResponse>(`/api/v1/portal/tenants/${param0}:setCapability`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** ---- Self-service (TENANT_ADMIN) ----
+WhoAmI is the switcher's bootstrap (spec §5.3): the console calls it
+right after login to learn the binding set every later choice is
+validated against. GET /api/v1/portal/whoami */
+export async function portalWhoAmI(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1WhoAmIResponse>('/api/v1/portal/whoami', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** ---- Profile (P2) ---- GET /api/v1/profile */
 export async function getProfile(
   options ?: {[key: string]: any}

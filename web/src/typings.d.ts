@@ -28,4 +28,18 @@ declare namespace API {
   type CreatePermissionRequest = v1CreatePermissionRequest;
   type CreatePermissionGroupRequest = v1CreatePermissionGroupRequest;
   type CreateUserRequest = v1CreateUserRequest;
+
+  // --- Phase ④ tenant platform (portal admin forwards) ---
+  type TenantInfo = v1TenantInfo;
+  type ApiKeyInfo = v1ApiKeyInfo;
+  type TenantMember = v1TenantMember;
+  type TenantMembership = v1TenantMembership;
+  type WhoAmIResponse = v1WhoAmIResponse;
+  type MyCapabilitiesResponse = v1MyCapabilitiesResponse;
+  type ListTenantsResponse = v1ListTenantsResponse;
+  type ListApiKeysResponse = v1ListApiKeysResponse;
+  type CreateApiKeyResponse = v1CreateApiKeyResponse;
+  type RotateApiKeySecretResponse = v1RotateApiKeySecretResponse;
+  type SetCapabilityResponse = v1SetCapabilityResponse;
+  type ListTenantMembersResponse = v1ListTenantMembersResponse;
 }

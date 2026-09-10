@@ -3,18 +3,18 @@ import { App, Typography } from "antd";
 import { useEffect } from "react";
 import { history, useModel } from "@umijs/max";
 import { login } from "@/services/testkit/testkitService";
+import { postLoginTarget } from "@/utils/landing";
+import { clearTenantChoice } from "@/utils/tenantChoice";
 
 const { Link, Text } = Typography;
 
-const USER_TYPE_PLATFORM = "USER_TYPE_PLATFORM";
-
 /**
  * Login page — uses the GENERATED `login` service (no hand-written fetch).
- * On success: persist token + user, then redirect by user_type
- * (PLATFORM -> /dashboard back-office; TENANT_ADMIN / END_USER ->
- * /profile self-service — /dashboard is canPlatform-gated, so
- * TENANT_ADMIN would hit a 403 there until phase ④ ships tenant
- * surfaces).
+ * On success: persist token + user, refresh initialState (the tenant
+ * switcher's WhoAmI bootstrap rides it for TENANT_ADMINs), then redirect by
+ * user_type via postLoginTarget: PLATFORM → /dashboard, TENANT_ADMIN →
+ * /tenant (租户管理 self-service — phase ④'s landing fix), END_USER →
+ * /profile.
  *
  * regionCode defaults to 'CN' because the backend's LoginRequest validates
  * region_code against ^[A-Z]{2}$ even when empty (no ignore_empty), which would
@@ -23,7 +23,7 @@ const USER_TYPE_PLATFORM = "USER_TYPE_PLATFORM";
  */
 export default function LoginPage() {
   const { message } = App.useApp();
-  const { setInitialState } = useModel("@@initialState");
+  const { refresh } = useModel("@@initialState");
 
   // An already-authenticated visitor has no business on the login page —
   // send them home (same routing rules as the post-login push). A stale
@@ -37,10 +37,8 @@ export default function LoginPage() {
     } catch {
       // corrupt cache — fall through to the login form
     }
-    // Same routing as the post-login push: only PLATFORM enters /dashboard
-    // (canPlatform-gated); TENANT_ADMIN uses /profile until phase ④.
-    const target = userType === USER_TYPE_PLATFORM ? "/dashboard" : "/profile";
-    history.replace(target);
+    // Same routing as the post-login push (postLoginTarget by user_type).
+    history.replace(postLoginTarget(userType));
   }, []);
 
   return (
@@ -62,17 +60,20 @@ export default function LoginPage() {
             message.error("登录失败：响应缺少 token 或用户信息");
             return false;
           }
+          // The tenant choice belongs to the previous session's identity —
+          // drop it BEFORE the new session's first management request; the
+          // initialState refresh below re-derives it (TENANT_ADMIN WhoAmI
+          // bootstrap / PLATFORM cross-view).
+          clearTenantChoice();
           localStorage.setItem("testkit_token", token);
           localStorage.setItem("testkit_user", JSON.stringify(user));
-          // Refresh initialState so the access plugin re-evaluates (it reads
-          // the stored user) before the client-side redirect below.
-          await setInitialState({ currentUser: user });
+          // refresh() re-runs getInitialState so the access plugin and the
+          // tenant switcher pick up the new identity (and, for tenant
+          // admins, their binding set + derived choice) before the
+          // client-side redirect below.
+          await refresh();
           message.success("登录成功");
-          // TENANT_ADMIN lands on /profile until phase ④ tenant surfaces
-          // ship (/dashboard is canPlatform-gated — a 403 dead angle).
-          const target =
-            user.userType === USER_TYPE_PLATFORM ? "/dashboard" : "/profile";
-          history.push(target);
+          history.push(postLoginTarget(user.userType));
           return true;
         } catch (err) {
           // 401 is handled by the request interceptor (clears session, redirects

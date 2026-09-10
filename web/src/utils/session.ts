@@ -9,6 +9,7 @@
  * the error is swallowed and the redirect always happens.
  */
 import { logout } from '@/services/testkit/testkitService';
+import { clearTenantChoice } from './tenantChoice';
 
 export async function endSession(): Promise<void> {
   try {
@@ -20,6 +21,9 @@ export async function endSession(): Promise<void> {
   }
   localStorage.removeItem('testkit_token');
   localStorage.removeItem('testkit_user');
+  // The tenant choice belongs to this session's identity — never let it ride
+  // the next login (the login flow re-derives it from WhoAmI).
+  clearTenantChoice();
   // Full navigation (not history.push): remounts the app so getInitialState
   // drops the stale currentUser and ProLayout no longer shows the old chip.
   window.location.href = '/user/login';

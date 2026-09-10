@@ -254,6 +254,25 @@ func containsKey(keys []string, want string) bool {
 	return false
 }
 
+// choicelessRoutes are the actor-scoped console RPCs a caller may reach
+// WITHOUT an explicit tenant choice: WhoAmI is the switcher's bootstrap
+// (spec §5.3 — the console calls it right after login to learn the binding
+// set every later choice is validated against), so a multi-binding
+// TENANT_ADMIN must be able to call it before any choice exists. The route
+// answers only actor-scoped facts (memberships), never tenant-scoped data,
+// so it crosses with NO injection; every tenant-scoped surface keeps
+// requiring the choice. All other routes stay under the blanket rule.
+var choicelessRoutes = map[string]struct{}{
+	"/api/v1/portal/whoami": {},
+}
+
+// isChoicelessRoute reports whether path is one of the actor-scoped
+// bootstrap routes exempt from choice enforcement.
+func isChoicelessRoute(path string) bool {
+	_, ok := choicelessRoutes[path]
+	return ok
+}
+
 // Gate is the HTTP edge middleware form of the door (spec §8.2): strip
 // inbound tenant headers, resolve the §5.3 injection from the verified actor
 // the session middleware planted on the request context, and plant the
@@ -278,7 +297,11 @@ func NewGate(resolver *Resolver) *Gate {
 //     non-public anonymous request): operate as the reserved console
 //     directory.
 //  4. Otherwise resolve per the §5.3 matrix. Policy denials answer 403,
-//     portal unavailability 503; nothing is forwarded unresolved.
+//     portal unavailability 503; nothing is forwarded unresolved. The one
+//     exception: a choice-less ErrChoiceRequired on a choicelessRoute (the
+//     switcher bootstrap, WhoAmI) crosses with no injection — the RPC is
+//     actor-scoped, so it leaks no tenant data and lets a multi-binding
+//     admin learn their binding set before choosing.
 //  5. A resolved key is planted in all three views (wire header for
 //     grpc-gateway transcoding, incoming+outgoing metadata and the ctx value
 //     on the request context for the raw HTTP mounts). A PLATFORM cross-view
@@ -319,15 +342,22 @@ func (g *Gate) Wrap(next http.Handler) http.Handler {
 		switch userv1.UserType(actor.GetUserType()) {
 		case userv1.UserType_USER_TYPE_TENANT_ADMIN, userv1.UserType_USER_TYPE_PLATFORM:
 			resolved, err := g.resolver.Resolve(r.Context(), actor, choice)
-			if err != nil {
-				if errors.Is(err, ErrPortal) {
-					http.Error(w, "tenant gate unavailable", http.StatusServiceUnavailable)
-					return
-				}
+			switch {
+			case err == nil:
+				key = resolved
+			case errors.Is(err, ErrPortal):
+				http.Error(w, "tenant gate unavailable", http.StatusServiceUnavailable)
+				return
+			case choice == "" && errors.Is(err, ErrChoiceRequired) && isChoicelessRoute(r.URL.Path):
+				// Switcher bootstrap (spec §5.3): the choiceless
+				// routes are actor-scoped, so they cross with no
+				// injection — a multi-binding admin can still learn
+				// their binding set before choosing. Everything
+				// tenant-scoped keeps requiring the choice.
+			default:
 				http.Error(w, "forbidden", http.StatusForbidden)
 				return
 			}
-			key = resolved
 		default:
 			if choice != "" {
 				http.Error(w, "forbidden", http.StatusForbidden)

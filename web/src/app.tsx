@@ -2,9 +2,12 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
 import { App as AntdApp, Dropdown } from 'antd';
 import type { ReactNode } from 'react';
+import { TenantSwitcher } from './components/TenantSwitcher';
 import { requestConfig } from './request';
 import { installChunkReloadGuard } from './utils/chunkGuard';
 import { endSession } from './utils/session';
+import { portalWhoAmI } from './services/testkit/testkitService';
+import { ensureTenantChoice } from './utils/tenantChoice';
 
 // Before anything renders: a stale-deploy tab whose lazy chunks 404 should
 // reload itself once instead of showing "Loading chunk ... failed" forever.
@@ -13,6 +16,8 @@ installChunkReloadGuard();
 const LOGIN_PATH = '/user/login';
 // Public (session-less) surfaces: everything under /user/ — login + register.
 const PUBLIC_PREFIX = '/user/';
+
+const USER_TYPE_TENANT_ADMIN = 'USER_TYPE_TENANT_ADMIN';
 
 function readUser(): API.User | undefined {
   try {
@@ -24,14 +29,44 @@ function readUser(): API.User | undefined {
 }
 
 /**
- * Initial state consumed by the layout (avatar / menu). Refreshed on login,
- * logout, and on every full app mount. Kept intentionally minimal — ProLayout
- * reads currentUser to render the user chip.
+ * Initial state consumed by the layout (avatar / menu / tenant switcher).
+ * Refreshed on login, logout, and on every full app mount. Kept intentionally
+ * minimal — ProLayout reads currentUser to render the user chip; the tenant
+ * switcher reads tenantMemberships (TENANT_ADMIN binding set, §5.3).
+ *
+ * The switcher's bootstrap: right after login (or on any app mount with a
+ * session) a TENANT_ADMIN's WhoAmI answers their binding set, and the stored
+ * choice is validated against it (single binding auto-selects; multi-binding
+ * defaults to the stored choice or the first binding). WhoAmI is the one
+ * console route allowed through the door without a choice — exactly so this
+ * bootstrap can run before the first choice exists. Failures (portal down,
+ * revoked bindings) degrade to an empty set: the switcher shows the
+ * no-tenant state and management-plane calls surface their own errors.
  */
 export async function getInitialState(): Promise<{
   currentUser?: API.User;
+  tenantMemberships?: API.TenantMembership[];
 }> {
-  return { currentUser: readUser() };
+  const currentUser = readUser();
+  const token = localStorage.getItem('testkit_token');
+  if (!currentUser || !token) {
+    return {};
+  }
+  if (currentUser.userType !== USER_TYPE_TENANT_ADMIN) {
+    // PLATFORM keeps whatever drill-down choice is stored (validated
+    // server-side against the registry on every request); END_USER has no
+    // management plane at all.
+    return { currentUser };
+  }
+  try {
+    const who = await portalWhoAmI();
+    const memberships = who.memberships ?? [];
+    ensureTenantChoice(memberships);
+    return { currentUser, tenantMemberships: memberships };
+  } catch {
+    // Bootstrap degradation — see the doc comment above.
+    return { currentUser, tenantMemberships: [] };
+  }
 }
 
 /** Auth gate: bounce to /user/login when there is no session. */
@@ -44,7 +79,7 @@ export function render(oldRender: () => void) {
   oldRender();
 }
 
-/** Re-export the request config so Umi Max wires the Bearer interceptor + 401 handler. */
+/** Re-export the request config so Umi Max wires the Bearer + tenant-choice interceptors and the 401 handler. */
 export const request = requestConfig;
 
 /**
@@ -58,7 +93,10 @@ export function rootContainer(container: ReactNode) {
 
 /**
  * ProLayout shell. Sidebar menu is derived from config routes (工作台/用户/文件/
- * 消息/gid/系统 + 个人中心); access-gated via src/access.ts. Real pages arrive P2-P5.
+ * 消息/gid/系统 + 个人中心 + 租户管理); access-gated via src/access.ts. The top
+ * bar carries the tenant switcher (phase ④): membership dropdown for
+ * multi-binding TENANT_ADMINs, cross-view badge + registry dropdown for
+ * PLATFORM; single-binding admins and END_USERs render nothing.
  */
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   const user = initialState?.currentUser;
@@ -66,6 +104,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     title: 'Testkit',
     logo: false,
     menu: { locale: false },
+    actionsRender: () => [<TenantSwitcher key="tenant-switcher" />],
     avatarProps: {
       size: 'small',
       title: user?.nickname || user?.username || '用户',
