@@ -85,26 +85,26 @@ func (h *Handler) ShowPubKey(ctx context.Context, req *testkitv1.ShowPubKeyReque
 
 // --- app-registry forwards (calling applications; license.v1 types) ---
 
-func (h *Handler) LicenseCreateApp(ctx context.Context, req *licensev1.CreateAppRequest) (*licensev1.CreateAppResponse, error) {
-	return h.svc.License().LicenseCreateApp(ctx, req)
+func (h *Handler) LicenseCreateTenantConfig(ctx context.Context, req *licensev1.CreateTenantConfigRequest) (*licensev1.CreateTenantConfigResponse, error) {
+	return h.svc.License().LicenseCreateTenantConfig(ctx, req)
 }
 
-func (h *Handler) LicenseGetApp(ctx context.Context, req *licensev1.GetAppRequest) (*licensev1.GetAppResponse, error) {
-	return h.svc.License().LicenseGetApp(ctx, req)
+func (h *Handler) LicenseGetTenantConfig(ctx context.Context, req *licensev1.GetTenantConfigRequest) (*licensev1.GetTenantConfigResponse, error) {
+	return h.svc.License().LicenseGetTenantConfig(ctx, req)
 }
 
-func (h *Handler) LicenseUpdateApp(ctx context.Context, req *licensev1.UpdateAppRequest) (*licensev1.UpdateAppResponse, error) {
-	return h.svc.License().LicenseUpdateApp(ctx, req)
+func (h *Handler) LicenseUpdateTenantConfig(ctx context.Context, req *licensev1.UpdateTenantConfigRequest) (*licensev1.UpdateTenantConfigResponse, error) {
+	return h.svc.License().LicenseUpdateTenantConfig(ctx, req)
 }
 
-func (h *Handler) LicenseRotateAppSecret(ctx context.Context, req *licensev1.RotateAppSecretRequest) (*licensev1.RotateAppSecretResponse, error) {
-	return h.svc.License().LicenseRotateAppSecret(ctx, req)
+func (h *Handler) LicenseRotateTenantConfigSecret(ctx context.Context, req *licensev1.RotateTenantConfigSecretRequest) (*licensev1.RotateTenantConfigSecretResponse, error) {
+	return h.svc.License().LicenseRotateTenantConfigSecret(ctx, req)
 }
 
-func (h *Handler) LicenseListApps(ctx context.Context, req *licensev1.ListAppsRequest) (*licensev1.ListAppsResponse, error) {
-	return h.svc.License().LicenseListApps(ctx, req)
+func (h *Handler) LicenseListTenantConfigs(ctx context.Context, req *licensev1.ListTenantConfigsRequest) (*licensev1.ListTenantConfigsResponse, error) {
+	return h.svc.License().LicenseListTenantConfigs(ctx, req)
 }
 
-func (h *Handler) LicenseDeleteApp(ctx context.Context, req *licensev1.DeleteAppRequest) (*emptypb.Empty, error) {
-	return h.svc.License().LicenseDeleteApp(ctx, req)
+func (h *Handler) LicenseDeleteTenantConfig(ctx context.Context, req *licensev1.DeleteTenantConfigRequest) (*emptypb.Empty, error) {
+	return h.svc.License().LicenseDeleteTenantConfig(ctx, req)
 }

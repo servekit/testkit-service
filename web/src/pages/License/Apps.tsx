@@ -1,8 +1,9 @@
 /**
- * License 平台 · 应用管理。与消息/存储平台同一套交互：调用方（业务系统）
- * 的身份注册表，凭据（app_key/app_secret）列表可见（内网信任 posture），
- * 默认掩码、点眼睛显示明文、点复制取值。注意区分：App 是接入方身份，
- * 不是终端用户的 License Key（密钥管理在另一页）。
+ * License 平台 · 租户配置（④T6 更名，原「应用管理」）。与消息/存储平台同一
+ * 套交互：每个租户一行配置，行内保留接入方（业务系统）凭据
+ * （app_key/app_secret，列表可见——内网信任 posture），默认掩码、点眼睛显示
+ * 明文、点复制取值。注意区分：配置行是接入方身份，不是终端用户的 License
+ * Key（密钥管理在另一页）。
  */
 import { ModalForm, ProFormText } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
@@ -15,11 +16,11 @@ import {
 } from "@ant-design/pro-components";
 import { SecretText } from "@/components/SecretText";
 import {
-  licenseCreateApp,
-  licenseDeleteApp,
-  licenseListApps,
-  licenseRotateAppSecret,
-  licenseUpdateApp,
+  licenseCreateTenantConfig,
+  licenseDeleteTenantConfig,
+  licenseListTenantConfigs,
+  licenseRotateTenantConfigSecret,
+  licenseUpdateTenantConfig,
 } from "@/services/testkit/testkitService";
 
 export default function LicenseAppsPage() {
@@ -34,7 +35,7 @@ export default function LicenseAppsPage() {
     if (appKey) setRevealed((prev) => ({ ...prev, [`${appKey}:${field}`]: true }));
   };
 
-  const columns: ProColumns<API.v1LicenseAppInfo>[] = [
+  const columns: ProColumns<API.v1LicenseTenantConfigInfo>[] = [
     { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
     {
       title: "AppKey",
@@ -83,7 +84,7 @@ export default function LicenseAppsPage() {
           key="rotate"
           onClick={async () => {
             try {
-              await licenseRotateAppSecret({ appKey: r.appKey! }, {} as never);
+              await licenseRotateTenantConfigSecret({ tenantKey: r.tenantKey! }, {} as never);
               message.success("已轮换，新 AppSecret 见列表");
               reveal(r.appKey, "appSecret");
               reload();
@@ -99,7 +100,7 @@ export default function LicenseAppsPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await licenseUpdateApp({ appKey: r.appKey! }, { disabled: !r.disabled });
+              await licenseUpdateTenantConfig({ tenantKey: r.tenantKey! }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用（客户端面立即拒绝）");
               reload();
             } catch (err) {
@@ -115,7 +116,7 @@ export default function LicenseAppsPage() {
           title="硬删除：app_key 立即失效且可被重新注册；已发的 License 不受影响。确定？"
           onConfirm={async () => {
             try {
-              await licenseDeleteApp({ appKey: r.appKey! });
+              await licenseDeleteTenantConfig({ tenantKey: r.tenantKey! });
               message.success("已删除");
               reload();
             } catch (err) {
@@ -132,28 +133,28 @@ export default function LicenseAppsPage() {
 
   return (
     <PageContainer>
-      <ProTable<API.v1LicenseAppInfo>
-        headerTitle="应用列表"
+      <ProTable<API.v1LicenseTenantConfigInfo>
+        headerTitle="租户配置列表"
         actionRef={actionRef}
         columns={columns}
-        rowKey="appKey"
+        rowKey="id"
         search={false}
         pagination={false}
         scroll={{ x: 1280 }}
         request={async () => {
-          const resp = await licenseListApps();
-          return { data: resp.apps ?? [], success: true };
+          const resp = await licenseListTenantConfigs();
+          return { data: resp.configs ?? [], success: true };
         }}
         toolBarRender={() => [
           <ModalForm
             key="create"
-            title="创建应用"
-            trigger={<Button type="primary">创建应用</Button>}
+            title="创建租户配置"
+            trigger={<Button type="primary">创建租户配置</Button>}
             onFinish={async (vals) => {
               try {
-                const resp = await licenseCreateApp({ name: vals.name });
+                const resp = await licenseCreateTenantConfig({ name: vals.name });
                 message.success("已创建，AppKey/AppSecret 见列表");
-                reveal(resp.app?.appKey, "appSecret");
+                reveal(resp.config?.appKey, "appSecret");
                 reload();
                 return true;
               } catch (err) {
@@ -168,7 +169,7 @@ export default function LicenseAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        App 是接入方（业务系统）身份：客户端面调用（激活 / 停用 / 试用启动）需携带 x-app-key /
+        配置行是接入方（业务系统）身份：客户端面调用（激活 / 停用 / 试用启动）需携带 x-app-key /
         x-app-secret，缺凭据、应用停用或密钥不符都会被拒绝；终端用户的 License Key
         在「密钥管理」页维护。轮换后旧 secret 立即失效。
       </Space>

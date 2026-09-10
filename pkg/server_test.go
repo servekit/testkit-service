@@ -47,8 +47,8 @@ func (fakeSessions) GetSession(_ context.Context, req *pb.GetSessionRequest) (*p
 		return &pb.GetSessionResponse{UserId: 7, UserType: pb.UserType_USER_TYPE_END_USER}, nil
 	case "sess-8":
 		return &pb.GetSessionResponse{
-			UserId:   8,
-			UserType: pb.UserType_USER_TYPE_TENANT_ADMIN,
+			UserId:    8,
+			UserType:  pb.UserType_USER_TYPE_TENANT_ADMIN,
 			TenantKey: "ten_platform",
 		}, nil
 	}

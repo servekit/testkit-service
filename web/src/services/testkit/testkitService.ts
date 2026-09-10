@@ -965,106 +965,6 @@ export async function activate(body: API.v1ActivateRequest,
   });
 }
 
-/** 此处后端没有提供注释 GET /api/v1/license/admin/apps */
-export async function licenseListApps(
-  options ?: {[key: string]: any}
-) {
-  return request<API.licenseV1ListAppsResponse>('/api/v1/license/admin/apps', {
-  method: 'GET',
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/v1/license/admin/apps */
-export async function licenseCreateApp(body: API.licenseV1CreateAppRequest,
-  options ?: {[key: string]: any}
-) {
-  return request<API.licenseV1CreateAppResponse>('/api/v1/license/admin/apps', {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 GET /api/v1/license/admin/apps/${param0} */
-export async function licenseGetApp(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.LicenseGetAppParams
-    ,
-  options ?: {[key: string]: any}
-) {
-  const { 'appKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.licenseV1GetAppResponse>(`/api/v1/license/admin/apps/${param0}`, {
-  method: 'GET',
-    params: {...queryParams,},
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 PUT /api/v1/license/admin/apps/${param0} */
-export async function licenseUpdateApp(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.LicenseUpdateAppParams
-    ,body: API.TestkitServiceLicenseUpdateAppBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'appKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.licenseV1UpdateAppResponse>(`/api/v1/license/admin/apps/${param0}`, {
-  method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 DELETE /api/v1/license/admin/apps/${param0} */
-export async function licenseDeleteApp(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.LicenseDeleteAppParams
-    ,
-  options ?: {[key: string]: any}
-) {
-  const { 'appKey': param0, 
-  ...queryParams
-  } = params;
-  return request<Record<string, any>>(`/api/v1/license/admin/apps/${param0}`, {
-  method: 'DELETE',
-    params: {...queryParams,},
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/v1/license/admin/apps/${param0}${rotateSecret} */
-export async function licenseRotateAppSecret(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.LicenseRotateAppSecretParams
-    ,body: API.TestkitServiceLicenseRotateAppSecretBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'appKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.licenseV1RotateAppSecretResponse>(`/api/v1/license/admin/apps/${param0}:rotateSecret`, {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 GET /api/v1/license/admin/keys */
 export async function listKeys(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -1274,6 +1174,106 @@ export async function showPubKey(
 ) {
   return request<API.v1ShowPubKeyResponse>('/api/v1/license/admin/signing/pubkey', {
   method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/license/admin/tenant-configs */
+export async function licenseListTenantConfigs(
+  options ?: {[key: string]: any}
+) {
+  return request<API.licenseV1ListTenantConfigsResponse>('/api/v1/license/admin/tenant-configs', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/admin/tenant-configs */
+export async function licenseCreateTenantConfig(body: API.licenseV1CreateTenantConfigRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.licenseV1CreateTenantConfigResponse>('/api/v1/license/admin/tenant-configs', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/license/admin/tenant-configs/${param0} */
+export async function licenseGetTenantConfig(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.LicenseGetTenantConfigParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.licenseV1GetTenantConfigResponse>(`/api/v1/license/admin/tenant-configs/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/license/admin/tenant-configs/${param0} */
+export async function licenseUpdateTenantConfig(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.LicenseUpdateTenantConfigParams
+    ,body: API.TestkitServiceLicenseUpdateTenantConfigBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.licenseV1UpdateTenantConfigResponse>(`/api/v1/license/admin/tenant-configs/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/license/admin/tenant-configs/${param0} */
+export async function licenseDeleteTenantConfig(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.LicenseDeleteTenantConfigParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/license/admin/tenant-configs/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/license/admin/tenant-configs/${param0}${rotateSecret} */
+export async function licenseRotateTenantConfigSecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.LicenseRotateTenantConfigSecretParams
+    ,body: API.TestkitServiceLicenseRotateTenantConfigSecretBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.licenseV1RotateTenantConfigSecretResponse>(`/api/v1/license/admin/tenant-configs/${param0}:rotateSecret`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
     ...(options || {}),
   });
 }
@@ -1640,17 +1640,17 @@ export async function messageDeleteTemplate(
 export async function messageListTenantConfigs(
   options ?: {[key: string]: any}
 ) {
-  return request<API.v1ListTenantConfigsResponse>('/api/v1/message/admin/tenant-configs', {
+  return request<API.messagingV1ListTenantConfigsResponse>('/api/v1/message/admin/tenant-configs', {
   method: 'GET',
     ...(options || {}),
   });
 }
 
 /** 此处后端没有提供注释 POST /api/v1/message/admin/tenant-configs */
-export async function messageCreateTenantConfig(body: API.v1CreateTenantConfigRequest,
+export async function messageCreateTenantConfig(body: API.messagingV1CreateTenantConfigRequest,
   options ?: {[key: string]: any}
 ) {
-  return request<API.v1CreateTenantConfigResponse>('/api/v1/message/admin/tenant-configs', {
+  return request<API.messagingV1CreateTenantConfigResponse>('/api/v1/message/admin/tenant-configs', {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -1670,7 +1670,7 @@ export async function messageGetTenantConfig(
   const { 'id': param0, 
   ...queryParams
   } = params;
-  return request<API.v1GetTenantConfigResponse>(`/api/v1/message/admin/tenant-configs/${param0}`, {
+  return request<API.messagingV1GetTenantConfigResponse>(`/api/v1/message/admin/tenant-configs/${param0}`, {
   method: 'GET',
     params: {...queryParams,},
     ...(options || {}),
@@ -1687,7 +1687,7 @@ export async function messageUpdateTenantConfig(
   const { 'id': param0, 
   ...queryParams
   } = params;
-  return request<API.v1UpdateTenantConfigResponse>(`/api/v1/message/admin/tenant-configs/${param0}`, {
+  return request<API.messagingV1UpdateTenantConfigResponse>(`/api/v1/message/admin/tenant-configs/${param0}`, {
   method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -1725,7 +1725,7 @@ export async function messageRotateTenantConfigSecret(
   const { 'id': param0, 
   ...queryParams
   } = params;
-  return request<API.v1RotateTenantConfigSecretResponse>(`/api/v1/message/admin/tenant-configs/${param0}/secret:rotate`, {
+  return request<API.messagingV1RotateTenantConfigSecretResponse>(`/api/v1/message/admin/tenant-configs/${param0}/secret:rotate`, {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',

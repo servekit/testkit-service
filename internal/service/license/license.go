@@ -1223,36 +1223,37 @@ func toTestkitUpdateKeyResponse(src *dnv1.UpdateKeyResponse) *testkitv1.UpdateKe
 	return out
 }
 
-// --- app-registry forwards (calling applications; 1:1 pass-through of
-// license.v1 types, adminCtx only — the types are imported across domains
-// like the storage/message app forwards, so no converters are needed) ---
+// --- tenant-config forwards (phase ④ T6 rename of the app registry; 1:1
+// pass-through of license.v1 types, adminCtx only — the types are imported
+// across domains like the storage/message forwards, so no converters are
+// needed) ---
 
-// LicenseCreateApp registers a calling app and mints its secret.
-func (s *Service) LicenseCreateApp(ctx context.Context, req *licensev1.CreateAppRequest) (*licensev1.CreateAppResponse, error) {
-	return s.client.CreateApp(s.adminCtx(ctx), req)
+// LicenseCreateTenantConfig registers a tenant config and mints its secret.
+func (s *Service) LicenseCreateTenantConfig(ctx context.Context, req *licensev1.CreateTenantConfigRequest) (*licensev1.CreateTenantConfigResponse, error) {
+	return s.client.CreateTenantConfig(s.adminCtx(ctx), req)
 }
 
-// LicenseGetApp returns one app by app_key.
-func (s *Service) LicenseGetApp(ctx context.Context, req *licensev1.GetAppRequest) (*licensev1.GetAppResponse, error) {
-	return s.client.GetApp(s.adminCtx(ctx), req)
+// LicenseGetTenantConfig returns the tenant's config row.
+func (s *Service) LicenseGetTenantConfig(ctx context.Context, req *licensev1.GetTenantConfigRequest) (*licensev1.GetTenantConfigResponse, error) {
+	return s.client.GetTenantConfig(s.adminCtx(ctx), req)
 }
 
-// LicenseUpdateApp edits mutable fields; app_key is immutable.
-func (s *Service) LicenseUpdateApp(ctx context.Context, req *licensev1.UpdateAppRequest) (*licensev1.UpdateAppResponse, error) {
-	return s.client.UpdateApp(s.adminCtx(ctx), req)
+// LicenseUpdateTenantConfig edits mutable fields; identity is immutable.
+func (s *Service) LicenseUpdateTenantConfig(ctx context.Context, req *licensev1.UpdateTenantConfigRequest) (*licensev1.UpdateTenantConfigResponse, error) {
+	return s.client.UpdateTenantConfig(s.adminCtx(ctx), req)
 }
 
-// LicenseRotateAppSecret mints a new app secret.
-func (s *Service) LicenseRotateAppSecret(ctx context.Context, req *licensev1.RotateAppSecretRequest) (*licensev1.RotateAppSecretResponse, error) {
-	return s.client.RotateAppSecret(s.adminCtx(ctx), req)
+// LicenseRotateTenantConfigSecret mints a new app secret.
+func (s *Service) LicenseRotateTenantConfigSecret(ctx context.Context, req *licensev1.RotateTenantConfigSecretRequest) (*licensev1.RotateTenantConfigSecretResponse, error) {
+	return s.client.RotateTenantConfigSecret(s.adminCtx(ctx), req)
 }
 
-// LicenseListApps lists all calling apps (no paging).
-func (s *Service) LicenseListApps(ctx context.Context, req *licensev1.ListAppsRequest) (*licensev1.ListAppsResponse, error) {
-	return s.client.ListApps(s.adminCtx(ctx), req)
+// LicenseListTenantConfigs lists the config rows (no paging).
+func (s *Service) LicenseListTenantConfigs(ctx context.Context, req *licensev1.ListTenantConfigsRequest) (*licensev1.ListTenantConfigsResponse, error) {
+	return s.client.ListTenantConfigs(s.adminCtx(ctx), req)
 }
 
-// LicenseDeleteApp removes the app row (hard delete).
-func (s *Service) LicenseDeleteApp(ctx context.Context, req *licensev1.DeleteAppRequest) (*emptypb.Empty, error) {
-	return s.client.DeleteApp(s.adminCtx(ctx), req)
+// LicenseDeleteTenantConfig removes the config row (hard delete).
+func (s *Service) LicenseDeleteTenantConfig(ctx context.Context, req *licensev1.DeleteTenantConfigRequest) (*emptypb.Empty, error) {
+	return s.client.DeleteTenantConfig(s.adminCtx(ctx), req)
 }

@@ -27,12 +27,12 @@ import (
 type stubServer struct {
 	storagev1.UnimplementedStorageServiceServer
 
-	listMyFilesPaged func(context.Context, *storagev1.ListMyFilesPagedRequest) (*storagev1.ListMyFilesPagedResponse, error)
-	getSTSCredential func(context.Context, *storagev1.GetSTSCredentialRequest) (*storagev1.GetSTSCredentialResponse, error)
-	adminListFiles   func(context.Context, *storagev1.AdminListFilesRequest) (*storagev1.AdminListFilesResponse, error)
-	adminGetStats    func(context.Context, *storagev1.AdminGetStatsRequest) (*storagev1.AdminGetStatsResponse, error)
-	batchGetSTS      func(context.Context, *storagev1.BatchGetSTSCredentialRequest) (*storagev1.BatchGetSTSCredentialResponse, error)
-	listMyAuditLogs  func(context.Context, *storagev1.ListMyAuditLogsRequest) (*storagev1.ListMyAuditLogsResponse, error)
+	listMyFilesPaged        func(context.Context, *storagev1.ListMyFilesPagedRequest) (*storagev1.ListMyFilesPagedResponse, error)
+	getSTSCredential        func(context.Context, *storagev1.GetSTSCredentialRequest) (*storagev1.GetSTSCredentialResponse, error)
+	adminListFiles          func(context.Context, *storagev1.AdminListFilesRequest) (*storagev1.AdminListFilesResponse, error)
+	adminGetStats           func(context.Context, *storagev1.AdminGetStatsRequest) (*storagev1.AdminGetStatsResponse, error)
+	batchGetSTS             func(context.Context, *storagev1.BatchGetSTSCredentialRequest) (*storagev1.BatchGetSTSCredentialResponse, error)
+	listMyAuditLogs         func(context.Context, *storagev1.ListMyAuditLogsRequest) (*storagev1.ListMyAuditLogsResponse, error)
 	adminEnsureTenantConfig func(context.Context, *storagev1.AdminEnsureTenantConfigRequest) (*storagev1.AdminEnsureTenantConfigResponse, error)
 }
 

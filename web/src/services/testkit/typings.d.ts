@@ -429,51 +429,56 @@ tenant callers are pinned to their own directory regardless. */
     reason?: string;
   };
 
-  type LicenseDeleteAppParams = {
-    appKey: string;
+  type LicenseDeleteTenantConfigParams = {
+    tenantKey: string;
   };
 
-  type LicenseGetAppParams = {
-    appKey: string;
+  type LicenseGetTenantConfigParams = {
+    tenantKey: string;
   };
 
-  type LicenseRotateAppSecretParams = {
-    appKey: string;
+  type LicenseRotateTenantConfigSecretParams = {
+    tenantKey: string;
   };
 
-  type LicenseUpdateAppParams = {
-    appKey: string;
+  type LicenseUpdateTenantConfigParams = {
+    tenantKey: string;
   };
 
-  type licenseV1CreateAppRequest = {
-    /** app_key pattern: lowercase letter followed by lowercase alphanumerics
-and dashes. Optional; empty = server-generated. */
-    appKey?: string;
+  type licenseV1CreateTenantConfigRequest = {
     name?: string;
+    /** tenant_key names the tenant this config row belongs to. A scoped
+caller is clamped to the injected key (the stamp follows the
+injection, never the body); the PLATFORM cross-view needs it for a
+provisioning create — when empty there the server-minted app key
+literal is the legacy→tenant fallback value. Unique across rows. */
+    tenantKey?: string;
   };
 
-  type licenseV1CreateAppResponse = {
-    app?: v1LicenseAppInfo;
-    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+  type licenseV1CreateTenantConfigResponse = {
+    config?: v1LicenseTenantConfigInfo;
+    /** app_secret convenience echo (also visible via
+ListTenantConfigs/GetTenantConfig). */
     appSecret?: string;
   };
 
-  type licenseV1GetAppResponse = {
-    app?: v1LicenseAppInfo;
+  type licenseV1GetTenantConfigResponse = {
+    config?: v1LicenseTenantConfigInfo;
   };
 
-  type licenseV1ListAppsResponse = {
-    apps?: v1LicenseAppInfo[];
+  type licenseV1ListTenantConfigsResponse = {
+    configs?: v1LicenseTenantConfigInfo[];
   };
 
-  type licenseV1RotateAppSecretResponse = {
-    app?: v1LicenseAppInfo;
-    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+  type licenseV1RotateTenantConfigSecretResponse = {
+    config?: v1LicenseTenantConfigInfo;
+    /** app_secret convenience echo (also visible via
+ListTenantConfigs/GetTenantConfig). */
     appSecret?: string;
   };
 
-  type licenseV1UpdateAppResponse = {
-    app?: v1LicenseAppInfo;
+  type licenseV1UpdateTenantConfigResponse = {
+    config?: v1LicenseTenantConfigInfo;
   };
 
   type ListCountriesByRegionParams = {
@@ -1084,6 +1089,42 @@ or context was cancelled. error_message carries the last error. */
     id: string;
   };
 
+  type messagingV1CreateTenantConfigRequest = {
+    /** name is the config row's display label. */
+    name?: string;
+    smsDailyLimit?: string;
+    emailDailyLimit?: string;
+    /** tenant_key names the tenant this config row belongs to. A scoped
+caller is clamped to the injected key (the stamp follows the
+injection, never the body); the PLATFORM cross-view needs it for a
+provisioning create. Unique across rows (one config row per tenant);
+when empty on the cross-view the server-minted app key literal is the
+legacy→tenant fallback value. */
+    tenantKey?: string;
+  };
+
+  type messagingV1CreateTenantConfigResponse = {
+    config?: v1MessageTenantConfigInfo;
+    appSecret?: string;
+  };
+
+  type messagingV1GetTenantConfigResponse = {
+    config?: v1MessageTenantConfigInfo;
+  };
+
+  type messagingV1ListTenantConfigsResponse = {
+    configs?: v1MessageTenantConfigInfo[];
+  };
+
+  type messagingV1RotateTenantConfigSecretResponse = {
+    config?: v1MessageTenantConfigInfo;
+    appSecret?: string;
+  };
+
+  type messagingV1UpdateTenantConfigResponse = {
+    config?: v1MessageTenantConfigInfo;
+  };
+
   type PortalAddTenantMemberParams = {
     tenantKey: string;
   };
@@ -1372,9 +1413,9 @@ disables STS. */
     expiresAt?: string;
   };
 
-  type TestkitServiceLicenseRotateAppSecretBody = true;
+  type TestkitServiceLicenseRotateTenantConfigSecretBody = true;
 
-  type TestkitServiceLicenseUpdateAppBody = {
+  type TestkitServiceLicenseUpdateTenantConfigBody = {
     name?: string;
     disabled?: boolean;
   };
@@ -2214,25 +2255,6 @@ resource domain). Empty = platform pool. */
     template?: v1TemplateInfo;
   };
 
-  type v1CreateTenantConfigRequest = {
-    /** name is the config row's display label. */
-    name?: string;
-    smsDailyLimit?: string;
-    emailDailyLimit?: string;
-    /** tenant_key names the tenant this config row belongs to. A scoped
-caller is clamped to the injected key (the stamp follows the
-injection, never the body); the PLATFORM cross-view needs it for a
-provisioning create. Unique across rows (one config row per tenant);
-when empty on the cross-view the server-minted app key literal is the
-legacy→tenant fallback value. */
-    tenantKey?: string;
-  };
-
-  type v1CreateTenantConfigResponse = {
-    config?: v1MessageTenantConfigInfo;
-    appSecret?: string;
-  };
-
   type v1CreateUserRequest = {
     userType?: v1UserType;
     username?: string;
@@ -2627,10 +2649,6 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     expiresAt?: string;
   };
 
-  type v1GetTenantConfigResponse = {
-    config?: v1MessageTenantConfigInfo;
-  };
-
   type v1GrantModuleResponse = {
     entitlement?: v1EntitlementInfo;
   };
@@ -2798,7 +2816,7 @@ the sign on the account, not per request). */
     nativeName?: string;
   };
 
-  type v1LicenseAppInfo = {
+  type v1LicenseTenantConfigInfo = {
     id?: string;
     /** app_key identifies the app on every data-plane call; unique, immutable. */
     appKey?: string;
@@ -2811,6 +2829,9 @@ the ops console is the intended reader. */
     disabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
+    /** tenant_key names the tenant this config row belongs to (phase ③
+column; empty = the app_key literal fallback during the window). */
+    tenantKey?: string;
   };
 
   type v1ListApiKeysResponse = {
@@ -2963,10 +2984,6 @@ the ops console is the intended reader. */
 
   type v1ListTemplatesResponse = {
     templates?: v1TemplateInfo[];
-  };
-
-  type v1ListTenantConfigsResponse = {
-    configs?: v1MessageTenantConfigInfo[];
   };
 
   type v1ListTenantMembersResponse = {
@@ -3342,11 +3359,6 @@ backfilled — resolved through the app mapping at load time. */
     apiKey?: v1ApiKeyInfo;
     /** new sk_…, shown once — never listed or echoed again. */
     secret?: string;
-  };
-
-  type v1RotateTenantConfigSecretResponse = {
-    config?: v1MessageTenantConfigInfo;
-    appSecret?: string;
   };
 
   type v1RotateTokenResponse = {
@@ -3786,10 +3798,6 @@ empty for password/code logins). */
 
   type v1UpdateTemplateResponse = {
     template?: v1TemplateInfo;
-  };
-
-  type v1UpdateTenantConfigResponse = {
-    config?: v1MessageTenantConfigInfo;
   };
 
   type v1UploadCredentialItem = {
