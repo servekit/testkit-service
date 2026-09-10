@@ -19,6 +19,7 @@ import (
 	gidconfig "github.com/servekit/gid-service/pkg/config"
 	licenseconfig "github.com/servekit/license-service/pkg/config"
 	messageconfig "github.com/servekit/message-service/pkg/config"
+	portalconfig "github.com/servekit/portal-service/pkg/config"
 	referenceconfig "github.com/servekit/reference-service/pkg/config"
 	storageconfig "github.com/servekit/storage-service/pkg/config"
 	telemetryconfig "github.com/servekit/telemetry-service/pkg/config"
@@ -32,12 +33,17 @@ const (
 
 // Config holds all configuration for the testkit service.
 //
-// testkit is a single-process BFF that embeds the four downstream services
-// (gid / message / storage / user) in-process. It has no own DB tables in P1,
-// but it shares one PG connection pool and one Redis client across those
-// modules — hence Database and Redis live here and are injected into each
-// module via option (option.WithDB / WithRedis) rather than letting each
-// downstream open its own.
+// testkit is a single-process BFF that embeds the downstream services
+// (gid / message / storage / user / license / telemetry / reference)
+// in-process. It has no own DB tables, but it shares one PG connection pool
+// and one Redis client across those modules — hence Database and Redis live
+// here and are injected into each module via option (option.WithDB /
+// WithRedis) rather than letting each downstream open its own.
+//
+// Since the phase ④ tenant switch the BFF holds NO per-service app
+// credentials: the tenant gate (internal/tenantgate) resolves the trusted
+// x-tenant-key from the verified actor + portal membership data on every
+// request, and the five former credential config groups are gone.
 //
 // Sub-config fields are pointers per the golang-development skill: keeps
 // style consistent with the outer *Config return + functional options, and
@@ -51,11 +57,6 @@ type Config struct {
 	Redis      *redisx.Config
 	CORS       *CORSConfig
 	ThirdParty *ThirdPartyConfig
-	Message    *MessageConfig
-	Storage    *StorageConfig
-	License    *LicenseConfig
-	Telemetry  *TelemetryConfig
-	User       *UserConfig
 	Cron       *CronConfig
 	Log        *logging.Config
 }
@@ -86,12 +87,19 @@ type CronConfig struct {
 	Timezone string `default:"Asia/Shanghai"`
 }
 
-// ThirdPartyConfig groups the six downstream service settings. Each runs
-// in-process (mode=module) by default; mode=grpc is reserved for splitting a
-// downstream out to its own deployment later. Each downstream's own Config is
-// embedded as the module-mode payload; testkit overrides its DB/Redis by
-// injecting the shared connections via option, so each downstream's
-// Database/Redis sub-config is left as a placeholder in config.example.yaml.
+// ThirdPartyConfig groups the downstream service settings. The embedded
+// services each run in-process (mode=module) by default; mode=grpc is
+// reserved for splitting a downstream out to its own deployment later. Each
+// downstream's own Config is embedded as the module-mode payload; testkit
+// overrides its DB/Redis by injecting the shared connections via option, so
+// each downstream's Database/Redis sub-config is left as a placeholder in
+// config.example.yaml.
+//
+// Portal is the exception: it is a separate deployment by design (the OTHER
+// door + the tenant registry), so the useful default is grpc mode dialing
+// its internal admin listener (:19099 — compose exposes it without a host
+// port; testkit is its sole legal caller). init.go normalizes an unset
+// Portal section to that default.
 type ThirdPartyConfig struct {
 	GID       *RemoteServiceConfig[*gidconfig.Config]
 	Message   *RemoteServiceConfig[*messageconfig.Config]
@@ -100,6 +108,7 @@ type ThirdPartyConfig struct {
 	License   *RemoteServiceConfig[*licenseconfig.Config]
 	Telemetry *RemoteServiceConfig[*telemetryconfig.Config]
 	Reference *RemoteServiceConfig[*referenceconfig.Config]
+	Portal    *RemoteServiceConfig[*portalconfig.Config]
 }
 
 // RemoteServiceConfig holds connection settings for a service that can run
@@ -112,73 +121,6 @@ type ThirdPartyConfig struct {
 // RemoteServiceConfig is the shared third_party.<name> section shape,
 // aliased from go-common so Mode is the configx.Mode enum.
 type RemoteServiceConfig[T any] = configx.RemoteServiceConfig[T]
-
-// StorageConfig holds testkit-side storage-domain settings.
-//
-// AppKey/AppSecret are the BFF's storage-service app credentials: created by
-// `storage-service migrate --seed-from-config` (storage.bootstrap_app) or on
-// the storage admin surface, injected into the downstream context of every
-// data-plane call. Object keys, STS scope, and the dedup domain all hang off
-// the app's key_prefix.
-type StorageConfig struct {
-	// AppKey identifies the calling app; service.New fail-fasts on empty.
-	AppKey string
-	// AppSecret authenticates the app (internal-trust, DB-plaintext).
-	AppSecret string
-}
-
-// MessageConfig holds testkit-side message-domain settings.
-//
-// AppKey/AppSecret are the BFF's message-service app credentials: created on
-// the message admin surface (ListApps → CreateApp), injected into the
-// downstream context of every Send. Policy lookup, daily quota, and the
-// idempotency namespace all hang off the app identity.
-type MessageConfig struct {
-	// AppKey identifies the calling app; service.New fail-fasts on empty.
-	AppKey string
-	// AppSecret authenticates the app (internal-trust, DB-plaintext).
-	AppSecret string
-}
-
-// LicenseConfig holds testkit-side license-domain settings.
-//
-// AppKey/AppSecret are the BFF's license-service app credentials: created on
-// the license admin surface (应用管理 → 新建), injected into the downstream
-// context of every client-surface call (Activate/Deactivate/TrialStart —
-// the client surface is fail-closed without them).
-type LicenseConfig struct {
-	// AppKey identifies the calling app; service.New fail-fasts on empty.
-	AppKey string
-	// AppSecret authenticates the app (internal-trust, DB-plaintext).
-	AppSecret string
-}
-
-// TelemetryConfig holds testkit-side telemetry-domain settings.
-//
-// AppKey/AppSecret are the BFF's telemetry business-identity credentials
-// (platform ak/sk pair): created on the telemetry admin surface (应用管理 →
-// 新建), injected into the downstream context of every ingest-surface call
-// (the gRPC Ingest forward AND the raw /v1/e/ HTTP mounts — the internal
-// hop carries them; end-user clients keep the token contract).
-// UserConfig holds testkit-side user-domain tenant credentials.
-//
-// AppKey/AppSecret identify the BFF to user-service on every credential-
-// presenting surface (login / register / codes / password reset / social
-// logins / admin user management) — the tenant is the verified caller;
-// users created through testkit belong to this tenant.
-type UserConfig struct {
-	// AppKey identifies the calling app; service.New fail-fasts on empty.
-	AppKey string
-	// AppSecret authenticates the app (internal-trust, DB-plaintext).
-	AppSecret string
-}
-
-type TelemetryConfig struct {
-	// AppKey identifies the calling app (the telemetry app slug).
-	AppKey string
-	// AppSecret authenticates the app (internal-trust, DB-plaintext).
-	AppSecret string
-}
 
 // Load reads config from the standard configx locations:
 //   - -config flag (e.g. -config /etc/testkit-service/config.yaml)

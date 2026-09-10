@@ -67,10 +67,6 @@ import (
 // override the methods under test, and add a no-op Close (Task 2).
 type Service struct {
 	user userservice.Service
-	// appKey/appSecret identify the BFF to user-service on every
-	// credential-presenting surface — the tenant is the verified caller.
-	appKey    string
-	appSecret string
 }
 
 // Option configures a Service (for test injection).
@@ -79,18 +75,6 @@ type Option func(*Service)
 // WithUserClient overrides the embedded user client (tests).
 func WithUserClient(c userservice.Service) Option {
 	return func(s *Service) { s.user = c }
-}
-
-// WithAppCredentials sets the user-service tenant credentials the BFF
-// presents on credential-presenting surfaces (password reset, social
-// logins, admin user management).
-func WithAppCredentials(appKey, appSecret string) Option {
-	return func(s *Service) { s.appKey, s.appSecret = appKey, appSecret }
-}
-
-// withApp wraps ctx with the tenant credentials.
-func (s *Service) withApp(ctx context.Context) context.Context {
-	return userservice.WithApp(ctx, s.appKey, s.appSecret)
 }
 
 // New constructs the user-domain service. userClient is the embedded
@@ -143,7 +127,7 @@ func (s *Service) ChangePassword(ctx context.Context, req *testkitv1.ChangePassw
 
 // ResetPassword is public (code-based, no caller identity). Forwards as-is.
 func (s *Service) ResetPassword(ctx context.Context, req *testkitv1.ResetPasswordRequest) (*emptypb.Empty, error) {
-	return s.user.ResetPassword(s.withApp(ctx), &userv1.ResetPasswordRequest{
+	return s.user.ResetPassword(ctx, &userv1.ResetPasswordRequest{
 		Email:       req.GetEmail(),
 		Code:        req.GetCode(),
 		NewPassword: req.GetNewPassword(),
@@ -329,7 +313,7 @@ func (s *Service) GetOAuthURL(ctx context.Context, req *testkitv1.GetOAuthURLReq
 // SocialLogin completes an OAuth login. user-service returns a session_id,
 // which is returned as the bearer token.
 func (s *Service) SocialLogin(ctx context.Context, req *testkitv1.SocialLoginRequest) (*testkitv1.SocialLoginResponse, error) {
-	resp, err := s.user.SocialLogin(s.withApp(ctx), &userv1.SocialLoginRequest{
+	resp, err := s.user.SocialLogin(ctx, &userv1.SocialLoginRequest{
 		Provider: userv1.IdentityProvider(req.GetProvider()),
 		Code:     req.GetCode(),
 		State:    req.GetState(),
@@ -343,7 +327,7 @@ func (s *Service) SocialLogin(ctx context.Context, req *testkitv1.SocialLoginReq
 // MiniProgramLogin completes a WeChat mini-program login (code flow). Same
 // Same session-token shape as SocialLogin.
 func (s *Service) MiniProgramLogin(ctx context.Context, req *testkitv1.MiniProgramLoginRequest) (*testkitv1.SocialLoginResponse, error) {
-	resp, err := s.user.MiniProgramLogin(s.withApp(ctx), &userv1.MiniProgramLoginRequest{
+	resp, err := s.user.MiniProgramLogin(ctx, &userv1.MiniProgramLoginRequest{
 		Code:      req.GetCode(),
 		Nickname:  req.GetNickname(),
 		AvatarUrl: req.GetAvatarUrl(),
@@ -357,7 +341,7 @@ func (s *Service) MiniProgramLogin(ctx context.Context, req *testkitv1.MiniProgr
 // MiniProgramPhoneLogin completes a WeChat mini-program phone login. Same
 // Same session-token shape as SocialLogin.
 func (s *Service) MiniProgramPhoneLogin(ctx context.Context, req *testkitv1.MiniProgramPhoneLoginRequest) (*testkitv1.SocialLoginResponse, error) {
-	resp, err := s.user.MiniProgramPhoneLogin(s.withApp(ctx), &userv1.MiniProgramPhoneLoginRequest{
+	resp, err := s.user.MiniProgramPhoneLogin(ctx, &userv1.MiniProgramPhoneLoginRequest{
 		LoginCode: req.GetLoginCode(),
 		PhoneCode: req.GetPhoneCode(),
 		Nickname:  req.GetNickname(),
@@ -396,7 +380,7 @@ func (s *Service) socialToTokenResponse(resp *userv1.LoginResponse) (*testkitv1.
 // GetUser returns a user by target ID (admin view). user_id is the target, not
 // the caller — no ctx injection.
 func (s *Service) GetUser(ctx context.Context, req *testkitv1.GetUserRequest) (*testkitv1.User, error) {
-	resp, err := s.user.GetUser(s.withApp(ctx), &userv1.GetUserRequest{UserId: req.GetUserId()})
+	resp, err := s.user.GetUser(ctx, &userv1.GetUserRequest{UserId: req.GetUserId()})
 	if err != nil {
 		return nil, err
 	}
@@ -405,7 +389,7 @@ func (s *Service) GetUser(ctx context.Context, req *testkitv1.GetUserRequest) (*
 
 // DisableUser toggles a target user between ACTIVE and DISABLED.
 func (s *Service) DisableUser(ctx context.Context, req *testkitv1.DisableUserRequest) (*testkitv1.User, error) {
-	resp, err := s.user.DisableUser(s.withApp(ctx), &userv1.DisableUserRequest{
+	resp, err := s.user.DisableUser(ctx, &userv1.DisableUserRequest{
 		UserId:  req.GetUserId(),
 		Disable: req.GetDisable(),
 		Reason:  req.GetReason(),
@@ -419,7 +403,7 @@ func (s *Service) DisableUser(ctx context.Context, req *testkitv1.DisableUserReq
 // CreateUser creates a user as an administrator (the account starts in
 // PENDING_REVIEW and is activated by the user calling ChangePassword).
 func (s *Service) CreateUser(ctx context.Context, req *testkitv1.CreateUserRequest) (*testkitv1.CreateUserResponse, error) {
-	resp, err := s.user.CreateUser(s.withApp(ctx), toUserCreateUserRequest(req))
+	resp, err := s.user.CreateUser(ctx, toUserCreateUserRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -429,7 +413,7 @@ func (s *Service) CreateUser(ctx context.Context, req *testkitv1.CreateUserReque
 // ListUsers returns cursor-paginated users with rich filters (stable iteration
 // under concurrent writes).
 func (s *Service) ListUsers(ctx context.Context, req *testkitv1.ListUsersRequest) (*testkitv1.ListUsersResponse, error) {
-	resp, err := s.user.ListUsers(s.withApp(ctx), toUserListUsersRequest(req))
+	resp, err := s.user.ListUsers(ctx, toUserListUsersRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -439,7 +423,7 @@ func (s *Service) ListUsers(ctx context.Context, req *testkitv1.ListUsersRequest
 // ListUsersPaged returns offset-paginated users with an optional total count,
 // for admin UIs that need page numbers + totals.
 func (s *Service) ListUsersPaged(ctx context.Context, req *testkitv1.ListUsersPagedRequest) (*testkitv1.ListUsersPagedResponse, error) {
-	resp, err := s.user.ListUsersPaged(s.withApp(ctx), ToUserListUsersPagedRequest(req))
+	resp, err := s.user.ListUsersPaged(ctx, ToUserListUsersPagedRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -449,7 +433,7 @@ func (s *Service) ListUsersPaged(ctx context.Context, req *testkitv1.ListUsersPa
 // GetLoginLogs returns login audit logs, optionally filtered by a target
 // user_id (0 = unfiltered).
 func (s *Service) GetLoginLogs(ctx context.Context, req *testkitv1.GetLoginLogsRequest) (*testkitv1.GetLoginLogsResponse, error) {
-	resp, err := s.user.GetLoginLogs(s.withApp(ctx), toUserGetLoginLogsRequest(req))
+	resp, err := s.user.GetLoginLogs(ctx, toUserGetLoginLogsRequest(req))
 	if err != nil {
 		return nil, err
 	}

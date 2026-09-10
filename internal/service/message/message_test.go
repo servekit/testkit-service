@@ -13,6 +13,7 @@ import (
 	messagev1 "github.com/servekit/api/gen/go/messaging/v1"
 	referencev1 "github.com/servekit/api/gen/go/reference/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+	"github.com/servekit/go-common/tenantctx"
 	"github.com/servekit/testkit-service/internal/service/message"
 )
 
@@ -128,10 +129,11 @@ func (s *stubServer) ListSMSRegions(_ context.Context, req *messagev1.ListSMSReg
 	return s.listSMSRegionsResp, s.listSMSRegionsErr
 }
 
-// TestSendEmail_InjectsAppCredentials verifies the core curation: the
-// testkit request carries scene + params only; the BFF injects its app
-// credentials into the downstream context.
-func TestSendEmail_InjectsAppCredentials(t *testing.T) {
+// TestSendEmail_ForwardsTrustedTenantContext verifies the core curation:
+// the testkit request carries scene + params only, and the trusted tenant
+// context the gateway's gate planted on the request ctx reaches the
+// downstream call unchanged (no app credentials exist anymore).
+func TestSendEmail_ForwardsTrustedTenantContext(t *testing.T) {
 	stub := &stubServer{
 		sendEmailResp: &messagev1.SendResponse{
 			Id:     7001,
@@ -139,16 +141,16 @@ func TestSendEmail_InjectsAppCredentials(t *testing.T) {
 			Vendor: &messagev1.SendResponse_EmailVendor{EmailVendor: messagev1.EmailVendor_EMAIL_VENDOR_ALIYUN},
 		},
 	}
-	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
+	svc := message.New(stub)
 
-	resp, err := svc.SendEmail(context.Background(), &testkitv1.SendEmailRequest{
+	resp, err := svc.SendEmail(withTrustedTenant(context.Background(), "ten_alpha"), &testkitv1.SendEmailRequest{
 		To:             []*testkitv1.EmailAddress{{Email: "alice@example.com", DisplayName: "Alice"}},
 		Scene:          messagingv1.EmailScene_EMAIL_SCENE_NOTIFICATION,
 		TemplateParams: map[string]string{"code": "42"},
 	})
 	require.NoError(t, err)
-	// app credentials injected into the downstream context metadata.
-	require.Equal(t, "testkit-service", appKeyFromCtx(t, stub.sendEmailCtx))
+	// the trusted x-tenant-key rides the downstream context untouched.
+	require.Equal(t, "ten_alpha", tenantKeyFromCtx(t, stub.sendEmailCtx))
 	require.Equal(t, map[string]string{"code": "42"}, stub.sendEmailReq.GetTemplateParams())
 	// nested EmailAddress mapped field-for-field.
 	require.Equal(t, "alice@example.com", stub.sendEmailReq.GetTo()[0].GetEmail())
@@ -167,7 +169,7 @@ func TestSendEmail_InjectsAppCredentials(t *testing.T) {
 // downstream, not at the mapping layer).
 func TestSendEmail_PassesAttachmentsAndIdempotencyKey(t *testing.T) {
 	stub := &stubServer{sendEmailResp: &messagev1.SendResponse{Id: 8}}
-	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
+	svc := message.New(stub)
 
 	_, err := svc.SendEmail(context.Background(), &testkitv1.SendEmailRequest{
 		To:    []*testkitv1.EmailAddress{{Email: "b@x.com"}},
@@ -187,9 +189,9 @@ func TestSendEmail_PassesAttachmentsAndIdempotencyKey(t *testing.T) {
 	require.Equal(t, "idem-uuid-1", stub.sendEmailReq.GetIdempotencyKey())
 }
 
-// TestSendSMS_InjectsAppCredentials verifies SMS send also injects the
-// app credentials and the response picks the SMS branch.
-func TestSendSMS_InjectsAppCredentials(t *testing.T) {
+// TestSendSMS_ForwardsTrustedTenantContext verifies SMS send also forwards
+// the trusted tenant context and the response picks the SMS branch.
+func TestSendSMS_ForwardsTrustedTenantContext(t *testing.T) {
 	stub := &stubServer{
 		sendSMSResp: &messagev1.SendResponse{
 			Id:     9001,
@@ -197,16 +199,16 @@ func TestSendSMS_InjectsAppCredentials(t *testing.T) {
 			Vendor: &messagev1.SendResponse_SmsVendor{SmsVendor: messagev1.SmsVendor_SMS_VENDOR_ALIYUN},
 		},
 	}
-	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
+	svc := message.New(stub)
 
-	resp, err := svc.SendSMS(context.Background(), &testkitv1.SendSMSRequest{
+	resp, err := svc.SendSMS(withTrustedTenant(context.Background(), "ten_alpha"), &testkitv1.SendSMSRequest{
 		DialCode:       "+86",
 		Phone:          "13800138000",
 		TemplateParams: map[string]string{"code": "888888"},
 		Scene:          messagingv1.SmsScene_SMS_SCENE_LOGIN_CODE,
 	})
 	require.NoError(t, err)
-	require.Equal(t, "testkit-service", appKeyFromCtx(t, stub.sendSMSCtx))
+	require.Equal(t, "ten_alpha", tenantKeyFromCtx(t, stub.sendSMSCtx))
 	require.Equal(t, "+8613800138000", stub.sendSMSReq.GetTo())
 	require.Equal(t, messagev1.SmsScene_SMS_SCENE_LOGIN_CODE, stub.sendSMSReq.GetScene())
 	require.Equal(t, map[string]string{"code": "888888"}, stub.sendSMSReq.GetTemplateParams())
@@ -240,7 +242,7 @@ func TestGetEmail_MapsAllFields(t *testing.T) {
 		UpdatedAt:      110,
 		Attachments:    []*messagev1.EmailAttachment{{Filename: "a.pdf", Url: "https://o/a.pdf", SizeBytes: 5}},
 	}}
-	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
+	svc := message.New(stub)
 
 	got, err := svc.GetEmail(context.Background(), &testkitv1.GetEmailRequest{Id: 1})
 	require.NoError(t, err)
@@ -275,7 +277,7 @@ func TestGetSMS_MapsAllFields(t *testing.T) {
 		SentAt:     200,
 		CreatedAt:  190,
 	}}
-	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
+	svc := message.New(stub)
 
 	got, err := svc.GetSMS(context.Background(), &testkitv1.GetSMSRequest{Id: 2})
 	require.NoError(t, err)
@@ -297,7 +299,7 @@ func TestListEmails_OmitsSenderIDFilter(t *testing.T) {
 		TotalPages: 1,
 		HasMore:    false,
 	}}
-	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"))
+	svc := message.New(stub)
 
 	got, err := svc.ListEmails(context.Background(), &testkitv1.ListEmailsRequest{
 		Vendor:        messagingv1.EmailVendor_EMAIL_VENDOR_ALIYUN,
@@ -329,7 +331,7 @@ func TestListSMS_OmitsSenderIDFilter(t *testing.T) {
 		Records: []*messagev1.SMSRecord{{Id: 9, RegionCode: "CN"}},
 		Total:   1,
 	}}
-	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
+	svc := message.New(stub)
 
 	got, err := svc.ListSMS(context.Background(), &testkitv1.ListSMSRequest{
 		RegionCode: "CN",
@@ -353,7 +355,7 @@ func TestListEmailsByCursor_PassesPageTokenAndIncludeTotal(t *testing.T) {
 		Total:         42,
 		NextPageToken: "cursor-abc",
 	}}
-	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
+	svc := message.New(stub)
 
 	got, err := svc.ListEmailsByCursor(context.Background(), &testkitv1.ListEmailsByCursorRequest{
 		PageSize:     50,
@@ -377,7 +379,7 @@ func TestListSMSByCursor_FirstPageEmptyToken(t *testing.T) {
 	stub := &stubServer{listSMSByCursorResp: &messagev1.ListSMSByCursorResponse{
 		NextPageToken: "",
 	}}
-	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
+	svc := message.New(stub)
 
 	got, err := svc.ListSMSByCursor(context.Background(), &testkitv1.ListSMSByCursorRequest{PageSize: 10})
 	require.NoError(t, err)
@@ -399,7 +401,7 @@ func TestGetEmailStats_MapsVendorBreakdown(t *testing.T) {
 			{Vendor: messagev1.EmailVendor_EMAIL_VENDOR_TENCENT, Total: 4, Sent: 3, Failed: 1},
 		},
 	}}
-	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
+	svc := message.New(stub)
 
 	got, err := svc.GetEmailStats(context.Background(), &testkitv1.GetEmailStatsRequest{
 		Vendor:    messagingv1.EmailVendor_EMAIL_VENDOR_ALIYUN,
@@ -425,7 +427,7 @@ func TestGetSMSStats_NoData(t *testing.T) {
 		Failed:      0,
 		SuccessRate: -1,
 	}}
-	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
+	svc := message.New(stub)
 
 	got, err := svc.GetSMSStats(context.Background(), &testkitv1.GetSMSStatsRequest{})
 	require.NoError(t, err)
@@ -437,7 +439,7 @@ func TestListSMSRegions(t *testing.T) {
 	stub := &stubServer{listSMSRegionsResp: &messagev1.ListSMSRegionsResponse{
 		RegionCodes: []string{"CN", "US", "HK"},
 	}}
-	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
+	svc := message.New(stub)
 
 	got, err := svc.ListSMSRegions(context.Background(), &testkitv1.ListSMSRegionsRequest{})
 	require.NoError(t, err)
@@ -449,7 +451,7 @@ func TestListSMSRegions(t *testing.T) {
 func TestSendEmail_DownstreamErrorPassthrough(t *testing.T) {
 	downstream := errors.New("vendor rejected: invalid from address")
 	stub := &stubServer{sendEmailErr: downstream}
-	svc := message.New(stub, message.WithAppCredentials("tk", "sec"))
+	svc := message.New(stub)
 
 	_, err := svc.SendEmail(context.Background(), &testkitv1.SendEmailRequest{
 		To:    []*testkitv1.EmailAddress{{Email: "x@y.com"}},
@@ -481,7 +483,7 @@ func (f *fakeReference) ListCountries(_ context.Context, req *referencev1.ListCo
 
 func TestListRegionCodesFromReference(t *testing.T) {
 	stub := &stubServer{}
-	svc := message.New(stub, message.WithAppCredentials("testkit-service", "sec"), message.WithReference(&fakeReference{}))
+	svc := message.New(stub, message.WithReference(&fakeReference{}))
 
 	resp, err := svc.ListRegionCodes(context.Background(), &testkitv1.ListRegionCodesRequest{})
 	require.NoError(t, err)
@@ -500,18 +502,24 @@ func TestListRegionCodesFromReference(t *testing.T) {
 }
 
 func TestListRegionCodesWithoutReferenceFails(t *testing.T) {
-	svc := message.New(&stubServer{}, message.WithAppCredentials("testkit-service", "sec"))
+	svc := message.New(&stubServer{})
 	_, err := svc.ListRegionCodes(context.Background(), &testkitv1.ListRegionCodesRequest{})
 	require.Error(t, err)
 }
 
-// appKeyFromCtx extracts x-app-key from incoming metadata — the credential
-// channel the BFF injects via messageservice.WithApp.
-func appKeyFromCtx(t *testing.T, ctx context.Context) string {
+// withTrustedTenant plants the trusted tenant key on a caller ctx the way
+// the gateway's tenant gate does (incoming metadata + ctx value).
+func withTrustedTenant(ctx context.Context, key string) context.Context {
+	ctx = tenantctx.WithTenantKey(ctx, key)
+	return metadata.NewIncomingContext(ctx, metadata.Pairs(tenantctx.HeaderTenantKey, key))
+}
+
+// tenantKeyFromCtx extracts the trusted x-tenant-key from incoming metadata.
+func tenantKeyFromCtx(t *testing.T, ctx context.Context) string {
 	t.Helper()
 	md, ok := metadata.FromIncomingContext(ctx)
 	require.True(t, ok, "incoming metadata expected")
-	keys := md.Get("x-app-key")
+	keys := md.Get(tenantctx.HeaderTenantKey)
 	require.NotEmpty(t, keys)
 	return keys[0]
 }

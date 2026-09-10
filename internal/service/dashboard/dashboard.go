@@ -31,25 +31,10 @@ type Service struct {
 	user    userservice.Service
 	storage storageservice.Service
 	message messageservice.Service
-	// Per-downstream app credentials: the fan-out calls ride credential-
-	// presenting surfaces (user admin list, storage data-plane, message
-	// stats), each identifying the BFF to its own downstream platform.
-	userAK, userSK             string
-	storageAK, storageSK       string
-	messageAK, messageSK       string
 }
 
 // Option customizes the dashboard service.
 type Option func(*Service)
-
-// WithAppCredentials sets the BFF's per-downstream app credentials.
-func WithAppCredentials(userAK, userSK, storageAK, storageSK, messageAK, messageSK string) Option {
-	return func(s *Service) {
-		s.userAK, s.userSK = userAK, userSK
-		s.storageAK, s.storageSK = storageAK, storageSK
-		s.messageAK, s.messageSK = messageAK, messageSK
-	}
-}
 
 // New constructs the dashboard service. The three clients are the embedded
 // downstream provider Services. Order: user, storage, message.
@@ -87,15 +72,15 @@ func (s *Service) GetDashboard(ctx context.Context, _ *testkitv1.GetDashboardReq
 	g, gctx := errgroup.WithContext(ctx)
 
 	g.Go(func() (e error) {
-		emailStats, e = s.message.GetEmailStats(messageservice.WithApp(gctx, s.messageAK, s.messageSK), &messagev1.GetEmailStatsRequest{})
+		emailStats, e = s.message.GetEmailStats(gctx, &messagev1.GetEmailStatsRequest{})
 		return e
 	})
 	g.Go(func() (e error) {
-		smsStats, e = s.message.GetSMSStats(messageservice.WithApp(gctx, s.messageAK, s.messageSK), &messagev1.GetSMSStatsRequest{})
+		smsStats, e = s.message.GetSMSStats(gctx, &messagev1.GetSMSStatsRequest{})
 		return e
 	})
 	g.Go(func() (e error) {
-		quota, e = s.storage.GetMyQuota(storageservice.WithApp(gctx, s.storageAK, s.storageSK), &storagev1.GetMyQuotaRequest{
+		quota, e = s.storage.GetMyQuota(gctx, &storagev1.GetMyQuotaRequest{
 			Owner: &storagev1.Owner{
 				OwnerType: storagev1.OwnerType_OWNER_TYPE_USER,
 				OwnerId:   userID,
@@ -106,7 +91,7 @@ func (s *Service) GetDashboard(ctx context.Context, _ *testkitv1.GetDashboardReq
 	g.Go(func() (e error) {
 		// count=true with page_size=1 fetches just the total — the dashboard
 		// summary needs the user count, not any user rows.
-		users, e = s.user.ListUsersPaged(userservice.WithApp(gctx, s.userAK, s.userSK), &userv1.ListUsersPagedRequest{Page: 1, PageSize: 1, Count: true})
+		users, e = s.user.ListUsersPaged(gctx, &userv1.ListUsersPagedRequest{Page: 1, PageSize: 1, Count: true})
 		return e
 	})
 

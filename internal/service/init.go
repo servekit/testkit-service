@@ -26,6 +26,7 @@ import (
 	licenseoption "github.com/servekit/license-service/pkg/option"
 	messageservice "github.com/servekit/message-service/pkg"
 	messageoption "github.com/servekit/message-service/pkg/option"
+	portalservice "github.com/servekit/portal-service/pkg"
 	referenceservice "github.com/servekit/reference-service/pkg"
 	storageservice "github.com/servekit/storage-service/pkg"
 	stoption "github.com/servekit/storage-service/pkg/option"
@@ -44,8 +45,8 @@ import (
 	"github.com/servekit/testkit-service/internal/service/storage"
 	telemetriesvc "github.com/servekit/testkit-service/internal/service/telemetry"
 	"github.com/servekit/testkit-service/internal/service/user"
+	"github.com/servekit/testkit-service/internal/tenantgate"
 	"github.com/servekit/testkit-service/pkg/config"
-	"github.com/servekit/testkit-service/pkg/xcodes"
 )
 
 // New constructs a Service from config. All resources are self-built from cfg
@@ -186,67 +187,56 @@ func New(cfg *config.Config) (*Service, error) {
 	}
 	svc.telemetry = tel
 
+	// Portal (phase ④ tenant platform): the tenant registry behind the
+	// console door's membership gate. A separate deployment by design — its
+	// admin listener is internal-only (:19099, compose exposes without a
+	// host port) and testkit is its sole legal caller — so an unset section
+	// defaults to grpc mode at that address rather than module.
+	portalMode, portalTarget, portalCfg := unpack(cfg.ThirdParty.Portal)
+	if portalMode == configx.ModeUnspecified {
+		portalMode = configx.ModeGRPC
+	}
+	if portalMode == configx.ModeGRPC && portalTarget == "" {
+		portalTarget = ":19099"
+	}
+	portal, _, err := portalservice.Connect(portalservice.ConnectConfig{
+		Mode:   portalMode,
+		Target: portalTarget,
+		Config: portalCfg,
+	}, mgr)
+	if err != nil {
+		return nil, rollback(mgr, err)
+	}
+	svc.portal = portal
+	svc.gate = tenantgate.NewGate(tenantgate.NewResolver(portal))
+
+	// Since the phase ④ tenant switch the domain services hold NO app
+	// credentials: the gate resolves the trusted x-tenant-key per request
+	// (spec §5.3) and every downstream credential surface reads it from the
+	// request context.
+
 	// P1 auth domain: forward to user-service; login returns the session id
 	// as the bearer token.
-	// User-domain tenant credentials: every credential-presenting user
-	// surface (login/register/reset/social/admin user CRUD) identifies the
-	// BFF to user-service — the tenant is the verified caller. Fail fast.
-	if cfg.User == nil || cfg.User.AppKey == "" || cfg.User.AppSecret == "" {
-		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New())
-	}
-	svc.auth = auth.New(auth.WithUserClient(usr),
-		auth.WithAppCredentials(cfg.User.AppKey, cfg.User.AppSecret))
+	svc.auth = auth.New(auth.WithUserClient(usr))
 
 	// P2 user domain.
-	svc.userSvc = user.New(usr,
-		user.WithAppCredentials(cfg.User.AppKey, cfg.User.AppSecret))
+	svc.userSvc = user.New(usr)
 
 	// P3 storage domain.
-	if cfg.Storage == nil || cfg.Storage.AppKey == "" || cfg.Storage.AppSecret == "" {
-		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New("cfg.Storage.AppKey/AppSecret are required: every storage data-plane call authenticates as an app (storage.bootstrap_app seeds one at migrate time)"))
-	}
-	svc.storageSvc = storage.New(st,
-		storage.WithAppCredentials(cfg.Storage.AppKey, cfg.Storage.AppSecret),
-	)
+	svc.storageSvc = storage.New(st)
 
-	// P4 message domain. App credentials are injected into the downstream
-	// context of every Send — fail fast on empty rather than sending
-	// unauthenticated. cfg.Message is nil when the config file carries no
-	// message block (no defaults under it → viper leaves the pointer nil).
-	if cfg.Message == nil || cfg.Message.AppKey == "" || cfg.Message.AppSecret == "" {
-		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New())
-	}
+	// P4 message domain.
 	svc.messageSvc = message.New(msg,
-		message.WithAppCredentials(cfg.Message.AppKey, cfg.Message.AppSecret),
 		message.WithReference(ref),
 	)
 
 	// P5 gid + dashboard domains.
 	svc.gidSvc = gidsvc.New(gid)
-	svc.dashboardSvc = dashboardsvc.New(usr, st, msg,
-		dashboardsvc.WithAppCredentials(
-			cfg.User.AppKey, cfg.User.AppSecret,
-			cfg.Storage.AppKey, cfg.Storage.AppSecret,
-			cfg.Message.AppKey, cfg.Message.AppSecret,
-		))
+	svc.dashboardSvc = dashboardsvc.New(usr, st, msg)
 
-	// P6 license + telemetry domains. License app credentials are injected
-	// into the downstream context of every client-surface call — fail fast
-	// on empty (the license client surface is fail-closed without them).
-	if cfg.License == nil || cfg.License.AppKey == "" || cfg.License.AppSecret == "" {
-		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New())
-	}
-	svc.licenseSvc = licsvc.New(lic, "",
-		licsvc.WithAppCredentials(cfg.License.AppKey, cfg.License.AppSecret),
-	)
-	// Telemetry app credentials ride every ingest-surface call (gRPC forward
-	// + raw /v1/e/ mounts) — fail fast on empty.
-	if cfg.Telemetry == nil || cfg.Telemetry.AppKey == "" || cfg.Telemetry.AppSecret == "" {
-		return nil, rollback(mgr, xcodes.ErrAppNotConfigured.New())
-	}
-	svc.telemetrySvc = telemetriesvc.New(tel, telAdminToken,
-		telemetriesvc.WithAppCredentials(cfg.Telemetry.AppKey, cfg.Telemetry.AppSecret),
-	)
+	// P6 license + telemetry domains.
+	svc.licenseSvc = licsvc.New(lic, "")
+	svc.telemetrySvc = telemetriesvc.New(tel, telAdminToken)
 
 	if err := svc.setupJobs(); err != nil {
 		return nil, rollback(mgr, err)

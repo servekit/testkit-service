@@ -7,17 +7,9 @@
 // P1-P3 used go-common's shared xcodes (go-common/xerr/xcodes) exclusively;
 // P4 is the first phase with a testkit-specific code, so this package is
 // established here per the CLAUDE.md "pkg/xcodes/<domain>.go" convention.
+//
+// The phase ④ tenant switch removed ErrAppNotConfigured along with the five
+// legacy credential config groups — there are no static app credentials left
+// to be missing. The domain keeps this file so it stays represented in the
+// per-domain xcodes layout.
 package xcodes
-
-import "github.com/servekit/go-common/xerr"
-
-// ErrAppNotConfigured is returned when app credentials (cfg.Message or
-// cfg.Storage AppKey/AppSecret) are empty at service construction time —
-// fail fast on a misconfigured deployment rather than sending
-// unauthenticated.
-var ErrAppNotConfigured = xerr.New(
-	"app_not_configured",
-	xerr.CategoryInternal,
-	500,
-	"message app credentials are not configured",
-)

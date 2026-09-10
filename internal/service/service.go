@@ -25,6 +25,7 @@ import (
 	"github.com/servekit/go-common/lifecycle"
 	licenseservice "github.com/servekit/license-service/pkg"
 	messageservice "github.com/servekit/message-service/pkg"
+	portalservice "github.com/servekit/portal-service/pkg"
 	referenceservice "github.com/servekit/reference-service/pkg"
 	storageservice "github.com/servekit/storage-service/pkg"
 	telemetryservice "github.com/servekit/telemetry-service/pkg"
@@ -37,6 +38,7 @@ import (
 	"github.com/servekit/testkit-service/internal/service/storage"
 	telemetriesvc "github.com/servekit/testkit-service/internal/service/telemetry"
 	"github.com/servekit/testkit-service/internal/service/user"
+	"github.com/servekit/testkit-service/internal/tenantgate"
 	"github.com/servekit/testkit-service/internal/version"
 	"github.com/servekit/testkit-service/pkg/config"
 	userservice "github.com/servekit/user-service/pkg"
@@ -61,6 +63,13 @@ type Service struct {
 	user         userservice.Service
 	license      licenseservice.Service
 	telemetry    telemetryservice.Service
+
+	// portal backs the console door's tenant gate (membership binding sets
+	// + the tenant registry; grpc mode at the internal admin listener).
+	portal portalservice.Service
+	// gate is the HTTP edge middleware resolving the trusted x-tenant-key
+	// per request (spec §5.3). Mounted in pkg/server.go's GatewayWrap.
+	gate *tenantgate.Gate
 
 	auth         *auth.Service
 	userSvc      *user.Service
@@ -105,6 +114,15 @@ func (s *Service) DB() *gorm.DB { return s.db }
 // gRPC Client) for the edge auth middleware (user-service pkg/auth), which
 // verifies bearer sessions via GetSession on every request.
 func (s *Service) UserService() userservice.Service { return s.user }
+
+// Portal exposes the portal admin handle (grpc Client dialing the internal
+// admin listener) for the phase ④ console self-service forwards.
+func (s *Service) Portal() portalservice.Service { return s.portal }
+
+// TenantGate exposes the console door's tenant gate — the HTTP middleware
+// pkg/server.go mounts inside the gateway wrap, downstream of the session
+// middleware (it consumes the verified actor the latter plants).
+func (s *Service) TenantGate() *tenantgate.Gate { return s.gate }
 
 // Auth returns the P1 auth domain (login flow + session token issue).
 func (s *Service) Auth() *auth.Service { return s.auth }

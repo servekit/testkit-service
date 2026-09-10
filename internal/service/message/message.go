@@ -7,10 +7,11 @@
 //
 // Curation (platform-ization):
 //   - SendEmail/SendSMS are policy-driven: the testkit request carries scene
-//   - template params only; the BFF injects its message app credentials
-//     (cfg.Message.AppKey/AppSecret) into the downstream context. All
-//     delivery content (templates, signatures, vendor routing) is owned by
-//     message-service policies managed on the admin surface below.
+//   - template params only; the caller's tenant context arrives on the
+//     request ctx as the trusted x-tenant-key the gateway's tenant gate
+//     injected (phase ④). All delivery content (templates, signatures,
+//     vendor routing) is owned by message-service policies managed on the
+//     admin surface below.
 //   - List/Stats forward the app_key filter as given; the ops console sees
 //     records across all apps by default.
 //   - Get keeps the resource id (operation target — decision 3).
@@ -47,23 +48,10 @@ import (
 type Service struct {
 	message   messageservice.Service
 	reference referenceservice.Service // region-code directory source
-	// appKey/appSecret are the BFF's message-service app credentials,
-	// injected into the downstream context on every Send (policy lookup,
-	// quota, and idempotency all hang off the app identity).
-	appKey    string
-	appSecret string
 }
 
 // Option configures a Service.
 type Option func(*Service)
-
-// WithAppCredentials sets the message-service app credentials the BFF
-// injects into Send requests' context. Required in production (service.New
-// fail-fasts on empty cfg.Message.AppKey); the option form keeps
-// construction uniform with the other domain constructors.
-func WithAppCredentials(appKey, appSecret string) Option {
-	return func(s *Service) { s.appKey, s.appSecret = appKey, appSecret }
-}
 
 // WithReference sets the reference-service dependency backing the region-code
 // directory. Wired in service init; nil leaves ListRegionCodes erroring
@@ -73,8 +61,7 @@ func WithReference(ref referenceservice.Service) Option {
 }
 
 // New constructs the message-domain service. client is the embedded
-// message-service handler (messageservice.Service). App credentials are
-// injected into the context of downstream SendEmail/SendSMS calls.
+// message-service handler (messageservice.Service).
 func New(client messageservice.Service, opts ...Option) *Service {
 	s := &Service{message: client}
 	for _, o := range opts {
@@ -83,12 +70,12 @@ func New(client messageservice.Service, opts ...Option) *Service {
 	return s
 }
 
-// --- Send (app credentials injected from config) ---
+// --- Send (tenant context rides the request ctx) ---
 
-// SendEmail forwards to message-service with the BFF's app credentials in
-// the context; the request carries scene + template params only.
+// SendEmail forwards to message-service with the caller's tenant context
+// (trusted x-tenant-key from the gate); the request carries scene + template
+// params only.
 func (s *Service) SendEmail(ctx context.Context, req *testkitv1.SendEmailRequest) (*testkitv1.SendResponse, error) {
-	ctx = messageservice.WithApp(ctx, s.appKey, s.appSecret)
 	resp, err := s.message.SendEmail(ctx, toMessageSendEmailRequest(req))
 	if err != nil {
 		return nil, err
@@ -96,10 +83,9 @@ func (s *Service) SendEmail(ctx context.Context, req *testkitv1.SendEmailRequest
 	return toTestkitSendResponse(resp), nil
 }
 
-// SendSMS forwards to message-service with the BFF's app credentials in
-// the context; the destination is composed from dial_code + phone.
+// SendSMS forwards to message-service with the caller's tenant context;
+// the destination is composed from dial_code + phone.
 func (s *Service) SendSMS(ctx context.Context, req *testkitv1.SendSMSRequest) (*testkitv1.SendResponse, error) {
-	ctx = messageservice.WithApp(ctx, s.appKey, s.appSecret)
 	resp, err := s.message.SendSMS(ctx, toMessageSendSMSRequest(req))
 	if err != nil {
 		return nil, err

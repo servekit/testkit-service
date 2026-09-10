@@ -23,20 +23,10 @@ type Service struct {
 	// metadata on admin-surface RPCs (telemetry-service guards them;
 	// license-service has no guard today — empty token is a no-op).
 	adminToken string
-	// appKey/appSecret authenticate the BFF on every client-surface call;
-	// empty values fail fast at init (the client surface is fail-closed).
-	appKey    string
-	appSecret string
 }
 
 // Option customizes the license domain service.
 type Option func(*Service)
-
-// WithAppCredentials sets the license-service app credentials the BFF
-// presents on client-surface forwards (Activate/Deactivate/TrialStart).
-func WithAppCredentials(appKey, appSecret string) Option {
-	return func(s *Service) { s.appKey, s.appSecret = appKey, appSecret }
-}
 
 // New builds the license domain service.
 func New(client licenseservice.Service, adminToken string, opts ...Option) *Service {
@@ -55,12 +45,8 @@ func (s *Service) adminCtx(ctx context.Context) context.Context {
 	return metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer "+s.adminToken)
 }
 
-// withApp wraps ctx with the app credentials for a client-surface call.
-func (s *Service) withApp(ctx context.Context) context.Context {
-	return licenseservice.WithApp(ctx, s.appKey, s.appSecret)
-}
 func (s *Service) Activate(ctx context.Context, req *testkitv1.ActivateRequest) (*testkitv1.ActivateResponse, error) {
-	resp, err := s.client.Activate(s.withApp(ctx), toDnActivateRequest(req))
+	resp, err := s.client.Activate(ctx, toDnActivateRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +54,7 @@ func (s *Service) Activate(ctx context.Context, req *testkitv1.ActivateRequest) 
 }
 
 func (s *Service) Deactivate(ctx context.Context, req *testkitv1.DeactivateRequest) (*testkitv1.DeactivateResponse, error) {
-	resp, err := s.client.Deactivate(s.withApp(ctx), toDnDeactivateRequest(req))
+	resp, err := s.client.Deactivate(ctx, toDnDeactivateRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +62,7 @@ func (s *Service) Deactivate(ctx context.Context, req *testkitv1.DeactivateReque
 }
 
 func (s *Service) TrialStart(ctx context.Context, req *testkitv1.TrialStartRequest) (*testkitv1.TrialStartResponse, error) {
-	resp, err := s.client.TrialStart(s.withApp(ctx), toDnTrialStartRequest(req))
+	resp, err := s.client.TrialStart(ctx, toDnTrialStartRequest(req))
 	if err != nil {
 		return nil, err
 	}

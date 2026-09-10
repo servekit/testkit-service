@@ -2,6 +2,8 @@ module github.com/servekit/testkit-service
 
 go 1.26.6
 
+replace github.com/servekit/portal-service => ../portal-service
+
 require (
 	buf.build/go/protovalidate v1.2.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.3
@@ -14,6 +16,7 @@ require (
 	github.com/servekit/go-common v0.0.0-20260907134535-5a601f9f7499
 	github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc
 	github.com/servekit/message-service v0.0.0-20260906163542-ef4c89484440
+	github.com/servekit/portal-service v0.0.0-00010101000000-000000000000
 	github.com/servekit/reference-service v0.0.0-20260907073537-cea96f3424fe
 	github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae
 	github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5
@@ -199,10 +202,11 @@ require (
 	modernc.org/sqlite v1.23.1 // indirect
 )
 
-// Local dev uses a gitignored go.work (testkit-service/go.work) that `use`s this
-// module and `replace`s the four sibling services to their local checkouts, and
-// pins the deprecated google.golang.org/genproto monolith to a version that no
-// longer ships googleapis/* (workspace mode otherwise selects an old one via the
-// volcengine SDK -> go-kit chain that clashes with the split googleapis/{api,rpc}
-// modules). Bump the require versions above and drop go.work once the downstreams
-// publish the new WithGIDHandler / WithMessageHandler API.
+// Local dev runs inside the servekit root workspace (go.work `use`s every
+// sibling module), which also provides the phase ④ go-common code (tenantctx,
+// dualauth) ahead of its next published pin — the go-common require above
+// still points at the last pushed commit until the ledger's Q1 pin-bump pass.
+// portal-service has no remote yet (ledger Q1), so its require is satisfied
+// by the sibling-checkout replace above — the same monorepo layout the Docker
+// build context already assumes. Once portal publishes, `go get
+// github.com/servekit/portal-service@<commit>` and drop the replace.

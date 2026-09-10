@@ -1,7 +1,9 @@
 // Edge-auth wiring smoke over a real listener: HTTP request → usauth edge
-// middleware → grpc-gateway transcoding → TrustedIdentityUnary → handler ctx.
-// This mirrors NewServer's wiring (pkg/server.go) with the domain services
-// stubbed out, pinning the end-to-end contract the frontend depends on.
+// middleware → tenant gate → grpc-gateway transcoding →
+// TrustedIdentityUnary → handler ctx. This mirrors NewServer's wiring
+// (pkg/server.go) with the domain services stubbed out, pinning the
+// end-to-end contract the frontend depends on — including the phase ④
+// trusted x-tenant-key injection crossing the transcode boundary.
 package pkg_test
 
 import (
@@ -22,30 +24,60 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	commonv1 "github.com/servekit/api/gen/go/common/v1"
+	portalv1 "github.com/servekit/api/gen/go/portal/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	pb "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/go-common/grpcx"
+	"github.com/servekit/go-common/tenantctx"
 	usauth "github.com/servekit/user-service/pkg/auth"
 	usclientinfo "github.com/servekit/user-service/pkg/clientinfo"
+
+	"github.com/servekit/testkit-service/internal/tenantgate"
 )
 
-// fakeSessions backs the edge middleware: sess-7 → user 7.
+// fakeSessions backs the edge middleware: sess-7 → user 7 (END_USER),
+// sess-8 → user 8 (TENANT_ADMIN, bound to ten_alpha via stubPortal).
 type fakeSessions struct{}
 
 func (fakeSessions) GetSession(_ context.Context, req *pb.GetSessionRequest) (*pb.GetSessionResponse, error) {
-	if req.GetSessionId() == "sess-7" {
-		return &pb.GetSessionResponse{UserId: 7}, nil
+	switch req.GetSessionId() {
+	case "sess-7":
+		return &pb.GetSessionResponse{UserId: 7, UserType: pb.UserType_USER_TYPE_END_USER}, nil
+	case "sess-8":
+		return &pb.GetSessionResponse{
+			UserId:   8,
+			UserType: pb.UserType_USER_TYPE_TENANT_ADMIN,
+			AppKey:   "ten_platform",
+		}, nil
 	}
 	return nil, errors.New("session invalid")
 }
 
+// stubPortal backs the tenant gate: user 8 is bound to ten_alpha only.
+type stubPortal struct{}
+
+func (stubPortal) WhoAmI(_ context.Context, _ *emptypb.Empty) (*portalv1.WhoAmIResponse, error) {
+	return &portalv1.WhoAmIResponse{
+		UserId:      8,
+		Memberships: []*portalv1.TenantMembership{{TenantKey: "ten_alpha", TenantName: "Alpha"}},
+	}, nil
+}
+
+func (stubPortal) ListTenants(_ context.Context, _ *portalv1.ListTenantsRequest) (*portalv1.ListTenantsResponse, error) {
+	return &portalv1.ListTenantsResponse{
+		Tenants: []*portalv1.TenantInfo{{TenantKey: "ten_alpha"}, {TenantKey: "ten_beta"}},
+	}, nil
+}
+
 // stubTestkit implements just the three RPCs the smoke drives; everything
 // else stays Unimplemented. Login captures the incoming metadata so the test
-// can assert client info crossed the transcode boundary.
+// can assert client info crossed the transcode boundary; GetProfile captures
+// it to assert the gate's trusted tenant key did too.
 type stubTestkit struct {
 	testkitv1.UnimplementedTestkitServiceServer
 
-	loginMD metadata.MD
+	loginMD   metadata.MD
+	profileMD metadata.MD
 }
 
 func (*stubTestkit) Ping(context.Context, *emptypb.Empty) (*commonv1.Pong, error) {
@@ -61,7 +93,10 @@ func (s *stubTestkit) Login(ctx context.Context, _ *testkitv1.LoginRequest) (*te
 	return &testkitv1.TokenResponse{Token: "sess-7", SessionId: "sess-7"}, nil
 }
 
-func (stubTestkit) GetProfile(ctx context.Context, _ *testkitv1.GetProfileRequest) (*testkitv1.User, error) {
+func (s *stubTestkit) GetProfile(ctx context.Context, _ *testkitv1.GetProfileRequest) (*testkitv1.User, error) {
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		s.profileMD = md
+	}
 	actor, err := grpcx.MustActorFromCtx(ctx)
 	if err != nil {
 		return nil, err
@@ -84,10 +119,12 @@ func newSmokeServer(t *testing.T) (*stubTestkit, string) {
 	gwAddr := freeAddr(t)
 
 	// Same middleware shape as NewServer: the public routes of the real
-	// wiring, reduced to the ones this smoke exercises.
+	// wiring, reduced to the ones this smoke exercises, plus the tenant gate
+	// inside the edge middleware exactly as NewServer mounts it.
 	edgeAuth := usauth.NewMiddleware(fakeSessions{},
 		usauth.WithPublicPaths("/ping", "/api/v1/auth/login"),
 	)
+	gate := tenantgate.NewGate(tenantgate.NewResolver(stubPortal{}))
 	stub := &stubTestkit{}
 
 	srv := grpcx.New(
@@ -95,7 +132,7 @@ func newSmokeServer(t *testing.T) (*stubTestkit, string) {
 			GRPCAddr:    grpcAddr,
 			GatewayAddr: gwAddr,
 			GatewayWrap: func(next http.Handler) http.Handler {
-				return usclientinfo.Wrap(edgeAuth.Wrap(next))
+				return usclientinfo.Wrap(edgeAuth.Wrap(gate.Wrap(next)))
 			},
 		},
 		func(gs *grpc.Server) {
@@ -206,6 +243,51 @@ func TestEdgeAuth_EndToEnd(t *testing.T) {
 		require.Equal(t, http.StatusOK, resp.StatusCode)
 		require.Contains(t, body, `"id":"7"`)
 		require.NotContains(t, body, "666")
+	})
+
+	t.Run("tenant gate injects trusted key across the transcode boundary", func(t *testing.T) {
+		// TENANT_ADMIN bound to exactly ten_alpha: no explicit choice
+		// defaults to it, and the injected key must arrive server-side as
+		// x-tenant-key incoming metadata (the module-mode credential gates
+		// read exactly this).
+		resp, _ := get(t, "http://"+gw+"/api/v1/profile", "sess-8", nil)
+		require.Equal(t, http.StatusOK, resp.StatusCode)
+		require.Equal(t, "ten_alpha", mdValue(stub.profileMD, tenantctx.HeaderTenantKey))
+	})
+
+	t.Run("tenant gate strips smuggled tenant key", func(t *testing.T) {
+		// END_USER carrying both a smuggled trusted key and a switcher
+		// choice: the choice is refused outright (fail closed)...
+		resp, _ := get(t, "http://"+gw+"/api/v1/profile", "sess-7",
+			map[string]string{
+				tenantgate.WireTenantKeyHeader:  "ten_victim",
+				tenantgate.HeaderTenantChoice:   "ten_victim",
+				tenantgate.PlainTenantKeyHeader: "ten_victim",
+			})
+		require.Equal(t, http.StatusForbidden, resp.StatusCode)
+
+		// ...and without the choice the smuggled keys never survive the door.
+		resp, body := get(t, "http://"+gw+"/api/v1/profile", "sess-7",
+			map[string]string{tenantgate.WireTenantKeyHeader: "ten_victim"})
+		require.Equal(t, http.StatusOK, resp.StatusCode)
+		require.Contains(t, body, `"id":"7"`)
+		require.Empty(t, mdValue(stub.profileMD, tenantctx.HeaderTenantKey))
+	})
+
+	t.Run("tenant gate injects console directory on public routes", func(t *testing.T) {
+		// Login is public (no session yet): the credential surface behind it
+		// operates in the reserved console directory.
+		req, err := http.NewRequest(http.MethodPost, "http://"+gw+"/api/v1/auth/login",
+			strings.NewReader(`{"method":"LOGIN_METHOD_EMAIL_PASSWORD","email":"a@b.c","password":"x"}`))
+		require.NoError(t, err)
+		req.Header.Set("Content-Type", "application/json")
+		resp, err := (&http.Client{Timeout: 5 * time.Second}).Do(req)
+		require.NoError(t, err)
+		_, rerr := io.ReadAll(resp.Body)
+		require.NoError(t, rerr)
+		require.NoError(t, resp.Body.Close())
+		require.Equal(t, http.StatusOK, resp.StatusCode)
+		require.Equal(t, tenantgate.ConsoleTenantKey, mdValue(stub.loginMD, tenantctx.HeaderTenantKey))
 	})
 }
 

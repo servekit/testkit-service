@@ -276,46 +276,19 @@ third_party:
     config:
       admin:
         token: ${TESTKIT_SERVICE_TELEMETRY_ADMIN_TOKEN}
+  # portal backs the tenant gate (membership binding sets + the tenant
+  # registry for PLATFORM drill-downs). A separate deployment by design —
+  # grpc mode dialing its internal-only admin listener is the default; an
+  # unset section falls back to mode=grpc target=:19099 in service init.
+  portal:
+    mode: ${TESTKIT_SERVICE_PORTAL_MODE}         # grpc (default) | module
+    target: ${TESTKIT_SERVICE_PORTAL_TARGET}     # portal admin listener
 
-# Message-domain settings. App credentials identify the BFF to
-# message-service (created on the message admin surface: 应用管理 → 新建);
-# they are injected into the context of every Send. Policy routing, daily
-# quota, and idempotency hang off the app identity.
-message:
-  app_key: ${TESTKIT_SERVICE_MESSAGE_APP_KEY}
-  app_secret: ${TESTKIT_SERVICE_MESSAGE_APP_SECRET}
-
-# Storage-domain settings. App credentials identify the BFF to
-# storage-service (seeded by `storage-service migrate --seed-from-config`
-# with storage.bootstrap_app, or created on the storage admin surface);
-# injected into the context of every data-plane call. Object keys, STS
-# scope, and the dedup domain hang off the app's key_prefix.
-storage:
-  app_key: ${TESTKIT_SERVICE_STORAGE_APP_KEY}
-  app_secret: ${TESTKIT_SERVICE_STORAGE_APP_SECRET}
-
-# License-domain settings. App credentials identify the BFF to
-# license-service (created on the license admin surface: 应用管理 → 新建);
-# they are injected into the context of every client-surface call
-# (Activate/Deactivate/TrialStart — fail-closed without them).
-license:
-  app_key: ${TESTKIT_SERVICE_LICENSE_APP_KEY}
-  app_secret: ${TESTKIT_SERVICE_LICENSE_APP_SECRET}
-
-# Telemetry-domain settings. App credentials identify the BFF to
-# telemetry-service on every ingest-surface call (gRPC forward AND the raw
-# /v1/e/ HTTP mounts — the internal hop carries them; end-user clients keep
-# the ingest-token contract). Created on the telemetry admin surface.
-telemetry:
-  app_key: ${TESTKIT_SERVICE_TELEMETRY_APP_KEY}
-  app_secret: ${TESTKIT_SERVICE_TELEMETRY_APP_SECRET}
-
-# User-domain tenant credentials: identify the BFF to user-service on every
-# credential-presenting surface (login/register/reset/social/admin user
-# CRUD) — the tenant is the verified caller; users land in this tenant.
-user:
-  app_key: ${TESTKIT_SERVICE_USER_APP_KEY}
-  app_secret: ${TESTKIT_SERVICE_USER_APP_SECRET}
+# NOTE (phase ④ tenant switch): the five legacy per-service app-credential
+# blocks (message/storage/license/telemetry/user app_key+app_secret) are
+# GONE. The BFF authenticates to every downstream with the trusted
+# x-tenant-key the tenant gate resolves per request (spec §5.3) — no static
+# credentials exist to configure.
 
 # Cron scheduler settings. jobs.Scheduler is wired but registers no jobs in P1.
 cron:

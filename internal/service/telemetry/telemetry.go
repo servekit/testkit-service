@@ -22,22 +22,10 @@ type Service struct {
 	// metadata on admin-surface RPCs (telemetry-service guards them;
 	// license-service has no guard today — empty token is a no-op).
 	adminToken string
-	// appKey/appSecret are the BFF's telemetry business-identity credentials
-	// (platform ak/sk pair): injected into the Ingest forward and into the
-	// raw /v1/e/ HTTP mounts — the downstream ingest surface requires them,
-	// while end-user clients keep authenticating by ingest token.
-	appKey    string
-	appSecret string
 }
 
 // Option customizes the telemetry domain service.
 type Option func(*Service)
-
-// WithAppCredentials sets the telemetry-service app credentials the BFF
-// presents on ingest-surface calls.
-func WithAppCredentials(appKey, appSecret string) Option {
-	return func(s *Service) { s.appKey, s.appSecret = appKey, appSecret }
-}
 
 // New builds the telemetry domain service.
 func New(client telemetryservice.Service, adminToken string, opts ...Option) *Service {
@@ -46,14 +34,6 @@ func New(client telemetryservice.Service, adminToken string, opts ...Option) *Se
 		opt(s)
 	}
 	return s
-}
-
-// IngestHTTPOptions exposes the credential injection for the raw-HTTP
-// ingestion mounts (telemetry's pkg/ingesthttp) so the gateway's internal
-// hop satisfies the downstream ak/sk gate without changing the end-user
-// token contract.
-func (s *Service) IngestHTTPOptions() telemetryservice.IngestHTTPOptions {
-	return telemetryservice.IngestHTTPOptions{AppKey: s.appKey, AppSecret: s.appSecret}
 }
 
 // Backend returns the raw telemetry-service handle (module or gRPC mode).
@@ -70,7 +50,7 @@ func (s *Service) adminCtx(ctx context.Context) context.Context {
 	return metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer "+s.adminToken)
 }
 func (s *Service) Ingest(ctx context.Context, req *testkitv1.IngestRequest) (*testkitv1.IngestResponse, error) {
-	resp, err := s.client.Ingest(telemetryservice.WithApp(ctx, s.appKey, s.appSecret), toDnIngestRequest(req))
+	resp, err := s.client.Ingest(ctx, toDnIngestRequest(req))
 	if err != nil {
 		return nil, err
 	}

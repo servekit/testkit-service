@@ -55,6 +55,14 @@ type Server struct {
 // header, which grpc-gateway forwards as gRPC metadata; the gRPC chain below
 // only lifts that actor into the handler ctx.
 //
+// Inside the session middleware sits the tenant gate (internal/tenantgate,
+// spec §5.3/§8.2): it strips every inbound tenant header, resolves the
+// trusted x-tenant-key from the verified actor (+ explicit x-tenant-choice
+// validated against portal membership data), and plants it for both the
+// transcoded RPCs and the raw HTTP mounts. With it in place the BFF holds no
+// per-service app credentials — the trusted key is the only tenant identity
+// that leaves this process.
+//
 // The gRPC server runs a three-interceptor chain (outermost first):
 //   - grpcx.ErrorInterceptor: maps *xerr.Error returned by inner layers to
 //     gRPC status codes (Unauthorized → Unauthenticated/401, NotFound → 404,
@@ -64,7 +72,7 @@ type Server struct {
 //     performs NO verification — the gRPC port is internal-only (nginx
 //     exposes only the gateway), the same trusted-network posture as the
 //     other embedded services. Requests without actor metadata pass
-//     through; handlers that need identity enforce its presence themselves.
+//     through; handlers that need identity enforce their presence themselves.
 //   - protovalidate.UnaryServerInterceptor: enforces (buf.validate.field)
 //     rules declared in testkit.proto.
 //
@@ -73,7 +81,7 @@ type Server struct {
 // Authorization header to gRPC metadata under the unprefixed "authorization"
 // key by default (verified in grpc-gateway runtime/context.go), and custom
 // headers under the Grpc-Metadata- prefix — which is how the middleware's
-// actor header crosses the transcode boundary.
+// actor header and the gate's tenant header cross the transcode boundary.
 func NewServer(cfg *config.Config) (*Server, error) {
 	svc, err := service.New(cfg)
 	if err != nil {
@@ -132,9 +140,12 @@ func NewServer(cfg *config.Config) (*Server, error) {
 			GatewayAddr: cfg.Server.GatewayAddr,
 			// clientinfo sits OUTSIDE the auth middleware so it stamps every
 			// request — login is a public route, and client capture at login
-			// (session rows, login logs) is exactly what it exists for.
+			// (session rows, login logs) is exactly what it exists for. The
+			// tenant gate sits INSIDE it: it resolves from the verified actor
+			// the session middleware plants, so it must run downstream of
+			// the session check.
 			GatewayWrap: func(next http.Handler) http.Handler {
-				return usclientinfo.Wrap(edgeAuth.Wrap(next))
+				return usclientinfo.Wrap(edgeAuth.Wrap(svc.TenantGate().Wrap(next)))
 			},
 		},
 		func(gs *grpc.Server) {
@@ -169,17 +180,19 @@ func registerGateway(svc *service.Service) grpcx.RegisterGatewayFunc {
 		// Ingestion routes are the gateway's own registration; grpc-gateway
 		// resolves the token path parameter and hands it to the
 		// routing-agnostic endpoint handler (no inner mux re-matching).
+		// These are public routes (the ingest token is the credential), so
+		// the tenant gate upstream resolved them to the reserved console
+		// directory and planted the trusted x-tenant-key on the request
+		// context — the transport-hop identity the downstream ingest gate
+		// requires rides along with r.Context(), no credentials needed here.
 		backend := svc.Telemetry().Backend()
-		// The internal hop carries the BFF's ak/sk (business identity); the
-		// end-user contract (token in path / bearer) is unchanged.
-		ingestOpts := svc.Telemetry().IngestHTTPOptions()
 		if err := mux.HandlePath(http.MethodPost, "/v1/e/{token}/events", func(w http.ResponseWriter, r *http.Request, params map[string]string) {
-			ingesthttp.Endpoint(backend, params["token"], ingestOpts).ServeHTTP(w, r)
+			ingesthttp.Endpoint(backend, params["token"]).ServeHTTP(w, r)
 		}); err != nil {
 			return err
 		}
 		if err := mux.HandlePath(http.MethodPost, "/v1/collect/events", func(w http.ResponseWriter, r *http.Request, _ map[string]string) {
-			ingesthttp.Bearer(backend, ingestOpts).ServeHTTP(w, r)
+			ingesthttp.Bearer(backend).ServeHTTP(w, r)
 		}); err != nil {
 			return err
 		}

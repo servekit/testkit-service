@@ -28,9 +28,9 @@ func writeConfig(t *testing.T, content string) {
 }
 
 // TestLoad_Defaults loads a minimal config and checks that default-tagged
-// fields are populated (server addrs, JWT TTL) and that pointer sub-configs —
-// including the four downstream wrappers — are allocated by viper even when
-// absent from the file.
+// fields are populated (server addrs, cron timezone) and that pointer
+// sub-configs — including the downstream wrappers — are allocated by viper
+// even when absent from the file.
 func TestLoad_Defaults(t *testing.T) {
 	writeConfig(t, `
 log:
@@ -51,38 +51,17 @@ log:
 	require.NotNil(t, cfg.ThirdParty.Message)
 	require.NotNil(t, cfg.ThirdParty.Storage)
 	require.NotNil(t, cfg.ThirdParty.User)
+	require.NotNil(t, cfg.ThirdParty.Portal)
 	// The generic module-mode payload (T = *<svc>config.Config) is allocated too.
 	require.NotNil(t, cfg.ThirdParty.GID.Config)
-
-	// Message: no defaults under it, so viper leaves the pointer nil when
-	// the config file carries no message block; init.go fail-fasts on the
-	// missing credentials.
-	require.Nil(t, cfg.Message)
 }
 
-// TestLoad_MessageAppCredentials verifies app credentials load from the
-// message block — the BFF injects them into downstream Send contexts.
-func TestLoad_MessageAppCredentials(t *testing.T) {
-	writeConfig(t, `
-log:
-  level: info
-message:
-  app_key: testkit
-  app_secret: sec-123
-`)
-
-	cfg, err := config.Load()
-	require.NoError(t, err)
-	require.Equal(t, "testkit", cfg.Message.AppKey)
-	require.Equal(t, "sec-123", cfg.Message.AppSecret)
-}
-
-// TestLoad_ThirdPartyDownstreamConfigs verifies the four RemoteServiceConfig
+// TestLoad_ThirdPartyDownstreamConfigs verifies the RemoteServiceConfig
 // wrappers unmarshal against the REAL downstream config types (gid/message/
-// storage/user), proving the generic instantiation and the verified import
-// paths are correct. gid gets a deep module-mode check; the others are probed
-// via mode/target to exercise the wrapper without dragging in their complex
-// nested module configs.
+// storage/user/portal), proving the generic instantiation and the verified
+// import paths are correct. gid gets a deep module-mode check; the others are
+// probed via mode/target to exercise the wrapper without dragging in their
+// complex nested module configs.
 func TestLoad_ThirdPartyDownstreamConfigs(t *testing.T) {
 	writeConfig(t, `
 third_party:
@@ -100,6 +79,9 @@ third_party:
   user:
     mode: grpc
     target: localhost:19094
+  portal:
+    mode: grpc
+    target: portal-service:19099
 `)
 
 	cfg, err := config.Load()
@@ -116,6 +98,10 @@ third_party:
 	require.Equal(t, "localhost:19092", cfg.ThirdParty.Message.Target)
 	require.Equal(t, configx.ModeGRPC, cfg.ThirdParty.User.Mode)
 	require.Equal(t, "localhost:19094", cfg.ThirdParty.User.Target)
+
+	// portal: the tenant-gate dependency (admin listener, grpc mode).
+	require.Equal(t, configx.ModeGRPC, cfg.ThirdParty.Portal.Mode)
+	require.Equal(t, "portal-service:19099", cfg.ThirdParty.Portal.Target)
 }
 
 // TestLoad_Database verifies the database block binds into dbx.Config after

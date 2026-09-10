@@ -32,10 +32,6 @@ import (
 // forwards to.
 type Service struct {
 	user userservice.Service
-	// appKey/appSecret identify the BFF to user-service on every
-	// credential-presenting surface — the tenant is the verified caller.
-	appKey    string
-	appSecret string
 }
 
 // Option configures a Service.
@@ -44,17 +40,6 @@ type Option func(*Service)
 // WithUserClient injects the user-service client. Required before any RPC call
 // (a nil client is a wiring bug surfaces as a nil-dereference on first use).
 func WithUserClient(c userservice.Service) Option { return func(s *Service) { s.user = c } }
-
-// WithAppCredentials sets the user-service tenant credentials the BFF
-// presents on login/register/code surfaces.
-func WithAppCredentials(appKey, appSecret string) Option {
-	return func(s *Service) { s.appKey, s.appSecret = appKey, appSecret }
-}
-
-// withApp wraps ctx with the tenant credentials.
-func (s *Service) withApp(ctx context.Context) context.Context {
-	return userservice.WithApp(ctx, s.appKey, s.appSecret)
-}
 
 // New constructs the auth service. The user client is supplied via
 // WithUserClient (the service root wires the embedded user handler; tests
@@ -70,7 +55,7 @@ func New(opts ...Option) *Service {
 // Login forwards to user-service and, on success, returns the new session id
 // as the bearer token. The session id is what the frontend holds.
 func (s *Service) Login(ctx context.Context, req *testkitv1.LoginRequest) (*testkitv1.TokenResponse, error) {
-	resp, err := s.user.Login(s.withApp(ctx), toUserLoginRequest(req))
+	resp, err := s.user.Login(ctx, toUserLoginRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +65,7 @@ func (s *Service) Login(ctx context.Context, req *testkitv1.LoginRequest) (*test
 // Register forwards to user-service and returns the new session id as the
 // bearer token. Same shape as Login.
 func (s *Service) Register(ctx context.Context, req *testkitv1.RegisterRequest) (*testkitv1.TokenResponse, error) {
-	resp, err := s.user.Register(s.withApp(ctx), toUserRegisterRequest(req))
+	resp, err := s.user.Register(ctx, toUserRegisterRequest(req))
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +77,7 @@ func (s *Service) Register(ctx context.Context, req *testkitv1.RegisterRequest) 
 // SendVerificationCode forwards to user-service and returns the captcha_id that
 // binds the generated code to this flow (must be passed back to Register/Login).
 func (s *Service) SendVerificationCode(ctx context.Context, req *testkitv1.SendVerificationCodeRequest) (*testkitv1.SendVerificationCodeResponse, error) {
-	resp, err := s.user.SendVerificationCode(s.withApp(ctx), toUserCodeRequest(req))
+	resp, err := s.user.SendVerificationCode(ctx, toUserCodeRequest(req))
 	if err != nil {
 		return nil, err
 	}
