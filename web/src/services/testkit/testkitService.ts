@@ -1435,106 +1435,6 @@ export async function messageDeleteChannelAccount(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/v1/message/admin/apps */
-export async function messageListApps(
-  options ?: {[key: string]: any}
-) {
-  return request<API.messagingV1ListAppsResponse>('/api/v1/message/admin/apps', {
-  method: 'GET',
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/v1/message/admin/apps */
-export async function messageCreateApp(body: API.messagingV1CreateAppRequest,
-  options ?: {[key: string]: any}
-) {
-  return request<API.messagingV1CreateAppResponse>('/api/v1/message/admin/apps', {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 GET /api/v1/message/admin/apps/${param0} */
-export async function messageGetApp(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.MessageGetAppParams
-    ,
-  options ?: {[key: string]: any}
-) {
-  const { 'id': param0, 
-  ...queryParams
-  } = params;
-  return request<API.messagingV1GetAppResponse>(`/api/v1/message/admin/apps/${param0}`, {
-  method: 'GET',
-    params: {...queryParams,},
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 PUT /api/v1/message/admin/apps/${param0} */
-export async function messageUpdateApp(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.MessageUpdateAppParams
-    ,body: API.TestkitServiceMessageUpdateAppBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'id': param0, 
-  ...queryParams
-  } = params;
-  return request<API.messagingV1UpdateAppResponse>(`/api/v1/message/admin/apps/${param0}`, {
-  method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 DELETE /api/v1/message/admin/apps/${param0} */
-export async function messageDeleteApp(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.MessageDeleteAppParams
-    ,
-  options ?: {[key: string]: any}
-) {
-  const { 'id': param0, 
-  ...queryParams
-  } = params;
-  return request<Record<string, any>>(`/api/v1/message/admin/apps/${param0}`, {
-  method: 'DELETE',
-    params: {...queryParams,},
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/v1/message/admin/apps/${param0}/secret${rotate} */
-export async function messageRotateAppSecret(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.MessageRotateAppSecretParams
-    ,body: API.TestkitServiceMessageRotateAppSecretBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'id': param0, 
-  ...queryParams
-  } = params;
-  return request<API.messagingV1RotateAppSecretResponse>(`/api/v1/message/admin/apps/${param0}/secret:rotate`, {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 GET /api/v1/message/admin/policies */
 export async function listPolicies(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -1731,6 +1631,106 @@ export async function messageDeleteTemplate(
   return request<Record<string, any>>(`/api/v1/message/admin/templates/${param0}`, {
   method: 'DELETE',
     params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/message/admin/tenant-configs */
+export async function messageListTenantConfigs(
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1ListTenantConfigsResponse>('/api/v1/message/admin/tenant-configs', {
+  method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/message/admin/tenant-configs */
+export async function messageCreateTenantConfig(body: API.v1CreateTenantConfigRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1CreateTenantConfigResponse>('/api/v1/message/admin/tenant-configs', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/v1/message/admin/tenant-configs/${param0} */
+export async function messageGetTenantConfig(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageGetTenantConfigParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1GetTenantConfigResponse>(`/api/v1/message/admin/tenant-configs/${param0}`, {
+  method: 'GET',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 PUT /api/v1/message/admin/tenant-configs/${param0} */
+export async function messageUpdateTenantConfig(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageUpdateTenantConfigParams
+    ,body: API.TestkitServiceMessageUpdateTenantConfigBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1UpdateTenantConfigResponse>(`/api/v1/message/admin/tenant-configs/${param0}`, {
+  method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 DELETE /api/v1/message/admin/tenant-configs/${param0} */
+export async function messageDeleteTenantConfig(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageDeleteTenantConfigParams
+    ,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/message/admin/tenant-configs/${param0}`, {
+  method: 'DELETE',
+    params: {...queryParams,},
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/message/admin/tenant-configs/${param0}/secret${rotate} */
+export async function messageRotateTenantConfigSecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.MessageRotateTenantConfigSecretParams
+    ,body: API.TestkitServiceMessageRotateTenantConfigSecretBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'id': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1RotateTenantConfigSecretResponse>(`/api/v1/message/admin/tenant-configs/${param0}/secret:rotate`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
     ...(options || {}),
   });
 }

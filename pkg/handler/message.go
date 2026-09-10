@@ -79,34 +79,36 @@ func (h *Handler) ListRegionCodes(ctx context.Context, req *testkitv1.ListRegion
 // --- Message admin RPCs (platform resources; 1:1 forwards, messaging.v1
 // payloads imported directly by the testkit proto) ---
 
-// MessageCreateApp registers a calling app; plaintext secret returned once.
-func (h *Handler) MessageCreateApp(ctx context.Context, req *messagingv1.CreateAppRequest) (*messagingv1.CreateAppResponse, error) {
-	return h.svc.Message().CreateApp(ctx, req)
+// MessageCreateTenantConfig registers a tenant config; plaintext secret
+// returned once.
+func (h *Handler) MessageCreateTenantConfig(ctx context.Context, req *messagingv1.CreateTenantConfigRequest) (*messagingv1.CreateTenantConfigResponse, error) {
+	return h.svc.Message().CreateTenantConfig(ctx, req)
 }
 
-// MessageGetApp returns one app by id.
-func (h *Handler) MessageGetApp(ctx context.Context, req *messagingv1.GetAppRequest) (*messagingv1.GetAppResponse, error) {
-	return h.svc.Message().GetApp(ctx, req)
+// MessageGetTenantConfig returns one tenant config by row id.
+func (h *Handler) MessageGetTenantConfig(ctx context.Context, req *messagingv1.GetTenantConfigRequest) (*messagingv1.GetTenantConfigResponse, error) {
+	return h.svc.Message().GetTenantConfig(ctx, req)
 }
 
-// MessageUpdateApp tweaks app metadata.
-func (h *Handler) MessageUpdateApp(ctx context.Context, req *messagingv1.UpdateAppRequest) (*messagingv1.UpdateAppResponse, error) {
-	return h.svc.Message().UpdateApp(ctx, req)
+// MessageUpdateTenantConfig tweaks config metadata.
+func (h *Handler) MessageUpdateTenantConfig(ctx context.Context, req *messagingv1.UpdateTenantConfigRequest) (*messagingv1.UpdateTenantConfigResponse, error) {
+	return h.svc.Message().UpdateTenantConfig(ctx, req)
 }
 
-// MessageRotateAppSecret invalidates the current secret; new plaintext once.
-func (h *Handler) MessageRotateAppSecret(ctx context.Context, req *messagingv1.RotateAppSecretRequest) (*messagingv1.RotateAppSecretResponse, error) {
-	return h.svc.Message().RotateAppSecret(ctx, req)
+// MessageRotateTenantConfigSecret invalidates the current secret; new
+// plaintext once.
+func (h *Handler) MessageRotateTenantConfigSecret(ctx context.Context, req *messagingv1.RotateTenantConfigSecretRequest) (*messagingv1.RotateTenantConfigSecretResponse, error) {
+	return h.svc.Message().RotateTenantConfigSecret(ctx, req)
 }
 
-// MessageListApps returns all apps.
-func (h *Handler) MessageListApps(ctx context.Context, req *messagingv1.ListAppsRequest) (*messagingv1.ListAppsResponse, error) {
-	return h.svc.Message().ListApps(ctx, req)
+// MessageListTenantConfigs returns the tenant configs in scope.
+func (h *Handler) MessageListTenantConfigs(ctx context.Context, req *messagingv1.ListTenantConfigsRequest) (*messagingv1.ListTenantConfigsResponse, error) {
+	return h.svc.Message().ListTenantConfigs(ctx, req)
 }
 
-// MessageDeleteApp soft-deletes an app.
-func (h *Handler) MessageDeleteApp(ctx context.Context, req *messagingv1.DeleteAppRequest) (*emptypb.Empty, error) {
-	return h.svc.Message().DeleteApp(ctx, req)
+// MessageDeleteTenantConfig soft-deletes a tenant config.
+func (h *Handler) MessageDeleteTenantConfig(ctx context.Context, req *messagingv1.DeleteTenantConfigRequest) (*emptypb.Empty, error) {
+	return h.svc.Message().DeleteTenantConfig(ctx, req)
 }
 
 // MessageCreateChannelAccount adds a vendor account to the pool.

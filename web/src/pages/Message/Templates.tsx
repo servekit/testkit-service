@@ -26,7 +26,7 @@ import {
 import {
   messageCreateTemplate,
   messageDeleteTemplate,
-  messageListApps,
+  messageListTenantConfigs,
   messageListTemplates,
   messageUpdateTemplate,
 } from "@/services/testkit/testkitService";
@@ -174,9 +174,9 @@ export default function MessageTemplatesPage() {
   // 发送前）时只能建平台共享模板。
   const [tenantAppId, setTenantAppId] = useState<string | undefined>(undefined);
   useEffect(() => {
-    void messageListApps({})
+    void messageListTenantConfigs({})
       .then((resp) => {
-        const mine = (resp.apps ?? []).find((a) => a.tenantKey === view.tenantKey);
+        const mine = (resp.configs ?? []).find((a) => a.tenantKey === view.tenantKey);
         setTenantAppId(mine?.id);
       })
       .catch(() => {

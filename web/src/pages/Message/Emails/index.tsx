@@ -23,7 +23,7 @@ import {
   getEmail,
   getEmailStats,
   listEmailsByCursor,
-  messageListApps,
+  messageListTenantConfigs,
   listEmails,
 } from "@/services/testkit/testkitService";
 import {
@@ -69,8 +69,8 @@ export default function EmailRecordsPage() {
   });
 
   useEffect(() => {
-    messageListApps({})
-      .then((r) => setAppKeys((r.apps ?? []).map((a) => a.appKey as string)))
+    messageListTenantConfigs({})
+      .then((r) => setAppKeys((r.configs ?? []).map((a) => a.appKey as string)))
       .catch(() => {
         /* 401 handled by interceptor; ignore list-load failures */
       });

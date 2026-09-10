@@ -621,38 +621,40 @@ func toTestkitSmsVendorStats(in []*messagev1.SmsVendorStats) []*testkitv1.SmsVen
 // T5) — the door-side mirror of message-service's server-side closure;
 // PLATFORM drill-downs keep their target.
 
-// CreateApp registers a calling app; the plaintext secret is returned by
-// message-service exactly once and passed straight through to the caller.
-func (s *Service) CreateApp(ctx context.Context, req *messagev1.CreateAppRequest) (*messagev1.CreateAppResponse, error) {
+// CreateTenantConfig (phase ④ T6 rename of the apps surface) registers a
+// tenant's config row; the plaintext secret is returned by message-service
+// exactly once and passed straight through to the caller.
+func (s *Service) CreateTenantConfig(ctx context.Context, req *messagev1.CreateTenantConfigRequest) (*messagev1.CreateTenantConfigResponse, error) {
 	if err := bffscope.TenantKey(ctx, &req.TenantKey); err != nil {
 		return nil, err
 	}
-	return s.message.CreateApp(ctx, req)
+	return s.message.CreateTenantConfig(ctx, req)
 }
 
-// GetApp returns one app by id.
-func (s *Service) GetApp(ctx context.Context, req *messagev1.GetAppRequest) (*messagev1.GetAppResponse, error) {
-	return s.message.GetApp(ctx, req)
+// GetTenantConfig returns one tenant config by row id.
+func (s *Service) GetTenantConfig(ctx context.Context, req *messagev1.GetTenantConfigRequest) (*messagev1.GetTenantConfigResponse, error) {
+	return s.message.GetTenantConfig(ctx, req)
 }
 
-// UpdateApp tweaks app metadata.
-func (s *Service) UpdateApp(ctx context.Context, req *messagev1.UpdateAppRequest) (*messagev1.UpdateAppResponse, error) {
-	return s.message.UpdateApp(ctx, req)
+// UpdateTenantConfig tweaks config metadata.
+func (s *Service) UpdateTenantConfig(ctx context.Context, req *messagev1.UpdateTenantConfigRequest) (*messagev1.UpdateTenantConfigResponse, error) {
+	return s.message.UpdateTenantConfig(ctx, req)
 }
 
-// RotateAppSecret invalidates the current secret; new plaintext returned once.
-func (s *Service) RotateAppSecret(ctx context.Context, req *messagev1.RotateAppSecretRequest) (*messagev1.RotateAppSecretResponse, error) {
-	return s.message.RotateAppSecret(ctx, req)
+// RotateTenantConfigSecret invalidates the current secret; new plaintext
+// returned once.
+func (s *Service) RotateTenantConfigSecret(ctx context.Context, req *messagev1.RotateTenantConfigSecretRequest) (*messagev1.RotateTenantConfigSecretResponse, error) {
+	return s.message.RotateTenantConfigSecret(ctx, req)
 }
 
-// ListApps returns all apps.
-func (s *Service) ListApps(ctx context.Context, req *messagev1.ListAppsRequest) (*messagev1.ListAppsResponse, error) {
-	return s.message.ListApps(ctx, req)
+// ListTenantConfigs returns the tenant configs in the caller's scope.
+func (s *Service) ListTenantConfigs(ctx context.Context, req *messagev1.ListTenantConfigsRequest) (*messagev1.ListTenantConfigsResponse, error) {
+	return s.message.ListTenantConfigs(ctx, req)
 }
 
-// DeleteApp soft-deletes an app.
-func (s *Service) DeleteApp(ctx context.Context, req *messagev1.DeleteAppRequest) (*emptypb.Empty, error) {
-	return s.message.DeleteApp(ctx, req)
+// DeleteTenantConfig soft-deletes a tenant config.
+func (s *Service) DeleteTenantConfig(ctx context.Context, req *messagev1.DeleteTenantConfigRequest) (*emptypb.Empty, error) {
+	return s.message.DeleteTenantConfig(ctx, req)
 }
 
 // CreateChannelAccount adds a vendor account to the platform pool.

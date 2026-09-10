@@ -1,11 +1,10 @@
 /**
- * 消息平台 · 应用管理。调用方的身份注册表：每个接入方一个 App，
- * 凭据（app_key/app_secret）列表可见（内网信任 posture）：默认掩码，
- * 点眼睛显示明文、点复制取值，方便配置到发送端的
- * message.app_key / app_secret。
- * phase ④ 租户化：应用行经 tenant_key 一对一映射租户（③双栈）——归属列
- * 展示映射；跨视图（PLATFORM）带租户筛选器；下钻视图创建的应用自动挂
- * 当前租户。本页保持平台运营面（路由 access: canPlatform）。
+ * 消息平台 · 租户配置（④T6 更名，原「应用管理」）。每个租户一行配置，
+ * 行内保留调用方凭据（app_key/app_secret，列表可见——内网信任 posture）：
+ * 默认掩码，点眼睛显示明文、点复制取值，方便配置到发送端的
+ * message.app_key / message.secret。
+ * 归属列展示 tenant_key；跨视图（PLATFORM）带租户筛选器；下钻视图创建的
+ * 配置自动挂当前租户。本页保持平台运营面（路由 access: canPlatform）。
  */
 import { ModalForm, ProFormDigit, ProFormText } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
@@ -18,11 +17,11 @@ import {
 } from "@ant-design/pro-components";
 import { SecretText } from "@/components/SecretText";
 import {
-  messageCreateApp,
-  messageDeleteApp,
-  messageListApps,
-  messageRotateAppSecret,
-  messageUpdateApp,
+  messageCreateTenantConfig,
+  messageDeleteTenantConfig,
+  messageListTenantConfigs,
+  messageRotateTenantConfigSecret,
+  messageUpdateTenantConfig,
 } from "@/services/testkit/testkitService";
 import {
   TenantFilterSelect,
@@ -51,7 +50,7 @@ export default function MessageAppsPage() {
     if (id) setRevealed((prev) => ({ ...prev, [`${id}:${field}`]: true }));
   };
 
-  const columns: ProColumns<API.v1MessageAppInfo>[] = [
+  const columns: ProColumns<API.v1MessageTenantConfigInfo>[] = [
     { title: "名称", dataIndex: "name", hideInSearch: true, width: 140, ellipsis: true },
     {
       title: "归属",
@@ -113,7 +112,7 @@ export default function MessageAppsPage() {
           key="rotate"
           onClick={async () => {
             try {
-              await messageRotateAppSecret({ id: r.id! }, {} as never);
+              await messageRotateTenantConfigSecret({ id: r.id! }, {} as never);
               message.success("已轮换，新 AppSecret 见列表");
               reveal(r.id, "appSecret");
               reload();
@@ -129,7 +128,7 @@ export default function MessageAppsPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await messageUpdateApp({ id: r.id! }, { disabled: !r.disabled });
+              await messageUpdateTenantConfig({ id: r.id! }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用");
               reload();
             } catch (err) {
@@ -142,10 +141,10 @@ export default function MessageAppsPage() {
         </a>,
         <Popconfirm
           key="del"
-          title="删除后该应用的发送立即失败，确定？"
+          title="删除后该租户的发送立即失败，确定？"
           onConfirm={async () => {
             try {
-              await messageDeleteApp({ id: r.id! });
+              await messageDeleteTenantConfig({ id: r.id! });
               message.success("已删除");
               reload();
             } catch (err) {
@@ -162,8 +161,8 @@ export default function MessageAppsPage() {
 
   return (
     <PageContainer>
-      <ProTable<API.v1MessageAppInfo>
-        headerTitle="应用列表"
+      <ProTable<API.v1MessageTenantConfigInfo>
+        headerTitle="租户配置列表"
         actionRef={actionRef}
         columns={columns}
         rowKey="id"
@@ -172,11 +171,11 @@ export default function MessageAppsPage() {
         scroll={{ x: 1280 }}
         params={{ tenantFilter }}
         request={async () => {
-          const resp = await messageListApps({});
+          const resp = await messageListTenantConfigs({});
           // 下钻视图只看当前租户的配置行（其余租户行对下钻语义不可见）。
-          let rows = filterTenantRows(view, resp.apps ?? [], (r) => r.tenantKey);
+          let rows = filterTenantRows(view, resp.configs ?? [], (r) => r.tenantKey);
           if (view.crossView) {
-            setFilterOptions(tenantFilterOptions(resp.apps ?? [], (r) => r.tenantKey));
+            setFilterOptions(tenantFilterOptions(resp.configs ?? [], (r) => r.tenantKey));
             rows = applyTenantFilter(tenantFilter, rows, (r) => r.tenantKey);
           }
           return { data: rows, success: true };
@@ -192,20 +191,20 @@ export default function MessageAppsPage() {
           ) : null,
           <ModalForm
             key="create"
-            title="创建应用"
-            trigger={<Button type="primary">创建应用</Button>}
+            title="创建租户配置"
+            trigger={<Button type="primary">创建租户配置</Button>}
             onFinish={async (vals) => {
               try {
-                const resp = await messageCreateApp({
+                const resp = await messageCreateTenantConfig({
                   name: vals.name,
                   smsDailyLimit: String(Number(vals.smsDailyLimit ?? 0)),
                   emailDailyLimit: String(Number(vals.emailDailyLimit ?? 0)),
-                  // 租户映射：租户视图（下钻）建的应用挂当前租户；跨视图
-                  // 留空 = app_key 字面量（legacy→tenant 回退值）。
+                  // 租户归属：租户视图（下钻）建的配置挂当前租户；跨视图
+                  // 留空 = 服务端铸造键字面量（legacy→tenant 回退值）。
                   tenantKey: view.crossView ? "" : view.tenantKey,
                 });
                 message.success("已创建，AppKey/AppSecret 见列表");
-                reveal(resp.app?.id, "appSecret");
+                reveal(resp.config?.id, "appSecret");
                 reload();
                 return true;
               } catch (err) {

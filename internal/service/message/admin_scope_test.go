@@ -90,12 +90,12 @@ func TestCreateChannelAccount_TenantAdminWithoutChoiceFailsClosed(t *testing.T) 
 	require.Nil(t, stub.createChannelAccountReq, "nothing is forwarded on a failed clamp")
 }
 
-// TestCreateSignatureAndCreateApp_Clamp: the same clamp covers the other
-// tenant-naming creates.
-func TestCreateSignatureAndCreateApp_Clamp(t *testing.T) {
+// TestCreateSignatureAndCreateTenantConfig_Clamp: the same clamp covers the
+// other tenant-naming creates.
+func TestCreateSignatureAndCreateTenantConfig_Clamp(t *testing.T) {
 	stub := &stubServer{
 		createSignatureResp: &messagev1.CreateSignatureResponse{},
-		createAppResp:       &messagev1.CreateAppResponse{},
+		createAppResp:       &messagev1.CreateTenantConfigResponse{},
 	}
 	svc := message.New(stub)
 	ctx := adminActorCtx(userv1.UserType_USER_TYPE_TENANT_ADMIN, "ten_alpha0000000")
@@ -104,7 +104,7 @@ func TestCreateSignatureAndCreateApp_Clamp(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "ten_alpha0000000", stub.createSignatureReq.GetTenantKey())
 
-	_, err = svc.CreateApp(ctx, &messagev1.CreateAppRequest{AppKey: "a", TenantKey: "ten_beta0000000"})
+	_, err = svc.CreateTenantConfig(ctx, &messagev1.CreateTenantConfigRequest{Name: "a", TenantKey: "ten_beta0000000"})
 	require.NoError(t, err)
 	require.Equal(t, "ten_alpha0000000", stub.createAppReq.GetTenantKey())
 }

@@ -76,8 +76,8 @@ type stubServer struct {
 	createChannelAccountResp *messagev1.CreateChannelAccountResponse
 	createSignatureReq       *messagev1.CreateSignatureRequest
 	createSignatureResp      *messagev1.CreateSignatureResponse
-	createAppReq             *messagev1.CreateAppRequest
-	createAppResp            *messagev1.CreateAppResponse
+	createAppReq             *messagev1.CreateTenantConfigRequest
+	createAppResp            *messagev1.CreateTenantConfigResponse
 }
 
 func (s *stubServer) CreateChannelAccount(_ context.Context, req *messagev1.CreateChannelAccountRequest) (*messagev1.CreateChannelAccountResponse, error) {
@@ -90,7 +90,7 @@ func (s *stubServer) CreateSignature(_ context.Context, req *messagev1.CreateSig
 	return s.createSignatureResp, nil
 }
 
-func (s *stubServer) CreateApp(_ context.Context, req *messagev1.CreateAppRequest) (*messagev1.CreateAppResponse, error) {
+func (s *stubServer) CreateTenantConfig(_ context.Context, req *messagev1.CreateTenantConfigRequest) (*messagev1.CreateTenantConfigResponse, error) {
 	s.createAppReq = req
 	return s.createAppResp, nil
 }

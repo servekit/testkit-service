@@ -23,7 +23,7 @@ import {
   listSms,
   listSmsByCursor,
   listSmsRegions,
-  messageListApps,
+  messageListTenantConfigs,
 } from "@/services/testkit/testkitService";
 import {
   MESSAGE_STATUS_VALUE_ENUM,
@@ -70,8 +70,8 @@ export default function SMSRecordsPage() {
     listSmsRegions()
       .then((r) => setRegions(r.regionCodes ?? []))
       .catch(() => {});
-    messageListApps({})
-      .then((r) => setAppKeys((r.apps ?? []).map((a) => a.appKey as string)))
+    messageListTenantConfigs({})
+      .then((r) => setAppKeys((r.configs ?? []).map((a) => a.appKey as string)))
       .catch(() => {});
   }, []);
 

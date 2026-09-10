@@ -25,7 +25,7 @@ import {
 import {
   messageCreatePolicy,
   messageDeletePolicy,
-  messageListApps,
+  messageListTenantConfigs,
   messageListChannelAccounts,
   listPolicies,
   messageListSignatures,
@@ -188,14 +188,14 @@ export default function MessagePoliciesPage() {
   useEffect(() => {
     void (async () => {
       const [apps, templates, accounts, signatures] = await Promise.all([
-        messageListApps({}),
+        messageListTenantConfigs({}),
         messageListTemplates({}),
         messageListChannelAccounts(),
         messageListSignatures(),
       ]);
       // 选项域 = 当前视图可见域：租户视图滤除其他租户的私有资源（策略
       // 引用它们会被后端域校验拒绝）；跨视图全量、私有项带租户键前缀。
-      const scopedApps = filterTenantRows(view, apps.apps ?? [], (a) => a.tenantKey);
+      const scopedApps = filterTenantRows(view, apps.configs ?? [], (a) => a.tenantKey);
       const scopedTemplates = filterTenantRows(view, templates.templates ?? [], (t) => t.tenantKey);
       const scopedAccounts = filterTenantRows(view, accounts.accounts ?? [], (a) => a.tenantKey);
       const scopedSignatures = filterTenantRows(view, signatures.signatures ?? [], (s) => s.tenantKey);

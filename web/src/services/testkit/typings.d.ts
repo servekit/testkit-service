@@ -1027,10 +1027,6 @@ or context was cancelled. error_message carries the last error. */
     tenantKey?: string;
   };
 
-  type MessageDeleteAppParams = {
-    id: string;
-  };
-
   type MessageDeleteChannelAccountParams = {
     id: string;
   };
@@ -1047,7 +1043,11 @@ or context was cancelled. error_message carries the last error. */
     id: string;
   };
 
-  type MessageGetAppParams = {
+  type MessageDeleteTenantConfigParams = {
+    id: string;
+  };
+
+  type MessageGetTenantConfigParams = {
     id: string;
   };
 
@@ -1060,11 +1060,7 @@ or context was cancelled. error_message carries the last error. */
       | "TEMPLATE_CHANNEL_SMS";
   };
 
-  type MessageRotateAppSecretParams = {
-    id: string;
-  };
-
-  type MessageUpdateAppParams = {
+  type MessageRotateTenantConfigSecretParams = {
     id: string;
   };
 
@@ -1084,39 +1080,8 @@ or context was cancelled. error_message carries the last error. */
     id: string;
   };
 
-  type messagingV1CreateAppRequest = {
-    /** app_key optionally carries a caller-chosen slug (e.g. "testkit").
-Empty = the server generates one ("app_" + 8 random chars). Unique and
-immutable after creation either way. */
-    appKey?: string;
-    name?: string;
-    smsDailyLimit?: string;
-    emailDailyLimit?: string;
-    /** tenant_key optionally maps the app to a tenant (phase ③). Empty = the
-app_key literal (the legacy→tenant fallback value). Unique across apps. */
-    tenantKey?: string;
-  };
-
-  type messagingV1CreateAppResponse = {
-    app?: v1MessageAppInfo;
-    appSecret?: string;
-  };
-
-  type messagingV1GetAppResponse = {
-    app?: v1MessageAppInfo;
-  };
-
-  type messagingV1ListAppsResponse = {
-    apps?: v1MessageAppInfo[];
-  };
-
-  type messagingV1RotateAppSecretResponse = {
-    app?: v1MessageAppInfo;
-    appSecret?: string;
-  };
-
-  type messagingV1UpdateAppResponse = {
-    app?: v1MessageAppInfo;
+  type MessageUpdateTenantConfigParams = {
+    id: string;
   };
 
   type PortalAddTenantMemberParams = {
@@ -1414,14 +1379,7 @@ disables STS. */
     disabled?: boolean;
   };
 
-  type TestkitServiceMessageRotateAppSecretBody = true;
-
-  type TestkitServiceMessageUpdateAppBody = {
-    name?: string;
-    disabled?: boolean;
-    smsDailyLimit?: string;
-    emailDailyLimit?: string;
-  };
+  type TestkitServiceMessageRotateTenantConfigSecretBody = true;
 
   type TestkitServiceMessageUpdateChannelAccountBody = {
     remark?: string;
@@ -1447,6 +1405,13 @@ send an empty list to disable intl; ignored for email). */
 
   type TestkitServiceMessageUpdateTemplateBody = {
     template?: v1TemplateInfo;
+  };
+
+  type TestkitServiceMessageUpdateTenantConfigBody = {
+    name?: string;
+    disabled?: boolean;
+    smsDailyLimit?: string;
+    emailDailyLimit?: string;
   };
 
   type TestkitServicePortalAddTenantMemberBody = {
@@ -2247,6 +2212,25 @@ resource domain). Empty = platform pool. */
     template?: v1TemplateInfo;
   };
 
+  type v1CreateTenantConfigRequest = {
+    /** name is the config row's display label. */
+    name?: string;
+    smsDailyLimit?: string;
+    emailDailyLimit?: string;
+    /** tenant_key names the tenant this config row belongs to. A scoped
+caller is clamped to the injected key (the stamp follows the
+injection, never the body); the PLATFORM cross-view needs it for a
+provisioning create. Unique across rows (one config row per tenant);
+when empty on the cross-view the server-minted app key literal is the
+legacy→tenant fallback value. */
+    tenantKey?: string;
+  };
+
+  type v1CreateTenantConfigResponse = {
+    config?: v1MessageTenantConfigInfo;
+    appSecret?: string;
+  };
+
   type v1CreateUserRequest = {
     userType?: v1UserType;
     username?: string;
@@ -2641,6 +2625,10 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     expiresAt?: string;
   };
 
+  type v1GetTenantConfigResponse = {
+    config?: v1MessageTenantConfigInfo;
+  };
+
   type v1GrantModuleResponse = {
     entitlement?: v1EntitlementInfo;
   };
@@ -2975,6 +2963,10 @@ the ops console is the intended reader. */
     templates?: v1TemplateInfo[];
   };
 
+  type v1ListTenantConfigsResponse = {
+    configs?: v1MessageTenantConfigInfo[];
+  };
+
   type v1ListTenantMembersResponse = {
     members?: v1TenantMember[];
   };
@@ -3063,7 +3055,13 @@ before tenancy. Phase ④ terminal naming: tenant_key on the wire. */
     captchaId?: string;
   };
 
-  type v1MessageAppInfo = {
+  type v1MessageStatus =
+    | "MESSAGE_STATUS_UNSPECIFIED"
+    | "MESSAGE_STATUS_PENDING"
+    | "MESSAGE_STATUS_SENT"
+    | "MESSAGE_STATUS_FAILED";
+
+  type v1MessageTenantConfigInfo = {
     id?: string;
     /** app_key is the public credential identifier passed in x-app-key
 metadata (e.g. "testkit"). Unique. */
@@ -3087,12 +3085,6 @@ Empty on rows not yet backfilled — the service falls back to the app_key
 literal until T10 clears the empties. */
     tenantKey?: string;
   };
-
-  type v1MessageStatus =
-    | "MESSAGE_STATUS_UNSPECIFIED"
-    | "MESSAGE_STATUS_PENDING"
-    | "MESSAGE_STATUS_SENT"
-    | "MESSAGE_STATUS_FAILED";
 
   type v1MiniProgramLoginRequest = {
     code?: string;
@@ -3348,6 +3340,11 @@ backfilled — resolved through the app mapping at load time. */
     apiKey?: v1ApiKeyInfo;
     /** new sk_…, shown once — never listed or echoed again. */
     secret?: string;
+  };
+
+  type v1RotateTenantConfigSecretResponse = {
+    config?: v1MessageTenantConfigInfo;
+    appSecret?: string;
   };
 
   type v1RotateTokenResponse = {
@@ -3787,6 +3784,10 @@ empty for password/code logins). */
 
   type v1UpdateTemplateResponse = {
     template?: v1TemplateInfo;
+  };
+
+  type v1UpdateTenantConfigResponse = {
+    config?: v1MessageTenantConfigInfo;
   };
 
   type v1UploadCredentialItem = {
