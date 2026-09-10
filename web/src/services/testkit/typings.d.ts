@@ -338,7 +338,7 @@ when both are set; an unknown username yields an empty page. */
     username?: string;
     /** Tenant filter (user_apps.app_key). Platform-operator callers only;
 tenant callers are pinned to their own directory regardless. */
-    appKey?: string;
+    tenantKey?: string;
   };
 
   type GetMyFileParams = {
@@ -957,7 +957,7 @@ or context was cancelled. error_message carries the last error. */
     pageSize?: number;
     count?: boolean;
     /** Tenant filter (user_apps.app_key). Platform-operator callers only. */
-    appKey?: string;
+    tenantKey?: string;
   };
 
   type ListUsersParams = {
@@ -1024,7 +1024,7 @@ or context was cancelled. error_message carries the last error. */
       | "USER_SORT_FIELD_LAST_LOGIN_AT";
     descending?: boolean;
     /** Tenant filter (user_apps.app_key). Platform-operator callers only. */
-    appKey?: string;
+    tenantKey?: string;
   };
 
   type MessageDeleteAppParams = {
@@ -1667,25 +1667,25 @@ user_id injected from ctx */
   };
 
   type UserDeleteAppParams = {
-    appKey: string;
+    tenantKey: string;
   };
 
   type UserGetAppParams = {
-    appKey: string;
+    tenantKey: string;
   };
 
   type UserRotateAppSecretParams = {
-    appKey: string;
+    tenantKey: string;
   };
 
   type UserUpdateAppParams = {
-    appKey: string;
+    tenantKey: string;
   };
 
   type userV1CreateAppRequest = {
-    /** app_key pattern: lowercase letter followed by lowercase alphanumerics
+    /** tenant_key pattern: lowercase letter followed by lowercase alphanumerics
 and dashes. Optional; empty = server-generated. */
-    appKey?: string;
+    tenantKey?: string;
     name?: string;
   };
 
@@ -2260,7 +2260,7 @@ resource domain). Empty = platform pool. */
     timezone?: string;
     locale?: string;
     /** Target tenant (user_apps.app_key). Platform-operator callers only. */
-    appKey?: string;
+    tenantKey?: string;
   };
 
   type v1CreateUserResponse = {
@@ -2607,7 +2607,7 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     loginMethod?: v1LoginMethod;
     loginProvider?: v1IdentityProvider;
     /** Tenant the session lives in (user_apps.app_key). */
-    appKey?: string;
+    tenantKey?: string;
   };
 
   type v1GetSTSCredentialRequest = {
@@ -3039,8 +3039,8 @@ resolves (see user.v1). */
     /** The credential subject of the attempt (see user.v1). */
     target?: string;
     /** Tenant the attempt happened in (user_apps.app_key); "" on rows from
-before tenancy. */
-    appKey?: string;
+before tenancy. Phase ④ terminal naming: tenant_key on the wire. */
+    tenantKey?: string;
   };
 
   type v1LoginMethod =
@@ -3840,15 +3840,16 @@ user.v1.User.dial_code. */
     defaultCurrency?: string;
     /** Reserved for MFA; false until an MFA flow exists. */
     mfaEnabled?: boolean;
-    /** Tenant label (user_apps.app_key) the user belongs to. */
-    appKey?: string;
+    /** Tenant label (user_apps.app_key) the user belongs to. Phase ④ terminal
+naming: tenant_key on the wire. */
+    tenantKey?: string;
   };
 
   type v1UserAppInfo = {
     id?: string;
-    /** app_key identifies the tenant on every tenant-scoped surface; unique,
+    /** tenant_key identifies the tenant on every tenant-scoped surface; unique,
 immutable after creation. */
-    appKey?: string;
+    tenantKey?: string;
     /** app_secret is the tenant credential. Echoed on every read —
 internal-trust posture, same convention as the other platform apps. */
     appSecret?: string;

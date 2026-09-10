@@ -162,12 +162,12 @@ func toTestkitUser(u *userv1.User) *testkitv1.User {
 		return nil
 	}
 	return &testkitv1.User{
-		Id:       u.GetId(),
-		Username: u.GetUsername(),
-		Email:    u.GetEmail(),
-		Phone:    u.GetPhone(),
-		Nickname: u.GetNickname(),
-		UserType: userv1.UserType(u.GetUserType()),
-		AppKey:   u.GetAppKey(),
+		Id:        u.GetId(),
+		Username:  u.GetUsername(),
+		Email:     u.GetEmail(),
+		Phone:     u.GetPhone(),
+		Nickname:  u.GetNickname(),
+		UserType:  userv1.UserType(u.GetUserType()),
+		TenantKey: u.GetTenantKey(),
 	}
 }

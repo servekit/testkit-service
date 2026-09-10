@@ -26,25 +26,25 @@ export default function UserAppsPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
-  // 掩码开关按 "appKey:字段" 记忆；创建/轮换后自动点亮对应行的 AppSecret
+  // 掩码开关按 "tenantKey:字段" 记忆；创建/轮换后自动点亮对应行的 AppSecret
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const toggleReveal = (key: string) =>
     setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
-  const reveal = (appKey: string | undefined) => {
-    if (appKey) setRevealed((prev) => ({ ...prev, [`${appKey}:appSecret`]: true }));
+  const reveal = (tenantKey: string | undefined) => {
+    if (tenantKey) setRevealed((prev) => ({ ...prev, [`${tenantKey}:appSecret`]: true }));
   };
 
   const columns: ProColumns<API.v1UserAppInfo>[] = [
     { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
     {
-      title: "AppKey",
-      dataIndex: "appKey",
+      title: "TenantKey",
+      dataIndex: "tenantKey",
       width: 220,
       render: (_, r) => (
         <SecretText
-          value={r.appKey}
-          visible={!!revealed[`${r.appKey}:appKey`]}
-          onToggle={() => toggleReveal(`${r.appKey}:appKey`)}
+          value={r.tenantKey}
+          visible={!!revealed[`${r.tenantKey}:tenantKey`]}
+          onToggle={() => toggleReveal(`${r.tenantKey}:tenantKey`)}
         />
       ),
     },
@@ -55,8 +55,8 @@ export default function UserAppsPage() {
       render: (_, r) => (
         <SecretText
           value={r.appSecret}
-          visible={!!revealed[`${r.appKey}:appSecret`]}
-          onToggle={() => toggleReveal(`${r.appKey}:appSecret`)}
+          visible={!!revealed[`${r.tenantKey}:appSecret`]}
+          onToggle={() => toggleReveal(`${r.tenantKey}:appSecret`)}
         />
       ),
     },
@@ -83,9 +83,9 @@ export default function UserAppsPage() {
           key="rotate"
           onClick={async () => {
             try {
-              await userRotateAppSecret({ appKey: r.appKey! }, {} as never);
+              await userRotateAppSecret({ tenantKey: r.tenantKey! }, {} as never);
               message.success("已轮换，新 AppSecret 见列表");
-              reveal(r.appKey);
+              reveal(r.tenantKey);
               reload();
             } catch (err) {
               const e = err as { data?: { message?: string } };
@@ -99,7 +99,7 @@ export default function UserAppsPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await userUpdateApp({ appKey: r.appKey! }, { disabled: !r.disabled });
+              await userUpdateApp({ tenantKey: r.tenantKey! }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用（该应用的登录/注册立即拒绝）");
               reload();
             } catch (err) {
@@ -115,7 +115,7 @@ export default function UserAppsPage() {
           title="仍有用户归属该租户时会拒绝删除。确定删除？"
           onConfirm={async () => {
             try {
-              await userDeleteApp({ appKey: r.appKey! });
+              await userDeleteApp({ tenantKey: r.tenantKey! });
               message.success("已删除");
               reload();
             } catch (err) {
@@ -136,7 +136,7 @@ export default function UserAppsPage() {
         headerTitle="应用列表"
         actionRef={actionRef}
         columns={columns}
-        rowKey="appKey"
+        rowKey="tenantKey"
         search={false}
         pagination={false}
         scroll={{ x: 1280 }}
@@ -152,8 +152,8 @@ export default function UserAppsPage() {
             onFinish={async (vals) => {
               try {
                 const resp = await userCreateApp({ name: vals.name });
-                message.success("已创建，AppKey/AppSecret 见列表");
-                reveal(resp.app?.appKey);
+                message.success("已创建，TenantKey/AppSecret 见列表");
+                reveal(resp.app?.tenantKey);
                 reload();
                 return true;
               } catch (err) {

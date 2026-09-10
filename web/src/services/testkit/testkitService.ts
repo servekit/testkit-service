@@ -3272,7 +3272,7 @@ export async function userGetApp(
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
   return request<API.userV1GetAppResponse>(`/api/v1/user/admin/apps/${param0}`, {
@@ -3289,7 +3289,7 @@ export async function userUpdateApp(
     ,body: API.TestkitServiceUserUpdateAppBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
   return request<API.userV1UpdateAppResponse>(`/api/v1/user/admin/apps/${param0}`, {
@@ -3310,7 +3310,7 @@ export async function userDeleteApp(
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
   return request<Record<string, any>>(`/api/v1/user/admin/apps/${param0}`, {
@@ -3327,7 +3327,7 @@ export async function userRotateAppSecret(
     ,body: API.TestkitServiceUserRotateAppSecretBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
   return request<API.userV1RotateAppSecretResponse>(`/api/v1/user/admin/apps/${param0}:rotateSecret`, {

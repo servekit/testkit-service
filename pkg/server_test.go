@@ -49,7 +49,7 @@ func (fakeSessions) GetSession(_ context.Context, req *pb.GetSessionRequest) (*p
 		return &pb.GetSessionResponse{
 			UserId:   8,
 			UserType: pb.UserType_USER_TYPE_TENANT_ADMIN,
-			AppKey:   "ten_platform",
+			TenantKey: "ten_platform",
 		}, nil
 	}
 	return nil, errors.New("session invalid")

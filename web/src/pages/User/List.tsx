@@ -47,8 +47,8 @@ export default function UserListPage() {
     void userListApps().then((resp) => {
       setApps(
         (resp.apps ?? []).map((a) => ({
-          value: a.appKey ?? "",
-          label: `${a.name}（${a.appKey}）`,
+          value: a.tenantKey ?? "",
+          label: `${a.name}（${a.tenantKey}）`,
         })),
       );
     });
@@ -57,11 +57,11 @@ export default function UserListPage() {
   const columns: ProColumns<API.User>[] = [
     {
       title: "租户",
-      dataIndex: "appKey",
+      dataIndex: "tenantKey",
       valueType: "select",
       fieldProps: { options: apps, allowClear: true },
       width: 140,
-      render: (_, r) => (r.appKey ? <code>{r.appKey}</code> : "-"),
+      render: (_, r) => (r.tenantKey ? <code>{r.tenantKey}</code> : "-"),
     },
     { title: "ID", dataIndex: "id", width: 180 },
     { title: "用户名", dataIndex: "username" },
@@ -143,7 +143,7 @@ export default function UserListPage() {
             username,
             email,
             userType,
-            appKey,
+            tenantKey,
           } = params;
           const resp = await listUsersPaged({
             page: current,
@@ -154,7 +154,7 @@ export default function UserListPage() {
             username,
             email,
             userType: userType as API.ListUsersPagedParams["userType"],
-            appKey: (appKey as string) || undefined,
+            tenantKey: (tenantKey as string) || undefined,
           });
           return {
             data: resp.users ?? [],
@@ -185,7 +185,7 @@ export default function UserListPage() {
         }}
       >
         <ProFormSelect
-          name="appKey"
+          name="tenantKey"
           label="目标租户"
           rules={[{ required: true, message: "请选择租户" }]}
           options={apps}

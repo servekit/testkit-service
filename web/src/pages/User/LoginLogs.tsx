@@ -33,14 +33,14 @@ export default function LoginLogsPage() {
     void userListApps().then((resp) => {
       setApps(
         (resp.apps ?? []).map((a) => ({
-          value: a.appKey ?? "",
-          label: `${a.name}（${a.appKey}）`,
+          value: a.tenantKey ?? "",
+          label: `${a.name}（${a.tenantKey}）`,
         })),
       );
     });
   }, []);
 
-  const logs = useCursorTable(async ({ cursor, pageSize, username, userId, method, action, success, appKey }) => {
+  const logs = useCursorTable(async ({ cursor, pageSize, username, userId, method, action, success, tenantKey }) => {
     const resp = await getLoginLogs({
       username: (username as string) || undefined,
       userId: (userId as string) || undefined,
@@ -50,7 +50,7 @@ export default function LoginLogsPage() {
         success === undefined || success === ""
           ? undefined
           : success === "true" || success === true,
-      appKey: (appKey as string) || undefined,
+      tenantKey: (tenantKey as string) || undefined,
       pageSize,
       cursor: cursor || undefined,
     });
@@ -60,11 +60,11 @@ export default function LoginLogsPage() {
   const columns: ProColumns<API.LoginLog>[] = [
     {
       title: "租户",
-      dataIndex: "appKey",
+      dataIndex: "tenantKey",
       valueType: "select",
       fieldProps: { options: apps, allowClear: true },
       width: 150,
-      render: (_, r) => (r.appKey ? <code>{r.appKey}</code> : "-"),
+      render: (_, r) => (r.tenantKey ? <code>{r.tenantKey}</code> : "-"),
     },
     {
       title: "用户名",

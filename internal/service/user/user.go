@@ -262,7 +262,7 @@ func (s *Service) GetSession(ctx context.Context, req *testkitv1.GetSessionReque
 		Browser:       resp.GetBrowser(),
 		LoginMethod:   resp.GetLoginMethod(),
 		LoginProvider: resp.GetLoginProvider(),
-		AppKey:        resp.GetAppKey(),
+		TenantKey:     resp.GetTenantKey(),
 	}, nil
 }
 
@@ -837,7 +837,7 @@ func toTestkitUser(u *userv1.User) *testkitv1.User {
 		DialCode:        u.GetDialCode(),
 		DefaultCurrency: u.GetDefaultCurrency(),
 		MfaEnabled:      u.GetMfaEnabled(),
-		AppKey:          u.GetAppKey(),
+		TenantKey:       u.GetTenantKey(),
 	}
 }
 
@@ -885,17 +885,17 @@ func toTestkitSession(s *userv1.Session) *testkitv1.Session {
 
 func toUserCreateUserRequest(r *testkitv1.CreateUserRequest) *userv1.CreateUserRequest {
 	return &userv1.CreateUserRequest{
-		UserType: userv1.UserType(r.GetUserType()),
-		Username: r.GetUsername(),
-		Nickname: r.GetNickname(),
-		RealName: r.GetRealName(),
-		Email:    r.GetEmail(),
-		Phone:    phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
-		Password: r.GetPassword(),
-		Gender:   userv1.Gender(r.GetGender()),
-		Timezone: r.GetTimezone(),
-		Locale:   r.GetLocale(),
-		AppKey:   r.GetAppKey(),
+		UserType:  userv1.UserType(r.GetUserType()),
+		Username:  r.GetUsername(),
+		Nickname:  r.GetNickname(),
+		RealName:  r.GetRealName(),
+		Email:     r.GetEmail(),
+		Phone:     phone.ComposeE164(r.GetDialCode(), r.GetPhone()),
+		Password:  r.GetPassword(),
+		Gender:    userv1.Gender(r.GetGender()),
+		Timezone:  r.GetTimezone(),
+		Locale:    r.GetLocale(),
+		TenantKey: r.GetTenantKey(),
 	}
 }
 
@@ -924,7 +924,7 @@ func toUserListUsersRequest(r *testkitv1.ListUsersRequest) *userv1.ListUsersRequ
 		UserType:         userv1.UserType(r.GetUserType()),
 		OrderBy:          userv1.UserSortField(r.GetOrderBy()),
 		Descending:       r.GetDescending(),
-		AppKey:           r.GetAppKey(),
+		TenantKey:        r.GetTenantKey(),
 	}
 }
 
@@ -958,21 +958,21 @@ func ToUserListUsersPagedRequest(r *testkitv1.ListUsersPagedRequest) *userv1.Lis
 		Page:             r.GetPage(),
 		PageSize:         r.GetPageSize(),
 		Count:            r.GetCount(),
-		AppKey:           r.GetAppKey(),
+		TenantKey:        r.GetTenantKey(),
 	}
 }
 
 func toUserGetLoginLogsRequest(r *testkitv1.GetLoginLogsRequest) *userv1.GetLoginLogsRequest {
 	return &userv1.GetLoginLogsRequest{
-		UserId:   r.GetUserId(),
-		Provider: userv1.IdentityProvider(r.GetProvider()),
-		Success:  r.Success, // optional: nil = both outcomes
-		Action:   userv1.LoginAction(r.GetAction()),
-		Method:   userv1.LoginMethod(r.GetMethod()),
-		Username: r.GetUsername(),
-		PageSize: r.GetPageSize(),
-		Cursor:   r.GetCursor(),
-		AppKey:   r.GetAppKey(),
+		UserId:    r.GetUserId(),
+		Provider:  userv1.IdentityProvider(r.GetProvider()),
+		Success:   r.Success, // optional: nil = both outcomes
+		Action:    userv1.LoginAction(r.GetAction()),
+		Method:    userv1.LoginMethod(r.GetMethod()),
+		Username:  r.GetUsername(),
+		PageSize:  r.GetPageSize(),
+		Cursor:    r.GetCursor(),
+		TenantKey: r.GetTenantKey(),
 	}
 }
 
@@ -1040,7 +1040,7 @@ func toTestkitLoginLog(l *userv1.LoginLog) *testkitv1.LoginLog {
 		Country:    l.GetCountry(),
 		City:       l.GetCity(),
 		CreatedAt:  l.GetCreatedAt(),
-		AppKey:     l.GetAppKey(),
+		TenantKey:  l.GetTenantKey(),
 	}
 }
 
