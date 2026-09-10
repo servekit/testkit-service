@@ -13,16 +13,16 @@ func (h *Handler) Ingest(ctx context.Context, req *testkitv1.IngestRequest) (*te
 	return h.svc.Telemetry().Ingest(ctx, req)
 }
 
-func (h *Handler) CreateApp(ctx context.Context, req *testkitv1.CreateAppRequest) (*testkitv1.CreateAppResponse, error) {
-	return h.svc.Telemetry().CreateApp(ctx, req)
+func (h *Handler) CreateTenantConfig(ctx context.Context, req *testkitv1.CreateTenantConfigRequest) (*testkitv1.CreateTenantConfigResponse, error) {
+	return h.svc.Telemetry().CreateTenantConfig(ctx, req)
 }
 
-func (h *Handler) GetApp(ctx context.Context, req *testkitv1.GetAppRequest) (*testkitv1.GetAppResponse, error) {
-	return h.svc.Telemetry().GetApp(ctx, req)
+func (h *Handler) GetTenantConfig(ctx context.Context, req *testkitv1.GetTenantConfigRequest) (*testkitv1.GetTenantConfigResponse, error) {
+	return h.svc.Telemetry().GetTenantConfig(ctx, req)
 }
 
-func (h *Handler) UpdateApp(ctx context.Context, req *testkitv1.UpdateAppRequest) (*testkitv1.UpdateAppResponse, error) {
-	return h.svc.Telemetry().UpdateApp(ctx, req)
+func (h *Handler) UpdateTenantConfig(ctx context.Context, req *testkitv1.UpdateTenantConfigRequest) (*testkitv1.UpdateTenantConfigResponse, error) {
+	return h.svc.Telemetry().UpdateTenantConfig(ctx, req)
 }
 
 func (h *Handler) RotateToken(ctx context.Context, req *testkitv1.RotateTokenRequest) (*testkitv1.RotateTokenResponse, error) {
@@ -49,14 +49,14 @@ func (h *Handler) SetVersionBlocked(ctx context.Context, req *testkitv1.SetVersi
 	return h.svc.Telemetry().SetVersionBlocked(ctx, req)
 }
 
-func (h *Handler) GetAppStats(ctx context.Context, req *testkitv1.GetAppStatsRequest) (*testkitv1.GetAppStatsResponse, error) {
-	return h.svc.Telemetry().GetAppStats(ctx, req)
+func (h *Handler) GetTenantConfigStats(ctx context.Context, req *testkitv1.GetTenantConfigStatsRequest) (*testkitv1.GetTenantConfigStatsResponse, error) {
+	return h.svc.Telemetry().GetTenantConfigStats(ctx, req)
 }
 
-func (h *Handler) ListApps(ctx context.Context, req *telemetryv1.ListAppsRequest) (*telemetryv1.ListAppsResponse, error) {
-	return h.svc.Telemetry().ListApps(ctx, req)
+func (h *Handler) ListTenantConfigs(ctx context.Context, req *telemetryv1.ListTenantConfigsRequest) (*telemetryv1.ListTenantConfigsResponse, error) {
+	return h.svc.Telemetry().ListTenantConfigs(ctx, req)
 }
 
-func (h *Handler) RotateAppSecret(ctx context.Context, req *telemetryv1.RotateAppSecretRequest) (*telemetryv1.RotateAppSecretResponse, error) {
-	return h.svc.Telemetry().RotateAppSecret(ctx, req)
+func (h *Handler) RotateTenantConfigSecret(ctx context.Context, req *telemetryv1.RotateTenantConfigSecretRequest) (*telemetryv1.RotateTenantConfigSecretResponse, error) {
+	return h.svc.Telemetry().RotateTenantConfigSecret(ctx, req)
 }

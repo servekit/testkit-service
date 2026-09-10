@@ -29,9 +29,9 @@ import {
 } from "antd";
 import { useRef, useState } from "react";
 import {
-  createApp,
-  getApp,
-  listApps,
+  createTenantConfig,
+  getTenantConfig,
+  listTenantConfigs,
   revokeToken,
   rotateToken,
 } from "@/services/testkit/testkitService";
@@ -70,8 +70,8 @@ export default function TelemetryTokensPage() {
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
   const view = useTenantView();
-  // 当前租户的 telemetry 应用行（一租户一行，③懒建语义）；未找到 = 尚未
-  // 建立，「生成」负责建立。
+  // 当前租户的 telemetry 配置行（一租户一行，③懒建语义）；未找到 = 尚未
+  // 建立，「生成」负责建立。appKey 仅作展示（行内凭据标识）。
   const [appKey, setAppKey] = useState<string | null>(null);
 
   const columns: ProColumns<API.v1IngestTokenInfo>[] = [
@@ -101,9 +101,9 @@ export default function TelemetryTokensPage() {
                 key="revoke"
                 title="吊销该令牌？使用它的客户端上报将立即 401。"
                 onConfirm={async () => {
-                  if (!appKey) return;
+                  if (!view.tenantKey) return;
                   try {
-                    await revokeToken({ appKey, prefix: r.prefix ?? "" });
+                    await revokeToken({ tenantKey: view.tenantKey, prefix: r.prefix ?? "" });
                     message.success("已吊销");
                     reload();
                   } catch (err) {
@@ -125,7 +125,7 @@ export default function TelemetryTokensPage() {
           type="info"
           showIcon
           message="请先在右上角选择租户"
-          description="上报令牌按租户归属（一租户一应用行）。跨租户视图无单一租户上下文；平台员工的令牌运维请下钻到具体租户，或在「应用管理」的行内配置里操作。"
+          description="上报令牌按租户归属（一租户一配置行）。跨租户视图无单一租户上下文；平台员工的令牌运维请下钻到具体租户，或在「租户配置」的行内配置里操作。"
         />
       </PageContainer>
     );
@@ -142,14 +142,14 @@ export default function TelemetryTokensPage() {
         pagination={false}
         params={{ appKey }}
         request={async () => {
-          // 应用行发现：telemetry ListApps 1:1 透传（带 tenant_key），按
-          // 注入租户键定位本租户的配置行；没有 = 令牌列表为空（待生成）。
-          const resp = await listApps();
-          const mine = (resp.apps ?? []).find((a) => a.tenantKey === view.tenantKey);
+          // 配置行发现：telemetry ListTenantConfigs 1:1 透传，按注入租户键
+          // 定位本租户的配置行；没有 = 令牌列表为空（待生成）。
+          const resp = await listTenantConfigs();
+          const mine = (resp.configs ?? []).find((a) => a.tenantKey === view.tenantKey);
           const key = mine?.appKey ?? null;
           setAppKey((cur) => (cur === key ? cur : key));
-          if (!key) return { data: [], success: true };
-          const detail = await getApp({ appKey: key });
+          if (!mine) return { data: [], success: true };
+          const detail = await getTenantConfig({ tenantKey: view.tenantKey });
           return { data: detail.tokens ?? [], success: true };
         }}
         toolBarRender={() => [
@@ -159,7 +159,7 @@ export default function TelemetryTokensPage() {
               title="轮换将新增一枚生效令牌（旧令牌保持有效，零停机）；确认？"
               onConfirm={async () => {
                 try {
-                  const resp = await rotateToken({ appKey }, {} as never);
+                  const resp = await rotateToken({ tenantKey: view.tenantKey }, {} as never);
                   message.success("已轮换");
                   showTokenOnce("新令牌（仅此一次）", resp.token ?? "");
                   reload();
@@ -173,11 +173,11 @@ export default function TelemetryTokensPage() {
           ) : (
             <Popconfirm
               key="create"
-              title="将为本租户建立上报应用行并铸出首枚令牌，确认？"
+              title="将为本租户建立上报配置行并铸出首枚令牌，确认？"
               onConfirm={async () => {
                 try {
-                  const resp = await createApp({
-                    appKey: view.tenantKey,
+                  const resp = await createTenantConfig({
+                    tenantKey: view.tenantKey,
                     name: view.tenantKey,
                   });
                   message.success("已生成本租户首枚令牌");
@@ -197,10 +197,10 @@ export default function TelemetryTokensPage() {
         <Typography.Text type="secondary">
           {appKey ? (
             <>
-              应用行 <code>{appKey}</code>（AppKey/AppSecret 是业务方身份凭据，见平台侧「应用管理」）。
+              配置行凭据 <code>{appKey}</code>（AppKey/AppSecret 是业务方身份凭据，见平台侧「租户配置」）。
             </>
           ) : (
-            "本租户尚未建立上报应用行——「生成令牌」会建立（与首次可信上报的懒建同构）并铸出首枚令牌。"
+            "本租户尚未建立上报配置行——「生成令牌」会建立（与首次可信上报的懒建同构）并铸出首枚令牌。"
           )}
           轮换 = 追加一枚生效令牌（旧令牌保持有效，零停机切换），切换完成后吊销旧令牌收尾。
         </Typography.Text>

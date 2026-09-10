@@ -167,7 +167,7 @@ declare namespace API {
   };
 
   type CreateSigningKeyParams = {
-    appKey: string;
+    tenantKey: string;
   };
 
   type DecomposeParams = {
@@ -217,15 +217,6 @@ declare namespace API {
 
   type GenerateProcessURLParams = {
     fileId: string;
-  };
-
-  type GetAppParams = {
-    appKey: string;
-  };
-
-  type GetAppStatsParams = {
-    appKey: string;
-    days?: number;
   };
 
   type GetCountriesParams = {
@@ -411,6 +402,15 @@ tenant callers are pinned to their own directory regardless. */
       | "SMS_SCENE_TEST";
     startTime?: string;
     endTime?: string;
+  };
+
+  type GetTenantConfigParams = {
+    tenantKey: string;
+  };
+
+  type GetTenantConfigStatsParams = {
+    tenantKey: string;
+    days?: number;
   };
 
   type GetUserParams = {
@@ -1183,7 +1183,7 @@ server-side against the actor). */
   };
 
   type ReplaceEventRulesParams = {
-    appKey: string;
+    tenantKey: string;
   };
 
   type ResetTrialParams = {
@@ -1211,21 +1211,21 @@ server-side against the actor). */
   };
 
   type RevokeSigningKeyParams = {
-    appKey: string;
+    tenantKey: string;
     keyId: string;
   };
 
   type RevokeTokenParams = {
-    appKey: string;
+    tenantKey: string;
     prefix: string;
   };
 
-  type RotateAppSecretParams = {
-    appKey: string;
+  type RotateTenantConfigSecretParams = {
+    tenantKey: string;
   };
 
   type RotateTokenParams = {
-    appKey: string;
+    tenantKey: string;
   };
 
   type rpcStatus = {
@@ -1235,7 +1235,7 @@ server-side against the actor). */
   };
 
   type SetVersionBlockedParams = {
-    appKey: string;
+    tenantKey: string;
     version: string;
   };
 
@@ -1271,10 +1271,22 @@ available for direct browser uploads). */
     bucketCount?: number;
   };
 
-  type telemetryV1App = {
+  type telemetryV1ListTenantConfigsResponse = {
+    configs?: telemetryV1TenantConfig[];
+  };
+
+  type telemetryV1RotateTenantConfigSecretResponse = {
+    config?: telemetryV1TenantConfig;
+    /** app_secret convenience echo (also visible via
+ListTenantConfigs/GetTenantConfig). */
+    appSecret?: string;
+  };
+
+  type telemetryV1TenantConfig = {
     /** uuid */
     id?: string;
-    /** app_key is the machine identity and the "ak" half of the platform-wide
+    /** app_key is the row's machine identity and the "ak" half of the
+platform-wide
 ak/sk pair: minted server-side on creation ("tel_" + 8 base36 chars,
 collision-checked; a caller-chosen key is accepted when non-empty),
 unique, immutable. The admin surface keys every per-app route by it. */
@@ -1316,16 +1328,6 @@ lazily created with the wire-contract defaults. */
     tenantKey?: string;
     createdAt?: string;
     updatedAt?: string;
-  };
-
-  type telemetryV1ListAppsResponse = {
-    apps?: telemetryV1App[];
-  };
-
-  type telemetryV1RotateAppSecretResponse = {
-    app?: telemetryV1App;
-    /** app_secret convenience echo (also visible via ListApps/GetApp). */
-    appSecret?: string;
   };
 
   type TestkitServiceAddGroupMemberBody = {
@@ -1495,7 +1497,7 @@ send an empty list to disable intl; ignored for email). */
     reason?: string;
   };
 
-  type TestkitServiceRotateAppSecretBody = true;
+  type TestkitServiceRotateTenantConfigSecretBody = true;
 
   type TestkitServiceRotateTokenBody = true;
 
@@ -1511,20 +1513,6 @@ user_id injected from ctx */
   };
 
   type TestkitServiceUnrevokeKeyBody = true;
-
-  type TestkitServiceUpdateAppBody = {
-    name?: string;
-    email?: string;
-    strictVersions?: boolean;
-    authMode?: v1AuthMode;
-    authGraceUntil?: string;
-    clearAuthGrace?: boolean;
-    ratePerMinute?: number;
-    ratePerDay?: number;
-    rawRetentionDays?: number;
-    dailyEventBudget?: string;
-    disabled?: boolean;
-  };
 
   type TestkitServiceUpdateGroupBody = {
     name?: string;
@@ -1566,29 +1554,25 @@ user_id injected from ctx */
     permissionGroupIds?: string[];
   };
 
-  type TestkitServiceUserRotateAppSecretBody = true;
-
-  type TestkitServiceUserUpdateAppBody = {
-    name?: string;
-    disabled?: boolean;
-  };
-
-  type testkitV1App = {
-    id?: string;
-    appKey?: string;
+  type TestkitServiceUpdateTenantConfigBody = {
     name?: string;
     email?: string;
     strictVersions?: boolean;
     authMode?: v1AuthMode;
     authGraceUntil?: string;
+    clearAuthGrace?: boolean;
     ratePerMinute?: number;
     ratePerDay?: number;
     rawRetentionDays?: number;
     dailyEventBudget?: string;
     disabled?: boolean;
-    appSecret?: string;
-    createdAt?: string;
-    updatedAt?: string;
+  };
+
+  type TestkitServiceUserRotateAppSecretBody = true;
+
+  type TestkitServiceUserUpdateAppBody = {
+    name?: string;
+    disabled?: boolean;
   };
 
   type testkitV1BucketInfo = {
@@ -1599,22 +1583,24 @@ user_id injected from ctx */
     cdn?: v1CDNConfig;
   };
 
-  type testkitV1CreateAppRequest = {
-    /** app_key optional; empty = server-generated. */
-    appKey?: string;
+  type testkitV1CreateTenantConfigRequest = {
     name?: string;
     email?: string;
+    /** tenant_key names the tenant (phase ④ T6: the wire names only the
+tenant; the internal app identity is minted server-side). */
+    tenantKey?: string;
   };
 
-  type testkitV1CreateAppResponse = {
-    app?: testkitV1App;
+  type testkitV1CreateTenantConfigResponse = {
+    config?: testkitV1TenantConfig;
     token?: string;
-    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    /** app_secret convenience echo (also visible via
+ListTenantConfigs/GetTenantConfig). */
     appSecret?: string;
   };
 
-  type testkitV1GetAppResponse = {
-    app?: testkitV1App;
+  type testkitV1GetTenantConfigResponse = {
+    config?: testkitV1TenantConfig;
     tokens?: v1IngestTokenInfo[];
     signingKeys?: v1TelemetrySigningKeyInfo[];
     rules?: v1EventRule[];
@@ -1631,8 +1617,28 @@ user_id injected from ctx */
     bucketCount?: number;
   };
 
-  type testkitV1UpdateAppResponse = {
-    app?: testkitV1App;
+  type testkitV1TenantConfig = {
+    id?: string;
+    appKey?: string;
+    name?: string;
+    email?: string;
+    strictVersions?: boolean;
+    authMode?: v1AuthMode;
+    authGraceUntil?: string;
+    ratePerMinute?: number;
+    ratePerDay?: number;
+    rawRetentionDays?: number;
+    dailyEventBudget?: string;
+    disabled?: boolean;
+    appSecret?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    /** tenant_key names the tenant this config row belongs to (phase ④ T6). */
+    tenantKey?: string;
+  };
+
+  type testkitV1UpdateTenantConfigResponse = {
+    config?: testkitV1TenantConfig;
   };
 
   type UnbindIdentityParams = {
@@ -1642,10 +1648,6 @@ user_id injected from ctx */
 
   type UnrevokeKeyParams = {
     keyId: string;
-  };
-
-  type UpdateAppParams = {
-    appKey: string;
   };
 
   type UpdateGroupParams = {
@@ -1672,6 +1674,10 @@ user_id injected from ctx */
     roleId: string;
   };
 
+  type UpdateTenantConfigParams = {
+    tenantKey: string;
+  };
+
   type UserDeleteAppParams = {
     tenantKey: string;
   };
@@ -1686,37 +1692,6 @@ user_id injected from ctx */
 
   type UserUpdateAppParams = {
     tenantKey: string;
-  };
-
-  type userV1CreateAppRequest = {
-    /** tenant_key pattern: lowercase letter followed by lowercase alphanumerics
-and dashes. Optional; empty = server-generated. */
-    tenantKey?: string;
-    name?: string;
-  };
-
-  type userV1CreateAppResponse = {
-    app?: v1UserAppInfo;
-    /** app_secret convenience echo (also visible via ListApps/GetApp). */
-    appSecret?: string;
-  };
-
-  type userV1GetAppResponse = {
-    app?: v1UserAppInfo;
-  };
-
-  type userV1ListAppsResponse = {
-    apps?: v1UserAppInfo[];
-  };
-
-  type userV1RotateAppSecretResponse = {
-    app?: v1UserAppInfo;
-    /** app_secret convenience echo (also visible via ListApps/GetApp). */
-    appSecret?: string;
-  };
-
-  type userV1UpdateAppResponse = {
-    app?: v1UserAppInfo;
   };
 
   type v1AccountIds = {
@@ -2152,6 +2127,19 @@ input placeholder / format hint official languages, most-spoken first */
     secret?: string;
   };
 
+  type v1CreateAppRequest = {
+    /** tenant_key pattern: lowercase letter followed by lowercase alphanumerics
+and dashes. Optional; empty = server-generated. */
+    tenantKey?: string;
+    name?: string;
+  };
+
+  type v1CreateAppResponse = {
+    app?: v1UserAppInfo;
+    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    appSecret?: string;
+  };
+
   type v1CreateChannelAccountRequest = {
     /** name uniquely identifies the account across vendors (referenced by
 policies). Immutable after creation. */
@@ -2523,10 +2511,8 @@ resource domain). Empty = platform pool. */
     headers?: Record<string, any>;
   };
 
-  type v1GetAppStatsResponse = {
-    days?: v1DailyStat[];
-    drops?: Record<string, any>;
-    sigFails?: Record<string, any>;
+  type v1GetAppResponse = {
+    app?: v1UserAppInfo;
   };
 
   type v1GetCountriesResponse = {
@@ -2647,6 +2633,12 @@ served hierarchy (e.g. Antarctica sits under the unserved world root). */
     bucket?: string;
     objectKey?: string;
     expiresAt?: string;
+  };
+
+  type v1GetTenantConfigStatsResponse = {
+    days?: v1DailyStat[];
+    drops?: Record<string, any>;
+    sigFails?: Record<string, any>;
   };
 
   type v1GrantModuleResponse = {
@@ -2836,6 +2828,10 @@ column; empty = the app_key literal fallback during the window). */
 
   type v1ListApiKeysResponse = {
     apiKeys?: v1ApiKeyInfo[];
+  };
+
+  type v1ListAppsResponse = {
+    apps?: v1UserAppInfo[];
   };
 
   type v1ListChannelAccountsResponse = {
@@ -3361,6 +3357,12 @@ backfilled — resolved through the app mapping at load time. */
     secret?: string;
   };
 
+  type v1RotateAppSecretResponse = {
+    app?: v1UserAppInfo;
+    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    appSecret?: string;
+  };
+
   type v1RotateTokenResponse = {
     token?: string;
   };
@@ -3762,6 +3764,10 @@ empty for password/code logins). */
 
   type v1UnrevokeKeyResponse = {
     key?: v1KeyInfo;
+  };
+
+  type v1UpdateAppResponse = {
+    app?: v1UserAppInfo;
   };
 
   type v1UpdateChannelAccountResponse = {

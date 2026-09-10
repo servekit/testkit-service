@@ -57,42 +57,42 @@ func (s *Service) Ingest(ctx context.Context, req *testkitv1.IngestRequest) (*te
 	return toTestkitIngestResponse(resp), nil
 }
 
-func (s *Service) CreateApp(ctx context.Context, req *testkitv1.CreateAppRequest) (*testkitv1.CreateAppResponse, error) {
+func (s *Service) CreateTenantConfig(ctx context.Context, req *testkitv1.CreateTenantConfigRequest) (*testkitv1.CreateTenantConfigResponse, error) {
 	ctx = s.adminCtx(ctx)
-	resp, err := s.client.CreateApp(ctx, toDnCreateAppRequest(req))
+	resp, err := s.client.CreateTenantConfig(ctx, toDnCreateTenantConfigRequest(req))
 	if err != nil {
 		return nil, err
 	}
-	return toTestkitCreateAppResponse(resp), nil
+	return toTestkitCreateTenantConfigResponse(resp), nil
 }
 
-func (s *Service) GetApp(ctx context.Context, req *testkitv1.GetAppRequest) (*testkitv1.GetAppResponse, error) {
+func (s *Service) GetTenantConfig(ctx context.Context, req *testkitv1.GetTenantConfigRequest) (*testkitv1.GetTenantConfigResponse, error) {
 	ctx = s.adminCtx(ctx)
-	resp, err := s.client.GetApp(ctx, toDnGetAppRequest(req))
+	resp, err := s.client.GetTenantConfig(ctx, toDnGetTenantConfigRequest(req))
 	if err != nil {
 		return nil, err
 	}
-	return toTestkitGetAppResponse(resp), nil
+	return toTestkitGetTenantConfigResponse(resp), nil
 }
 
-func (s *Service) UpdateApp(ctx context.Context, req *testkitv1.UpdateAppRequest) (*testkitv1.UpdateAppResponse, error) {
+func (s *Service) UpdateTenantConfig(ctx context.Context, req *testkitv1.UpdateTenantConfigRequest) (*testkitv1.UpdateTenantConfigResponse, error) {
 	ctx = s.adminCtx(ctx)
-	resp, err := s.client.UpdateApp(ctx, toDnUpdateAppRequest(req))
+	resp, err := s.client.UpdateTenantConfig(ctx, toDnUpdateTenantConfigRequest(req))
 	if err != nil {
 		return nil, err
 	}
-	return toTestkitUpdateAppResponse(resp), nil
+	return toTestkitUpdateTenantConfigResponse(resp), nil
 }
 
 // ListApps lists every app (types imported across domains like the storage/
 // message app forwards — no mirrored DTO, no converters).
-func (s *Service) ListApps(ctx context.Context, req *telemetryv1.ListAppsRequest) (*telemetryv1.ListAppsResponse, error) {
-	return s.client.ListApps(s.adminCtx(ctx), req)
+func (s *Service) ListTenantConfigs(ctx context.Context, req *telemetryv1.ListTenantConfigsRequest) (*telemetryv1.ListTenantConfigsResponse, error) {
+	return s.client.ListTenantConfigs(s.adminCtx(ctx), req)
 }
 
 // RotateAppSecret mints a new business-identity credential (ak/sk pair).
-func (s *Service) RotateAppSecret(ctx context.Context, req *telemetryv1.RotateAppSecretRequest) (*telemetryv1.RotateAppSecretResponse, error) {
-	return s.client.RotateAppSecret(s.adminCtx(ctx), req)
+func (s *Service) RotateTenantConfigSecret(ctx context.Context, req *telemetryv1.RotateTenantConfigSecretRequest) (*telemetryv1.RotateTenantConfigSecretResponse, error) {
+	return s.client.RotateTenantConfigSecret(s.adminCtx(ctx), req)
 }
 
 func (s *Service) RotateToken(ctx context.Context, req *testkitv1.RotateTokenRequest) (*testkitv1.RotateTokenResponse, error) {
@@ -149,22 +149,23 @@ func (s *Service) SetVersionBlocked(ctx context.Context, req *testkitv1.SetVersi
 	return toTestkitSetVersionBlockedResponse(resp), nil
 }
 
-func (s *Service) GetAppStats(ctx context.Context, req *testkitv1.GetAppStatsRequest) (*testkitv1.GetAppStatsResponse, error) {
+func (s *Service) GetTenantConfigStats(ctx context.Context, req *testkitv1.GetTenantConfigStatsRequest) (*testkitv1.GetTenantConfigStatsResponse, error) {
 	ctx = s.adminCtx(ctx)
-	resp, err := s.client.GetAppStats(ctx, toDnGetAppStatsRequest(req))
+	resp, err := s.client.GetTenantConfigStats(ctx, toDnGetTenantConfigStatsRequest(req))
 	if err != nil {
 		return nil, err
 	}
-	return toTestkitGetAppStatsResponse(resp), nil
+	return toTestkitGetTenantConfigStatsResponse(resp), nil
 }
 
-func toDnApp(src *testkitv1.App) *dnv1.App {
+func toDnTenantConfig(src *testkitv1.TenantConfig) *dnv1.TenantConfig {
 	if src == nil {
 		return nil
 	}
-	out := &dnv1.App{}
+	out := &dnv1.TenantConfig{}
 	out.Id = src.Id
 	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.Name = src.Name
 	out.Email = src.Email
 	out.StrictVersions = src.StrictVersions
@@ -181,13 +182,14 @@ func toDnApp(src *testkitv1.App) *dnv1.App {
 	return out
 }
 
-func toTestkitApp(src *dnv1.App) *testkitv1.App {
+func toTestkitTenantConfig(src *dnv1.TenantConfig) *testkitv1.TenantConfig {
 	if src == nil {
 		return nil
 	}
-	out := &testkitv1.App{}
+	out := &testkitv1.TenantConfig{}
 	out.Id = src.Id
 	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.Name = src.Name
 	out.Email = src.Email
 	out.StrictVersions = src.StrictVersions
@@ -204,44 +206,44 @@ func toTestkitApp(src *dnv1.App) *testkitv1.App {
 	return out
 }
 
-func toDnCreateAppRequest(src *testkitv1.CreateAppRequest) *dnv1.CreateAppRequest {
+func toDnCreateTenantConfigRequest(src *testkitv1.CreateTenantConfigRequest) *dnv1.CreateTenantConfigRequest {
 	if src == nil {
 		return nil
 	}
-	out := &dnv1.CreateAppRequest{}
-	out.AppKey = src.AppKey
+	out := &dnv1.CreateTenantConfigRequest{}
 	out.Name = src.Name
 	out.Email = src.Email
+	out.TenantKey = src.TenantKey
 	return out
 }
 
-func toTestkitCreateAppRequest(src *dnv1.CreateAppRequest) *testkitv1.CreateAppRequest {
+func toTestkitCreateTenantConfigRequest(src *dnv1.CreateTenantConfigRequest) *testkitv1.CreateTenantConfigRequest {
 	if src == nil {
 		return nil
 	}
-	out := &testkitv1.CreateAppRequest{}
-	out.AppKey = src.AppKey
+	out := &testkitv1.CreateTenantConfigRequest{}
 	out.Name = src.Name
 	out.Email = src.Email
+	out.TenantKey = src.TenantKey
 	return out
 }
 
-func toDnCreateAppResponse(src *testkitv1.CreateAppResponse) *dnv1.CreateAppResponse {
+func toDnCreateTenantConfigResponse(src *testkitv1.CreateTenantConfigResponse) *dnv1.CreateTenantConfigResponse {
 	if src == nil {
 		return nil
 	}
-	out := &dnv1.CreateAppResponse{}
-	out.App = toDnApp(src.App)
+	out := &dnv1.CreateTenantConfigResponse{}
+	out.Config = toDnTenantConfig(src.Config)
 	out.Token = src.Token
 	return out
 }
 
-func toTestkitCreateAppResponse(src *dnv1.CreateAppResponse) *testkitv1.CreateAppResponse {
+func toTestkitCreateTenantConfigResponse(src *dnv1.CreateTenantConfigResponse) *testkitv1.CreateTenantConfigResponse {
 	if src == nil {
 		return nil
 	}
-	out := &testkitv1.CreateAppResponse{}
-	out.App = toTestkitApp(src.App)
+	out := &testkitv1.CreateTenantConfigResponse{}
+	out.Config = toTestkitTenantConfig(src.Config)
 	out.Token = src.Token
 	out.AppSecret = src.AppSecret
 	return out
@@ -252,7 +254,7 @@ func toDnCreateSigningKeyRequest(src *testkitv1.CreateSigningKeyRequest) *dnv1.C
 		return nil
 	}
 	out := &dnv1.CreateSigningKeyRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.KeyId = src.KeyId
 	return out
 }
@@ -262,7 +264,7 @@ func toTestkitCreateSigningKeyRequest(src *dnv1.CreateSigningKeyRequest) *testki
 		return nil
 	}
 	out := &testkitv1.CreateSigningKeyRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.KeyId = src.KeyId
 	return out
 }
@@ -335,30 +337,30 @@ func toTestkitEventRule(src *dnv1.EventRule) *testkitv1.EventRule {
 	return out
 }
 
-func toDnGetAppRequest(src *testkitv1.GetAppRequest) *dnv1.GetAppRequest {
+func toDnGetTenantConfigRequest(src *testkitv1.GetTenantConfigRequest) *dnv1.GetTenantConfigRequest {
 	if src == nil {
 		return nil
 	}
-	out := &dnv1.GetAppRequest{}
-	out.AppKey = src.AppKey
+	out := &dnv1.GetTenantConfigRequest{}
+	out.TenantKey = src.TenantKey
 	return out
 }
 
-func toTestkitGetAppRequest(src *dnv1.GetAppRequest) *testkitv1.GetAppRequest {
+func toTestkitGetTenantConfigRequest(src *dnv1.GetTenantConfigRequest) *testkitv1.GetTenantConfigRequest {
 	if src == nil {
 		return nil
 	}
-	out := &testkitv1.GetAppRequest{}
-	out.AppKey = src.AppKey
+	out := &testkitv1.GetTenantConfigRequest{}
+	out.TenantKey = src.TenantKey
 	return out
 }
 
-func toDnGetAppResponse(src *testkitv1.GetAppResponse) *dnv1.GetAppResponse {
+func toDnGetTenantConfigResponse(src *testkitv1.GetTenantConfigResponse) *dnv1.GetTenantConfigResponse {
 	if src == nil {
 		return nil
 	}
-	out := &dnv1.GetAppResponse{}
-	out.App = toDnApp(src.App)
+	out := &dnv1.GetTenantConfigResponse{}
+	out.Config = toDnTenantConfig(src.Config)
 	for _, item := range src.Tokens {
 		out.Tokens = append(out.Tokens, toDnIngestTokenInfo(item))
 	}
@@ -374,12 +376,12 @@ func toDnGetAppResponse(src *testkitv1.GetAppResponse) *dnv1.GetAppResponse {
 	return out
 }
 
-func toTestkitGetAppResponse(src *dnv1.GetAppResponse) *testkitv1.GetAppResponse {
+func toTestkitGetTenantConfigResponse(src *dnv1.GetTenantConfigResponse) *testkitv1.GetTenantConfigResponse {
 	if src == nil {
 		return nil
 	}
-	out := &testkitv1.GetAppResponse{}
-	out.App = toTestkitApp(src.App)
+	out := &testkitv1.GetTenantConfigResponse{}
+	out.Config = toTestkitTenantConfig(src.Config)
 	for _, item := range src.Tokens {
 		out.Tokens = append(out.Tokens, toTestkitIngestTokenInfo(item))
 	}
@@ -395,31 +397,31 @@ func toTestkitGetAppResponse(src *dnv1.GetAppResponse) *testkitv1.GetAppResponse
 	return out
 }
 
-func toDnGetAppStatsRequest(src *testkitv1.GetAppStatsRequest) *dnv1.GetAppStatsRequest {
+func toDnGetTenantConfigStatsRequest(src *testkitv1.GetTenantConfigStatsRequest) *dnv1.GetTenantConfigStatsRequest {
 	if src == nil {
 		return nil
 	}
-	out := &dnv1.GetAppStatsRequest{}
-	out.AppKey = src.AppKey
+	out := &dnv1.GetTenantConfigStatsRequest{}
+	out.TenantKey = src.TenantKey
 	out.Days = src.Days
 	return out
 }
 
-func toTestkitGetAppStatsRequest(src *dnv1.GetAppStatsRequest) *testkitv1.GetAppStatsRequest {
+func toTestkitGetTenantConfigStatsRequest(src *dnv1.GetTenantConfigStatsRequest) *testkitv1.GetTenantConfigStatsRequest {
 	if src == nil {
 		return nil
 	}
-	out := &testkitv1.GetAppStatsRequest{}
-	out.AppKey = src.AppKey
+	out := &testkitv1.GetTenantConfigStatsRequest{}
+	out.TenantKey = src.TenantKey
 	out.Days = src.Days
 	return out
 }
 
-func toDnGetAppStatsResponse(src *testkitv1.GetAppStatsResponse) *dnv1.GetAppStatsResponse {
+func toDnGetTenantConfigStatsResponse(src *testkitv1.GetTenantConfigStatsResponse) *dnv1.GetTenantConfigStatsResponse {
 	if src == nil {
 		return nil
 	}
-	out := &dnv1.GetAppStatsResponse{}
+	out := &dnv1.GetTenantConfigStatsResponse{}
 	for _, item := range src.Days {
 		out.Days = append(out.Days, toDnDailyStat(item))
 	}
@@ -434,11 +436,11 @@ func toDnGetAppStatsResponse(src *testkitv1.GetAppStatsResponse) *dnv1.GetAppSta
 	return out
 }
 
-func toTestkitGetAppStatsResponse(src *dnv1.GetAppStatsResponse) *testkitv1.GetAppStatsResponse {
+func toTestkitGetTenantConfigStatsResponse(src *dnv1.GetTenantConfigStatsResponse) *testkitv1.GetTenantConfigStatsResponse {
 	if src == nil {
 		return nil
 	}
-	out := &testkitv1.GetAppStatsResponse{}
+	out := &testkitv1.GetTenantConfigStatsResponse{}
 	for _, item := range src.Days {
 		out.Days = append(out.Days, toTestkitDailyStat(item))
 	}
@@ -538,7 +540,7 @@ func toDnReplaceEventRulesRequest(src *testkitv1.ReplaceEventRulesRequest) *dnv1
 		return nil
 	}
 	out := &dnv1.ReplaceEventRulesRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	for _, item := range src.Rules {
 		out.Rules = append(out.Rules, toDnEventRule(item))
 	}
@@ -550,7 +552,7 @@ func toTestkitReplaceEventRulesRequest(src *dnv1.ReplaceEventRulesRequest) *test
 		return nil
 	}
 	out := &testkitv1.ReplaceEventRulesRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	for _, item := range src.Rules {
 		out.Rules = append(out.Rules, toTestkitEventRule(item))
 	}
@@ -584,7 +586,7 @@ func toDnRevokeSigningKeyRequest(src *testkitv1.RevokeSigningKeyRequest) *dnv1.R
 		return nil
 	}
 	out := &dnv1.RevokeSigningKeyRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.KeyId = src.KeyId
 	return out
 }
@@ -594,7 +596,7 @@ func toTestkitRevokeSigningKeyRequest(src *dnv1.RevokeSigningKeyRequest) *testki
 		return nil
 	}
 	out := &testkitv1.RevokeSigningKeyRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.KeyId = src.KeyId
 	return out
 }
@@ -622,7 +624,7 @@ func toDnRevokeTokenRequest(src *testkitv1.RevokeTokenRequest) *dnv1.RevokeToken
 		return nil
 	}
 	out := &dnv1.RevokeTokenRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.Prefix = src.Prefix
 	return out
 }
@@ -632,7 +634,7 @@ func toTestkitRevokeTokenRequest(src *dnv1.RevokeTokenRequest) *testkitv1.Revoke
 		return nil
 	}
 	out := &testkitv1.RevokeTokenRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.Prefix = src.Prefix
 	return out
 }
@@ -660,7 +662,7 @@ func toDnRotateTokenRequest(src *testkitv1.RotateTokenRequest) *dnv1.RotateToken
 		return nil
 	}
 	out := &dnv1.RotateTokenRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	return out
 }
 
@@ -669,7 +671,7 @@ func toTestkitRotateTokenRequest(src *dnv1.RotateTokenRequest) *testkitv1.Rotate
 		return nil
 	}
 	out := &testkitv1.RotateTokenRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	return out
 }
 
@@ -696,7 +698,7 @@ func toDnSetVersionBlockedRequest(src *testkitv1.SetVersionBlockedRequest) *dnv1
 		return nil
 	}
 	out := &dnv1.SetVersionBlockedRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.Version = src.Version
 	out.Blocked = src.Blocked
 	return out
@@ -707,7 +709,7 @@ func toTestkitSetVersionBlockedRequest(src *dnv1.SetVersionBlockedRequest) *test
 		return nil
 	}
 	out := &testkitv1.SetVersionBlockedRequest{}
-	out.AppKey = src.AppKey
+	out.TenantKey = src.TenantKey
 	out.Version = src.Version
 	out.Blocked = src.Blocked
 	return out
@@ -755,12 +757,12 @@ func toTestkitTelemetrySigningKeyInfo(src *dnv1.SigningKeyInfo) *testkitv1.Telem
 	return out
 }
 
-func toDnUpdateAppRequest(src *testkitv1.UpdateAppRequest) *dnv1.UpdateAppRequest {
+func toDnUpdateTenantConfigRequest(src *testkitv1.UpdateTenantConfigRequest) *dnv1.UpdateTenantConfigRequest {
 	if src == nil {
 		return nil
 	}
-	out := &dnv1.UpdateAppRequest{}
-	out.AppKey = src.AppKey
+	out := &dnv1.UpdateTenantConfigRequest{}
+	out.TenantKey = src.TenantKey
 	if src.Name != nil {
 		out.Name = src.Name
 	}
@@ -796,12 +798,12 @@ func toDnUpdateAppRequest(src *testkitv1.UpdateAppRequest) *dnv1.UpdateAppReques
 	return out
 }
 
-func toTestkitUpdateAppRequest(src *dnv1.UpdateAppRequest) *testkitv1.UpdateAppRequest {
+func toTestkitUpdateTenantConfigRequest(src *dnv1.UpdateTenantConfigRequest) *testkitv1.UpdateTenantConfigRequest {
 	if src == nil {
 		return nil
 	}
-	out := &testkitv1.UpdateAppRequest{}
-	out.AppKey = src.AppKey
+	out := &testkitv1.UpdateTenantConfigRequest{}
+	out.TenantKey = src.TenantKey
 	if src.Name != nil {
 		out.Name = src.Name
 	}
@@ -837,21 +839,21 @@ func toTestkitUpdateAppRequest(src *dnv1.UpdateAppRequest) *testkitv1.UpdateAppR
 	return out
 }
 
-func toDnUpdateAppResponse(src *testkitv1.UpdateAppResponse) *dnv1.UpdateAppResponse {
+func toDnUpdateTenantConfigResponse(src *testkitv1.UpdateTenantConfigResponse) *dnv1.UpdateTenantConfigResponse {
 	if src == nil {
 		return nil
 	}
-	out := &dnv1.UpdateAppResponse{}
-	out.App = toDnApp(src.App)
+	out := &dnv1.UpdateTenantConfigResponse{}
+	out.Config = toDnTenantConfig(src.Config)
 	return out
 }
 
-func toTestkitUpdateAppResponse(src *dnv1.UpdateAppResponse) *testkitv1.UpdateAppResponse {
+func toTestkitUpdateTenantConfigResponse(src *dnv1.UpdateTenantConfigResponse) *testkitv1.UpdateTenantConfigResponse {
 	if src == nil {
 		return nil
 	}
-	out := &testkitv1.UpdateAppResponse{}
-	out.App = toTestkitApp(src.App)
+	out := &testkitv1.UpdateTenantConfigResponse{}
+	out.Config = toTestkitTenantConfig(src.Config)
 	return out
 }
 

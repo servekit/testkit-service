@@ -3009,21 +3009,21 @@ export async function getMyQuota(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/v1/telemetry/admin/apps */
-export async function listApps(
+/** 此处后端没有提供注释 GET /api/v1/telemetry/admin/tenant-configs */
+export async function listTenantConfigs(
   options ?: {[key: string]: any}
 ) {
-  return request<API.telemetryV1ListAppsResponse>('/api/v1/telemetry/admin/apps', {
+  return request<API.telemetryV1ListTenantConfigsResponse>('/api/v1/telemetry/admin/tenant-configs', {
   method: 'GET',
     ...(options || {}),
   });
 }
 
-/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/apps */
-export async function createApp(body: API.testkitV1CreateAppRequest,
+/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/tenant-configs */
+export async function createTenantConfig(body: API.testkitV1CreateTenantConfigRequest,
   options ?: {[key: string]: any}
 ) {
-  return request<API.testkitV1CreateAppResponse>('/api/v1/telemetry/admin/apps', {
+  return request<API.testkitV1CreateTenantConfigResponse>('/api/v1/telemetry/admin/tenant-configs', {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -3033,34 +3033,34 @@ export async function createApp(body: API.testkitV1CreateAppRequest,
   });
 }
 
-/** 此处后端没有提供注释 GET /api/v1/telemetry/admin/apps/${param0} */
-export async function getApp(
+/** 此处后端没有提供注释 GET /api/v1/telemetry/admin/tenant-configs/${param0} */
+export async function getTenantConfig(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.GetAppParams
+  params: API.GetTenantConfigParams
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.testkitV1GetAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
+  return request<API.testkitV1GetTenantConfigResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}`, {
   method: 'GET',
     params: {...queryParams,},
     ...(options || {}),
   });
 }
 
-/** 此处后端没有提供注释 PUT /api/v1/telemetry/admin/apps/${param0} */
-export async function updateApp(
+/** 此处后端没有提供注释 PUT /api/v1/telemetry/admin/tenant-configs/${param0} */
+export async function updateTenantConfig(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.UpdateAppParams
-    ,body: API.TestkitServiceUpdateAppBody,
+  params: API.UpdateTenantConfigParams
+    ,body: API.TestkitServiceUpdateTenantConfigBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.testkitV1UpdateAppResponse>(`/api/v1/telemetry/admin/apps/${param0}`, {
+  return request<API.testkitV1UpdateTenantConfigResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}`, {
   method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -3071,17 +3071,17 @@ export async function updateApp(
   });
 }
 
-/** 此处后端没有提供注释 PUT /api/v1/telemetry/admin/apps/${param0}/events */
+/** 此处后端没有提供注释 PUT /api/v1/telemetry/admin/tenant-configs/${param0}/events */
 export async function replaceEventRules(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.ReplaceEventRulesParams
     ,body: API.TestkitServiceReplaceEventRulesBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.v1ReplaceEventRulesResponse>(`/api/v1/telemetry/admin/apps/${param0}/events`, {
+  return request<API.v1ReplaceEventRulesResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}/events`, {
   method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -3092,17 +3092,17 @@ export async function replaceEventRules(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/apps/${param0}/signing-keys */
+/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/tenant-configs/${param0}/signing-keys */
 export async function createSigningKey(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.CreateSigningKeyParams
     ,body: API.TestkitServiceCreateSigningKeyBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.v1CreateSigningKeyResponse>(`/api/v1/telemetry/admin/apps/${param0}/signing-keys`, {
+  return request<API.v1CreateSigningKeyResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}/signing-keys`, {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -3113,34 +3113,34 @@ export async function createSigningKey(
   });
 }
 
-/** 此处后端没有提供注释 DELETE /api/v1/telemetry/admin/apps/${param0}/signing-keys/${param1} */
+/** 此处后端没有提供注释 DELETE /api/v1/telemetry/admin/tenant-configs/${param0}/signing-keys/${param1} */
 export async function revokeSigningKey(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.RevokeSigningKeyParams
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 'keyId': param1, 
+  const { 'tenantKey': param0, 'keyId': param1, 
   ...queryParams
   } = params;
-  return request<API.v1RevokeSigningKeyResponse>(`/api/v1/telemetry/admin/apps/${param0}/signing-keys/${param1}`, {
+  return request<API.v1RevokeSigningKeyResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}/signing-keys/${param1}`, {
   method: 'DELETE',
     params: {...queryParams,},
     ...(options || {}),
   });
 }
 
-/** 此处后端没有提供注释 GET /api/v1/telemetry/admin/apps/${param0}/stats */
-export async function getAppStats(
+/** 此处后端没有提供注释 GET /api/v1/telemetry/admin/tenant-configs/${param0}/stats */
+export async function getTenantConfigStats(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.GetAppStatsParams
+  params: API.GetTenantConfigStatsParams
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.v1GetAppStatsResponse>(`/api/v1/telemetry/admin/apps/${param0}/stats`, {
+  return request<API.v1GetTenantConfigStatsResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}/stats`, {
   method: 'GET',
     params: {
         ...queryParams,},
@@ -3148,17 +3148,17 @@ export async function getAppStats(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/apps/${param0}/tokens */
+/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/tenant-configs/${param0}/tokens */
 export async function rotateToken(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.RotateTokenParams
     ,body: API.TestkitServiceRotateTokenBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.v1RotateTokenResponse>(`/api/v1/telemetry/admin/apps/${param0}/tokens`, {
+  return request<API.v1RotateTokenResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}/tokens`, {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -3169,34 +3169,34 @@ export async function rotateToken(
   });
 }
 
-/** 此处后端没有提供注释 DELETE /api/v1/telemetry/admin/apps/${param0}/tokens/${param1} */
+/** 此处后端没有提供注释 DELETE /api/v1/telemetry/admin/tenant-configs/${param0}/tokens/${param1} */
 export async function revokeToken(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.RevokeTokenParams
     ,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 'prefix': param1, 
+  const { 'tenantKey': param0, 'prefix': param1, 
   ...queryParams
   } = params;
-  return request<API.v1RevokeTokenResponse>(`/api/v1/telemetry/admin/apps/${param0}/tokens/${param1}`, {
+  return request<API.v1RevokeTokenResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}/tokens/${param1}`, {
   method: 'DELETE',
     params: {...queryParams,},
     ...(options || {}),
   });
 }
 
-/** 此处后端没有提供注释 PUT /api/v1/telemetry/admin/apps/${param0}/versions/${param1} */
+/** 此处后端没有提供注释 PUT /api/v1/telemetry/admin/tenant-configs/${param0}/versions/${param1} */
 export async function setVersionBlocked(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.SetVersionBlockedParams
     ,body: API.TestkitServiceSetVersionBlockedBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 'version': param1, 
+  const { 'tenantKey': param0, 'version': param1, 
   ...queryParams
   } = params;
-  return request<API.v1SetVersionBlockedResponse>(`/api/v1/telemetry/admin/apps/${param0}/versions/${param1}`, {
+  return request<API.v1SetVersionBlockedResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}/versions/${param1}`, {
   method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -3207,17 +3207,17 @@ export async function setVersionBlocked(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/apps/${param0}${rotateSecret} */
-export async function rotateAppSecret(
+/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/tenant-configs/${param0}${rotateSecret} */
+export async function rotateTenantConfigSecret(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.RotateAppSecretParams
-    ,body: API.TestkitServiceRotateAppSecretBody,
+  params: API.RotateTenantConfigSecretParams
+    ,body: API.TestkitServiceRotateTenantConfigSecretBody,
   options ?: {[key: string]: any}
 ) {
-  const { 'appKey': param0, 
+  const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.telemetryV1RotateAppSecretResponse>(`/api/v1/telemetry/admin/apps/${param0}:rotateSecret`, {
+  return request<API.telemetryV1RotateTenantConfigSecretResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}:rotateSecret`, {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -3246,17 +3246,17 @@ export async function ingest(body: API.v1IngestRequest,
 export async function userListApps(
   options ?: {[key: string]: any}
 ) {
-  return request<API.userV1ListAppsResponse>('/api/v1/user/admin/apps', {
+  return request<API.v1ListAppsResponse>('/api/v1/user/admin/apps', {
   method: 'GET',
     ...(options || {}),
   });
 }
 
 /** 此处后端没有提供注释 POST /api/v1/user/admin/apps */
-export async function userCreateApp(body: API.userV1CreateAppRequest,
+export async function userCreateApp(body: API.v1CreateAppRequest,
   options ?: {[key: string]: any}
 ) {
-  return request<API.userV1CreateAppResponse>('/api/v1/user/admin/apps', {
+  return request<API.v1CreateAppResponse>('/api/v1/user/admin/apps', {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -3276,7 +3276,7 @@ export async function userGetApp(
   const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.userV1GetAppResponse>(`/api/v1/user/admin/apps/${param0}`, {
+  return request<API.v1GetAppResponse>(`/api/v1/user/admin/apps/${param0}`, {
   method: 'GET',
     params: {...queryParams,},
     ...(options || {}),
@@ -3293,7 +3293,7 @@ export async function userUpdateApp(
   const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.userV1UpdateAppResponse>(`/api/v1/user/admin/apps/${param0}`, {
+  return request<API.v1UpdateAppResponse>(`/api/v1/user/admin/apps/${param0}`, {
   method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -3331,7 +3331,7 @@ export async function userRotateAppSecret(
   const { 'tenantKey': param0, 
   ...queryParams
   } = params;
-  return request<API.userV1RotateAppSecretResponse>(`/api/v1/user/admin/apps/${param0}:rotateSecret`, {
+  return request<API.v1RotateAppSecretResponse>(`/api/v1/user/admin/apps/${param0}:rotateSecret`, {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ import {
 } from "@ant-design/pro-components";
 import { App, Alert, Button, Card, Form, Table, Typography } from "antd";
 import { useState } from "react";
-import { getAppStats } from "@/services/testkit/testkitService";
+import { getTenantConfigStats } from "@/services/testkit/testkitService";
 
 const { Paragraph } = Typography;
 
@@ -14,19 +14,19 @@ const { Paragraph } = Typography;
 export default function TelemetryStatsPage() {
   const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<API.v1GetAppStatsResponse | null>(null);
+  const [data, setData] = useState<API.v1GetTenantConfigStatsResponse | null>(null);
   const [error, setError] = useState("");
   const [form] = Form.useForm();
 
-  const load = async (vals: { appKey?: string; days?: number }) => {
-    if (!vals.appKey) {
-      message.warning("请输入 AppKey");
+  const load = async (vals: { tenantKey?: string; days?: number }) => {
+    if (!vals.tenantKey) {
+      message.warning("请输入 tenant_key");
       return;
     }
     setLoading(true);
     setError("");
     try {
-      setData(await getAppStats({ appKey: vals.appKey, days: vals.days ?? 14 }));
+      setData(await getTenantConfigStats({ tenantKey: vals.tenantKey, days: vals.days ?? 14 }));
     } catch (err) {
       const e = err as { data?: { message?: string } };
       setError(e?.data?.message ?? "加载失败");
@@ -40,9 +40,9 @@ export default function TelemetryStatsPage() {
     <Card title="应用统计">
       <Form form={form} layout="inline" onFinish={load} initialValues={{ days: 14 }}>
         <ProFormText
-          name="appKey"
-          placeholder="AppKey（如 smoke-app）"
-          rules={[{ required: true, message: "请输入 AppKey" }]}
+          name="tenantKey"
+          placeholder="tenant_key（如 ten_smoke000000）"
+          rules={[{ required: true, message: "请输入 tenant_key" }]}
         />
         <ProFormDigit name="days" label="天数" min={1} max={90} />
         <Button type="primary" htmlType="submit" loading={loading}>
