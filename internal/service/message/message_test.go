@@ -70,6 +70,29 @@ type stubServer struct {
 	listSMSRegionsReq   *messagev1.ListSMSRegionsRequest
 	listSMSRegionsResp  *messagev1.ListSMSRegionsResponse
 	listSMSRegionsErr   error
+
+	// Admin creates (phase ④ T5 clamp tests)
+	createChannelAccountReq  *messagev1.CreateChannelAccountRequest
+	createChannelAccountResp *messagev1.CreateChannelAccountResponse
+	createSignatureReq       *messagev1.CreateSignatureRequest
+	createSignatureResp      *messagev1.CreateSignatureResponse
+	createAppReq             *messagev1.CreateAppRequest
+	createAppResp            *messagev1.CreateAppResponse
+}
+
+func (s *stubServer) CreateChannelAccount(_ context.Context, req *messagev1.CreateChannelAccountRequest) (*messagev1.CreateChannelAccountResponse, error) {
+	s.createChannelAccountReq = req
+	return s.createChannelAccountResp, nil
+}
+
+func (s *stubServer) CreateSignature(_ context.Context, req *messagev1.CreateSignatureRequest) (*messagev1.CreateSignatureResponse, error) {
+	s.createSignatureReq = req
+	return s.createSignatureResp, nil
+}
+
+func (s *stubServer) CreateApp(_ context.Context, req *messagev1.CreateAppRequest) (*messagev1.CreateAppResponse, error) {
+	s.createAppReq = req
+	return s.createAppResp, nil
 }
 
 func (s *stubServer) SendEmail(ctx context.Context, req *messagev1.SendEmailRequest) (*messagev1.SendResponse, error) {

@@ -198,10 +198,9 @@ export default function MessageSignaturesPage() {
                 name="tenantKey"
                 label="归属"
                 initialValue={view.tenantKey}
-                options={[
-                  { value: view.tenantKey, label: `本租户（${view.tenantKey}）` },
-                  { value: "", label: "平台共享（平台池）" },
-                ]}
+                // 平台池归平台管（服务端只读裁定，phase ④ T5）——租户视图
+                // 只能创建本租户私有资源，不再提供「平台共享」选项。
+                options={[{ value: view.tenantKey, label: `本租户（${view.tenantKey}）` }]}
               />
             )}
             <ProFormSelect

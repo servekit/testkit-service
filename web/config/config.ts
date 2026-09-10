@@ -269,19 +269,21 @@ export default defineConfig({
         },
       ],
     },
-    // --- Message ops console (P4) → mixed access (phase ④ T4) ---
-    // Resource self-service (accounts/signatures/templates/policies) opens to
-    // canTenantAdmin (TENANT_ADMIN own-tenant + PLATFORM); the internal-only
-    // surfaces (ad-hoc send, record lists, the app registry) stay canPlatform.
-    // Backend does no RBAC this phase (design §3.5); the split is a frontend
-    // route guard + per-page tenant scoping (components/tenantScope).
-    {
-      path: "/message",
-      name: "消息服务",
-      icon: "MessageOutlined",
-      access: "canTenantAdmin",
-      routes: [
-        { path: "/message", redirect: "/message/send/email" },
+      // --- Message ops console (P4) → mixed access (phase ④ T4) ---
+      // Resource self-service (accounts/signatures/templates/policies) opens to
+      // canTenantAdmin (TENANT_ADMIN own-tenant + PLATFORM); the internal-only
+      // surfaces (ad-hoc send, record lists, the app registry) stay canPlatform.
+      // Backend does no RBAC this phase (design §3.5); the split is a frontend
+      // route guard + per-page tenant scoping (components/tenantScope).
+      // Default leaf = 通道账号 — the first page every tenant admin may open
+      // (the old /message/send/email default 403'd them; phase ④ T5).
+      {
+        path: "/message",
+        name: "消息服务",
+        icon: "MessageOutlined",
+        access: "canTenantAdmin",
+        routes: [
+        { path: "/message", redirect: "/message/admin/accounts" },
         {
           path: "/message/send/email",
           name: "发送邮件",
@@ -383,14 +385,16 @@ export default defineConfig({
     },
     // --- telemetry-service (P6): app registry + stats + tenant token
     // self-service (phase ④ T4: 上报令牌 opens to canTenantAdmin — tokens
-    // belong to the injected tenant; the ops registry/stats stay platform). ---
+    // belong to the injected tenant; the ops registry/stats stay platform).
+    // Default leaf = 上报令牌 — the first page every tenant admin may open
+    // (the old /telemetry/apps default 403'd them; phase ④ T5). ---
     {
       key: "svc-telemetry",
       name: "Telemetry 服务",
       icon: "MonitorOutlined",
       access: "canTenantAdmin",
       routes: [
-        { path: "/telemetry", redirect: "/telemetry/apps" },
+        { path: "/telemetry", redirect: "/telemetry/tokens" },
         {
           path: "/telemetry/apps",
           name: "应用管理",

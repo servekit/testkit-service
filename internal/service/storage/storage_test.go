@@ -8,12 +8,14 @@ import (
 	"google.golang.org/protobuf/types/known/structpb"
 
 	"github.com/servekit/go-common/grpcx"
+	"github.com/servekit/go-common/tenantctx"
 	"github.com/servekit/go-common/xerr"
 	"github.com/stretchr/testify/require"
 
 	commonv1 "github.com/servekit/api/gen/go/common/v1"
 	storagev1 "github.com/servekit/api/gen/go/storage/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
+	userv1 "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/testkit-service/internal/service/storage"
 )
 
@@ -31,6 +33,14 @@ type stubServer struct {
 	adminGetStats    func(context.Context, *storagev1.AdminGetStatsRequest) (*storagev1.AdminGetStatsResponse, error)
 	batchGetSTS      func(context.Context, *storagev1.BatchGetSTSCredentialRequest) (*storagev1.BatchGetSTSCredentialResponse, error)
 	listMyAuditLogs  func(context.Context, *storagev1.ListMyAuditLogsRequest) (*storagev1.ListMyAuditLogsResponse, error)
+	adminCreateApp   func(context.Context, *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error)
+}
+
+func (s *stubServer) AdminCreateApp(ctx context.Context, req *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error) {
+	if s.adminCreateApp != nil {
+		return s.adminCreateApp(ctx, req)
+	}
+	return s.UnimplementedStorageServiceServer.AdminCreateApp(ctx, req)
 }
 
 func (s *stubServer) ListMyFilesPaged(ctx context.Context, req *storagev1.ListMyFilesPagedRequest) (*storagev1.ListMyFilesPagedResponse, error) {
@@ -364,4 +374,47 @@ func TestMyRPC_PlainErrorPassthrough(t *testing.T) {
 	svc := storage.New(&errServer{})
 	_, err := svc.ListMyFilesPaged(ctxWithUser(1), &testkitv1.ListMyFilesPagedRequest{})
 	require.ErrorIs(t, err, errSentinel)
+}
+
+// --- phase ④ T5: admin-forward tenant clamp ---
+
+// adminActorCtx plants a console actor plus (optionally) the gate's
+// injected tenant key.
+func adminActorCtx(userType userv1.UserType, tenantKey string) context.Context {
+	ctx := grpcx.WithActor(context.Background(), &commonv1.RequestActor{
+		UserId:   42,
+		UserType: int32(userType),
+	})
+	if tenantKey != "" {
+		ctx = tenantctx.WithTenantKey(ctx, tenantKey)
+	}
+	return ctx
+}
+
+// TestAdminCreateApp_ClampsTenantKeyForTenantAdmin: the body's tenant_key
+// is overwritten with the trusted injected key for TENANT_ADMIN callers;
+// PLATFORM callers keep their target (bffscope, phase ④ T5).
+func TestAdminCreateApp_ClampsTenantKeyForTenantAdmin(t *testing.T) {
+	var got *storagev1.AdminCreateAppRequest
+	stub := &stubServer{}
+	stub.adminCreateApp = func(_ context.Context, req *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error) {
+		got = req
+		return &storagev1.AdminCreateAppResponse{}, nil
+	}
+	svc := storage.New(stub)
+
+	_, err := svc.AdminCreateApp(
+		adminActorCtx(userv1.UserType_USER_TYPE_TENANT_ADMIN, "ten_alpha0000000"),
+		&storagev1.AdminCreateAppRequest{AppKey: "forged", KeyPrefix: "f/", TenantKey: "ten_beta0000000"},
+	)
+	require.NoError(t, err)
+	require.NotNil(t, got)
+	require.Equal(t, "ten_alpha0000000", got.GetTenantKey(), "injected key replaces the body's foreign key")
+
+	_, err = svc.AdminCreateApp(
+		adminActorCtx(userv1.UserType_USER_TYPE_PLATFORM, "ten_beta0000000"),
+		&storagev1.AdminCreateAppRequest{AppKey: "drill", KeyPrefix: "d/", TenantKey: "ten_beta0000000"},
+	)
+	require.NoError(t, err)
+	require.Equal(t, "ten_beta0000000", got.GetTenantKey(), "PLATFORM drill-down keeps its target")
 }

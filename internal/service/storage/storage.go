@@ -52,6 +52,7 @@ import (
 	storagev1 "github.com/servekit/api/gen/go/storage/v1"
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	storageservice "github.com/servekit/storage-service/pkg"
+	"github.com/servekit/testkit-service/internal/bffscope"
 )
 
 // Service implements testkit's storage domain. The storage field is typed as
@@ -964,6 +965,11 @@ func (s *Service) AdminUpsertBucket(ctx context.Context, req *storagev1.AdminUps
 
 // --- Storage app management (1:1 forwards; auth is human-permission at the
 // gateway, app identity is data-plane only) ---
+//
+// Tenant-key naming creates are additionally clamped to the trusted key
+// the tenant gate injected for TENANT_ADMIN callers (bffscope, phase ④
+// T5) — the door-side mirror of storage-service's server-side closure;
+// PLATFORM drill-downs keep their target.
 
 // AdminListApps lists all storage apps.
 func (s *Service) AdminListApps(ctx context.Context, req *storagev1.AdminListAppsRequest) (*storagev1.AdminListAppsResponse, error) {
@@ -972,6 +978,9 @@ func (s *Service) AdminListApps(ctx context.Context, req *storagev1.AdminListApp
 
 // AdminCreateApp registers a calling app (secret shown once).
 func (s *Service) AdminCreateApp(ctx context.Context, req *storagev1.AdminCreateAppRequest) (*storagev1.AdminCreateAppResponse, error) {
+	if err := bffscope.TenantKey(ctx, &req.TenantKey); err != nil {
+		return nil, err
+	}
 	return s.storage.AdminCreateApp(ctx, req)
 }
 

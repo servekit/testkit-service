@@ -35,6 +35,7 @@ import (
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	messageservice "github.com/servekit/message-service/pkg"
 	referenceservice "github.com/servekit/reference-service/pkg"
+	"github.com/servekit/testkit-service/internal/bffscope"
 	"github.com/servekit/testkit-service/internal/phone"
 
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -614,10 +615,18 @@ func toTestkitSmsVendorStats(in []*messagev1.SmsVendorStats) []*testkitv1.SmsVen
 // The testkit proto imports the messaging.v1 admin payloads directly
 // (enums-import precedent), so these forwards pass messages through 1:1
 // with zero DTO duplication. xerr.Error passes through untouched.
+//
+// Tenant-key naming creates are additionally clamped to the trusted key
+// the tenant gate injected for TENANT_ADMIN callers (bffscope, phase ④
+// T5) — the door-side mirror of message-service's server-side closure;
+// PLATFORM drill-downs keep their target.
 
 // CreateApp registers a calling app; the plaintext secret is returned by
 // message-service exactly once and passed straight through to the caller.
 func (s *Service) CreateApp(ctx context.Context, req *messagev1.CreateAppRequest) (*messagev1.CreateAppResponse, error) {
+	if err := bffscope.TenantKey(ctx, &req.TenantKey); err != nil {
+		return nil, err
+	}
 	return s.message.CreateApp(ctx, req)
 }
 
@@ -648,6 +657,9 @@ func (s *Service) DeleteApp(ctx context.Context, req *messagev1.DeleteAppRequest
 
 // CreateChannelAccount adds a vendor account to the platform pool.
 func (s *Service) CreateChannelAccount(ctx context.Context, req *messagev1.CreateChannelAccountRequest) (*messagev1.CreateChannelAccountResponse, error) {
+	if err := bffscope.TenantKey(ctx, &req.TenantKey); err != nil {
+		return nil, err
+	}
 	return s.message.CreateChannelAccount(ctx, req)
 }
 
@@ -668,6 +680,9 @@ func (s *Service) ListChannelAccounts(ctx context.Context, req *messagev1.ListCh
 
 // CreateSignature registers a signature with its account bindings.
 func (s *Service) CreateSignature(ctx context.Context, req *messagev1.CreateSignatureRequest) (*messagev1.CreateSignatureResponse, error) {
+	if err := bffscope.TenantKey(ctx, &req.TenantKey); err != nil {
+		return nil, err
+	}
 	return s.message.CreateSignature(ctx, req)
 }
 
