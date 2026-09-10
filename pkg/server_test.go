@@ -14,6 +14,7 @@ import (
 	"net"
 	"net/http"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -29,6 +30,7 @@ import (
 	pb "github.com/servekit/api/gen/go/user/v1"
 	"github.com/servekit/go-common/grpcx"
 	"github.com/servekit/go-common/tenantctx"
+	userservice "github.com/servekit/user-service/pkg"
 	usauth "github.com/servekit/user-service/pkg/auth"
 	usclientinfo "github.com/servekit/user-service/pkg/clientinfo"
 
@@ -72,12 +74,19 @@ func (stubPortal) ListTenants(_ context.Context, _ *portalv1.ListTenantsRequest)
 // stubTestkit implements just the three RPCs the smoke drives; everything
 // else stays Unimplemented. Login captures the incoming metadata so the test
 // can assert client info crossed the transcode boundary; GetProfile captures
-// it to assert the gate's trusted tenant key did too.
+// it to assert the gate's trusted tenant key did too — and then makes a REAL
+// downstream gRPC hop through the production user-service Client, so the
+// tests can assert the injected key also survives leaving this process.
 type stubTestkit struct {
 	testkitv1.UnimplementedTestkitServiceServer
 
 	loginMD   metadata.MD
 	profileMD metadata.MD
+
+	// hop is the downstream user-service client GetProfile calls; hopStub is
+	// the capture backend it dials. Both nil disables the hop.
+	hop     *userservice.Client
+	hopStub *captureUserStub
 }
 
 func (*stubTestkit) Ping(context.Context, *emptypb.Empty) (*commonv1.Pong, error) {
@@ -101,7 +110,39 @@ func (s *stubTestkit) GetProfile(ctx context.Context, _ *testkitv1.GetProfileReq
 	if err != nil {
 		return nil, err
 	}
+	if s.hop != nil {
+		// The grpc-mode BFF shape: the handler ctx (gate-injected key lifted
+		// by the unary chain) flows into a downstream Client call.
+		if _, err := s.hop.Ping(ctx, &emptypb.Empty{}); err != nil {
+			return nil, err
+		}
+	}
 	return &testkitv1.User{Id: actor.GetUserId()}, nil
+}
+
+// captureUserStub is the downstream user-service stand-in: Ping records the
+// incoming metadata — the wire-path view the real user-service would see.
+type captureUserStub struct {
+	pb.UnimplementedUserServiceServer
+
+	mu sync.Mutex
+	md metadata.MD
+}
+
+func (s *captureUserStub) Ping(ctx context.Context, _ *emptypb.Empty) (*commonv1.Pong, error) {
+	s.mu.Lock()
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		s.md = md
+	}
+	s.mu.Unlock()
+	return &commonv1.Pong{Status: "SERVING"}, nil
+}
+
+// captured returns the recorded incoming metadata.
+func (s *captureUserStub) captured() metadata.MD {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.md
 }
 
 func freeAddr(t *testing.T) string {
@@ -118,6 +159,20 @@ func newSmokeServer(t *testing.T) (*stubTestkit, string) {
 	grpcAddr := freeAddr(t)
 	gwAddr := freeAddr(t)
 
+	// Downstream stand-in: a real gRPC server the stub handler hops to via
+	// the production user-service Client, so the smoke can prove identity
+	// survives leaving this process (the grpc-mode shape).
+	backend := &captureUserStub{}
+	blis, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+	bgs := grpc.NewServer()
+	pb.RegisterUserServiceServer(bgs, backend)
+	go func() { _ = bgs.Serve(blis) }()
+	t.Cleanup(bgs.Stop)
+	hop, err := userservice.NewClient(blis.Addr().String())
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = hop.Close() })
+
 	// Same middleware shape as NewServer: the public routes of the real
 	// wiring, reduced to the ones this smoke exercises, plus the tenant gate
 	// inside the edge middleware exactly as NewServer mounts it.
@@ -125,7 +180,7 @@ func newSmokeServer(t *testing.T) (*stubTestkit, string) {
 		usauth.WithPublicPaths("/ping", "/api/v1/auth/login"),
 	)
 	gate := tenantgate.NewGate(tenantgate.NewResolver(stubPortal{}))
-	stub := &stubTestkit{}
+	stub := &stubTestkit{hop: hop, hopStub: backend}
 
 	srv := grpcx.New(
 		&grpcx.ServerConfig{
@@ -141,8 +196,13 @@ func newSmokeServer(t *testing.T) (*stubTestkit, string) {
 		func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
 			return testkitv1.RegisterTestkitServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
 		},
+		// Chain mirrors NewServer's, including the trusted-tenant-key lift:
+		// the gate's wire header crossed the transcode as incoming metadata;
+		// the lift turns it into the ctx value the downstream Clients'
+		// ForwardTenantKeyUnary reads for further real gRPC hops.
 		grpcx.ErrorInterceptor,
 		grpcx.TrustedActorUnary(),
+		tenantctx.TrustedTenantKeyUnary(),
 	)
 	require.NoError(t, srv.Start())
 	t.Cleanup(func() { _ = srv.Stop() })
@@ -253,6 +313,20 @@ func TestEdgeAuth_EndToEnd(t *testing.T) {
 		resp, _ := get(t, "http://"+gw+"/api/v1/profile", "sess-8", nil)
 		require.Equal(t, http.StatusOK, resp.StatusCode)
 		require.Equal(t, "ten_alpha", mdValue(stub.profileMD, tenantctx.HeaderTenantKey))
+	})
+
+	t.Run("injected tenant key survives a real downstream gRPC hop", func(t *testing.T) {
+		// ④ grpc-mode wire path: gate injects ten_alpha → grpc-gateway
+		// transcode carries it as incoming metadata → the unary chain lifts
+		// it into the handler ctx value → the downstream user-service Client
+		// forwards it on a REAL gRPC hop. The module-mode half (metadata read
+		// in-process) is the subtest above; this one proves the key leaves
+		// the process — without the lift+forward pair the remote dualauth
+		// stack sees no tenant identity and fails closed.
+		resp, _ := get(t, "http://"+gw+"/api/v1/profile", "sess-8", nil)
+		require.Equal(t, http.StatusOK, resp.StatusCode)
+		require.Equal(t, "ten_alpha", mdValue(stub.hopStub.captured(), tenantctx.HeaderTenantKey),
+			"the gate-injected key must reach the downstream service over the wire")
 	})
 
 	t.Run("tenant gate strips smuggled tenant key", func(t *testing.T) {

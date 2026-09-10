@@ -19,6 +19,7 @@ import (
 
 	"github.com/servekit/go-common/grpcx"
 	"github.com/servekit/go-common/signalx"
+	"github.com/servekit/go-common/tenantctx"
 
 	testkitv1 "github.com/servekit/api/gen/go/testkit/v1"
 	"github.com/servekit/testkit-service/internal/service"
@@ -63,7 +64,7 @@ type Server struct {
 // per-service app credentials — the trusted key is the only tenant identity
 // that leaves this process.
 //
-// The gRPC server runs a three-interceptor chain (outermost first):
+// The gRPC server runs a four-interceptor chain (outermost first):
 //   - grpcx.ErrorInterceptor: maps *xerr.Error returned by inner layers to
 //     gRPC status codes (Unauthorized → Unauthenticated/401, NotFound → 404,
 //     BadRequest → InvalidArgument/400, ...).
@@ -73,6 +74,12 @@ type Server struct {
 //     exposes only the gateway), the same trusted-network posture as the
 //     other embedded services. Requests without actor metadata pass
 //     through; handlers that need identity enforce their presence themselves.
+//   - tenantctx.TrustedTenantKeyUnary: lifts the gate's trusted x-tenant-key
+//     (which crossed the transcode boundary as incoming metadata) into the
+//     handler ctx value. The downstream Clients' ForwardTenantKeyUnary
+//     reads exactly that value, so grpc-mode requests keep the injected
+//     tenant on further real gRPC hops; module-mode readers keep reading the
+//     incoming metadata directly.
 //   - protovalidate.UnaryServerInterceptor: enforces (buf.validate.field)
 //     rules declared in testkit.proto.
 //
@@ -154,9 +161,12 @@ func NewServer(cfg *config.Config) (*Server, error) {
 		registerGateway(svc),
 		// Chain order is outermost-first (grpc.ChainUnaryInterceptor).
 		// ErrorInterceptor maps *xerr.Error rejections (and protovalidate's)
-		// to gRPC status / HTTP codes.
+		// to gRPC status / HTTP codes. TrustedTenantKeyUnary lifts the
+		// gate's injected key off the transcoded request's metadata so the
+		// downstream Clients forward it on real gRPC hops.
 		grpcx.ErrorInterceptor,
 		grpcx.TrustedActorUnary(),
+		tenantctx.TrustedTenantKeyUnary(),
 		protovalidate_middleware.UnaryServerInterceptor(validator),
 	)
 
