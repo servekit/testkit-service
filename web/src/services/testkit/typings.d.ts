@@ -924,12 +924,14 @@ or context was cancelled. error_message carries the last error. */
       | "DEVICE_TYPE_IOS"
       | "DEVICE_TYPE_ANDROID"
       | "DEVICE_TYPE_API";
-    /**  - USER_TYPE_NORMAL: External end user (default).
- - USER_TYPE_INTERNAL: Platform internal user (staff, operations, etc.). */
+    /**  - USER_TYPE_END_USER: 租户的最终用户（原 USER_TYPE_NORMAL，值不变）。
+ - USER_TYPE_PLATFORM: 平台员工/运营（原 USER_TYPE_INTERNAL，值不变）。
+ - USER_TYPE_TENANT_ADMIN: 租户管理员：控制台操作者，钉死本租户。 */
     userType?:
       | "USER_TYPE_UNSPECIFIED"
-      | "USER_TYPE_NORMAL"
-      | "USER_TYPE_INTERNAL";
+      | "USER_TYPE_END_USER"
+      | "USER_TYPE_PLATFORM"
+      | "USER_TYPE_TENANT_ADMIN";
     locale?: string;
     timezone?: string;
     registerIp?: string;
@@ -1005,12 +1007,14 @@ or context was cancelled. error_message carries the last error. */
     regionCode?: string;
     phone?: string;
     username?: string;
-    /**  - USER_TYPE_NORMAL: External end user (default).
- - USER_TYPE_INTERNAL: Platform internal user (staff, operations, etc.). */
+    /**  - USER_TYPE_END_USER: 租户的最终用户（原 USER_TYPE_NORMAL，值不变）。
+ - USER_TYPE_PLATFORM: 平台员工/运营（原 USER_TYPE_INTERNAL，值不变）。
+ - USER_TYPE_TENANT_ADMIN: 租户管理员：控制台操作者，钉死本租户。 */
     userType?:
       | "USER_TYPE_UNSPECIFIED"
-      | "USER_TYPE_NORMAL"
-      | "USER_TYPE_INTERNAL";
+      | "USER_TYPE_END_USER"
+      | "USER_TYPE_PLATFORM"
+      | "USER_TYPE_TENANT_ADMIN";
     /**  - USER_SORT_FIELD_ID: Default: snowflake id ascending. */
     orderBy?:
       | "USER_SORT_FIELD_UNSPECIFIED"
@@ -3674,10 +3678,6 @@ internal-trust posture, same convention as the other platform apps. */
     disabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
-    /** is_platform marks the platform-operator tenant: its admin surfaces see
-across ALL tenants (with an optional app_key filter) instead of being
-pinned to its own directory. */
-    isPlatform?: boolean;
   };
 
   type v1UserRole = {
@@ -3708,8 +3708,9 @@ pinned to its own directory. */
 
   type v1UserType =
     | "USER_TYPE_UNSPECIFIED"
-    | "USER_TYPE_NORMAL"
-    | "USER_TYPE_INTERNAL";
+    | "USER_TYPE_END_USER"
+    | "USER_TYPE_PLATFORM"
+    | "USER_TYPE_TENANT_ADMIN";
 
   type v1Vendor =
     | "VENDOR_UNSPECIFIED"
