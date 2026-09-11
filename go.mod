@@ -2,8 +2,6 @@ module github.com/servekit/testkit-service
 
 go 1.26.6
 
-replace github.com/servekit/portal-service => ../portal-service
-
 require (
 	buf.build/go/protovalidate v1.2.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.3
@@ -12,15 +10,15 @@ require (
 	github.com/prometheus/client_golang v1.24.1
 	github.com/redis/go-redis/v9 v9.20.0
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/servekit/gid-service v0.0.0-20260905155410-34defa3a575d
-	github.com/servekit/go-common v0.0.0-20260907134535-5a601f9f7499
-	github.com/servekit/license-service v0.0.0-20260905155410-996d115403bc
-	github.com/servekit/message-service v0.0.0-20260906163542-ef4c89484440
-	github.com/servekit/portal-service v0.0.0-00010101000000-000000000000
-	github.com/servekit/reference-service v0.0.0-20260907073537-cea96f3424fe
-	github.com/servekit/storage-service v0.0.0-20260905155410-108908e7deae
-	github.com/servekit/telemetry-service v0.0.0-20260905162822-f3de5a3a5ca5
-	github.com/servekit/user-service v0.0.0-20260906130036-972a8450d5c4
+	github.com/servekit/gid-service v0.0.0-20260908084549-0f400911aff0
+	github.com/servekit/go-common v0.4.0
+	github.com/servekit/license-service v0.0.0-20260911054602-573ead7e49ef
+	github.com/servekit/message-service v0.0.0-20260911054207-0e28e7c8d4c8
+	github.com/servekit/portal-service v0.0.0-20260911055326-3858e35ae724
+	github.com/servekit/reference-service v0.0.0-20260908084550-0c4c97003e7c
+	github.com/servekit/storage-service v0.0.0-20260911054442-fd61c5a4d77d
+	github.com/servekit/telemetry-service v0.0.0-20260911054704-86247ecaa3c4
+	github.com/servekit/user-service v0.0.0-20260911054930-cc9ba30f82e2
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.22.0
 	google.golang.org/grpc v1.83.2
@@ -31,7 +29,7 @@ require (
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.12-20260825204119-511051f7f437.2 // indirect
 	github.com/golang-jwt/jwt/v5 v5.3.1 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260904194346-d0f1323225a4 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260908043556-f8649ddbbfe6 // indirect
 )
 
 require (
@@ -144,7 +142,7 @@ require (
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/sagikazarmark/locafero v0.11.0 // indirect
-	github.com/servekit/api/gen/go v0.0.0-20260907134616-c735fd847cc4
+	github.com/servekit/api/gen/go v0.0.0-20260911050741-ed805fb46939
 	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/sony/sonyflake/v2 v2.1.0 // indirect
@@ -188,7 +186,7 @@ require (
 	golang.org/x/text v0.41.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260825221802-da73d73af1c5 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260904194346-d0f1323225a4 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
@@ -202,11 +200,7 @@ require (
 	modernc.org/sqlite v1.23.1 // indirect
 )
 
-// Local dev runs inside the servekit root workspace (go.work `use`s every
-// sibling module), which also provides the phase ④ go-common code (tenantctx)
-// ahead of its next published pin — the go-common require above
-// still points at the last pushed commit until the ledger's Q1 pin-bump pass.
-// portal-service has no remote yet (ledger Q1), so its require is satisfied
-// by the sibling-checkout replace above — the same monorepo layout the Docker
-// build context already assumes. Once portal publishes, `go get
-// github.com/servekit/portal-service@<commit>` and drop the replace.
+// Local dev still runs inside the servekit root workspace (go.work `use`s
+// every sibling module); the requires above are the published Q1 pins
+// (go-common v0.4.0, portal-service at its pushed commit), so standalone
+// GOWORK=off builds resolve everything from the network.
