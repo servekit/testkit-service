@@ -322,7 +322,7 @@ func TestEdgeAuth_EndToEnd(t *testing.T) {
 		// forwards it on a REAL gRPC hop. The module-mode half (metadata read
 		// in-process) is the subtest above; this one proves the key leaves
 		// the process — without the lift+forward pair the remote dualauth
-		// stack sees no tenant identity and fails closed.
+		// resolver sees no tenant identity and fails closed.
 		resp, _ := get(t, "http://"+gw+"/api/v1/profile", "sess-8", nil)
 		require.Equal(t, http.StatusOK, resp.StatusCode)
 		require.Equal(t, "ten_alpha", mdValue(stub.hopStub.captured(), tenantctx.HeaderTenantKey),
