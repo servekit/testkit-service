@@ -136,7 +136,7 @@ export default function LicenseAppsPage() {
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
         配置行是接入方（业务系统）身份：数据面调用（激活 / 停用 / 试用启动）经 portal
-        入口注入可信 x-tenant-key（④ 窗口关闭后 ak/sk 凭据已废弃，轮换接口已停用）；
+        入口注入可信 x-tenant-key（④ 窗口关闭后 ak/sk 凭据已废弃，轮换接口已删除）；
         终端用户的 License Key 在「密钥管理」页维护。
       </Space>
     </PageContainer>

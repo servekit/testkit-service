@@ -1243,11 +1243,6 @@ func (s *Service) LicenseUpdateTenantConfig(ctx context.Context, req *licensev1.
 	return s.client.UpdateTenantConfig(s.adminCtx(ctx), req)
 }
 
-// LicenseRotateTenantConfigSecret mints a new app secret.
-func (s *Service) LicenseRotateTenantConfigSecret(ctx context.Context, req *licensev1.RotateTenantConfigSecretRequest) (*licensev1.RotateTenantConfigSecretResponse, error) {
-	return s.client.RotateTenantConfigSecret(s.adminCtx(ctx), req)
-}
-
 // LicenseListTenantConfigs lists the config rows (no paging).
 func (s *Service) LicenseListTenantConfigs(ctx context.Context, req *licensev1.ListTenantConfigsRequest) (*licensev1.ListTenantConfigsResponse, error) {
 	return s.client.ListTenantConfigs(s.adminCtx(ctx), req)

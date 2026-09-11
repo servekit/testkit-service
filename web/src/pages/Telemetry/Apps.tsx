@@ -238,7 +238,7 @@ export default function TelemetryAppsPage() {
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
         后端/模块面调用 Ingest 经 portal 入口注入可信 x-tenant-key（④ 窗口关闭后 ak/sk
-        凭据已废弃，轮换接口已停用）；终端客户端的上报走 ingest
+        凭据已废弃，app_secret 轮换接口已删除；ingest 令牌经「轮换 Token」维护）；终端客户端的上报走 ingest
         token（仅创建/轮换时明文展示一次，落库即哈希），两个维度互不影响。停用是运维
         kill-switch：停用应用的上报立即 401（凭据保留，重新启用即恢复）；事件规则与版本门禁在行内「配置」维护。
       </Space>

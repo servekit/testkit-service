@@ -90,12 +90,7 @@ func (s *Service) ListTenantConfigs(ctx context.Context, req *telemetryv1.ListTe
 	return s.client.ListTenantConfigs(s.adminCtx(ctx), req)
 }
 
-// RotateTenantConfigSecret is retired (④ window close): the app_secret column
-// was dropped — the downstream RPC answers a retirement error instead.
-func (s *Service) RotateTenantConfigSecret(ctx context.Context, req *telemetryv1.RotateTenantConfigSecretRequest) (*telemetryv1.RotateTenantConfigSecretResponse, error) {
-	return s.client.RotateTenantConfigSecret(s.adminCtx(ctx), req)
-}
-
+// RotateToken mints an additional active ingest token.
 func (s *Service) RotateToken(ctx context.Context, req *testkitv1.RotateTokenRequest) (*testkitv1.RotateTokenResponse, error) {
 	ctx = s.adminCtx(ctx)
 	resp, err := s.client.RotateToken(ctx, toDnRotateTokenRequest(req))
@@ -177,7 +172,6 @@ func toDnTenantConfig(src *testkitv1.TenantConfig) *dnv1.TenantConfig {
 	out.RawRetentionDays = src.RawRetentionDays
 	out.DailyEventBudget = src.DailyEventBudget
 	out.Disabled = src.Disabled
-	out.AppSecret = src.AppSecret
 	out.CreatedAt = src.CreatedAt
 	out.UpdatedAt = src.UpdatedAt
 	return out
@@ -201,7 +195,6 @@ func toTestkitTenantConfig(src *dnv1.TenantConfig) *testkitv1.TenantConfig {
 	out.RawRetentionDays = src.RawRetentionDays
 	out.DailyEventBudget = src.DailyEventBudget
 	out.Disabled = src.Disabled
-	out.AppSecret = src.AppSecret
 	out.CreatedAt = src.CreatedAt
 	out.UpdatedAt = src.UpdatedAt
 	return out
@@ -246,7 +239,6 @@ func toTestkitCreateTenantConfigResponse(src *dnv1.CreateTenantConfigResponse) *
 	out := &testkitv1.CreateTenantConfigResponse{}
 	out.Config = toTestkitTenantConfig(src.Config)
 	out.Token = src.Token
-	out.AppSecret = src.AppSecret
 	return out
 }
 

@@ -168,7 +168,7 @@ export default function AdminStorageAppsPage() {
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
         每个应用的对象都写在自己的 key_prefix 下，去重域 = prefix（跨应用同内容各存一份）；数据面调用经
-        portal 入口注入可信 x-tenant-key（④ 窗口关闭后 ak/sk 凭据已废弃，轮换接口已停用）。
+        portal 入口注入可信 x-tenant-key（④ 窗口关闭后 ak/sk 凭据已废弃，轮换接口已删除）。
       </Space>
     </PageContainer>
   );

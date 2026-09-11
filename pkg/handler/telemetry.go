@@ -56,7 +56,3 @@ func (h *Handler) GetTenantConfigStats(ctx context.Context, req *testkitv1.GetTe
 func (h *Handler) ListTenantConfigs(ctx context.Context, req *telemetryv1.ListTenantConfigsRequest) (*telemetryv1.ListTenantConfigsResponse, error) {
 	return h.svc.Telemetry().ListTenantConfigs(ctx, req)
 }
-
-func (h *Handler) RotateTenantConfigSecret(ctx context.Context, req *telemetryv1.RotateTenantConfigSecretRequest) (*telemetryv1.RotateTenantConfigSecretResponse, error) {
-	return h.svc.Telemetry().RotateTenantConfigSecret(ctx, req)
-}

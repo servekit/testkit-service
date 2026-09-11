@@ -141,10 +141,6 @@ declare namespace API {
     bucket?: string;
   };
 
-  type AdminRotateTenantConfigSecretParams = {
-    tenantKey: string;
-  };
-
   type AdminUpdateProviderParams = {
     name: string;
   };
@@ -437,10 +433,6 @@ tenant callers are pinned to their own directory regardless. */
     tenantKey: string;
   };
 
-  type LicenseRotateTenantConfigSecretParams = {
-    tenantKey: string;
-  };
-
   type LicenseUpdateTenantConfigParams = {
     tenantKey: string;
   };
@@ -457,8 +449,6 @@ literal is the legacy→tenant fallback value. Unique across rows. */
 
   type licenseV1CreateTenantConfigResponse = {
     config?: v1LicenseTenantConfigInfo;
-    /** app_secret is RETIRED (④ window close); always empty. */
-    appSecret?: string;
   };
 
   type licenseV1GetTenantConfigResponse = {
@@ -467,13 +457,6 @@ literal is the legacy→tenant fallback value. Unique across rows. */
 
   type licenseV1ListTenantConfigsResponse = {
     configs?: v1LicenseTenantConfigInfo[];
-  };
-
-  type licenseV1RotateTenantConfigSecretResponse = {
-    config?: v1LicenseTenantConfigInfo;
-    /** app_secret is RETIRED (④ window close) — the RPC answers a BadRequest
-retirement error instead of returning this field. */
-    appSecret?: string;
   };
 
   type licenseV1UpdateTenantConfigResponse = {
@@ -728,8 +711,9 @@ message-service ListEmailsRequest.app_key). */
   };
 
   type ListPoliciesParams = {
-    /** app_id 0 = all apps. */
-    appId?: string;
+    /** tenant_key filters to one tenant's policies; empty = all
+(scope-permitted). */
+    tenantKey?: string;
     channel?:
       | "TEMPLATE_CHANNEL_UNSPECIFIED"
       | "TEMPLATE_CHANNEL_EMAIL"
@@ -1056,16 +1040,13 @@ or context was cancelled. error_message carries the last error. */
   };
 
   type MessageListTemplatesParams = {
-    /** app_id 0 = all templates (shared + every app's). */
-    appId?: string;
+    /** tenant_key filters to one tenant's private templates plus the shared
+ones; empty = all templates (shared + every tenant's, scope-permitted). */
+    tenantKey?: string;
     channel?:
       | "TEMPLATE_CHANNEL_UNSPECIFIED"
       | "TEMPLATE_CHANNEL_EMAIL"
       | "TEMPLATE_CHANNEL_SMS";
-  };
-
-  type MessageRotateTenantConfigSecretParams = {
-    id: string;
   };
 
   type MessageUpdateChannelAccountParams = {
@@ -1104,8 +1085,6 @@ legacy→tenant fallback value. */
 
   type messagingV1CreateTenantConfigResponse = {
     config?: v1MessageTenantConfigInfo;
-    /** app_secret is RETIRED (④ window close); always empty. */
-    appSecret?: string;
   };
 
   type messagingV1GetTenantConfigResponse = {
@@ -1114,13 +1093,6 @@ legacy→tenant fallback value. */
 
   type messagingV1ListTenantConfigsResponse = {
     configs?: v1MessageTenantConfigInfo[];
-  };
-
-  type messagingV1RotateTenantConfigSecretResponse = {
-    config?: v1MessageTenantConfigInfo;
-    /** app_secret is RETIRED (④ window close); the RPC errors instead of
-returning this field. */
-    appSecret?: string;
   };
 
   type messagingV1UpdateTenantConfigResponse = {
@@ -1222,10 +1194,6 @@ server-side against the actor). */
     prefix: string;
   };
 
-  type RotateTenantConfigSecretParams = {
-    tenantKey: string;
-  };
-
   type RotateTokenParams = {
     tenantKey: string;
   };
@@ -1277,13 +1245,6 @@ available for direct browser uploads). */
     configs?: telemetryV1TenantConfig[];
   };
 
-  type telemetryV1RotateTenantConfigSecretResponse = {
-    config?: telemetryV1TenantConfig;
-    /** app_secret is RETIRED (④ window close) — the RPC answers
-SECRET_RETIRED instead of returning this field. */
-    appSecret?: string;
-  };
-
   type telemetryV1TenantConfig = {
     /** uuid */
     id?: string;
@@ -1315,11 +1276,6 @@ per-device limits cannot provide (spec §4.6 #1). */
     /** Disabled apps fail every ingest call immediately (401) — the operator
 kill-switch; tokens and signing keys stay in place for re-enable. */
     disabled?: boolean;
-    /** app_secret is RETIRED (④ window close): the column was dropped —
-backend callers authenticate via the trusted x-tenant-key injected by
-the portal/doors, and the raw client endpoints (/v1/e/…) keep using
-ingest tokens. Always empty. */
-    appSecret?: string;
     /** tenant_key is the tenant this app maps to (phase ③ dual-stack window):
 the UUID row is the tenant's config row. Empty on rows not yet
 backfilled — the service falls back to the app_key literal until T10
@@ -1339,8 +1295,6 @@ lazily created with the wire-contract defaults. */
   type TestkitServiceAddGroupRoleBody = {
     roleId?: string;
   };
-
-  type TestkitServiceAdminRotateTenantConfigSecretBody = true;
 
   type TestkitServiceAdminUpdateProviderBody = {
     endpoint?: string;
@@ -1415,14 +1369,10 @@ disables STS. */
     expiresAt?: string;
   };
 
-  type TestkitServiceLicenseRotateTenantConfigSecretBody = true;
-
   type TestkitServiceLicenseUpdateTenantConfigBody = {
     name?: string;
     disabled?: boolean;
   };
-
-  type TestkitServiceMessageRotateTenantConfigSecretBody = true;
 
   type TestkitServiceMessageUpdateChannelAccountBody = {
     remark?: string;
@@ -1497,8 +1447,6 @@ send an empty list to disable intl; ignored for email). */
     reason?: string;
   };
 
-  type TestkitServiceRotateTenantConfigSecretBody = true;
-
   type TestkitServiceRotateTokenBody = true;
 
   type TestkitServiceSetVersionBlockedBody = {
@@ -1568,8 +1516,6 @@ user_id injected from ctx */
     disabled?: boolean;
   };
 
-  type TestkitServiceUserRotateAppSecretBody = true;
-
   type TestkitServiceUserUpdateAppBody = {
     name?: string;
     disabled?: boolean;
@@ -1594,9 +1540,6 @@ tenant; the internal app identity is minted server-side). */
   type testkitV1CreateTenantConfigResponse = {
     config?: testkitV1TenantConfig;
     token?: string;
-    /** app_secret convenience echo (also visible via
-ListTenantConfigs/GetTenantConfig). */
-    appSecret?: string;
   };
 
   type testkitV1GetTenantConfigResponse = {
@@ -1630,7 +1573,6 @@ ListTenantConfigs/GetTenantConfig). */
     rawRetentionDays?: number;
     dailyEventBudget?: string;
     disabled?: boolean;
-    appSecret?: string;
     createdAt?: string;
     updatedAt?: string;
     /** tenant_key names the tenant this config row belongs to (phase ④ T6). */
@@ -1683,10 +1625,6 @@ ListTenantConfigs/GetTenantConfig). */
   };
 
   type UserGetAppParams = {
-    tenantKey: string;
-  };
-
-  type UserRotateAppSecretParams = {
     tenantKey: string;
   };
 
@@ -1763,8 +1701,6 @@ the legacy→tenant fallback value. Unique across rows. */
 
   type v1AdminEnsureTenantConfigResponse = {
     config?: v1StorageTenantConfigInfo;
-    /** app_secret is RETIRED (④ window close); always empty. */
-    appSecret?: string;
   };
 
   type v1AdminFileInfo = {
@@ -1832,13 +1768,6 @@ the legacy→tenant fallback value. Unique across rows. */
 
   type v1AdminListTenantConfigsResponse = {
     configs?: v1StorageTenantConfigInfo[];
-  };
-
-  type v1AdminRotateTenantConfigSecretResponse = {
-    config?: v1StorageTenantConfigInfo;
-    /** app_secret is RETIRED (④ window close) — the RPC answers
-SECRET_RETIRED instead of returning this field. */
-    appSecret?: string;
   };
 
   type v1AdminSetQuotaRequest = {
@@ -2135,8 +2064,6 @@ and dashes. Optional; empty = server-generated. */
 
   type v1CreateAppResponse = {
     app?: v1UserAppInfo;
-    /** app_secret is RETIRED (④ window close); always empty. */
-    appSecret?: string;
   };
 
   type v1CreateChannelAccountRequest = {
@@ -2812,9 +2739,6 @@ the sign on the account, not per request). */
     /** app_key is the row's internal directory label (was the x-app-key
 credential before the ④ window close); unique, immutable. */
     appKey?: string;
-    /** app_secret is RETIRED (④ window close): config rows carry no
-credential anymore. Always empty. */
-    appSecret?: string;
     name?: string;
     /** disabled apps fail every data-plane call immediately. */
     disabled?: boolean;
@@ -3080,10 +3004,6 @@ before tenancy. Phase ④ terminal naming: tenant_key on the wire. */
     /** app_key is the row's internal directory label (e.g. "testkit"; was the
 x-app-key credential before the ④ window close). Unique. */
     appKey?: string;
-    /** app_secret is RETIRED (④ window close): config rows carry no
-credential anymore; the data plane authenticates via the trusted
-x-tenant-key. Always empty. */
-    appSecret?: string;
     name?: string;
     /** disabled apps fail every send with ErrAppUnauthorized. */
     disabled?: boolean;
@@ -3355,13 +3275,6 @@ backfilled — resolved through the app mapping at load time. */
     secret?: string;
   };
 
-  type v1RotateAppSecretResponse = {
-    app?: v1UserAppInfo;
-    /** app_secret is RETIRED (④ window close) — the RPC answers
-APP_SECRET_RETIRED instead of returning this field. */
-    appSecret?: string;
-  };
-
   type v1RotateTokenResponse = {
     token?: string;
   };
@@ -3627,10 +3540,6 @@ Changing buckets only affects new uploads. */
     disabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
-    /** app_secret is RETIRED (④ window close): config rows carry no
-credential anymore; the data plane authenticates via the trusted
-x-tenant-key. Always empty. */
-    appSecret?: string;
     /** tenant_key is the tenant this app maps to (phase ③ dual-stack window).
 Empty on rows not yet backfilled — the service falls back to the app_key
 literal until T10 clears the empties. New tenants first seen on the
@@ -3866,10 +3775,6 @@ naming: tenant_key on the wire. */
     /** tenant_key identifies the tenant on every tenant-scoped surface; unique,
 immutable after creation. */
     tenantKey?: string;
-    /** app_secret is RETIRED (④ window close): registry rows carry no
-credential anymore; the data plane authenticates via the trusted
-x-tenant-key. Always empty. */
-    appSecret?: string;
     name?: string;
     /** disabled tenants fail every tenant-scoped surface immediately. */
     disabled?: boolean;

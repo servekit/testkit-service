@@ -97,10 +97,6 @@ func (h *Handler) LicenseUpdateTenantConfig(ctx context.Context, req *licensev1.
 	return h.svc.License().LicenseUpdateTenantConfig(ctx, req)
 }
 
-func (h *Handler) LicenseRotateTenantConfigSecret(ctx context.Context, req *licensev1.RotateTenantConfigSecretRequest) (*licensev1.RotateTenantConfigSecretResponse, error) {
-	return h.svc.License().LicenseRotateTenantConfigSecret(ctx, req)
-}
-
 func (h *Handler) LicenseListTenantConfigs(ctx context.Context, req *licensev1.ListTenantConfigsRequest) (*licensev1.ListTenantConfigsResponse, error) {
 	return h.svc.License().LicenseListTenantConfigs(ctx, req)
 }

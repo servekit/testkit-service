@@ -541,10 +541,10 @@ func TestListRegionCodesWithoutReferenceFails(t *testing.T) {
 }
 
 // TestListPolicies_Forwards1to1 (fix-wave 2, finding A): the policies list
-// is a 1:1 pass-through of the messaging.v1 payload — the request carries
-// no tenant_key (the downstream ListPolicies re-derives the caller's scope
-// server-side), so the BFF clamp does not apply and the filters (app,
-// channel) and response cross unchanged.
+// is a 1:1 pass-through of the messaging.v1 payload — the downstream
+// ListPolicies re-derives the caller's scope server-side, so the BFF clamp
+// does not apply and the filters (tenant, channel) and response cross
+// unchanged.
 func TestListPolicies_Forwards1to1(t *testing.T) {
 	stub := &stubServer{
 		listPoliciesResp: &messagev1.ListPoliciesResponse{
@@ -554,11 +554,11 @@ func TestListPolicies_Forwards1to1(t *testing.T) {
 	svc := message.New(stub)
 
 	resp, err := svc.ListPolicies(context.Background(), &messagev1.ListPoliciesRequest{
-		AppId:   3,
-		Channel: messagev1.TemplateChannel_TEMPLATE_CHANNEL_SMS,
+		TenantKey: "ten_beta00000000",
+		Channel:   messagev1.TemplateChannel_TEMPLATE_CHANNEL_SMS,
 	})
 	require.NoError(t, err)
-	require.Equal(t, stub.listPoliciesReq.GetAppId(), int64(3), "app filter forwarded as given")
+	require.Equal(t, stub.listPoliciesReq.GetTenantKey(), "ten_beta00000000", "tenant filter forwarded as given")
 	require.Equal(t, stub.listPoliciesReq.GetChannel(), messagev1.TemplateChannel_TEMPLATE_CHANNEL_SMS, "channel filter forwarded as given")
 	require.Len(t, resp.GetPolicies(), 1)
 	require.Equal(t, int64(7), resp.GetPolicies()[0].GetId())

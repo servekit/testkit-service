@@ -218,11 +218,6 @@ func (h *Handler) AdminUpdateTenantConfig(ctx context.Context, req *storagev1.Ad
 	return h.svc.Storage().AdminUpdateTenantConfig(ctx, req)
 }
 
-// AdminRotateTenantConfigSecret mints a new secret (shown once).
-func (h *Handler) AdminRotateTenantConfigSecret(ctx context.Context, req *storagev1.AdminRotateTenantConfigSecretRequest) (*storagev1.AdminRotateTenantConfigSecretResponse, error) {
-	return h.svc.Storage().AdminRotateTenantConfigSecret(ctx, req)
-}
-
 // AdminDeleteTenantConfig soft-deletes an app; data-plane calls fail immediately.
 func (h *Handler) AdminDeleteTenantConfig(ctx context.Context, req *storagev1.AdminDeleteTenantConfigRequest) (*emptypb.Empty, error) {
 	return h.svc.Storage().AdminDeleteTenantConfig(ctx, req)

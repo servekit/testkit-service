@@ -95,12 +95,6 @@ func (h *Handler) MessageUpdateTenantConfig(ctx context.Context, req *messagingv
 	return h.svc.Message().UpdateTenantConfig(ctx, req)
 }
 
-// MessageRotateTenantConfigSecret invalidates the current secret; new
-// plaintext once.
-func (h *Handler) MessageRotateTenantConfigSecret(ctx context.Context, req *messagingv1.RotateTenantConfigSecretRequest) (*messagingv1.RotateTenantConfigSecretResponse, error) {
-	return h.svc.Message().RotateTenantConfigSecret(ctx, req)
-}
-
 // MessageListTenantConfigs returns the tenant configs in scope.
 func (h *Handler) MessageListTenantConfigs(ctx context.Context, req *messagingv1.ListTenantConfigsRequest) (*messagingv1.ListTenantConfigsResponse, error) {
 	return h.svc.Message().ListTenantConfigs(ctx, req)

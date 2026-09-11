@@ -199,7 +199,7 @@ export default function MessageAppsPage() {
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
         租户身份 = 可信 x-tenant-key（portal 入口注入，发送端无需配置应用级凭据）；应用级
-        ak/sk 已随 ④ 窗口关闭退役，app_secret 列已删除（轮换接口返回退役错误）。租户自身
+        ak/sk 已随 ④ 窗口关闭退役，app_secret 列与轮换接口已删除。租户自身
         的登录凭据是 portal 的 ak/sk，在「租户管理」区轮换，旧 secret 立即失效。
       </Space>
     </PageContainer>

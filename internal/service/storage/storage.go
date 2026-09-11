@@ -997,11 +997,6 @@ func (s *Service) AdminUpdateTenantConfig(ctx context.Context, req *storagev1.Ad
 	return s.storage.AdminUpdateTenantConfig(ctx, req)
 }
 
-// AdminRotateTenantConfigSecret mints a new secret (shown once).
-func (s *Service) AdminRotateTenantConfigSecret(ctx context.Context, req *storagev1.AdminRotateTenantConfigSecretRequest) (*storagev1.AdminRotateTenantConfigSecretResponse, error) {
-	return s.storage.AdminRotateTenantConfigSecret(ctx, req)
-}
-
 // AdminDeleteTenantConfig soft-deletes a tenant config; data-plane calls
 // fail immediately.
 func (s *Service) AdminDeleteTenantConfig(ctx context.Context, req *storagev1.AdminDeleteTenantConfigRequest) (*emptypb.Empty, error) {

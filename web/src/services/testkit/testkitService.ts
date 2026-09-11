@@ -371,27 +371,6 @@ export async function adminDeleteTenantConfig(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/v1/admin/storage/tenant-configs/${param0}${rotateSecret} */
-export async function adminRotateTenantConfigSecret(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.AdminRotateTenantConfigSecretParams
-    ,body: API.TestkitServiceAdminRotateTenantConfigSecretBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'tenantKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.v1AdminRotateTenantConfigSecretResponse>(`/api/v1/admin/storage/tenant-configs/${param0}:rotateSecret`, {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 POST /api/v1/admin/storage/tenant-configs${ensure} */
 export async function adminEnsureTenantConfig(body: API.v1AdminEnsureTenantConfigRequest,
   options ?: {[key: string]: any}
@@ -1257,27 +1236,6 @@ export async function licenseDeleteTenantConfig(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/v1/license/admin/tenant-configs/${param0}${rotateSecret} */
-export async function licenseRotateTenantConfigSecret(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.LicenseRotateTenantConfigSecretParams
-    ,body: API.TestkitServiceLicenseRotateTenantConfigSecretBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'tenantKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.licenseV1RotateTenantConfigSecretResponse>(`/api/v1/license/admin/tenant-configs/${param0}:rotateSecret`, {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 GET /api/v1/license/admin/trials/${param0} */
 export async function showTrial(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -1711,27 +1669,6 @@ export async function messageDeleteTenantConfig(
   return request<Record<string, any>>(`/api/v1/message/admin/tenant-configs/${param0}`, {
   method: 'DELETE',
     params: {...queryParams,},
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/v1/message/admin/tenant-configs/${param0}/secret${rotate} */
-export async function messageRotateTenantConfigSecret(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.MessageRotateTenantConfigSecretParams
-    ,body: API.TestkitServiceMessageRotateTenantConfigSecretBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'id': param0, 
-  ...queryParams
-  } = params;
-  return request<API.messagingV1RotateTenantConfigSecretResponse>(`/api/v1/message/admin/tenant-configs/${param0}/secret:rotate`, {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
     ...(options || {}),
   });
 }
@@ -3207,27 +3144,6 @@ export async function setVersionBlocked(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/v1/telemetry/admin/tenant-configs/${param0}${rotateSecret} */
-export async function rotateTenantConfigSecret(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.RotateTenantConfigSecretParams
-    ,body: API.TestkitServiceRotateTenantConfigSecretBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'tenantKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.telemetryV1RotateTenantConfigSecretResponse>(`/api/v1/telemetry/admin/tenant-configs/${param0}:rotateSecret`, {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 POST /api/v1/telemetry/ingest */
 export async function ingest(body: API.v1IngestRequest,
   options ?: {[key: string]: any}
@@ -3317,27 +3233,6 @@ export async function userDeleteApp(
   return request<Record<string, any>>(`/api/v1/user/admin/apps/${param0}`, {
   method: 'DELETE',
     params: {...queryParams,},
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/v1/user/admin/apps/${param0}${rotateSecret} */
-export async function userRotateAppSecret(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.UserRotateAppSecretParams
-    ,body: API.TestkitServiceUserRotateAppSecretBody,
-  options ?: {[key: string]: any}
-) {
-  const { 'tenantKey': param0, 
-  ...queryParams
-  } = params;
-  return request<API.v1RotateAppSecretResponse>(`/api/v1/user/admin/apps/${param0}:rotateSecret`, {
-  method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {...queryParams,},
-    data: body,
     ...(options || {}),
   });
 }

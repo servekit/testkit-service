@@ -317,10 +317,6 @@ func (h *Handler) UserUpdateApp(ctx context.Context, req *userv1.UpdateAppReques
 	return h.svc.User().UserUpdateApp(ctx, req)
 }
 
-func (h *Handler) UserRotateAppSecret(ctx context.Context, req *userv1.RotateAppSecretRequest) (*userv1.RotateAppSecretResponse, error) {
-	return h.svc.User().UserRotateAppSecret(ctx, req)
-}
-
 func (h *Handler) UserDeleteApp(ctx context.Context, req *userv1.DeleteAppRequest) (*emptypb.Empty, error) {
 	return h.svc.User().UserDeleteApp(ctx, req)
 }

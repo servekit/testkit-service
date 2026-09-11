@@ -641,12 +641,6 @@ func (s *Service) UpdateTenantConfig(ctx context.Context, req *messagev1.UpdateT
 	return s.message.UpdateTenantConfig(ctx, req)
 }
 
-// RotateTenantConfigSecret invalidates the current secret; new plaintext
-// returned once.
-func (s *Service) RotateTenantConfigSecret(ctx context.Context, req *messagev1.RotateTenantConfigSecretRequest) (*messagev1.RotateTenantConfigSecretResponse, error) {
-	return s.message.RotateTenantConfigSecret(ctx, req)
-}
-
 // ListTenantConfigs returns the tenant configs in the caller's scope.
 func (s *Service) ListTenantConfigs(ctx context.Context, req *messagev1.ListTenantConfigsRequest) (*messagev1.ListTenantConfigsResponse, error) {
 	return s.message.ListTenantConfigs(ctx, req)
@@ -718,7 +712,7 @@ func (s *Service) DeleteTemplate(ctx context.Context, req *messagev1.DeleteTempl
 	return s.message.DeleteTemplate(ctx, req)
 }
 
-// ListTemplates filters by app (0 = all) and channel (0 = all).
+// ListTemplates filters by tenant ("" = all) and channel (0 = all).
 func (s *Service) ListTemplates(ctx context.Context, req *messagev1.ListTemplatesRequest) (*messagev1.ListTemplatesResponse, error) {
 	return s.message.ListTemplates(ctx, req)
 }
@@ -738,7 +732,7 @@ func (s *Service) DeletePolicy(ctx context.Context, req *messagev1.DeletePolicyR
 	return s.message.DeletePolicy(ctx, req)
 }
 
-// ListPolicies filters by app (0 = all) and channel (0 = all).
+// ListPolicies filters by tenant ("" = all) and channel (0 = all).
 func (s *Service) ListPolicies(ctx context.Context, req *messagev1.ListPoliciesRequest) (*messagev1.ListPoliciesResponse, error) {
 	return s.message.ListPolicies(ctx, req)
 }

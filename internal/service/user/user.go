@@ -1248,12 +1248,6 @@ func (s *Service) UserUpdateApp(ctx context.Context, req *userv1.UpdateAppReques
 	return s.user.UpdateApp(ctx, req)
 }
 
-// UserRotateAppSecret is retired (④ window close): registry rows carry no
-// secret — the downstream RPC answers APP_SECRET_RETIRED.
-func (s *Service) UserRotateAppSecret(ctx context.Context, req *userv1.RotateAppSecretRequest) (*userv1.RotateAppSecretResponse, error) {
-	return s.user.RotateAppSecret(ctx, req)
-}
-
 // UserDeleteApp removes the tenant; refused while users belong to it.
 func (s *Service) UserDeleteApp(ctx context.Context, req *userv1.DeleteAppRequest) (*emptypb.Empty, error) {
 	return s.user.DeleteApp(ctx, req)
