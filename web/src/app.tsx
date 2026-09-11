@@ -158,6 +158,34 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       const onLogin = window.location.pathname.startsWith(LOGIN_PATH);
       if (!token && !onLogin) {
         history.push(LOGIN_PATH);
+        return;
+      }
+      // ⑤ 验收：PLATFORM 下钻某个租户后菜单收敛为租户视角；一个仍指向平台面
+      // 的地址（书签/切换前停留的标签）优雅回落到租户区首页，而不是 403。
+      // 租户可见前缀 = access.canTenantAdmin + canUser 的叶路由集合；平台面
+      // （仪表盘/用户运营/RBAC/存储管理/发送与记录/GID/License/Reference/
+      // 系统/成员管理）是它的补集，随路由表演进时同步这份列表。
+      try {
+        const user = JSON.parse(localStorage.getItem('testkit_user') ?? '{}');
+        const drilled =
+          user?.userType === 'USER_TYPE_PLATFORM' && readTenantChoice() !== '';
+        if (drilled && !onLogin) {
+          const tenantVisible = [
+            '/tenant',
+            '/files',
+            '/storage',
+            '/profile',
+            '/identity',
+            '/sessions',
+            '/message/admin',
+            '/telemetry',
+          ].some((p) => window.location.pathname.startsWith(p));
+          if (!tenantVisible) {
+            history.replace('/tenant/capabilities');
+          }
+        }
+      } catch {
+        // corrupt cache — the access plugin's own 403 covers it
       }
     },
   };

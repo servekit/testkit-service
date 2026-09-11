@@ -64,9 +64,16 @@ export function TenantSwitcher() {
     };
   }, [userType]);
 
-  // 切换 = 持久化 choice + 整页刷新（会话不动，见文件头注释）。
+  // 切换 = 持久化 choice + 整页刷新（会话不动，见文件头注释）。PLATFORM 下钻后
+  // 菜单收敛为租户视角（access.canPlatform 随 choice 关闭）：落在租户区首页；
+  // 回「跨租户（全部）」恢复全量菜单，落在仪表盘。TENANT_ADMIN 的页面集不随
+  // 绑定变化，原地刷新即可。
   const applyChoice = (key: string) => {
     writeTenantChoice(key);
+    if (userType === USER_TYPE_PLATFORM) {
+      window.location.href = key ? "/tenant/capabilities" : "/dashboard";
+      return;
+    }
     window.location.reload();
   };
 
