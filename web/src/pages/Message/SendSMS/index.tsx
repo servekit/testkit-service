@@ -98,7 +98,8 @@ export default function SendSMSPage() {
       const resp = await sendSms({
         dialCode: vals.dialCode,
         phone: vals.phone,
-        scene: vals.scene,
+
+        scene: vals.scene as API.v1SmsScene,
         templateParams: params,
         ...(isIntl && (vals.content ?? "").trim() ? { content: vals.content } : {}),
         ...(vals.idempotencyKey ? { idempotencyKey: vals.idempotencyKey } : {}),

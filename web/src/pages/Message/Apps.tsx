@@ -47,7 +47,7 @@ export default function MessageAppsPage() {
     setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const columns: ProColumns<API.v1MessageTenantConfigInfo>[] = [
-    { title: "名称", dataIndex: "name", hideInSearch: true, width: 140, ellipsis: true },
+    { title: "名称", dataIndex: "name", width: 140, ellipsis: true },
     {
       title: "归属",
       dataIndex: "tenantKey",
@@ -69,21 +69,18 @@ export default function MessageAppsPage() {
     {
       title: "状态",
       dataIndex: "disabled",
-      hideInSearch: true,
       width: 80,
       render: (_, r) => (r.disabled ? <Tag color="red">停用</Tag> : <Tag color="green">启用</Tag>),
     },
     {
       title: "短信日上限",
       dataIndex: "smsDailyLimit",
-      hideInSearch: true,
       width: 100,
       render: (_, r) => (Number(r.smsDailyLimit) > 0 ? Number(r.smsDailyLimit) : "不限"),
     },
     {
       title: "邮件日上限",
       dataIndex: "emailDailyLimit",
-      hideInSearch: true,
       width: 100,
       render: (_, r) => (Number(r.emailDailyLimit) > 0 ? Number(r.emailDailyLimit) : "不限"),
     },

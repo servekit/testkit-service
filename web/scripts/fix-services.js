@@ -18,18 +18,20 @@
 // Real path params are templated by the generator as `${param0}`, `${param1}`,
 // ... so any `${identifier}` whose name is NOT `paramN` is a broken custom verb.
 // We rewrite those back to the literal `:verb` suffix the backend expects.
-const fs = require('fs');
-const path = require('path');
+//
+// Second repair: @umijs/openapi types bodyless RPCs (google.protobuf.Empty or
+// no request fields -> JSON-schema `true`) as `type XBody = true`, making the
+// generated `body` parameter require the literal `true` — a value that would
+// serialize to a JSON body of `true` and fail protojson parsing. Omitting the
+// body is what those RPCs expect (grpc-gateway decodes an absent body as the
+// empty message), so we make exactly those `body` parameters optional. Types
+// are collected from typings.d.ts; only `= true` bodies are touched.
+const fs = require("fs");
+const path = require("path");
 
-const file = path.join(
-  __dirname,
-  '..',
-  'src',
-  'services',
-  'testkit',
-  'testkitService.ts',
-);
-const src = fs.readFileSync(file, 'utf8');
+const servicesDir = path.join(__dirname, "..", "src", "services", "testkit");
+const file = path.join(servicesDir, "testkitService.ts");
+const src = fs.readFileSync(file, "utf8");
 
 let repaired = 0;
 const out = src.replace(/`[^`]*`/g, (tmpl) => {
@@ -41,5 +43,23 @@ const out = src.replace(/`[^`]*`/g, (tmpl) => {
   });
 });
 
-fs.writeFileSync(file, out);
-console.log(`fix-services: repaired ${repaired} custom-verb path segment(s)`);
+// --- optional-body repair (see header note) ---------------------------------
+const typings = fs.readFileSync(path.join(servicesDir, "typings.d.ts"), "utf8");
+const trueBodies = [...typings.matchAll(/type (\w+Body) = true;/g)].map(
+  (m) => m[1],
+);
+let optionalized = 0;
+const finalOut = trueBodies.reduce((acc, name) => {
+  const pattern = new RegExp(`,body: API\\.${name},`);
+  const next = acc.replace(pattern, () => {
+    optionalized += 1;
+    return `,body?: API.${name},`;
+  });
+  return next;
+}, out);
+
+fs.writeFileSync(file, finalOut);
+console.log(
+  `fix-services: repaired ${repaired} custom-verb path segment(s), ` +
+    `optionalized ${optionalized} body param(s) for ${trueBodies.length} bodyless RPC type(s)`,
+);

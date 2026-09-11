@@ -13,7 +13,6 @@ import {
   ProFormDependency,
   ProFormSelect,
   ProFormText,
-  type ProFormInstance,
 } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
@@ -53,7 +52,8 @@ const KIND_LABEL: Record<string, string> = {
 };
 
 function buildTemplateBody(vals: Record<string, unknown>): API.v1TemplateInfo {
-  const kind = vals.kind as string;
+  // 形态下拉的 value 即 v1TemplateKind 联合成员（KIND_LABEL 的键）。
+  const kind = vals.kind as API.v1TemplateKind;
   const params = (vals.params as API.v1TemplateParamSpec[] | undefined) ?? [];
   const tpl: API.v1TemplateInfo = {
     name: vals.name as string,
@@ -71,7 +71,7 @@ function buildTemplateBody(vals: Record<string, unknown>): API.v1TemplateInfo {
   } else if (kind === "TEMPLATE_KIND_SMS_VENDOR_CODES") {
     tpl.channel = "SMS";
     tpl.vendorCodes = {
-      codes: ((vals.codes as { vendor: string; templateCode: string }[] | undefined) ?? []).map(
+      codes: ((vals.codes as API.v1VendorTemplateCode[] | undefined) ?? []).map(
         (c) => ({ vendor: c.vendor, templateCode: c.templateCode }),
       ),
     };
@@ -82,7 +82,7 @@ function buildTemplateBody(vals: Record<string, unknown>): API.v1TemplateInfo {
   return tpl;
 }
 
-function TemplateForm({ formRef }: { formRef?: ProFormInstance }) {
+function TemplateForm() {
   return (
     <>
       <ProFormSelect
@@ -107,9 +107,8 @@ function TemplateForm({ formRef }: { formRef?: ProFormInstance }) {
                 </>
               )}
               {isVendorCodes && (
-                <EditableProTable<{ vendor: string; templateCode: string }>
+                <EditableProTable<API.v1VendorTemplateCode>
                   name="codes"
-                  label="厂商模板码（每家一行）"
                   recordCreatorProps={{ newRecordType: "dataSource", record: { vendor: "SMS_VENDOR_ALIYUN", templateCode: "" } }}
                   columns={[
                     {
@@ -117,15 +116,11 @@ function TemplateForm({ formRef }: { formRef?: ProFormInstance }) {
                       dataIndex: "vendor",
                       valueType: "select",
                       valueEnum: SMS_VENDOR_VALUE_ENUM,
-                      rules: [{ required: true }],
                       width: 140,
-                      editable: true,
                     },
                     {
                       title: "模板码",
                       dataIndex: "templateCode",
-                      rules: [{ required: true }],
-                      editable: true,
                     },
                     { title: "操作", valueType: "option" },
                   ]}
@@ -138,12 +133,11 @@ function TemplateForm({ formRef }: { formRef?: ProFormInstance }) {
               )}
               <EditableProTable<API.v1TemplateParamSpec>
                 name="params"
-                label="参数声明（验证码参数名固定 code）"
                 recordCreatorProps={{ newRecordType: "dataSource", record: { name: "", required: true } }}
                 columns={[
-                  { title: "参数名", dataIndex: "name", rules: [{ required: true }], editable: true },
-                  { title: "必填", dataIndex: "required", valueType: "switch", editable: true, width: 80 },
-                  { title: "说明", dataIndex: "description", editable: true },
+                  { title: "参数名", dataIndex: "name" },
+                  { title: "必填", dataIndex: "required", valueType: "switch", width: 80 },
+                  { title: "说明", dataIndex: "description" },
                   { title: "操作", valueType: "option" },
                 ]}
                 rowKey="name"
@@ -153,7 +147,6 @@ function TemplateForm({ formRef }: { formRef?: ProFormInstance }) {
           );
         }}
       </ProFormDependency>
-      {formRef ? null : null}
     </>
   );
 }
@@ -186,7 +179,7 @@ export default function MessageTemplatesPage() {
   }, [view.tenantKey, view.crossView]);
 
   const columns: ProColumns<Row>[] = [
-    { title: "ID", dataIndex: "id", width: 90, hideInSearch: true },
+    { title: "ID", dataIndex: "id", width: 90 },
     { title: "名称", dataIndex: "name" },
     {
       title: "归属",
@@ -197,19 +190,16 @@ export default function MessageTemplatesPage() {
     {
       title: "通道",
       dataIndex: "channel",
-      hideInSearch: true,
       width: 80,
       render: (_, r) => <Tag>{r.channel === "EMAIL" ? "邮件" : "短信"}</Tag>,
     },
     {
       title: "形态",
       dataIndex: "kind",
-      hideInSearch: true,
       render: (_, r) => KIND_LABEL[r.kind ?? ""] ?? r.kind,
     },
     {
       title: "内容",
-      hideInSearch: true,
       ellipsis: true,
       render: (_, r) => {
         if (r.email) return `[${r.email.subject}] ${r.email.textBody}`;
@@ -220,7 +210,6 @@ export default function MessageTemplatesPage() {
     },
     {
       title: "参数",
-      hideInSearch: true,
       render: (_, r) =>
         (r.params ?? []).map((p) => (
           <Tag key={p.name} color={p.required ? "blue" : undefined}>

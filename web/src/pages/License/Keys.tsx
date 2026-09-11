@@ -75,7 +75,7 @@ export default function LicenseKeysPage() {
           title={r.status === "KEY_STATUS_ACTIVE" ? "吊销该密钥？" : "恢复该密钥？"}
           onConfirm={async () => {
             if (r.status === "KEY_STATUS_ACTIVE") {
-              await revokeKey({ keyId: r.licenseId ?? "" });
+              await revokeKey({ keyId: r.licenseId ?? "" }, {});
             } else {
               await unrevokeKey({ keyId: r.licenseId ?? "" });
             }
@@ -130,11 +130,8 @@ export default function LicenseKeysPage() {
       <ModalForm<{
         label: string;
         slots: number;
-        grants?: {
-          module: string;
-          kind: string;
-          durationDays?: number;
-        }[];
+        // module/kind 的下拉 value 即 v1Module / v1EntitlementKind 联合成员。
+        grants?: API.v1EntitlementInput[];
       }>
         title="新建密钥"
         open={createOpen}

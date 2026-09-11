@@ -12,7 +12,6 @@ import {
   ProFormDependency,
   ProFormDigit,
   ProFormSelect,
-  type ProFormInstance,
 } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
@@ -57,7 +56,10 @@ function scopeLabel(tenantKey: string | undefined, viewTenantKey: string): strin
   return tenantKey === viewTenantKey ? "【本租户】" : `【${tenantKey}】`;
 }
 
-function routeTableLabel(opts: Options, sms: boolean) {
+// 路由链可编辑列。editable/rules 一律省略：本 fork 的 ProColumns 不含二者
+// （editable 与 ProSchema.editable 相交后排除字面量 true；rules 只认
+// formItemProps.rules），而 EditableProTable 列默认可编辑，行为不变。
+function routeTableLabel(opts: Options, sms: boolean): ProColumns<API.v1RouteRule>[] {
   return [
     {
       title: "账号",
@@ -66,9 +68,7 @@ function routeTableLabel(opts: Options, sms: boolean) {
       fieldProps: {
         options: opts.accounts.filter((a) => a.sms === sms).map((a) => ({ label: a.label, value: a.value })),
       },
-      rules: [{ required: true }],
       width: 200,
-      editable: true,
     },
     ...(sms
       ? [
@@ -82,9 +82,7 @@ function routeTableLabel(opts: Options, sms: boolean) {
                 value,
               })),
             },
-            rules: [{ required: true }],
             width: 160,
-            editable: true,
           },
         ]
       : []),
@@ -94,7 +92,6 @@ function routeTableLabel(opts: Options, sms: boolean) {
       valueType: "digit" as const,
       fieldProps: { precision: 0, min: 1 },
       width: 90,
-      editable: true,
     },
     { title: "操作", valueType: "option" as const },
   ];
@@ -139,9 +136,8 @@ function PolicyForm({ opts }: { opts: Options }) {
           const sms = channel === "SMS";
           return (
             <>
-              <EditableProTable
+              <EditableProTable<API.v1RouteRule>
                 name="routes"
-                label={sms ? "国内路由链（有序降级）" : "路由链（有序降级）"}
                 recordCreatorProps={{
                   newRecordType: "dataSource",
                   record: { weight: 1 },
@@ -151,9 +147,8 @@ function PolicyForm({ opts }: { opts: Options }) {
                 style={{ marginBottom: 16 }}
               />
               {sms && (
-                <EditableProTable
+                <EditableProTable<API.v1RouteRule>
                   name="intlRoutes"
-                  label="国际路由链（可空 = 拒绝国际发送）"
                   recordCreatorProps={{
                     newRecordType: "dataSource",
                     record: { weight: 1 },
@@ -176,7 +171,6 @@ export default function MessagePoliciesPage() {
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
   const [editing, setEditing] = useState<Row | null>(null);
-  const formRef = useRef<ProFormInstance>(null);
   const [opts, setOpts] = useState<Options>({ apps: [], templates: [], accounts: [], signatures: {} });
   const view = useTenantView();
   // 跨视图租户筛选（选项来自已加载行的 tenant_key 去重）。
@@ -252,7 +246,7 @@ export default function MessagePoliciesPage() {
   };
 
   const columns: ProColumns<Row>[] = [
-    { title: "ID", dataIndex: "id", width: 90, hideInSearch: true },
+    { title: "ID", dataIndex: "id", width: 90 },
     {
       title: "归属",
       dataIndex: "tenantKey",
@@ -261,7 +255,6 @@ export default function MessagePoliciesPage() {
     },
     {
       title: "应用",
-      hideInSearch: true,
       render: (_, r) => {
         const app = opts.apps.find((a) => a.value === r.appId);
         return app?.label ?? r.appId;
@@ -269,14 +262,12 @@ export default function MessagePoliciesPage() {
     },
     {
       title: "场景",
-      hideInSearch: true,
       render: (_, r) => (
         <Tag>{r.channel === "EMAIL" ? r.emailScene : r.smsScene}</Tag>
       ),
     },
     {
       title: "模板",
-      hideInSearch: true,
       render: (_, r) => {
         const tpl = opts.templates.find((t) => t.value === r.templateId);
         return tpl?.label ?? r.templateId;
@@ -284,7 +275,6 @@ export default function MessagePoliciesPage() {
     },
     {
       title: "路由链",
-      hideInSearch: true,
       ellipsis: true,
       render: (_, r) =>
         (r.routes ?? [])
@@ -293,7 +283,6 @@ export default function MessagePoliciesPage() {
     },
     {
       title: "国际链",
-      hideInSearch: true,
       ellipsis: true,
       render: (_, r) =>
         (r.intlRoutes ?? []).length === 0
@@ -378,7 +367,6 @@ export default function MessagePoliciesPage() {
         key={editing?.id ?? "none"}
         title={`编辑策略 #${editing?.id ?? ""}`}
         width={720}
-        formRef={formRef}
         open={!!editing}
         onOpenChange={(open) => {
           if (!open) setEditing(null);
@@ -394,7 +382,7 @@ export default function MessagePoliciesPage() {
             intlRoutes: editing.intlRoutes,
           };
         })()}
-        onFinish={async (vals) => editing && submit(vals, editing.id)}
+        onFinish={async (vals) => (editing ? submit(vals, editing.id) : false)}
       >
         <PolicyForm opts={opts} />
       </ModalForm>

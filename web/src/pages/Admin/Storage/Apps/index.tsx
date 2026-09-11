@@ -32,7 +32,7 @@ export default function AdminStorageAppsPage() {
     setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const columns: ProColumns<API.v1StorageTenantConfigInfo>[] = [
-    { title: "名称", dataIndex: "name", hideInSearch: true, width: 140, ellipsis: true },
+    { title: "名称", dataIndex: "name", width: 140, ellipsis: true },
     {
       title: "AppKey",
       dataIndex: "appKey",
@@ -54,7 +54,6 @@ export default function AdminStorageAppsPage() {
     {
       title: "绑定桶",
       dataIndex: "bucketId",
-      hideInSearch: true,
       width: 100,
       render: (_, r) =>
         Number(r.bucketId) === 0 ? <Tag>默认桶</Tag> : <Tag color="geekblue">#{r.bucketId}</Tag>,
@@ -62,7 +61,6 @@ export default function AdminStorageAppsPage() {
     {
       title: "状态",
       dataIndex: "disabled",
-      hideInSearch: true,
       width: 80,
       render: (_, r) => (r.disabled ? <Tag color="red">停用</Tag> : <Tag color="green">启用</Tag>),
     },

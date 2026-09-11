@@ -31,7 +31,7 @@ export default function UserAppsPage() {
     setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const columns: ProColumns<API.v1UserAppInfo>[] = [
-    { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
+    { title: "名称", dataIndex: "name", width: 160, ellipsis: true },
     {
       title: "TenantKey",
       dataIndex: "tenantKey",
@@ -47,14 +47,12 @@ export default function UserAppsPage() {
     {
       title: "状态",
       dataIndex: "disabled",
-      hideInSearch: true,
       width: 80,
       render: (_, r) => (r.disabled ? <Tag color="red">停用</Tag> : <Tag color="green">启用</Tag>),
     },
     {
       title: "创建时间",
       dataIndex: "createdAt",
-      hideInSearch: true,
       width: 170,
       render: (_, r) => (r.createdAt ? new Date(r.createdAt).toLocaleString() : "-"),
     },

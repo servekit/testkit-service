@@ -111,8 +111,8 @@ export const LOGIN_METHOD_VALUE_ENUM = {
 export function loginMethodLabel(v?: string): string {
   if (!v) return "-";
   return (
-    LOGIN_METHOD_VALUE_ENUM[v]?.text ??
-    PROVIDER_VALUE_ENUM[v]?.text ??
+    LOGIN_METHOD_VALUE_ENUM[v as keyof typeof LOGIN_METHOD_VALUE_ENUM]?.text ??
+    PROVIDER_VALUE_ENUM[v as keyof typeof PROVIDER_VALUE_ENUM]?.text ??
     v
   );
 }

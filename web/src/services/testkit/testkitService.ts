@@ -1131,7 +1131,7 @@ export async function revokeKey(
 export async function unrevokeKey(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.UnrevokeKeyParams
-    ,body: API.TestkitServiceUnrevokeKeyBody,
+    ,body?: API.TestkitServiceUnrevokeKeyBody,
   options ?: {[key: string]: any}
 ) {
   const { 'keyId': param0, 
@@ -1727,7 +1727,7 @@ export async function portalDisableApiKey(
 export async function portalRotateApiKeySecret(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.PortalRotateApiKeySecretParams
-    ,body: API.TestkitServicePortalRotateApiKeySecretBody,
+    ,body?: API.TestkitServicePortalRotateApiKeySecretBody,
   options ?: {[key: string]: any}
 ) {
   const { 'accessKey': param0, 
@@ -3090,7 +3090,7 @@ export async function getTenantConfigStats(
 export async function rotateToken(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.RotateTokenParams
-    ,body: API.TestkitServiceRotateTokenBody,
+    ,body?: API.TestkitServiceRotateTokenBody,
   options ?: {[key: string]: any}
 ) {
   const { 'tenantKey': param0, 

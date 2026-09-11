@@ -35,7 +35,7 @@ export default function AdminBucketsPage() {
       .then((r) =>
         setProviders(
           (r.providers ?? []).map((p) => ({
-            label: `${p.name}（${VENDOR_VALUE_ENUM[p.vendor ?? ""]?.text ?? p.vendor}）`,
+            label: `${p.name}（${VENDOR_VALUE_ENUM[(p.vendor ?? "") as keyof typeof VENDOR_VALUE_ENUM]?.text ?? p.vendor}）`,
             value: p.name as string,
             vendor: p.vendor,
           })),
@@ -44,7 +44,7 @@ export default function AdminBucketsPage() {
       .catch(() => {});
   }, []);
 
-  const columns: ProColumns<API.v1BucketInfo>[] = [
+  const columns: ProColumns<API.testkitV1BucketInfo>[] = [
     { title: "桶名", dataIndex: "name" },
     { title: "服务商", dataIndex: "provider" },
     {
@@ -71,7 +71,7 @@ export default function AdminBucketsPage() {
           onClick={async () => {
             try {
               await adminUpsertBucket(
-                { name: r.name },
+                { name: r.name! },
                 {
                   provider: r.provider,
                   acl: r.acl,
@@ -110,7 +110,7 @@ export default function AdminBucketsPage() {
 
   return (
     <PageContainer>
-      <ProTable<API.v1BucketInfo>
+      <ProTable<API.testkitV1BucketInfo>
         headerTitle="桶列表"
         actionRef={actionRef}
         columns={columns}

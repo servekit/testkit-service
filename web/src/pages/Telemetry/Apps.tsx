@@ -87,7 +87,7 @@ export default function TelemetryAppsPage() {
   };
 
   const columns: ProColumns<AppRow>[] = [
-    { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
+    { title: "名称", dataIndex: "name", width: 160, ellipsis: true },
     {
       title: "AppKey",
       dataIndex: "appKey",
@@ -97,14 +97,12 @@ export default function TelemetryAppsPage() {
     {
       title: "状态",
       dataIndex: "disabled",
-      hideInSearch: true,
       width: 80,
       render: (_, r) => (r.disabled ? <Tag color="red">停用</Tag> : <Tag color="green">启用</Tag>),
     },
     {
       title: "认证模式",
       dataIndex: "authMode",
-      hideInSearch: true,
       width: 100,
       render: (_, r) =>
         r.authMode === "AUTH_MODE_HMAC" ? <Tag color="purple">HMAC</Tag> : <Tag>无</Tag>,
@@ -112,14 +110,12 @@ export default function TelemetryAppsPage() {
     {
       title: "严格版本",
       dataIndex: "strictVersions",
-      hideInSearch: true,
       width: 90,
       render: (_, r) => (r.strictVersions ? <Tag color="orange">开</Tag> : <Tag>关</Tag>),
     },
     {
       title: "日预算",
       dataIndex: "dailyEventBudget",
-      hideInSearch: true,
       width: 110,
       render: (_, r) => (Number(r.dailyEventBudget) > 0 ? Number(r.dailyEventBudget).toLocaleString() : "不限"),
     },

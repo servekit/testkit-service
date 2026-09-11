@@ -34,8 +34,10 @@ export function installChunkReloadGuard(): void {
     'error',
     (event) => {
       // Resource-load errors don't bubble; only capture sees them, and they
-      // carry the failing element as target instead of an Error.
-      if (event instanceof ErrorEvent || !isStaleResource(event.target)) {
+      // carry the failing element as target instead of an Error. Read the
+      // target before the instanceof narrowing (which would narrow to never).
+      const target: EventTarget | null = event.target;
+      if (event instanceof ErrorEvent || !isStaleResource(target)) {
         return;
       }
       if (withinCooldown()) {

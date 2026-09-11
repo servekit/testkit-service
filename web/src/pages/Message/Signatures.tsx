@@ -50,7 +50,8 @@ export default function MessageSignaturesPage() {
   // SMS accounts for the binding multi-select. Tenant view offers the
   // tenant-scoped subset only (pool + own) — the server's binding domain
   // check would reject cross-tenant references anyway.
-  const [smsAccounts, setSmsAccounts] = useState<{ label: string; value: number }[]>([]);
+
+  const [smsAccounts, setSmsAccounts] = useState<{ label: string; value: string }[]>([]);
   useEffect(() => {
     void messageListChannelAccounts().then((resp) => {
       const items = filterTenantRows(
@@ -60,12 +61,12 @@ export default function MessageSignaturesPage() {
         ),
         (a) => a.tenantKey,
       );
-      setSmsAccounts(items.map((a) => ({ label: `${a.name}（#${a.id}）`, value: a.id as number })));
+      setSmsAccounts(items.map((a) => ({ label: `${a.name}（#${a.id}）`, value: a.id as string })));
     });
   }, [view.tenantKey, view.crossView]);
 
   const columns: ProColumns<API.v1SignatureInfo>[] = [
-    { title: "ID", dataIndex: "id", width: 90, hideInSearch: true },
+    { title: "ID", dataIndex: "id", width: 90 },
     { title: "签名 / Sender ID", dataIndex: "name", copyable: true },
     {
       title: "归属",
@@ -76,17 +77,15 @@ export default function MessageSignaturesPage() {
     {
       title: "已报备账号",
       dataIndex: "accountIds",
-      hideInSearch: true,
       render: (_, r) =>
         (r.accountIds ?? []).map((id) => (
           <Tag key={id}>#{id}</Tag>
         )),
     },
-    { title: "备注", dataIndex: "remark", hideInSearch: true },
+    { title: "备注", dataIndex: "remark" },
     {
       title: "状态",
       dataIndex: "disabled",
-      hideInSearch: true,
       width: 80,
       render: (_, r) => (r.disabled ? <Tag color="red">停用</Tag> : <Tag color="green">启用</Tag>),
     },

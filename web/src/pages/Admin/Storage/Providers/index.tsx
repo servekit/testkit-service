@@ -30,7 +30,7 @@ export default function AdminProvidersPage() {
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
 
-  const columns: ProColumns<API.v1ProviderInfo>[] = [
+  const columns: ProColumns<API.testkitV1ProviderInfo>[] = [
     { title: "名称", dataIndex: "name" },
     { title: "厂商", dataIndex: "vendor", valueType: "select", valueEnum: VENDOR_VALUE_ENUM },
     { title: "Endpoint", dataIndex: "endpoint", search: false },
@@ -59,7 +59,7 @@ export default function AdminProvidersPage() {
           key="toggle"
           onClick={async () => {
             try {
-              await adminUpdateProvider({ name: r.name }, { disabled: !r.disabled });
+              await adminUpdateProvider({ name: r.name! }, { disabled: !r.disabled });
               message.success(r.disabled ? "已启用" : "已停用（存量对象仍可读，新上传拒绝）");
               reload();
             } catch (err) {
@@ -92,7 +92,7 @@ export default function AdminProvidersPage() {
 
   return (
     <PageContainer>
-      <ProTable<API.v1ProviderInfo>
+      <ProTable<API.testkitV1ProviderInfo>
         headerTitle="服务商列表"
         actionRef={actionRef}
         columns={columns}

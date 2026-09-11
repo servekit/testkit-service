@@ -458,7 +458,7 @@ export default function SendEmailPage() {
       subject: vals.subject,
       body,
       htmlBody: htmlBody || undefined,
-      scene: vals.scene,
+      scene: vals.scene as API.v1EmailScene,
       templateParams,
       idempotencyKey: vals.idempotencyKey || undefined,
       // Local files travel inline (content); large attachments are pure url

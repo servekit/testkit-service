@@ -78,7 +78,7 @@ export default function RegisterPage() {
   const languageOptions = useLanguageOptions();
   const { message } = App.useApp();
   const { refresh } = useModel("@@initialState");
-  const formRef = useRef<ProFormInstance<RegisterFormValues>>();
+  const formRef = useRef<ProFormInstance<RegisterFormValues> | undefined>(undefined);
   const [countdown, setCountdown] = useState(0);
   const [sending, setSending] = useState(false);
 

@@ -77,7 +77,7 @@ export default function MessageAccountsPage() {
   >([{ value: "__all__", label: "全部租户" }]);
 
   const columns: ProColumns<API.v1ChannelAccountInfo>[] = [
-    { title: "ID", dataIndex: "id", width: 90, hideInSearch: true },
+    { title: "ID", dataIndex: "id", width: 90 },
     { title: "名称", dataIndex: "name", copyable: true },
     {
       title: "归属",
@@ -88,18 +88,16 @@ export default function MessageAccountsPage() {
     {
       title: "类型",
       dataIndex: ["vendor"],
-      hideInSearch: true,
       render: (_, r) => {
         const v = (r.vendor as { smsVendor?: string; emailVendor?: string } | undefined)?.smsVendor
           ?? (r.vendor as { emailVendor?: string } | undefined)?.emailVendor ?? "-";
         return <Tag>{v}</Tag>;
       },
     },
-    { title: "备注", dataIndex: "remark", hideInSearch: true },
+    { title: "备注", dataIndex: "remark" },
     {
       title: "状态",
       dataIndex: "disabled",
-      hideInSearch: true,
       width: 80,
       render: (_, r) => (r.disabled ? <Tag color="red">停用</Tag> : <Tag color="green">启用</Tag>),
     },
