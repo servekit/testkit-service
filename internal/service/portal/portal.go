@@ -99,6 +99,23 @@ func (s *Service) ListTenants(ctx context.Context, req *portalv1.ListTenantsRequ
 	return s.client.ListTenants(ctx, req)
 }
 
+// CreateTenant registers a tenant (minted tenant_key + initial ak/sk shown
+// exactly once + optional bootstrap admin). PLATFORM only.
+func (s *Service) CreateTenant(ctx context.Context, req *portalv1.CreateTenantRequest) (*portalv1.CreateTenantResponse, error) {
+	if err := requirePlatform(ctx); err != nil {
+		return nil, err
+	}
+	return s.client.CreateTenant(ctx, req)
+}
+
+// UpdateTenant edits a tenant's name/remark. PLATFORM only.
+func (s *Service) UpdateTenant(ctx context.Context, req *portalv1.UpdateTenantRequest) (*portalv1.UpdateTenantResponse, error) {
+	if err := requirePlatform(ctx); err != nil {
+		return nil, err
+	}
+	return s.client.UpdateTenant(ctx, req)
+}
+
 // SetCapability flips one capability service of a tenant. PLATFORM only.
 func (s *Service) SetCapability(ctx context.Context, req *portalv1.SetCapabilityRequest) (*portalv1.SetCapabilityResponse, error) {
 	if err := requirePlatform(ctx); err != nil {
@@ -114,6 +131,15 @@ func (s *Service) DisableTenant(ctx context.Context, req *portalv1.DisableTenant
 		return nil, err
 	}
 	return s.client.DisableTenant(ctx, req)
+}
+
+// DeleteTenant soft-deletes a tenant (disable-first enforced at portal).
+// PLATFORM only.
+func (s *Service) DeleteTenant(ctx context.Context, req *portalv1.DeleteTenantRequest) (*emptypb.Empty, error) {
+	if err := requirePlatform(ctx); err != nil {
+		return nil, err
+	}
+	return s.client.DeleteTenant(ctx, req)
 }
 
 // ListTenantMembers answers a tenant's console operators. PLATFORM only.

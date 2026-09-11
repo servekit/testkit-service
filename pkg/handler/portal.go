@@ -48,6 +48,17 @@ func (h *Handler) PortalListTenants(ctx context.Context, req *portalv1.ListTenan
 	return h.svc.PortalAdmin().ListTenants(ctx, req)
 }
 
+// PortalCreateTenant forwards tenant creation (initial ak/sk + optional
+// bootstrap admin, both shown exactly once).
+func (h *Handler) PortalCreateTenant(ctx context.Context, req *portalv1.CreateTenantRequest) (*portalv1.CreateTenantResponse, error) {
+	return h.svc.PortalAdmin().CreateTenant(ctx, req)
+}
+
+// PortalUpdateTenant forwards name/remark edits.
+func (h *Handler) PortalUpdateTenant(ctx context.Context, req *portalv1.UpdateTenantRequest) (*portalv1.UpdateTenantResponse, error) {
+	return h.svc.PortalAdmin().UpdateTenant(ctx, req)
+}
+
 // PortalSetCapability forwards one capability toggle.
 func (h *Handler) PortalSetCapability(ctx context.Context, req *portalv1.SetCapabilityRequest) (*portalv1.SetCapabilityResponse, error) {
 	return h.svc.PortalAdmin().SetCapability(ctx, req)
@@ -56,6 +67,11 @@ func (h *Handler) PortalSetCapability(ctx context.Context, req *portalv1.SetCapa
 // PortalDisableTenant forwards the tenant kill-switch toggle.
 func (h *Handler) PortalDisableTenant(ctx context.Context, req *portalv1.DisableTenantRequest) (*emptypb.Empty, error) {
 	return h.svc.PortalAdmin().DisableTenant(ctx, req)
+}
+
+// PortalDeleteTenant forwards the soft delete (disable-first at portal).
+func (h *Handler) PortalDeleteTenant(ctx context.Context, req *portalv1.DeleteTenantRequest) (*emptypb.Empty, error) {
+	return h.svc.PortalAdmin().DeleteTenant(ctx, req)
 }
 
 // PortalListTenantMembers forwards a tenant's console-operator listing.
