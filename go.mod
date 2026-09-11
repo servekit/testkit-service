@@ -14,7 +14,7 @@ require (
 	github.com/servekit/go-common v0.4.0
 	github.com/servekit/license-service v0.0.0-20260911054602-573ead7e49ef
 	github.com/servekit/message-service v0.0.0-20260911054207-0e28e7c8d4c8
-	github.com/servekit/portal-service v0.0.0-20260911081734-7f83a88e7405
+	github.com/servekit/portal-service v0.0.0-20260911083656-cfb68895ef8c
 	github.com/servekit/reference-service v0.0.0-20260908084550-0c4c97003e7c
 	github.com/servekit/storage-service v0.0.0-20260911054442-fd61c5a4d77d
 	github.com/servekit/telemetry-service v0.0.0-20260911054704-86247ecaa3c4

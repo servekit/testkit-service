@@ -171,7 +171,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
           user?.userType === 'USER_TYPE_PLATFORM' && readTenantChoice() !== '';
         if (drilled && !onLogin) {
           const tenantVisible = [
-            '/tenant',
+            '/tenant/credentials',
+            '/tenant/files',
             '/files',
             '/storage',
             '/profile',

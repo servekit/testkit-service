@@ -1,5 +1,6 @@
 /**
- * 租户管理 · 密钥（ak/sk）管理（tenant platform spec §5.2）。
+ * 密钥（ak/sk）管理（tenant platform spec §5.2；⑥ 验收：顶级入口，
+ * TENANT_ADMIN 的 ak/sk 自服务 + PLATFORM 的按租户管理）。
  *
  * - TENANT_ADMIN：操作当前切换租户（顶栏切换器选中者——请求头带 choice，
  *   后端还会用注入键覆写请求体里的 tenant_key，双保险）；只能管本租户。
@@ -84,8 +85,11 @@ export default function TenantCredentialsPage() {
   const reload = () => actionRef.current?.reload();
 
   // PLATFORM 的目标租户选择（drill-down）；TENANT_ADMIN 固定为切换器选中租户。
+  // ⑥ 验收：支持 ?tenant= 预选（租户列表行内「密钥」跳转）。
   const [tenants, setTenants] = useState<API.TenantInfo[]>([]);
-  const [tenantKey, setTenantKey] = useState<string>(readTenantChoice());
+  const [tenantKey, setTenantKey] = useState<string>(
+    () => new URLSearchParams(window.location.search).get("tenant") || readTenantChoice(),
+  );
   useEffect(() => {
     if (!isPlatform) return;
     let alive = true;

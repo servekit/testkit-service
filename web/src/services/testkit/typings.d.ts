@@ -1113,6 +1113,10 @@ server-side against the actor). */
     tenantKey: string;
   };
 
+  type PortalDeleteTenantParams = {
+    tenantKey: string;
+  };
+
   type PortalDisableApiKeyParams = {
     accessKey: string;
   };
@@ -1141,6 +1145,10 @@ server-side against the actor). */
   };
 
   type PortalSetCapabilityParams = {
+    tenantKey: string;
+  };
+
+  type PortalUpdateTenantParams = {
     tenantKey: string;
   };
 
@@ -1419,6 +1427,10 @@ send an empty list to disable intl; ignored for email). */
     name?: string;
   };
 
+  type TestkitServicePortalDeleteTenantBody = {
+    reason?: string;
+  };
+
   type TestkitServicePortalDisableApiKeyBody = {
     /** false re-enables a disabled key. */
     disable?: boolean;
@@ -1437,6 +1449,11 @@ send an empty list to disable intl; ignored for email). */
     /** service is one of the five capability strings. */
     service?: string;
     enabled?: boolean;
+  };
+
+  type TestkitServicePortalUpdateTenantBody = {
+    name?: string;
+    remark?: string;
   };
 
   type TestkitServiceReplaceEventRulesBody = {
@@ -1962,6 +1979,12 @@ row; those are cross-view only downstream. */
     identity?: v1Identity;
   };
 
+  type v1BootstrapAdmin = {
+    /** mechanism 1: existing console account */
+    userId?: string;
+    newAccount?: v1NewAdminAccount;
+  };
+
   type v1BucketACL =
     | "BUCKET_ACL_UNSPECIFIED"
     | "BUCKET_ACL_PRIVATE"
@@ -2175,6 +2198,27 @@ resource domain). Empty = platform pool. */
 
   type v1CreateTemplateResponse = {
     template?: v1TemplateInfo;
+  };
+
+  type v1CreateTenantRequest = {
+    name?: string;
+    /** capabilities is a subset of USER/MESSAGE/STORAGE/TELEMETRY/LICENSE; the
+empty set is allowed (enable later via SetCapability). */
+    capabilities?: string[];
+    admin?: v1BootstrapAdmin;
+  };
+
+  type v1CreateTenantResponse = {
+    tenantKey?: string;
+    enabledCapabilities?: string[];
+    /** ak/sk always minted at creation; shown once */
+    accessKey?: string;
+    /** sk_…, shown once */
+    secret?: string;
+    /** 0 when admin omitted or bound existing */
+    bootstrapUserId?: string;
+    /** shown once; only when a new account was created */
+    initialPassword?: string;
   };
 
   type v1CreateUserRequest = {
@@ -3053,6 +3097,14 @@ literal until T10 clears the empties. */
     fileCount?: number;
   };
 
+  type v1NewAdminAccount = {
+    name?: string;
+    /** email mechanism */
+    email?: string;
+    /** phone mechanism (E.164) */
+    phone?: string;
+  };
+
   type v1NextIDResponse = {
     id?: string;
   };
@@ -3720,6 +3772,10 @@ empty for password/code logins). */
 
   type v1UpdateTemplateResponse = {
     template?: v1TemplateInfo;
+  };
+
+  type v1UpdateTenantResponse = {
+    tenant?: v1TenantInfo;
   };
 
   type v1UploadCredentialItem = {

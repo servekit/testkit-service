@@ -682,8 +682,8 @@ github.com/servekit/license-service v0.0.0-20260911054602-573ead7e49ef h1:UonsiU
 github.com/servekit/license-service v0.0.0-20260911054602-573ead7e49ef/go.mod h1:5yn6ZpwRLYJQ4q9mX6VQxXDAkwhsAfoFiVpk7QuejFo=
 github.com/servekit/message-service v0.0.0-20260911054207-0e28e7c8d4c8 h1:QIC1Pdxf5PARUqZ7ckXnUW2Iab4jMlWlIF7MesiQvuQ=
 github.com/servekit/message-service v0.0.0-20260911054207-0e28e7c8d4c8/go.mod h1:dNM9RkFPJ7gtvXpx6MM/kXeA01xGPrPDLzxHDBBT2jI=
-github.com/servekit/portal-service v0.0.0-20260911081734-7f83a88e7405 h1:zJM2+ytM4OytplffBY557O7l6aJOYEWzMdGt6oRaCWo=
-github.com/servekit/portal-service v0.0.0-20260911081734-7f83a88e7405/go.mod h1:jOBMhl6dYf66uGXO585x82d7OIs4bfKoEXhhdQD8zkE=
+github.com/servekit/portal-service v0.0.0-20260911083656-cfb68895ef8c h1:/TWX58t4j+PwFzwvZEJ5expQQ/6kGhhBIY+dck81y/o=
+github.com/servekit/portal-service v0.0.0-20260911083656-cfb68895ef8c/go.mod h1:jOBMhl6dYf66uGXO585x82d7OIs4bfKoEXhhdQD8zkE=
 github.com/servekit/reference-service v0.0.0-20260908084550-0c4c97003e7c h1:n/Ec1+81K0iVJFbTl6HI5vxHQqDBQguxvn5RcYJxorw=
 github.com/servekit/reference-service v0.0.0-20260908084550-0c4c97003e7c/go.mod h1:j2ie01sGn4p/x3Oqjd2NcEa/VHOVnwBHOfk7YLZnM8o=
 github.com/servekit/storage-service v0.0.0-20260911054442-fd61c5a4d77d h1:poX1qzSJZeggC1dcpVjR3jm0AOZMz3Idc2ULGt4pdvU=

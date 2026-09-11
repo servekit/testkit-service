@@ -71,7 +71,7 @@ export function TenantSwitcher() {
   const applyChoice = (key: string) => {
     writeTenantChoice(key);
     if (userType === USER_TYPE_PLATFORM) {
-      window.location.href = key ? "/tenant/capabilities" : "/dashboard";
+      window.location.href = key ? "/tenant/credentials" : "/dashboard";
       return;
     }
     window.location.reload();

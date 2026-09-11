@@ -58,37 +58,35 @@ export default defineConfig({
       access: "canPlatform",
       component: "./Dashboard",
     },
-    // --- 租户管理（phase ④ tenant platform）：TENANT_ADMIN 自服务区 +
-    // PLATFORM 的租户注册面。canTenantAdmin 覆盖 TENANT_ADMIN（自服务）与
-    // PLATFORM（管理）双视角；成员管理仅 PLATFORM。TENANT_ADMIN 登录后的
-    // 落点（utils/landing.ts postLoginTarget）即本区首页 —— ①期 /profile
-    // 死角的收口。
+    // --- 租户管理（⑥ 验收重构：PLATFORM only）：平台侧租户生命周期的唯一
+    // 入口。租户列表吸收了原能力清单/成员管理两页（能力开关在行内抽屉、
+    // 管理员绑定/解绑在行内抽屉）；TENANT_ADMIN 的自服务面（ak/sk）在顶级
+    // 「密钥管理」。PLATFORM 落点仍是 /dashboard，TENANT_ADMIN 落点在
+    // utils/landing.ts（/tenant/credentials）。
     {
       key: "svc-tenant",
       name: "租户管理",
       icon: "ClusterOutlined",
-      access: "canTenantAdmin",
+      access: "canPlatform",
       routes: [
-        { path: "/tenant", redirect: "/tenant/capabilities" },
+        { path: "/tenant", redirect: "/tenant/list" },
         {
-          path: "/tenant/capabilities",
-          name: "能力清单",
-          access: "canTenantAdmin",
-          component: "./Tenant/Capabilities",
-        },
-        {
-          path: "/tenant/credentials",
-          name: "密钥管理",
-          access: "canTenantAdmin",
-          component: "./Tenant/Credentials",
-        },
-        {
-          path: "/tenant/members",
-          name: "成员管理",
+          path: "/tenant/list",
+          name: "租户列表",
           access: "canPlatform",
-          component: "./Tenant/Members",
+          component: "./Tenant/List",
         },
       ],
+    },
+    // --- 密钥管理（ak/sk 自服务）：TENANT_ADMIN 管当前切换租户；PLATFORM
+    // 页内选择目标租户（租户列表行内「密钥」跳转预选）。⑥ 验收：自
+    // 租户管理 区拆出为顶级入口（该区已收敛为平台专属）。
+    {
+      path: "/tenant/credentials",
+      name: "密钥管理",
+      icon: "KeyOutlined",
+      access: "canTenantAdmin",
+      component: "./Tenant/Credentials",
     },
     // --- user-service: profile / identities / sessions + back-office ---
     // `key` is required on PATHLESS group parents: umi's menu transform

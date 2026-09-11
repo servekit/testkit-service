@@ -1765,6 +1765,20 @@ export async function portalListTenants(
   });
 }
 
+/** 此处后端没有提供注释 POST /api/v1/portal/tenants */
+export async function portalCreateTenant(body: API.v1CreateTenantRequest,
+  options ?: {[key: string]: any}
+) {
+  return request<API.v1CreateTenantResponse>('/api/v1/portal/tenants', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/v1/portal/tenants/${param0}/api-keys */
 export async function portalListApiKeys(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -1858,6 +1872,27 @@ export async function portalRemoveTenantMember(
   });
 }
 
+/** 此处后端没有提供注释 POST /api/v1/portal/tenants/${param0}${delete} */
+export async function portalDeleteTenant(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalDeleteTenantParams
+    ,body: API.TestkitServicePortalDeleteTenantBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<Record<string, any>>(`/api/v1/portal/tenants/${param0}:delete`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /api/v1/portal/tenants/${param0}${disable} */
 export async function portalDisableTenant(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -1890,6 +1925,27 @@ export async function portalSetCapability(
   ...queryParams
   } = params;
   return request<API.v1SetCapabilityResponse>(`/api/v1/portal/tenants/${param0}:setCapability`, {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {...queryParams,},
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/v1/portal/tenants/${param0}${update} */
+export async function portalUpdateTenant(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.PortalUpdateTenantParams
+    ,body: API.TestkitServicePortalUpdateTenantBody,
+  options ?: {[key: string]: any}
+) {
+  const { 'tenantKey': param0, 
+  ...queryParams
+  } = params;
+  return request<API.v1UpdateTenantResponse>(`/api/v1/portal/tenants/${param0}:update`, {
   method: 'POST',
     headers: {
       'Content-Type': 'application/json',

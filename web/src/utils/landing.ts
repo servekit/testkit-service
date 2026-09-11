@@ -1,8 +1,8 @@
 /**
  * Post-login landing route by user type (tenant platform spec §7.2):
  *   PLATFORM     → /dashboard  (cross-tenant back-office)
- *   TENANT_ADMIN → /tenant     (租户管理 self-service home — the phase ④
- *                fix for phase ①'s /profile dead angle)
+ *   TENANT_ADMIN → /tenant/credentials (ak/sk self-service home — ⑥ 验收
+ *                后 租户管理 区为平台专属，租户管理员的落点是顶级密钥页)
  *   END_USER     → /profile    (personal self-service)
  *
  * Shared by Login (post-submit + already-authenticated visitor), Register,
@@ -13,7 +13,7 @@ export function postLoginTarget(userType?: string): string {
     return "/dashboard";
   }
   if (userType === "USER_TYPE_TENANT_ADMIN") {
-    return "/tenant";
+    return "/tenant/credentials";
   }
   return "/profile";
 }
