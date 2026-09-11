@@ -14,6 +14,12 @@ func (h *Handler) ListCountries(ctx context.Context, req *referencev1.ListCountr
 	return h.svc.ListCountries(ctx, req)
 }
 
+// GetCountries delegates to service.GetCountries (batch subset lookup —
+// fix-wave 2: previously unwired, the Unimplemented embed 501'd it).
+func (h *Handler) GetCountries(ctx context.Context, req *referencev1.GetCountriesRequest) (*referencev1.GetCountriesResponse, error) {
+	return h.svc.GetCountries(ctx, req)
+}
+
 // ListTimezones delegates to service.ListTimezones.
 func (h *Handler) ListTimezones(ctx context.Context, req *referencev1.ListTimezonesRequest) (*referencev1.ListTimezonesResponse, error) {
 	return h.svc.ListTimezones(ctx, req)

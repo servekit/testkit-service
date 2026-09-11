@@ -166,6 +166,13 @@ func (s *Service) ListCountries(ctx context.Context, req *referencev1.ListCountr
 	return s.referenceSvc.ListCountries(ctx, req)
 }
 
+// GetCountries delegates to the reference domain (batch alpha-2 subset
+// lookup — fix-wave 2: the facade method was missing, so the handler could
+// not be wired for the /reference/countries:batch RPC).
+func (s *Service) GetCountries(ctx context.Context, req *referencev1.GetCountriesRequest) (*referencev1.GetCountriesResponse, error) {
+	return s.referenceSvc.GetCountries(ctx, req)
+}
+
 // ListTimezones delegates to the reference domain.
 func (s *Service) ListTimezones(ctx context.Context, req *referencev1.ListTimezonesRequest) (*referencev1.ListTimezonesResponse, error) {
 	return s.referenceSvc.ListTimezones(ctx, req)

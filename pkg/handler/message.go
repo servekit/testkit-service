@@ -186,7 +186,11 @@ func (h *Handler) MessageDeletePolicy(ctx context.Context, req *messagingv1.Dele
 	return h.svc.Message().DeletePolicy(ctx, req)
 }
 
-// MessageListPolicies filters by app (0 = all) and channel (0 = all).
-func (h *Handler) MessageListPolicies(ctx context.Context, req *messagingv1.ListPoliciesRequest) (*messagingv1.ListPoliciesResponse, error) {
+// ListPolicies filters by app (0 = all) and channel (0 = all). Named for
+// the proto RPC (the only admin list without the Message* prefix — the
+// ④T6 rename settled on ListPolicies; message-service re-derives the
+// caller's scope server-side, and the request carries no tenant_key, so no
+// BFF clamp applies).
+func (h *Handler) ListPolicies(ctx context.Context, req *messagingv1.ListPoliciesRequest) (*messagingv1.ListPoliciesResponse, error) {
 	return h.svc.Message().ListPolicies(ctx, req)
 }

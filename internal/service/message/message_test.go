@@ -78,6 +78,11 @@ type stubServer struct {
 	createSignatureResp      *messagev1.CreateSignatureResponse
 	createAppReq             *messagev1.CreateTenantConfigRequest
 	createAppResp            *messagev1.CreateTenantConfigResponse
+
+	// Admin lists (fix-wave 2, finding A)
+	listPoliciesReq  *messagev1.ListPoliciesRequest
+	listPoliciesResp *messagev1.ListPoliciesResponse
+	listPoliciesErr  error
 }
 
 func (s *stubServer) CreateChannelAccount(_ context.Context, req *messagev1.CreateChannelAccountRequest) (*messagev1.CreateChannelAccountResponse, error) {
@@ -93,6 +98,11 @@ func (s *stubServer) CreateSignature(_ context.Context, req *messagev1.CreateSig
 func (s *stubServer) CreateTenantConfig(_ context.Context, req *messagev1.CreateTenantConfigRequest) (*messagev1.CreateTenantConfigResponse, error) {
 	s.createAppReq = req
 	return s.createAppResp, nil
+}
+
+func (s *stubServer) ListPolicies(_ context.Context, req *messagev1.ListPoliciesRequest) (*messagev1.ListPoliciesResponse, error) {
+	s.listPoliciesReq = req
+	return s.listPoliciesResp, s.listPoliciesErr
 }
 
 func (s *stubServer) SendEmail(ctx context.Context, req *messagev1.SendEmailRequest) (*messagev1.SendResponse, error) {
@@ -528,6 +538,30 @@ func TestListRegionCodesWithoutReferenceFails(t *testing.T) {
 	svc := message.New(&stubServer{})
 	_, err := svc.ListRegionCodes(context.Background(), &testkitv1.ListRegionCodesRequest{})
 	require.Error(t, err)
+}
+
+// TestListPolicies_Forwards1to1 (fix-wave 2, finding A): the policies list
+// is a 1:1 pass-through of the messaging.v1 payload — the request carries
+// no tenant_key (the downstream ListPolicies re-derives the caller's scope
+// server-side), so the BFF clamp does not apply and the filters (app,
+// channel) and response cross unchanged.
+func TestListPolicies_Forwards1to1(t *testing.T) {
+	stub := &stubServer{
+		listPoliciesResp: &messagev1.ListPoliciesResponse{
+			Policies: []*messagev1.PolicyInfo{{Id: 7, EmailScene: messagev1.EmailScene_EMAIL_SCENE_LOGIN_CODE}},
+		},
+	}
+	svc := message.New(stub)
+
+	resp, err := svc.ListPolicies(context.Background(), &messagev1.ListPoliciesRequest{
+		AppId:   3,
+		Channel: messagev1.TemplateChannel_TEMPLATE_CHANNEL_SMS,
+	})
+	require.NoError(t, err)
+	require.Equal(t, stub.listPoliciesReq.GetAppId(), int64(3), "app filter forwarded as given")
+	require.Equal(t, stub.listPoliciesReq.GetChannel(), messagev1.TemplateChannel_TEMPLATE_CHANNEL_SMS, "channel filter forwarded as given")
+	require.Len(t, resp.GetPolicies(), 1)
+	require.Equal(t, int64(7), resp.GetPolicies()[0].GetId())
 }
 
 // withTrustedTenant plants the trusted tenant key on a caller ctx the way
