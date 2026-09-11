@@ -29,7 +29,6 @@ import {
   type ActionType,
   type ProColumns,
 } from "@ant-design/pro-components";
-import { SecretText } from "@/components/SecretText";
 import {
   createSigningKey,
   createTenantConfig,
@@ -38,7 +37,6 @@ import {
   replaceEventRules,
   revokeSigningKey,
   revokeToken,
-  rotateTenantConfigSecret,
   rotateToken,
   setVersionBlocked,
   updateTenantConfig,
@@ -54,13 +52,6 @@ export default function TelemetryAppsPage() {
   // 「配置」弹窗：按 tenant_key 加载完整快照（tokens / 签名密钥 / 规则 / 版本门禁）
   const [detailTenantKey, setDetailSlug] = useState<string | null>(null);
   const [detail, setDetail] = useState<AppDetail | null>(null);
-  // 掩码开关按 "appKey:appSecret" 记忆；轮换后自动点亮对应行
-  const [revealed, setRevealed] = useState<Record<string, boolean>>({});
-  const toggleReveal = (key: string) =>
-    setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
-  const reveal = (appKey: string | undefined) => {
-    if (appKey) setRevealed((prev) => ({ ...prev, [`${appKey}:appSecret`]: true }));
-  };
 
   const loadDetail = async (tenantKey: string) => {
     try {
@@ -104,18 +95,6 @@ export default function TelemetryAppsPage() {
       render: (_, r) => <code>{r.appKey}</code>,
     },
     {
-      title: "AppSecret",
-      dataIndex: "appSecret",
-      width: 360,
-      render: (_, r) => (
-        <SecretText
-          value={r.appSecret}
-          visible={!!revealed[`${r.appKey}:appSecret`]}
-          onToggle={() => toggleReveal(`${r.appKey}:appSecret`)}
-        />
-      ),
-    },
-    {
       title: "状态",
       dataIndex: "disabled",
       hideInSearch: true,
@@ -147,7 +126,7 @@ export default function TelemetryAppsPage() {
     {
       title: "操作",
       valueType: "option",
-      width: 320,
+      width: 240,
       render: (_, r) => [
         <a
           key="config"
@@ -158,22 +137,6 @@ export default function TelemetryAppsPage() {
           }}
         >
           配置
-        </a>,
-        <a
-          key="rotateSecret"
-          onClick={async () => {
-            try {
-              await rotateTenantConfigSecret({ tenantKey: r.tenantKey ?? "" }, {} as never);
-              message.success("已轮换，新 AppSecret 见列表");
-              reveal(r.appKey);
-              reload();
-            } catch (err) {
-              const e = err as { data?: { message?: string } };
-              message.error(e?.data?.message ?? "轮换失败");
-            }
-          }}
-        >
-          轮换密钥
         </a>,
         <a
           key="rotate"
@@ -211,7 +174,7 @@ export default function TelemetryAppsPage() {
         rowKey="id"
         search={false}
         pagination={false}
-        scroll={{ x: 1500 }}
+        scroll={{ x: 1100 }}
         request={async () => {
           const resp = await listTenantConfigs();
           return { data: (resp.configs ?? []) as AppRow[], success: true };

@@ -1,8 +1,8 @@
 /**
- * 用户服务 · 应用管理（租户注册表）。与其他平台的应用管理同一套交互：
- * ak（app_key）系统生成、sk（app_secret）可轮换、列表掩码可见。每个应用
- * 是一套独立的用户目录——同名 username 可在不同应用各注册一次；登录/
- * 注册/管理面的租户由可信调用方（BFF 的 ak/sk）决定，终端用户无感知。
+ * 用户服务 · 租户注册表（④ 终态）。每行一个租户 = 一套独立的用户目录
+ * （同名 username 可在不同租户各注册一次）。应用级 ak/sk 已随 ④ 窗口
+ * 关闭退役：租户身份 = 可信 x-tenant-key（portal 入口注入），租户自身
+ * 的凭据是 portal 的 ak/sk（在「租户管理」区轮换），本页不再有密钥列。
  */
 import { ModalForm, ProFormText } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
@@ -18,7 +18,6 @@ import {
   userCreateApp,
   userDeleteApp,
   userListApps,
-  userRotateAppSecret,
   userUpdateApp,
 } from "@/services/testkit/testkitService";
 
@@ -26,13 +25,10 @@ export default function UserAppsPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
-  // 掩码开关按 "tenantKey:字段" 记忆；创建/轮换后自动点亮对应行的 AppSecret
+  // 掩码开关按 "tenantKey:字段" 记忆（tenant_key 是调用方要配置的标识）
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const toggleReveal = (key: string) =>
     setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
-  const reveal = (tenantKey: string | undefined) => {
-    if (tenantKey) setRevealed((prev) => ({ ...prev, [`${tenantKey}:appSecret`]: true }));
-  };
 
   const columns: ProColumns<API.v1UserAppInfo>[] = [
     { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
@@ -45,18 +41,6 @@ export default function UserAppsPage() {
           value={r.tenantKey}
           visible={!!revealed[`${r.tenantKey}:tenantKey`]}
           onToggle={() => toggleReveal(`${r.tenantKey}:tenantKey`)}
-        />
-      ),
-    },
-    {
-      title: "AppSecret",
-      dataIndex: "appSecret",
-      width: 400,
-      render: (_, r) => (
-        <SecretText
-          value={r.appSecret}
-          visible={!!revealed[`${r.tenantKey}:appSecret`]}
-          onToggle={() => toggleReveal(`${r.tenantKey}:appSecret`)}
         />
       ),
     },
@@ -79,22 +63,6 @@ export default function UserAppsPage() {
       valueType: "option",
       width: 200,
       render: (_, r) => [
-        <a
-          key="rotate"
-          onClick={async () => {
-            try {
-              await userRotateAppSecret({ tenantKey: r.tenantKey! }, {} as never);
-              message.success("已轮换，新 AppSecret 见列表");
-              reveal(r.tenantKey);
-              reload();
-            } catch (err) {
-              const e = err as { data?: { message?: string } };
-              message.error(e?.data?.message ?? "轮换失败");
-            }
-          }}
-        >
-          轮换密钥
-        </a>,
         <a
           key="toggle"
           onClick={async () => {
@@ -139,7 +107,7 @@ export default function UserAppsPage() {
         rowKey="tenantKey"
         search={false}
         pagination={false}
-        scroll={{ x: 1280 }}
+        scroll={{ x: 900 }}
         request={async () => {
           const resp = await userListApps();
           return { data: resp.apps ?? [], success: true };
@@ -152,8 +120,7 @@ export default function UserAppsPage() {
             onFinish={async (vals) => {
               try {
                 const resp = await userCreateApp({ name: vals.name });
-                message.success("已创建，TenantKey/AppSecret 见列表");
-                reveal(resp.app?.tenantKey);
+                message.success("已创建，TenantKey 见列表");
                 reload();
                 return true;
               } catch (err) {
@@ -168,8 +135,9 @@ export default function UserAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        每个应用是一套独立的用户目录（租户）：同名 username 可在不同应用各注册一次；登录、注册、
-        用户运营等管理面按调用方应用的 ak/sk 划定租户边界。停用后该应用的登录/注册立即失效。
+        每个租户是一套独立的用户目录：同名 username 可在不同租户各注册一次。租户身份由可信
+        x-tenant-key（portal 入口注入）承载，应用级 ak/sk 已退役；租户自身的登录凭据是 portal
+        的 ak/sk，在「租户管理」区轮换。停用后该租户的登录/注册立即失效。
       </Space>
     </PageContainer>
   );

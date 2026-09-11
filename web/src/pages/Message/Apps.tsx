@@ -1,10 +1,10 @@
 /**
  * 消息平台 · 租户配置（④T6 更名，原「应用管理」）。每个租户一行配置，
- * 行内保留调用方凭据（app_key/app_secret，列表可见——内网信任 posture）：
- * 默认掩码，点眼睛显示明文、点复制取值，方便配置到发送端的
- * message.app_key / message.secret。
- * 归属列展示 tenant_key；跨视图（PLATFORM）带租户筛选器；下钻视图创建的
- * 配置自动挂当前租户。本页保持平台运营面（路由 access: canPlatform）。
+ * 行内不再携带调用方凭据（app_secret 列已随 ④ 窗口关闭删除）：发送端的
+ * 租户身份由 portal 入口注入可信 x-tenant-key，租户自身的凭据是 portal
+ * 的 ak/sk（在「租户管理」区轮换）。归属列展示 tenant_key；跨视图
+ * （PLATFORM）带租户筛选器；下钻视图创建的配置自动挂当前租户。本页保持
+ * 平台运营面（路由 access: canPlatform）。
  */
 import { ModalForm, ProFormDigit, ProFormText } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
@@ -20,7 +20,6 @@ import {
   messageCreateTenantConfig,
   messageDeleteTenantConfig,
   messageListTenantConfigs,
-  messageRotateTenantConfigSecret,
   messageUpdateTenantConfig,
 } from "@/services/testkit/testkitService";
 import {
@@ -42,13 +41,10 @@ export default function MessageAppsPage() {
   const [filterOptions, setFilterOptions] = useState<
     { value: string; label: string }[]
   >([{ value: "__all__", label: "全部租户" }]);
-  // 掩码开关按 "id:字段" 记忆；创建/轮换后自动点亮对应行的 AppSecret
+  // 掩码开关按 "id:字段" 记忆（AppKey 是发送端要配置的标识）
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const toggleReveal = (key: string) =>
     setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
-  const reveal = (id: string | undefined, field: string) => {
-    if (id) setRevealed((prev) => ({ ...prev, [`${id}:${field}`]: true }));
-  };
 
   const columns: ProColumns<API.v1MessageTenantConfigInfo>[] = [
     { title: "名称", dataIndex: "name", hideInSearch: true, width: 140, ellipsis: true },
@@ -67,18 +63,6 @@ export default function MessageAppsPage() {
           value={r.appKey}
           visible={!!revealed[`${r.id}:appKey`]}
           onToggle={() => toggleReveal(`${r.id}:appKey`)}
-        />
-      ),
-    },
-    {
-      title: "AppSecret",
-      dataIndex: "appSecret",
-      width: 420,
-      render: (_, r) => (
-        <SecretText
-          value={r.appSecret}
-          visible={!!revealed[`${r.id}:appSecret`]}
-          onToggle={() => toggleReveal(`${r.id}:appSecret`)}
         />
       ),
     },
@@ -108,22 +92,6 @@ export default function MessageAppsPage() {
       valueType: "option",
       width: 200,
       render: (_, r) => [
-        <a
-          key="rotate"
-          onClick={async () => {
-            try {
-              await messageRotateTenantConfigSecret({ id: r.id! }, {} as never);
-              message.success("已轮换，新 AppSecret 见列表");
-              reveal(r.id, "appSecret");
-              reload();
-            } catch (err) {
-              const e = err as { data?: { message?: string } };
-              message.error(e?.data?.message ?? "轮换失败");
-            }
-          }}
-        >
-          轮换密钥
-        </a>,
         <a
           key="toggle"
           onClick={async () => {
@@ -168,7 +136,7 @@ export default function MessageAppsPage() {
         rowKey="id"
         search={false}
         pagination={false}
-        scroll={{ x: 1280 }}
+        scroll={{ x: 1050 }}
         params={{ tenantFilter }}
         request={async () => {
           const resp = await messageListTenantConfigs({});
@@ -203,8 +171,7 @@ export default function MessageAppsPage() {
                   // 留空 = 服务端铸造键字面量（legacy→tenant 回退值）。
                   tenantKey: view.crossView ? "" : view.tenantKey,
                 });
-                message.success("已创建，AppKey/AppSecret 见列表");
-                reveal(resp.config?.id, "appSecret");
+                message.success("已创建，AppKey 见列表");
                 reload();
                 return true;
               } catch (err) {
@@ -231,8 +198,9 @@ export default function MessageAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        凭据即权限：app_key/app_secret 由系统生成，列表默认掩码；点眼睛显示明文、点复制取值，配置到发送端的
-        message.app_key / message.app_secret。轮换后旧 secret 立即失效。
+        租户身份 = 可信 x-tenant-key（portal 入口注入，发送端无需配置应用级凭据）；应用级
+        ak/sk 已随 ④ 窗口关闭退役，app_secret 列已删除（轮换接口返回退役错误）。租户自身
+        的登录凭据是 portal 的 ak/sk，在「租户管理」区轮换，旧 secret 立即失效。
       </Space>
     </PageContainer>
   );

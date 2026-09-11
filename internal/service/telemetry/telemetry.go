@@ -90,7 +90,8 @@ func (s *Service) ListTenantConfigs(ctx context.Context, req *telemetryv1.ListTe
 	return s.client.ListTenantConfigs(s.adminCtx(ctx), req)
 }
 
-// RotateAppSecret mints a new business-identity credential (ak/sk pair).
+// RotateTenantConfigSecret is retired (④ window close): the app_secret column
+// was dropped — the downstream RPC answers a retirement error instead.
 func (s *Service) RotateTenantConfigSecret(ctx context.Context, req *telemetryv1.RotateTenantConfigSecretRequest) (*telemetryv1.RotateTenantConfigSecretResponse, error) {
 	return s.client.RotateTenantConfigSecret(s.adminCtx(ctx), req)
 }

@@ -18,7 +18,6 @@ import {
   licenseCreateTenantConfig,
   licenseDeleteTenantConfig,
   licenseListTenantConfigs,
-  licenseRotateTenantConfigSecret,
   licenseUpdateTenantConfig,
 } from "@/services/testkit/testkitService";
 
@@ -26,13 +25,10 @@ export default function LicenseAppsPage() {
   const { message } = App.useApp();
   const actionRef = useRef<ActionType>(null);
   const reload = () => actionRef.current?.reload();
-  // 掩码开关按 "appKey:字段" 记忆；创建/轮换后自动点亮对应行的 AppSecret
+  // 掩码开关按 "appKey:字段" 记忆（AppKey 是行的机器标识）
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const toggleReveal = (key: string) =>
     setRevealed((prev) => ({ ...prev, [key]: !prev[key] }));
-  const reveal = (appKey: string | undefined, field: string) => {
-    if (appKey) setRevealed((prev) => ({ ...prev, [`${appKey}:${field}`]: true }));
-  };
 
   const columns: ProColumns<API.v1LicenseTenantConfigInfo>[] = [
     { title: "名称", dataIndex: "name", hideInSearch: true, width: 160, ellipsis: true },
@@ -45,18 +41,6 @@ export default function LicenseAppsPage() {
           value={r.appKey}
           visible={!!revealed[`${r.appKey}:appKey`]}
           onToggle={() => toggleReveal(`${r.appKey}:appKey`)}
-        />
-      ),
-    },
-    {
-      title: "AppSecret",
-      dataIndex: "appSecret",
-      width: 420,
-      render: (_, r) => (
-        <SecretText
-          value={r.appSecret}
-          visible={!!revealed[`${r.appKey}:appSecret`]}
-          onToggle={() => toggleReveal(`${r.appKey}:appSecret`)}
         />
       ),
     },
@@ -79,22 +63,6 @@ export default function LicenseAppsPage() {
       valueType: "option",
       width: 200,
       render: (_, r) => [
-        <a
-          key="rotate"
-          onClick={async () => {
-            try {
-              await licenseRotateTenantConfigSecret({ tenantKey: r.tenantKey! }, {} as never);
-              message.success("已轮换，新 AppSecret 见列表");
-              reveal(r.appKey, "appSecret");
-              reload();
-            } catch (err) {
-              const e = err as { data?: { message?: string } };
-              message.error(e?.data?.message ?? "轮换失败");
-            }
-          }}
-        >
-          轮换密钥
-        </a>,
         <a
           key="toggle"
           onClick={async () => {
@@ -139,7 +107,7 @@ export default function LicenseAppsPage() {
         rowKey="id"
         search={false}
         pagination={false}
-        scroll={{ x: 1280 }}
+        scroll={{ x: 900 }}
         request={async () => {
           const resp = await licenseListTenantConfigs();
           return { data: resp.configs ?? [], success: true };
@@ -152,8 +120,7 @@ export default function LicenseAppsPage() {
             onFinish={async (vals) => {
               try {
                 const resp = await licenseCreateTenantConfig({ name: vals.name });
-                message.success("已创建，AppKey/AppSecret 见列表");
-                reveal(resp.config?.appKey, "appSecret");
+                message.success("已创建，AppKey 见列表");
                 reload();
                 return true;
               } catch (err) {
