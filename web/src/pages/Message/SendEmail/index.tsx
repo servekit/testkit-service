@@ -386,10 +386,12 @@ export default function SendEmailPage() {
         // style). The link embedded in the email points at our own /link
         // page — it never expires as a URL; it stops working only when the
         // retention window (file lifetime) closes.
-        const link = await createFileLink({
-          fileId,
-          retentionTtlSeconds: 30 * 24 * 3600,
-        });
+        const link = await createFileLink(
+          { fileId },
+          // TTL belongs in the JSON body (body: "*"): a query param would be
+          // ignored by the gateway and the retention silently dropped.
+          { retentionTtlSeconds: 30 * 24 * 3600 },
+        );
         if (!link.linkToken) {
           throw new Error("未获得附件链接令牌");
         }

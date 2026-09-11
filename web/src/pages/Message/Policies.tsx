@@ -199,13 +199,13 @@ export default function MessagePoliciesPage() {
           value: a.id as string,
         })),
         templates: scopedTemplates.map((t) => ({
-          label: `${scopeLabel(t.tenantKey, view.tenantKey)}${t.name}（#${t.id}，${t.channel === "EMAIL" ? "邮件" : "短信"}）`,
+          label: `${scopeLabel(t.tenantKey, view.tenantKey)}${t.name}（#${t.id}，${t.channel === "TEMPLATE_CHANNEL_EMAIL" ? "邮件" : "短信"}）`,
           value: t.id as string,
         })),
         accounts: scopedAccounts.map((a) => ({
           label: `${scopeLabel(a.tenantKey, view.tenantKey)}${a.name}（#${a.id}）`,
           value: a.id as string,
-          sms: !!(a.vendor as { smsVendor?: string } | undefined)?.smsVendor,
+          sms: !!a.smsVendor,
         })),
         signatures: Object.fromEntries(
           scopedSignatures.map((s) => [String(s.id), `${scopeLabel(s.tenantKey, view.tenantKey)}${String(s.name)}`]),
@@ -263,7 +263,7 @@ export default function MessagePoliciesPage() {
     {
       title: "场景",
       render: (_, r) => (
-        <Tag>{r.channel === "EMAIL" ? r.emailScene : r.smsScene}</Tag>
+        <Tag>{r.channel === "TEMPLATE_CHANNEL_EMAIL" ? r.emailScene : r.smsScene}</Tag>
       ),
     },
     {
@@ -375,8 +375,10 @@ export default function MessagePoliciesPage() {
           if (!editing) return {};
           return {
             appId: editing.appId,
-            channel: editing.channel,
-            scene: editing.channel === "SMS" ? editing.smsScene : editing.emailScene,
+            // 服务端枚举是全名（TEMPLATE_CHANNEL_*），表单通道下拉用短值，
+            // 预填时映射回表单域。
+            channel: editing.channel === "TEMPLATE_CHANNEL_SMS" ? "SMS" : "EMAIL",
+            scene: editing.channel === "TEMPLATE_CHANNEL_SMS" ? editing.smsScene : editing.emailScene,
             templateId: editing.templateId,
             routes: editing.routes,
             intlRoutes: editing.intlRoutes,

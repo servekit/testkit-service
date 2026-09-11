@@ -57,7 +57,7 @@ export default function MessageSignaturesPage() {
       const items = filterTenantRows(
         view,
         (resp.accounts ?? []).filter(
-          (a) => (a.vendor as { smsVendor?: string } | undefined)?.smsVendor,
+          (a) => a.smsVendor,
         ),
         (a) => a.tenantKey,
       );

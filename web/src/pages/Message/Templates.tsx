@@ -62,21 +62,21 @@ function buildTemplateBody(vals: Record<string, unknown>): API.v1TemplateInfo {
     disabled: false,
   };
   if (kind === "TEMPLATE_KIND_EMAIL_RENDER") {
-    tpl.channel = "EMAIL";
+    tpl.channel = "TEMPLATE_CHANNEL_EMAIL";
     tpl.email = {
       subject: vals.subject as string,
       textBody: vals.textBody as string,
       htmlBody: (vals.htmlBody as string) ?? "",
     };
   } else if (kind === "TEMPLATE_KIND_SMS_VENDOR_CODES") {
-    tpl.channel = "SMS";
+    tpl.channel = "TEMPLATE_CHANNEL_SMS";
     tpl.vendorCodes = {
       codes: ((vals.codes as API.v1VendorTemplateCode[] | undefined) ?? []).map(
         (c) => ({ vendor: c.vendor, templateCode: c.templateCode }),
       ),
     };
   } else {
-    tpl.channel = "SMS";
+    tpl.channel = "TEMPLATE_CHANNEL_SMS";
     tpl.smsContent = { content: vals.content as string };
   }
   return tpl;
@@ -191,7 +191,7 @@ export default function MessageTemplatesPage() {
       title: "通道",
       dataIndex: "channel",
       width: 80,
-      render: (_, r) => <Tag>{r.channel === "EMAIL" ? "邮件" : "短信"}</Tag>,
+      render: (_, r) => <Tag>{r.channel === "TEMPLATE_CHANNEL_EMAIL" ? "邮件" : "短信"}</Tag>,
     },
     {
       title: "形态",

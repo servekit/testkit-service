@@ -89,8 +89,7 @@ export default function MessageAccountsPage() {
       title: "类型",
       dataIndex: ["vendor"],
       render: (_, r) => {
-        const v = (r.vendor as { smsVendor?: string; emailVendor?: string } | undefined)?.smsVendor
-          ?? (r.vendor as { emailVendor?: string } | undefined)?.emailVendor ?? "-";
+        const v = r.smsVendor ?? r.emailVendor ?? "-";
         return <Tag>{v}</Tag>;
       },
     },

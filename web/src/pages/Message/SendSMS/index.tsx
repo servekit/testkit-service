@@ -54,7 +54,7 @@ const paramsValidator = (_: unknown, value?: string) => {
   return Promise.reject(new Error("模板参数须为合法 JSON 对象"));
 };
 
-function fieldRow(label: string, node: React.ReactNode) {
+function fieldRow(label: string, node: React.ReactNode, extra?: React.ReactNode) {
   return (
     <div
       style={{
@@ -68,6 +68,7 @@ function fieldRow(label: string, node: React.ReactNode) {
         {label}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>{node}</div>
+      {extra && <div style={{ flexShrink: 0, paddingRight: 8 }}>{extra}</div>}
     </div>
   );
 }
