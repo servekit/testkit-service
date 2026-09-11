@@ -1,10 +1,10 @@
 /**
  * Telemetry 平台 · 租户配置（④T6 更名，原「应用管理」）。每个租户一行配置，
- * 支持停用（kill-switch，停用后上报立即 401）与轮换令牌；行内保留上报凭据
- * （app_key/app_secret 列表可见）。令牌 / 签名密钥 / 事件规则 / 版本门禁等
- * 深度配置保留在行内「配置」弹窗（按 tenant_key 定位行）。telemetry 的凭据
- * 模型保持不变：ingest token 仅创建/轮换时明文展示一次（落库即哈希，与消息/
- * 存储的列表可见 secret 不同——上报面暴露在公网）。
+ * 支持停用（kill-switch，停用后上报立即 401）与轮换令牌。④ 窗口关闭后配置
+ * 行不再携带 ak/sk（app_secret 列已删）：后端/模块面调用经 portal 入口注入可
+ * 信 x-tenant-key。令牌 / 签名密钥 / 事件规则 / 版本门禁等深度配置保留在行内
+ * 「配置」弹窗（按 tenant_key 定位行）。ingest token 仅创建/轮换时明文展示
+ * 一次（落库即哈希——上报面暴露在公网）。
  */
 import {
   ModalForm,
@@ -274,8 +274,8 @@ export default function TelemetryAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        AppKey/AppSecret（appKey + app_secret）是业务方身份凭据：后端/模块面调用 Ingest
-        需携带 x-app-key / x-app-secret，列表可见、轮换即换新；终端客户端的上报走 ingest
+        后端/模块面调用 Ingest 经 portal 入口注入可信 x-tenant-key（④ 窗口关闭后 ak/sk
+        凭据已废弃，轮换接口已停用）；终端客户端的上报走 ingest
         token（仅创建/轮换时明文展示一次，落库即哈希），两个维度互不影响。停用是运维
         kill-switch：停用应用的上报立即 401（凭据保留，重新启用即恢复）；事件规则与版本门禁在行内「配置」维护。
       </Space>

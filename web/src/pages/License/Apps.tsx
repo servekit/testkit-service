@@ -1,9 +1,8 @@
 /**
  * License 平台 · 租户配置（④T6 更名，原「应用管理」）。与消息/存储平台同一
- * 套交互：每个租户一行配置，行内保留接入方（业务系统）凭据
- * （app_key/app_secret，列表可见——内网信任 posture），默认掩码、点眼睛显示
- * 明文、点复制取值。注意区分：配置行是接入方身份，不是终端用户的 License
- * Key（密钥管理在另一页）。
+ * 套交互：每个租户一行配置。④ 窗口关闭后配置行不再携带凭据（app_secret 列
+ * 已删）：数据面调用经 portal 入口注入可信 x-tenant-key，而非 ak/sk。注意
+ * 区分：配置行是接入方身份，不是终端用户的 License Key（密钥管理在另一页）。
  */
 import { ModalForm, ProFormText } from "@ant-design/pro-components";
 import { App, Button, Popconfirm, Space, Tag } from "antd";
@@ -169,9 +168,9 @@ export default function LicenseAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        配置行是接入方（业务系统）身份：客户端面调用（激活 / 停用 / 试用启动）需携带 x-app-key /
-        x-app-secret，缺凭据、应用停用或密钥不符都会被拒绝；终端用户的 License Key
-        在「密钥管理」页维护。轮换后旧 secret 立即失效。
+        配置行是接入方（业务系统）身份：数据面调用（激活 / 停用 / 试用启动）经 portal
+        入口注入可信 x-tenant-key（④ 窗口关闭后 ak/sk 凭据已废弃，轮换接口已停用）；
+        终端用户的 License Key 在「密钥管理」页维护。
       </Space>
     </PageContainer>
   );

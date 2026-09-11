@@ -384,7 +384,8 @@ func withTrustedRequest(r *http.Request, key string) *http.Request {
 
 // withTrustedTenant plants the trusted key on ctx as incoming metadata
 // (merged over any existing keys), outgoing metadata, and the tenantctx
-// value. The door-side mirror of the services' internal appauth.WithTenant.
+// value. The door-side mirror of the services' internal
+// tenantctx.WithTenantKey planting.
 func withTrustedTenant(ctx context.Context, key string) context.Context {
 	if md, ok := metadata.FromIncomingContext(ctx); ok {
 		md = md.Copy()

@@ -1,7 +1,7 @@
 /**
- * 存储平台 · 租户配置（④T6 更名，原「应用管理」）。每个租户一行配置，行内
- * 保留调用方凭据（app_key/app_secret，列表可见——内网信任 posture），默认
- * 掩码、点眼睛显示明文、点复制取值。存储特有的两列：Key Prefix（对象命名
+ * 存储平台 · 租户配置（④T6 更名，原「应用管理」）。每个租户一行配置。④ 窗
+ * 口关闭后配置行不再携带凭据（app_secret 列已删）：数据面调用经 portal 入口
+ * 注入可信 x-tenant-key，而非 ak/sk。存储特有的两列：Key Prefix（对象命名
  * 空间 = 隔离与去重域，全局唯一且不可改）与绑定桶。创建为幂等 ensure：租
  * 户已有配置行时直接返回该行。
  */
@@ -200,9 +200,8 @@ export default function AdminStorageAppsPage() {
         ]}
       />
       <Space style={{ marginTop: 8, color: "#888" }}>
-        每个应用的对象都写在自己的 key_prefix 下，去重域 = prefix（跨应用同内容各存一份）；数据面调用需携带
-        x-app-key / x-app-secret（列表可见，配置到调用方如 testkit 的 storage.app_key /
-        app_secret）。轮换后旧 secret 立即失效。
+        每个应用的对象都写在自己的 key_prefix 下，去重域 = prefix（跨应用同内容各存一份）；数据面调用经
+        portal 入口注入可信 x-tenant-key（④ 窗口关闭后 ak/sk 凭据已废弃，轮换接口已停用）。
       </Space>
     </PageContainer>
   );

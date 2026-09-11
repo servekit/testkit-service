@@ -457,8 +457,7 @@ literal is the legacy→tenant fallback value. Unique across rows. */
 
   type licenseV1CreateTenantConfigResponse = {
     config?: v1LicenseTenantConfigInfo;
-    /** app_secret convenience echo (also visible via
-ListTenantConfigs/GetTenantConfig). */
+    /** app_secret is RETIRED (④ window close); always empty. */
     appSecret?: string;
   };
 
@@ -472,8 +471,8 @@ ListTenantConfigs/GetTenantConfig). */
 
   type licenseV1RotateTenantConfigSecretResponse = {
     config?: v1LicenseTenantConfigInfo;
-    /** app_secret convenience echo (also visible via
-ListTenantConfigs/GetTenantConfig). */
+    /** app_secret is RETIRED (④ window close) — the RPC answers a BadRequest
+retirement error instead of returning this field. */
     appSecret?: string;
   };
 
@@ -1105,6 +1104,7 @@ legacy→tenant fallback value. */
 
   type messagingV1CreateTenantConfigResponse = {
     config?: v1MessageTenantConfigInfo;
+    /** app_secret is RETIRED (④ window close); always empty. */
     appSecret?: string;
   };
 
@@ -1118,6 +1118,8 @@ legacy→tenant fallback value. */
 
   type messagingV1RotateTenantConfigSecretResponse = {
     config?: v1MessageTenantConfigInfo;
+    /** app_secret is RETIRED (④ window close); the RPC errors instead of
+returning this field. */
     appSecret?: string;
   };
 
@@ -1277,19 +1279,19 @@ available for direct browser uploads). */
 
   type telemetryV1RotateTenantConfigSecretResponse = {
     config?: telemetryV1TenantConfig;
-    /** app_secret convenience echo (also visible via
-ListTenantConfigs/GetTenantConfig). */
+    /** app_secret is RETIRED (④ window close) — the RPC answers
+SECRET_RETIRED instead of returning this field. */
     appSecret?: string;
   };
 
   type telemetryV1TenantConfig = {
     /** uuid */
     id?: string;
-    /** app_key is the row's machine identity and the "ak" half of the
-platform-wide
-ak/sk pair: minted server-side on creation ("tel_" + 8 base36 chars,
-collision-checked; a caller-chosen key is accepted when non-empty),
-unique, immutable. The admin surface keys every per-app route by it. */
+    /** app_key is the row's machine identity (was the "ak" half of the
+retired platform ak/sk pair): minted server-side on creation ("tel_" +
+8 base36 chars, collision-checked; a caller-chosen key is accepted
+when non-empty), unique, immutable. The admin surface keys every
+per-app route by it. */
     appKey?: string;
     name?: string;
     /** optional operator contact */
@@ -1313,12 +1315,10 @@ per-device limits cannot provide (spec §4.6 #1). */
     /** Disabled apps fail every ingest call immediately (401) — the operator
 kill-switch; tokens and signing keys stay in place for re-enable. */
     disabled?: boolean;
-    /** app_secret is the business-identity credential (the "sk" half of the
-platform-wide ak/sk pair; app_key is the "ak"). Required by the
-gRPC/module ingest surface — backend callers present it as x-app-key /
-x-app-secret metadata; the raw client endpoints (/v1/e/…) keep using
-the ingest token instead. Echoed on every read — internal-trust
-posture, same convention as the messaging/storage/license apps. */
+    /** app_secret is RETIRED (④ window close): the column was dropped —
+backend callers authenticate via the trusted x-tenant-key injected by
+the portal/doors, and the raw client endpoints (/v1/e/…) keep using
+ingest tokens. Always empty. */
     appSecret?: string;
     /** tenant_key is the tenant this app maps to (phase ③ dual-stack window):
 the UUID row is the tenant's config row. Empty on rows not yet
@@ -1763,8 +1763,7 @@ the legacy→tenant fallback value. Unique across rows. */
 
   type v1AdminEnsureTenantConfigResponse = {
     config?: v1StorageTenantConfigInfo;
-    /** app_secret convenience echo (also visible via
-AdminListTenantConfigs/AdminGetTenantConfig). */
+    /** app_secret is RETIRED (④ window close); always empty. */
     appSecret?: string;
   };
 
@@ -1837,8 +1836,8 @@ AdminListTenantConfigs/AdminGetTenantConfig). */
 
   type v1AdminRotateTenantConfigSecretResponse = {
     config?: v1StorageTenantConfigInfo;
-    /** app_secret convenience echo (also visible via
-AdminListTenantConfigs/AdminGetTenantConfig). */
+    /** app_secret is RETIRED (④ window close) — the RPC answers
+SECRET_RETIRED instead of returning this field. */
     appSecret?: string;
   };
 
@@ -2136,7 +2135,7 @@ and dashes. Optional; empty = server-generated. */
 
   type v1CreateAppResponse = {
     app?: v1UserAppInfo;
-    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    /** app_secret is RETIRED (④ window close); always empty. */
     appSecret?: string;
   };
 
@@ -2810,11 +2809,11 @@ the sign on the account, not per request). */
 
   type v1LicenseTenantConfigInfo = {
     id?: string;
-    /** app_key identifies the app on every data-plane call; unique, immutable. */
+    /** app_key is the row's internal directory label (was the x-app-key
+credential before the ④ window close); unique, immutable. */
     appKey?: string;
-    /** app_secret is the data-plane credential. Echoed on every read —
-internal-trust posture, same convention as the messaging/storage apps;
-the ops console is the intended reader. */
+    /** app_secret is RETIRED (④ window close): config rows carry no
+credential anymore. Always empty. */
     appSecret?: string;
     name?: string;
     /** disabled apps fail every data-plane call immediately. */
@@ -3078,13 +3077,12 @@ before tenancy. Phase ④ terminal naming: tenant_key on the wire. */
 
   type v1MessageTenantConfigInfo = {
     id?: string;
-    /** app_key is the public credential identifier passed in x-app-key
-metadata (e.g. "testkit"). Unique. */
+    /** app_key is the row's internal directory label (e.g. "testkit"; was the
+x-app-key credential before the ④ window close). Unique. */
     appKey?: string;
-    /** app_secret echoes the stored secret (internal-trust posture: plaintext
-at rest, internal-network transport — the ops console needs to copy
-credentials for service configuration, so it is list-visible rather
-than show-once). */
+    /** app_secret is RETIRED (④ window close): config rows carry no
+credential anymore; the data plane authenticates via the trusted
+x-tenant-key. Always empty. */
     appSecret?: string;
     name?: string;
     /** disabled apps fail every send with ErrAppUnauthorized. */
@@ -3359,7 +3357,8 @@ backfilled — resolved through the app mapping at load time. */
 
   type v1RotateAppSecretResponse = {
     app?: v1UserAppInfo;
-    /** app_secret convenience echo (also visible via ListApps/GetApp). */
+    /** app_secret is RETIRED (④ window close) — the RPC answers
+APP_SECRET_RETIRED instead of returning this field. */
     appSecret?: string;
   };
 
@@ -3613,8 +3612,8 @@ uploads are rejected. */
 
   type v1StorageTenantConfigInfo = {
     id?: string;
-    /** app_key identifies the app on every data-plane call (x-app-key metadata);
-immutable after creation. */
+    /** app_key is the row's internal directory label (was the x-app-key
+credential before the ④ window close); immutable after creation. */
     appKey?: string;
     name?: string;
     /** key_prefix namespaces every object the app writes. Global unique,
@@ -3628,9 +3627,9 @@ Changing buckets only affects new uploads. */
     disabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
-    /** app_secret is the data-plane credential (x-app-secret metadata). Echoed
-on every read — internal-trust posture, same convention as messaging
-apps; the ops console is the intended reader. */
+    /** app_secret is RETIRED (④ window close): config rows carry no
+credential anymore; the data plane authenticates via the trusted
+x-tenant-key. Always empty. */
     appSecret?: string;
     /** tenant_key is the tenant this app maps to (phase ③ dual-stack window).
 Empty on rows not yet backfilled — the service falls back to the app_key
@@ -3867,8 +3866,9 @@ naming: tenant_key on the wire. */
     /** tenant_key identifies the tenant on every tenant-scoped surface; unique,
 immutable after creation. */
     tenantKey?: string;
-    /** app_secret is the tenant credential. Echoed on every read —
-internal-trust posture, same convention as the other platform apps. */
+    /** app_secret is RETIRED (④ window close): registry rows carry no
+credential anymore; the data plane authenticates via the trusted
+x-tenant-key. Always empty. */
     appSecret?: string;
     name?: string;
     /** disabled tenants fail every tenant-scoped surface immediately. */

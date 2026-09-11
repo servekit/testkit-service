@@ -203,8 +203,8 @@ require (
 )
 
 // Local dev runs inside the servekit root workspace (go.work `use`s every
-// sibling module), which also provides the phase ④ go-common code (tenantctx,
-// dualauth) ahead of its next published pin — the go-common require above
+// sibling module), which also provides the phase ④ go-common code (tenantctx)
+// ahead of its next published pin — the go-common require above
 // still points at the last pushed commit until the ledger's Q1 pin-bump pass.
 // portal-service has no remote yet (ledger Q1), so its require is satisfied
 // by the sibling-checkout replace above — the same monorepo layout the Docker
