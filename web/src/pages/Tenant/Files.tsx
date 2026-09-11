@@ -1,5 +1,5 @@
 /**
- * 租户管理 · 文件管理（tenant platform phase ④ Q11）。
+ * 存储服务 · 租户文件（tenant platform phase ④ Q11；⑤ 验收自 租户管理→文件管理 挪位）。
  *
  * 与消息资源页（后端全量返回、前端按 tenant_key 过滤）不同，文件管理面是
  * 服务端收敛的：请求经门注入 x-tenant-key，storage-service 按注入键把
@@ -101,7 +101,7 @@ export default function TenantFilesPage() {
           type="info"
           showIcon
           message="请先在顶栏选择租户"
-          description="文件管理是按租户收敛的视图（后端按注入租户键过滤）。跨租户的全量文件面请使用 存储管理 → 文件。"
+          description="租户文件是按租户收敛的视图（后端按注入租户键过滤）。跨租户的全量文件面请使用 存储管理 → 文件。"
         />
       </PageContainer>
     );

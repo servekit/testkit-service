@@ -83,15 +83,6 @@ export default defineConfig({
           component: "./Tenant/Credentials",
         },
         {
-          // 文件管理（④ Q11）：服务端按注入租户键收敛的文件自服务面 ——
-          // TENANT_ADMIN 管本租户文件，PLATFORM 经切换器下钻同名收敛；
-          // 跨租户全量面仍在 存储管理 → 文件（canPlatform）。
-          path: "/tenant/files",
-          name: "文件管理",
-          access: "canTenantAdmin",
-          component: "./Tenant/Files",
-        },
-        {
           path: "/tenant/members",
           name: "成员管理",
           access: "canPlatform",
@@ -128,12 +119,6 @@ export default defineConfig({
           name: "会话管理",
           access: "canUser",
           component: "./Session",
-        },
-        {
-          path: "/user/apps",
-          name: "应用管理",
-          access: "canPlatform",
-          component: "./User/Apps",
         },
         {
           path: "/users",
@@ -210,6 +195,16 @@ export default defineConfig({
           component: "./Files/MyFiles",
         },
         {
+          // 租户文件（④ Q11，原 租户管理→文件管理 ⑤ 验收挪位）：服务端按
+          // 注入租户键收敛的文件自服务面 —— TENANT_ADMIN 管本租户文件，
+          // PLATFORM 经切换器下钻同名收敛；跨租户全量面仍在 存储管理 →
+          // 文件（canPlatform）。
+          path: "/tenant/files",
+          name: "租户文件",
+          access: "canTenantAdmin",
+          component: "./Tenant/Files",
+        },
+        {
           path: "/storage",
           name: "我的存储",
           access: "canUser",
@@ -259,11 +254,6 @@ export default defineConfig({
               component: "./Admin/Storage/Buckets",
             },
             {
-              path: "/admin/storage/apps",
-              name: "应用管理",
-              component: "./Admin/Storage/Apps",
-            },
-            {
               path: "/admin/storage/settings",
               name: "存储设置",
               component: "./Admin/Storage/Settings",
@@ -306,20 +296,15 @@ export default defineConfig({
           component: "./Message/SendSMS",
         },
         {
-          // 平台资源配置（应用/通道/签名/模板/策略）——发送与记录之外的
+          // 平台资源配置（通道/签名/模板/策略）——发送与记录之外的
           // 全部静态配置面,收进一个子菜单保持顶层简洁。phase ④ 资源自服务：
-          // 通道/签名/模板/策略四页开给租户（canTenantAdmin 继承），应用
-          // 注册表（一租户一配置行）保持平台运营面。
+          // 通道/签名/模板/策略四页开给租户（canTenantAdmin 继承）。
+          // 租户配置行由服务按可信 tenant_key 懒建（⑤ 验收：原「应用管理」
+          // 入口删除，限额/停用等覆盖项走各服务 admin RPC）。
           path: "/message/admin",
           name: "消息配置",
           routes: [
-            { path: "/message/admin", redirect: "/message/admin/apps" },
-            {
-              path: "/message/admin/apps",
-              name: "应用管理",
-              access: "canPlatform",
-              component: "./Message/Apps",
-            },
+            { path: "/message/admin", redirect: "/message/admin/accounts" },
             {
               path: "/message/admin/accounts",
               name: "通道账号",
@@ -374,12 +359,9 @@ export default defineConfig({
       icon: "KeyOutlined",
       access: "canPlatform",
       routes: [
-        { path: "/license", redirect: "/license/apps" },
-        {
-          path: "/license/apps",
-          name: "应用管理",
-          component: "./License/Apps",
-        },
+        // 租户配置行由 license-service 按可信 tenant_key 懒建（⑤ 验收：
+        // 原「应用管理」入口删除）。
+        { path: "/license", redirect: "/license/keys" },
         {
           path: "/license/keys",
           name: "密钥管理",
@@ -404,12 +386,6 @@ export default defineConfig({
       access: "canTenantAdmin",
       routes: [
         { path: "/telemetry", redirect: "/telemetry/tokens" },
-        {
-          path: "/telemetry/apps",
-          name: "应用管理",
-          access: "canPlatform",
-          component: "./Telemetry/Apps",
-        },
         {
           path: "/telemetry/stats",
           name: "应用统计",
