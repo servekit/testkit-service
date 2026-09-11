@@ -83,6 +83,15 @@ export default defineConfig({
           component: "./Tenant/Credentials",
         },
         {
+          // 文件管理（④ Q11）：服务端按注入租户键收敛的文件自服务面 ——
+          // TENANT_ADMIN 管本租户文件，PLATFORM 经切换器下钻同名收敛；
+          // 跨租户全量面仍在 存储管理 → 文件（canPlatform）。
+          path: "/tenant/files",
+          name: "文件管理",
+          access: "canTenantAdmin",
+          component: "./Tenant/Files",
+        },
+        {
           path: "/tenant/members",
           name: "成员管理",
           access: "canPlatform",

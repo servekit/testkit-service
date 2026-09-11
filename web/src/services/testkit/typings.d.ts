@@ -139,6 +139,10 @@ declare namespace API {
     pageToken?: string;
     provider?: string;
     bucket?: string;
+    /** tenant_key filters the list to one tenant (phase ④ Q11). PLATFORM
+cross-view only downstream — the BFF clamps a TENANT_ADMIN's value to
+the injected key, and storage overrides any scoped value anyway. */
+    tenantKey?: string;
   };
 
   type AdminUpdateProviderParams = {
@@ -1722,6 +1726,10 @@ the legacy→tenant fallback value. Unique across rows. */
     objectKey?: string;
     createdAt?: string;
     updatedAt?: string;
+    /** tenant_key echoes the file's tenant (a file row belongs to exactly one
+tenant — no shared layer, phase ④ Q11). Empty = an unattributed pre-③
+row; those are cross-view only downstream. */
+    tenantKey?: string;
   };
 
   type v1AdminGetSettingsResponse = {

@@ -30,7 +30,10 @@
 // The admin RPCs do NO RBAC enforcement this stage (decision: user-service RBAC
 // is CRUD-only for now; enforcement is deferred to a future OPA integration).
 // They are pure forwards — login state + identity injection are handled by the
-// interceptor, and downstream storage-service applies its own business checks.
+// interceptor, and downstream storage-service applies its own business checks
+// (④ Q11: the file surfaces re-derive the management-plane scope from the
+// injected key server-side; the only BFF-side rule is the bffscope tenant_key
+// clamp on the AdminListFiles filter, the door-side mirror of that closure).
 //
 // The enums in testkit.proto mirror storage-service name-for-name and
 // number-for-number, so every enum conversion below is a plain int cast
@@ -561,12 +564,20 @@ func (s *Service) ListMyAuditLogs(ctx context.Context, req *testkitv1.ListMyAudi
 // owner/file, not the owner themselves (design §3.2). No RBAC enforcement this
 // stage; downstream storage-service applies its own business checks.
 
-// AdminListFiles lists files across owners. owner_type/owner_id are filters
-// forwarded from the request.
+// AdminListFiles lists files in the caller's admin scope (④ Q11: a scoped
+// caller gets their own tenant's files downstream; the cross-view may narrow
+// with tenant_key). owner_type/owner_id are filters forwarded from the
+// request. The tenant_key filter is a tenant-naming field: clamped to the
+// injected key for TENANT_ADMIN callers (bffscope defense-in-depth — storage
+// overrides any scoped value anyway); PLATFORM keeps its filter as given.
 func (s *Service) AdminListFiles(ctx context.Context, req *testkitv1.AdminListFilesRequest) (*testkitv1.AdminListFilesResponse, error) {
+	if err := bffscope.TenantKey(ctx, &req.TenantKey); err != nil {
+		return nil, err
+	}
 	resp, err := s.storage.AdminListFiles(ctx, &storagev1.AdminListFilesRequest{
 		OwnerType:         storagev1.OwnerType(req.GetOwnerType()),
 		OwnerId:           req.GetOwnerId(),
+		TenantKey:         req.GetTenantKey(),
 		PathPrefix:        req.GetPathPrefix(),
 		Extension:         req.GetExtension(),
 		ContentTypePrefix: req.GetContentTypePrefix(),
@@ -575,6 +586,7 @@ func (s *Service) AdminListFiles(ctx context.Context, req *testkitv1.AdminListFi
 		PageSize:          req.GetPageSize(),
 		PageToken:         req.GetPageToken(),
 		Provider:          req.GetProvider(),
+		Bucket:            req.GetBucket(),
 	})
 	if err != nil {
 		return nil, err
@@ -792,7 +804,9 @@ func toTestkitFileInfo(f *storagev1.UserFileInfo) *testkitv1.FileInfo {
 }
 
 // toTestkitAdminFileInfo maps a storage AdminFileInfo (the admin view, including
-// provider/bucket/object location) to testkit AdminFileInfo. nil → nil.
+// provider/bucket/object location) to testkit AdminFileInfo. tenant_key echoes
+// through (empty = an unattributed pre-③ row — cross-view only downstream).
+// nil → nil.
 func toTestkitAdminFileInfo(f *storagev1.AdminFileInfo) *testkitv1.AdminFileInfo {
 	if f == nil {
 		return nil
@@ -814,6 +828,7 @@ func toTestkitAdminFileInfo(f *storagev1.AdminFileInfo) *testkitv1.AdminFileInfo
 		Provider:    f.GetProvider(),
 		Bucket:      f.GetBucket(),
 		ObjectKey:   f.GetObjectKey(),
+		TenantKey:   f.GetTenantKey(),
 		CreatedAt:   f.GetCreatedAt(),
 		UpdatedAt:   f.GetUpdatedAt(),
 	}

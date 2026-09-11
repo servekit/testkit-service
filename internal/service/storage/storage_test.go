@@ -180,9 +180,11 @@ func TestGetSTSCredential_InjectsOwnerAndMapsCredential(t *testing.T) {
 
 // TestAdminListFiles_KeepsTargetOwner_NoCtxInjection is the admin template: the
 // request's flat owner_type/owner_id are the OPERATION TARGET (filters), forwarded
-// unchanged — NOT injected from ctx (the test calls with a bare context.Background
-// to prove no caller identity is needed). AdminFileInfo mapping keeps the internal
-// provider/bucket/object_key location fields.
+// unchanged — NOT injected from ctx (no owner fields are derived from the actor).
+// Since ④ Q11 the forward reads the console actor for the tenant_key clamp
+// (bffscope — every console request carries one behind the auth interceptor),
+// so the test calls with a PLATFORM actor ctx. AdminFileInfo mapping keeps the
+// internal provider/bucket/object_key location fields.
 func TestAdminListFiles_KeepsTargetOwner_NoCtxInjection(t *testing.T) {
 	stub := &stubServer{}
 	stub.adminListFiles = func(_ context.Context, req *storagev1.AdminListFilesRequest) (*storagev1.AdminListFilesResponse, error) {
@@ -200,11 +202,14 @@ func TestAdminListFiles_KeepsTargetOwner_NoCtxInjection(t *testing.T) {
 		}, nil
 	}
 	svc := storage.New(stub)
-	// NOTE: context.Background() — no user_id. Admin RPCs must not need ctx owner.
-	resp, err := svc.AdminListFiles(context.Background(), &testkitv1.AdminListFilesRequest{
-		OwnerType: storagev1.OwnerType_OWNER_TYPE_USER, OwnerId: 77, Provider: "oss-prod",
-		OrderBy: storagev1.SortField_SORT_FIELD_SIZE,
-	})
+	// PLATFORM actor (the ④ Q11 clamp reads it); the OWNER still is not
+	// injected from ctx — it must come from the request body only.
+	resp, err := svc.AdminListFiles(
+		adminActorCtx(userv1.UserType_USER_TYPE_PLATFORM, ""),
+		&testkitv1.AdminListFilesRequest{
+			OwnerType: storagev1.OwnerType_OWNER_TYPE_USER, OwnerId: 77, Provider: "oss-prod",
+			OrderBy: storagev1.SortField_SORT_FIELD_SIZE,
+		})
 	require.NoError(t, err)
 	require.Len(t, resp.GetFiles(), 1)
 	f := resp.GetFiles()[0]
@@ -417,4 +422,44 @@ func TestAdminEnsureTenantConfig_ClampsTenantKeyForTenantAdmin(t *testing.T) {
 	)
 	require.NoError(t, err)
 	require.Equal(t, "ten_beta0000000", got.GetTenantKey(), "PLATFORM drill-down keeps its target")
+}
+
+// TestAdminListFiles_TenantKeyFilter_ClampAndEcho (④ Q11): the file list's
+// tenant_key filter forwards for PLATFORM (their cross-view narrowing), is
+// clamped to the injection for TENANT_ADMIN (bffscope mirror — storage
+// overrides it anyway, the door never trusts the body), and the response's
+// AdminFileInfo rows carry the tenant_key echo through to the web.
+func TestAdminListFiles_TenantKeyFilter_ClampAndEcho(t *testing.T) {
+	var got *storagev1.AdminListFilesRequest
+	stub := &stubServer{}
+	stub.adminListFiles = func(_ context.Context, req *storagev1.AdminListFilesRequest) (*storagev1.AdminListFilesResponse, error) {
+		got = req
+		return &storagev1.AdminListFilesResponse{
+			Files: []*storagev1.AdminFileInfo{{
+				Id: 9, Filename: "a.txt", TenantKey: "ten_alpha0000000",
+			}, {
+				Id: 10, Filename: "legacy.txt", // unattributed pre-③ row
+			}},
+			TotalCount: 2,
+		}, nil
+	}
+	svc := storage.New(stub)
+
+	resp, err := svc.AdminListFiles(
+		adminActorCtx(userv1.UserType_USER_TYPE_TENANT_ADMIN, "ten_alpha0000000"),
+		&testkitv1.AdminListFilesRequest{TenantKey: "ten_beta0000000"},
+	)
+	require.NoError(t, err)
+	require.NotNil(t, got)
+	require.Equal(t, "ten_alpha0000000", got.GetTenantKey(), "injected key replaces the body's foreign filter")
+	require.Len(t, resp.GetFiles(), 2)
+	require.Equal(t, "ten_alpha0000000", resp.GetFiles()[0].GetTenantKey(), "row echo maps through")
+	require.Empty(t, resp.GetFiles()[1].GetTenantKey(), "unattributed row echoes empty")
+
+	_, err = svc.AdminListFiles(
+		adminActorCtx(userv1.UserType_USER_TYPE_PLATFORM, "ten_beta0000000"),
+		&testkitv1.AdminListFilesRequest{TenantKey: "ten_beta0000000"},
+	)
+	require.NoError(t, err)
+	require.Equal(t, "ten_beta0000000", got.GetTenantKey(), "PLATFORM cross-view keeps its filter")
 }
