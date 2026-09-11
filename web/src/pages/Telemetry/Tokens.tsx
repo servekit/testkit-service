@@ -197,7 +197,7 @@ export default function TelemetryTokensPage() {
         <Typography.Text type="secondary">
           {appKey ? (
             <>
-              配置行凭据 <code>{appKey}</code>（AppKey/AppSecret 是业务方身份凭据，见平台侧「租户配置」）。
+              配置行标识 <code>{appKey}</code>（服务端铸出的内部标识，非凭据）。业务方数据面凭据是门户 ak/sk（租户管理页）；AppSecret 机制已退役。
             </>
           ) : (
             "本租户尚未建立上报配置行——「生成令牌」会建立（与首次可信上报的懒建同构）并铸出首枚令牌。"
